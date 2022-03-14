@@ -6,7 +6,8 @@
   "scripts": {
     "docs:build": "vuepress build src",
     "docs:clean-dev": "vuepress dev src --clean-cache",
-    "docs:dev": "vuepress dev src"
+    "docs:dev": "vuepress dev src",
+    "deploy": "npm run docs:build && serverless deploy"
   },
   "devDependencies": {
     "vuepress": "^2.0.0-beta.36",
