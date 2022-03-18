@@ -1,9 +1,9 @@
 import { defineNavbarConfig } from "vuepress-theme-hope";
 
-export const zh = defineNavbarConfig([
+export default defineNavbarConfig([
   "/",
   "/home",
-  { text: "使用指南", icon: "creative", link: "/zh/guide/" },
+  { text: "使用指南", icon: "creative", link: "/guide/" },
   {
     text: "博文",
     icon: "edit",

@@ -17,15 +17,10 @@ export default defineHopeConfig({
   ],
 
   locales: {
-    "/en/": {
-      lang: "zh-CN",
-      title: "一方净土",
-      description: "Yihui's Blog",
-    },
     "/": {
-      lang: "en-US",
-      title: "一方净土",
-      description: "Yihui's Blog",
+      lang: "zh-CN",
+      title: "主题演示",
+      description: "vuepress-theme-hope 的演示",
     },
   },
 
