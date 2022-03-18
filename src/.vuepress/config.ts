@@ -17,7 +17,7 @@ export default defineHopeConfig({
   ],
 
   locales: {
-    "/zh/": {
+    "/en/": {
       lang: "zh-CN",
       title: "一方净土",
       description: "Yihui's Blog",

@@ -57,26 +57,6 @@ export default defineThemeConfig({
   locales: {
     "/": {
       // navbar
-      navbar: navbar.en,
-
-      // sidebar
-      sidebar: sidebar.en,
-
-      footer: "Default footer",
-
-      displayFooter: true,
-
-      blog: {
-        description: "A FrontEnd programmer",
-        intro: "/intro.html",
-      },
-    },
-
-    /**
-     * Chinese locale config
-     */
-    "/zh/": {
-      // navbar
       navbar: navbar.zh,
 
       // sidebar
@@ -88,6 +68,26 @@ export default defineThemeConfig({
 
       blog: {
         description: "一个前端开发者",
+        intro: "/intro.html",
+      },
+    },
+
+    /**
+     * Chinese locale config
+     */
+    "/en/": {
+      // navbar
+      navbar: navbar.en,
+
+      // sidebar
+      sidebar: sidebar.en,
+
+      footer: "",
+
+      displayFooter: true,
+
+      blog: {
+        description: "A FrontEnd programmer",
         intro: "/zh/intro.html",
       },
     },
@@ -108,10 +108,10 @@ export default defineThemeConfig({
     // you can also use Waline
     comment: {
       type: "giscus",
-      repo: "vuepress-theme-hope/giscus-discussions",
-      repoId: "R_kgDOG_Pt2A",
-      category: "Announcements",
-      categoryId: "DIC_kwDOG_Pt2M4COD69",
+      repo: "MoMeak9/giscus_discuess",
+      repoId: "R_kgDOHAxnrQ",
+      category: "General",
+      categoryId: "DIC_kwDOHAxnrc4COIL7",
     },
 
     mdEnhance: {

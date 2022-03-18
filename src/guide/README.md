@@ -2,15 +2,15 @@
 index: false
 icon: creative
 category:
-  - Guide
+  - 使用指南
 ---
 
-# Guides
+# 主要功能与配置演示
 
-- [Page Config](page.md)
+- [页面展示](page.md)
 
-- [Markdown Enhance](markdown.md)
+- [Markdown 展示](markdown.md)
 
-- [Function Disable](disable.md)
+- [禁用展示](disable.md)
 
-- [Encryption Demo](encrypt.md)
+- [加密展示](encrypt.md)
