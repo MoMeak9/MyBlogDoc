@@ -1,2 +1,4 @@
 /.env
 /dist/
+/src/.vuepress/.cache/
+/src/.vuepress/.temp/
