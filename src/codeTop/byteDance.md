@@ -1,3 +1,12 @@
+---
+icon: edit
+date: 2022-03-19
+category:
+- 面经
+- PDD
+---
+# s 
+
 #### [400. 第 N 位数字](https://leetcode-cn.com/problems/nth-digit/)
 
 **解题思路**
