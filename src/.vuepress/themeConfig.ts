@@ -14,9 +14,9 @@ export default defineThemeConfig({
 
   logo: "/logo.svg",
 
-  repo: "https://github.com/vuepress-theme-hope/vuepress-theme-hope",
+  repo: "https://github.com/MoMeak9/MyBlogDoc",
 
-  docsDir: "demo/src",
+  docsDir: "/src",
 
   // navbar
   navbar: navbar,
