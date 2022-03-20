@@ -6,21 +6,13 @@ export default defineHopeConfig({
 
   dest: "./dist",
 
-  head: [
-    [
-      "link",
-      {
-        rel: "stylesheet",
-        href: "//at.alicdn.com/t/font_2410206_mfj6e1vbwo.css",
-      },
-    ],
-  ],
+  head: [],
 
   locales: {
     "/": {
       lang: "zh-CN",
-      title: "主题演示",
-      description: "vuepress-theme-hope 的演示",
+      title: "Yihui's Blog",
+      description: "前端小白的技术博客",
     },
   },
 
