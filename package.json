@@ -1,5 +1,5 @@
 {
-  "name": "my-blog-doc",
+  "name": "my-blog",
   "version": "2.0.0",
   "description": "A project of vuepress-theme-hope",
   "license": "MIT",
@@ -11,6 +11,6 @@
   },
   "devDependencies": {
     "vuepress": "^2.0.0-beta.36",
-    "vuepress-theme-hope": "^2.0.0-beta.14"
+    "vuepress-theme-hope": "^2.0.0-beta.22"
   }
 }
