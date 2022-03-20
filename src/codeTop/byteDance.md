@@ -1,3 +1,4 @@
+# 字节跳动
 #### [400. 第 N 位数字](https://leetcode-cn.com/problems/nth-digit/)
 
 **解题思路**
@@ -68,7 +69,7 @@ var compareVersion = function(version1, version2) {
 
 #### [415. 字符串相加](https://leetcode-cn.com/problems/add-strings/)
 
-> 会溢出
+> 会溢出 ，去看一下字符串相乘
 
 ```js
 /**
@@ -87,6 +88,7 @@ var addStrings = function(num1, num2) {
 /**
  * @param {string} num1
  * @param {string} num2
+ * @description 逐个相加
  * @return {string}
  */
 var addStrings = function(num1, num2) {
@@ -104,6 +106,50 @@ var addStrings = function(num1, num2) {
     return ans.reverse().join('');
 };
 ```
+
+#### [43. 字符串相乘](https://leetcode-cn.com/problems/multiply-strings/)
+
+> 通过模仿笔算的步骤实现
+
+```js
+/**
+ * @param {string} num1
+ * @param {string} num2
+ * @return {string}
+ */
+var multiply = function (num1, num2) {
+  let m = num1.length,
+    n = num2.length;
+  // 结果最多为m+n位
+  let res = new Array(m + n).fill(0);
+  // 从个位数开始逐位相乘
+  for (let i = m - 1; i >= 0; i--) {
+    for (let j = n - 1; j >= 0; j--) {
+      let mul = (num1[i] - 0) * (num2[j] - 0);
+      // 乘积在res对应的索引位置
+      let p1 = i + j,
+        p2 = i + j + 1;
+      // 叠加到res上
+      let sum = mul + res[p2];
+      res[p2] = sum % 10;
+      res[p1] += parseInt(sum / 10);
+    }
+  }
+  // 结果前缀可能存在0（未使用的位）
+  let i = 0;
+  while (i < res.length && res[i] == 0) {
+    i++;
+  }
+  // 将计算结果转化成字符串
+  let str = "";
+  for (; i < res.length; i++) {
+    str += res[i];
+  }
+  return str.length == 0 ? "0" : str;
+};
+```
+
+
 
 #### [1. 两数之和](https://leetcode-cn.com/problems/two-sum/)
 
@@ -125,6 +171,47 @@ var twoSum = function(nums, target) {
         }
     }
     return [];
+};
+```
+
+#### [70. 爬楼梯](https://leetcode-cn.com/problems/climbing-stairs/)
+
+> 聊天的时候得知常考
+
+递归超时了~
+
+```js
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var climbStairs = function (n) {
+    if (n === 1) {
+        return 1
+    }
+    if (n === 2) {
+        return 2
+    }
+    return climbStairs(n - 1) + climbStairs(n - 2)
+};
+
+```
+
+迭代算法
+
+```js
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var climbStairs = function (n) {
+    let l = 0, r = 0, res = 1; // 看成左中右也行
+    for (let i = 1; i <= n; i++) {
+        l = r // 逐个右移操作
+        r = res
+        res = l + r
+    }
+    return res
 };
 ```
 

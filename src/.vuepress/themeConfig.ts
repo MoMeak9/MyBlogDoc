@@ -6,15 +6,15 @@ export default defineThemeConfig({
   hostname: "https://vuepress-theme-hope-v2-demo.mrhope.site",
 
   author: {
-    name: "Mr.Hope",
-    url: "https://mrhope.site",
+    name: "Yihui",
+    url: "https://yihuiblog.top",
   },
 
   iconPrefix: "iconfont icon-",
 
   logo: "/logo.svg",
 
-  repo: "https://github.com/vuepress-theme-hope/vuepress-theme-hope",
+  repo: "https://github.com/MoMeak9/MyBlogDoc",
 
   docsDir: "demo/src",
 
@@ -24,7 +24,7 @@ export default defineThemeConfig({
   // sidebar
   sidebar: sidebar,
 
-  footer: "默认页脚",
+  footer: " ",
 
   displayFooter: true,
 
@@ -34,35 +34,35 @@ export default defineThemeConfig({
     description: "一个前端开发者",
     intro: "/intro.html",
     medias: {
-      Baidu: "https://example.com",
-      Bitbucket: "https://example.com",
-      Dingding: "https://example.com",
-      Discord: "https://example.com",
-      Dribbble: "https://example.com",
+      // Baidu: "https://example.com",
+      // Bitbucket: "https://example.com",
+      // Dingding: "https://example.com",
+      // Discord: "https://example.com",
+      // Dribbble: "https://example.com",
       Email: "https://example.com",
-      Evernote: "https://example.com",
-      Facebook: "https://example.com",
-      Flipboard: "https://example.com",
+      // Evernote: "https://example.com",
+      // Facebook: "https://example.com",
+      // Flipboard: "https://example.com",
       Gitee: "https://example.com",
       GitHub: "https://example.com",
-      Gitlab: "https://example.com",
-      Gmail: "https://example.com",
-      Instagram: "https://example.com",
-      Lines: "https://example.com",
-      Linkedin: "https://example.com",
-      Pinterest: "https://example.com",
-      Pocket: "https://example.com",
-      QQ: "https://example.com",
-      Qzone: "https://example.com",
-      Reddit: "https://example.com",
-      Rss: "https://example.com",
-      Steam: "https://example.com",
-      Twitter: "https://example.com",
-      Wechat: "https://example.com",
-      Weibo: "https://example.com",
-      Whatsapp: "https://example.com",
-      Youtube: "https://example.com",
-      Zhihu: "https://example.com",
+      // Gitlab: "https://example.com",
+      // Gmail: "https://example.com",
+      // Instagram: "https://example.com",
+      // Lines: "https://example.com",
+      // Linkedin: "https://example.com",
+      // Pinterest: "https://example.com",
+      // Pocket: "https://example.com",
+      // QQ: "https://example.com",
+      // Qzone: "https://example.com",
+      // Reddit: "https://example.com",
+      // Rss: "https://example.com",
+      // Steam: "https://example.com",
+      // Twitter: "https://example.com",
+      // Wechat: "https://example.com",
+      // Weibo: "https://example.com",
+      // Whatsapp: "https://example.com",
+      // Youtube: "https://example.com",
+      // Zhihu: "https://example.com",
     },
   },
 
@@ -80,10 +80,10 @@ export default defineThemeConfig({
     // 你也可以使用 Waline
     comment: {
       type: "giscus",
-      repo: "vuepress-theme-hope/giscus-discussions",
-      repoId: "R_kgDOG_Pt2A",
-      category: "Announcements",
-      categoryId: "DIC_kwDOG_Pt2M4COD69",
+      repo: "MoMeak9/giscus_discuess",
+      repoId: "R_kgDOHAxnrQ",
+      category: "General",
+      categoryId: "DIC_kwDOHAxnrc4COIL7",
     },
 
     mdEnhance: {
