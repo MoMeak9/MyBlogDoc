@@ -137,15 +137,14 @@ navigator.userAgent -- 返回用户代理头的字符串表示(就是包括浏�
 符串)
 navigator.cookieEnabled -- 返回浏览器是否支持(启用)cookie
 
-#### 说一下 http2.0
+#### 说一下 HTTP2.0
 
 - 提升访问速度（可以对于，请求资源所需时间更少，访问速度更快，相比 http1.0）
-- 允许多路复用：多路复用允许同时通过单一的 HTTP/2 连接发送多重请求-响应信息。改善了：在 http1.1 中，浏览器客户端在同一时间，针对同一域名下的请求有一定数量限
-  制（连接数量），超过限制会被阻塞。
-- 二进制分帧：HTTP2.0 会将所有的传输信息分割为更小的信息或者帧，并对他们进行二
-- 进制编码
+- 允许多路复用：多路复用允许同时通过单一的 HTTP/2 连接发送多重请求-响应信息。改善了：在 http1.1 中，浏览器客户端在同一时间，针对同一域名下的请求有一定数量限制（连接数量），超过限制会被阻塞。
+- 二进制分帧：HTTP2.0 会将所有的传输信息分割为更小的信息或者帧，并对他们进行二进制编码（http1.X 的解析是基于文本的，http2.0 将所有的传输信息分割为更小的 消息和帧，并对他们采用二进制格式编码，基于二进制可以让协议有更多的扩展性，比 如引入了帧来传输数据和指令）
 - 首部压缩
 - 服务器端推送
+- 内容安全，应为 http2.0 是基于 https 的，天然具有安全特性，通过 http2.0 的特性可 以避免单纯使用 https 的性能下降
 
 #### 补充 400 和 401、403 状态码
 
@@ -330,4 +329,173 @@ addEventListener(event, function, useCapture)
 
 #### http 常用请求头
 
-P21
+Accept 可接受的响应内容类型（Content-Types）。
+
+Accept-Charset 可接受的字符集。
+
+Accept-Encoding 可接受的响应内容的编码方式。
+
+Accept-Language 可接受的响应内容语言列表。
+
+Authorization 用于表示 HTTP 协议中需要认证资源的认证信
+
+Cache-Control 用来指定当前的请求/回复中的，是否使用缓存机制。
+
+Cookie 由之前服务器通过Set-Cooki（e 见下文）设置的一个HTTP协议Cookie
+
+Content-Length 以 8 进制表示的请求体的长
+
+Host 表示服务器的域名以及服务器所监听的端口号。如果所请求的端口是对应的服务的标准端口（80），则端口号可以省略。
+
+Origin 发起一个针对跨域资源共享的请求（该请求要求服务器在响应中加入一个 Access-Control-Allow-Origin 的消息头，表示访问控制所允许的来源）。
+
+####  强/协商缓存
+
+缓存分为两种：强缓存和协商缓存，根据响应的 header 内容来决定。
+
+![image-20220321195538632](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202203211955368.png)
+
+强缓存相关字段有 expires，cache-control。如果 cache-control 与 expires 同时存在的话，cache-control 的优先级高于 expires。协商缓存相关字段有 Last-Modified/If-Modified-Since，Etag/If-None-Match
+
+####  讲讲 304
+
+304：如果客户端发送了一个带条件的 GET 请求且该请求已被允许，而文档的内容（自
+上次访问以来或者根据请求的条件）并没有改变，则服务器应当返回这个 304 状态码。
+
+#### 强缓存、协商缓存什么时候用哪个
+
+我们希望服务器上的资源更新了浏览器就请求新的资源，没有更新就使用本地的缓存，以最大程度的减少因网络请求而产生的资源浪费。（最终由服务器抉择是否为200or304）
+
+#### 前端优化
+
+降低请求量：合并资源，减少 HTTP 请求数，minify / gzip 压缩，webP，lazyLoad。
+
+加快请求速度：预解析 DNS，减少域名数，并行加载，CDN 分发。
+
+缓存：HTTP 协议缓存请求，离线缓存 manifest，离线数据缓存 localStorage。
+
+渲染：JS/CSS 优化，加载顺序，服务端渲染，pipeline。
+
+#### GET 和 POST 的区
+
+- get 参数通过 url 传递，post 放在 request body 中（从规范来说，实际上从协议来说也可以使用get的body）。
+
+- get 请求在 url 中传递的参数是有长度限制的（2048），而 post 没有。
+
+- get 比 post 更不安全，因为参数直接暴露在 url 中，所以不能用来传递敏感信息。
+
+- get 请求只能进行 url 编码，而 post 支持多种编码方式
+
+- get 请求会浏览器主动 cache，而 post 支持多种编码方式。
+
+- get 请求参数会被完整保留在浏览历史记录里，而 post 中的参数不会被保留。
+
+- GET 和 POST 本质上就是 TCP 链接，并无差别。但是由于 HTTP 的规定和浏览器/服务器的限制，导致他们在应用过程中体现出一些不同。
+
+- GET 产生一个 TCP 数据包；POST 产生两个 TCP 数据包。
+
+#### 301 和 302 的区别
+
+301 Moved Permanently 被请求的资源已永久移动到新位置，并且将来任何对此资源的引用都应该使用本响应返回的若干个 URI 之一。如果可能，拥有链接编辑功能的客户端应当自动把请求的地址修改为从服务器反馈回来的地址。除非额外指定，否则这个响应也是**可缓存的**。 
+
+302 Found 请求的资源现在临时从不同的 URI 响应请求。由于这样的重定向是临时的， 客户端应当继续向原有地址发送以后的请求。**只有在 Cache-Control 或 Expires 中进行了 指定的情况下，这个响应才是可缓存的**。 字面上的区别就是 301 是永久重定向，而 302 是临时重定向。 <u>301 比较常用的场景是使用域名跳转。302 用来做临时跳转比如未登陆的用户访问用户中心重定向到登录页面。</u>
+
+#### 状态码 304 和 20
+
+状态码 200：请求已成功，请求所希望的响应头或数据体将随此响应返回。即返回的数 据为全量的数据，如果文件不通过 GZIP 压缩的话，文件是多大，则要有多大传输量。 
+
+状态码 304：如果客户端发送了一个带条件的 GET 请求且该请求已被允许，而文档的 内容（自上次访问以来或者根据请求的条件）并没有改变，则服务器应当返回这个状态码。即客户端和服务器端只需要传输很少的数据量来做文件的校验，如果文件没有修改过，则不需要返回全量的数据。
+
+#### 说一下浏览器缓存
+
+缓存分为两种：强缓存和协商缓存，根据响应的 header 内容来决定。
+
+强缓存相关字段有 expires，cache-control。如果 cache-control 与 expires 同时存在的话，
+cache-control 的优先级高于 expires。
+
+协商缓存相关字段有 Last-Modified/If-Modified-Since，Etag/If-None-Match
+
+#### 在地址栏里输入一个 URL,到这个页面呈现出来，中间会发生什么？
+
+使用整理补充
+
+#### cookie 和 session 的区别，localstorage 和 sessionstorage 的区别
+
+Cookie 和 session 都可用来存储用户信息，cookie 存放于客户端，session 存放于服务器端，因为 cookie 存放于客户端有可能被窃取，所以 cookie 一般用来存放不敏感的信息，比如用户设置的网站主题，敏感的信息用 session 存储，比如用户的登陆信息，session 可以存放于文件，数据库，内存中都可以，cookie 可以服务器端响应的时候设置，也可以客户端通过 JS 设置 cookie 会在请求时在 http 首部发送给客户端，cookie 一般在客户端有大小限制，一般为 4K，
+下面从几个方向区分一下 cookie，localstorage，sessionstorage 的区别
+
+1、生命周期：
+Cookie：可设置失效时间，否则默认为关闭浏览器后失效
+Localstorage:除非被手动清除，否则永久保存
+Sessionstorage：仅在当前网页会话下有效，关闭页面或浏览器后就会被清除
+
+2、存放数据：
+Cookie：4k 左右
+Localstorage 和 sessionstorage：可以保存 5M 的信息
+
+3、http 请求：
+Cookie：每次都会携带在 http 头中，如果使用 cookie 保存过多数据会带来性能问题
+其他两个：仅在客户端即浏览器中保存，不参与和服务器的通信
+
+4、易用性：
+Cookie：需要程序员自己封装，原生的 cookie 接口不友好
+其他两个：即可采用原生接口，亦可再次封装
+
+5、应用场景：
+从安全性来说，因为每次 http 请求都回携带 cookie 信息，这样子浪费了带宽，所以 cookie应该尽可能的少用，此外 cookie 还需要指定作用域，不可以跨域调用，限制很多，但是用户识别用户登陆来说，cookie还是比storage好用，其他情况下可以用storage，localstorage可以用来在页面传递参数，sessionstorage 可以用来保存一些临时的数据，防止用户刷新页面后丢失了一些参数。
+
+#### 浏览器在生成页面的时候，会生成那两颗树？
+
+构造两棵树，DOM 树和 CSSOM 规则树，
+
+当浏览器接收到服务器相应来的 HTML 文档后，会遍历文档节点，生成 DOM 树，
+
+CSSOM 规则树由浏览器解析 CSS 文件生成
+
+#### 怎么看网站的性能如何
+
+检测页面加载时间一般有两种方式，**一种是被动去测**：就是在被检测的页面置入脚本或探针，当用户访问网页时，探针自动采集数据并传回数据库进行分析，**另一种主动监测的方式**，即主动的搭建分布式受控环境，模拟用户发起页面访问请求，主动采集性能数据并分析，在检测的精准度上，专业的第三方工具效果更佳，比如说性能极客
+
+#### 输入 URL 到页面加载显示完成发生了什么?
+
+DNS 解析
+TCP 连接
+发送 HTTP 请求
+服务器处理请求并返回 HTTP 报文
+浏览器解析渲染页面
+连接结束
+
+#### HTML5 和 CSS3 用的多吗？你了解它们的新属性吗？有在项目中用过吗？
+
+**HTML5**：
+
+1）标签增删
+
+8 个语义元素 header section footer aside nav main article figure
+
+内容元素 mark 高亮 progress 进度
+
+新的表单控件 calander date time email url search
+
+新的 input 类型 color date datetime datetime-local email
+
+移除过时标签 big font frame frameset
+
+2）canvas 绘图，支持内联 SVG。支持 MathML
+
+3）多媒体 audio video source embed track
+
+4）本地离线存储，把需要离线存储在本地的文件列在一个 manifest 配置文件
+
+5）web 存储。localStorage、SessionStorage
+
+**CSS3**：
+
+CSS3边框如border-radius，box-shadow等；
+
+CSS3背景如background-size，background-origin
+等；
+
+CSS3 2D，3D 转换如 transform 等；
+
+CSS3 动画如 animation

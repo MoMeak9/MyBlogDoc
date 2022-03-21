@@ -39,7 +39,7 @@ export default defineThemeConfig({
       // Dingding: "https://example.com",
       // Discord: "https://example.com",
       // Dribbble: "https://example.com",
-      Email: "shi_yihui@qq.com",
+      Email: "mailto:shi_yihui@qq.com",
       // Evernote: "https://example.com",
       // Facebook: "https://example.com",
       // Flipboard: "https://example.com",

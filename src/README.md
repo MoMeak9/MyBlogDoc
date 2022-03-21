@@ -4,7 +4,7 @@ layout: Blog
 icon: home
 title: 博客主页
 heroImage: /logo.svg
-bgImage: https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/illust_96856598_20220321_001614.jpg
+bgImage: https://my-doc-1259409954.file.myqcloud.com/MyImages/doc/202203212054591.jpeg
 heroText: 一方净土
 heroFullScreen: true
 tagline: 为热爱而坚持
