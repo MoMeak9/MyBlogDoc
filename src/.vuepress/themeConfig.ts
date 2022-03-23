@@ -12,7 +12,7 @@ export default defineThemeConfig({
 
     iconPrefix: "iconfont icon-",
 
-    logo: "",
+    logo: "https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/ココアシガレット_91951407.png.png",
 
     repo: "https://github.com/MoMeak9/MyBlogDoc",
 

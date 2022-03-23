@@ -515,3 +515,162 @@ var kthSmallest = function(root, k) {
 };
 ```
 
+#### [226. 翻转二叉树](https://leetcode-cn.com/problems/invert-binary-tree/)
+
+```js
+/**
+ * @param {TreeNode} root
+ * @return {TreeNode}
+ */
+var invertTree = function(root) {
+    if (root === null) {
+        return null;
+    }
+    const left = invertTree(root.left);
+    const right = invertTree(root.right);
+    root.left = right;
+    root.right = left;
+    return root;
+};
+```
+
+```js
+const invertTree = (root) => {
+  if (root == null) { // 遍历到null节点时，不用翻转，直接返回它本身
+    return root;
+  }
+  invertTree(root.left);
+  invertTree(root.right);
+
+  const temp = root.left;
+  root.left = root.right;
+  root.right = temp;
+
+  return root;
+};
+```
+
+#### [21. 合并两个有序链表](https://leetcode-cn.com/problems/merge-two-sorted-lists/)
+
+> 递归
+>
+> 也就是说，两个链表头部值较小的一个节点与剩下元素的 `merge` 操作结果合并。
+
+```js
+var mergeTwoLists = function(l1, l2) {
+    if (l1 === null) {
+        return l2;
+    } else if (l2 === null) {
+        return l1;
+    } else if (l1.val < l2.val) {
+        l1.next = mergeTwoLists(l1.next, l2);
+        return l1;
+    } else {
+        l2.next = mergeTwoLists(l1, l2.next);
+        return l2;
+    }
+};
+```
+
+
+
+> 迭代
+>
+> 更像是模仿过程，更适合理解
+
+```js
+var mergeTwoLists = function(l1, l2) {
+    const prehead = new ListNode(-1);
+
+    let prev = prehead;
+    while (l1 != null && l2 != null) {
+        if (l1.val <= l2.val) {
+            prev.next = l1;
+            l1 = l1.next;
+        } else {
+            prev.next = l2;
+            l2 = l2.next;
+        }
+        prev = prev.next;
+    }
+
+    // 合并后 l1 和 l2 最多只有一个还未被合并完，我们直接将链表末尾指向未合并完的链表即可
+    prev.next = l1 === null ? l2 : l1;
+
+    return prehead.next;
+};
+```
+
+#### [94. 二叉树的中序遍历](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
+
+> 手写一个递归
+
+```js
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var inorderTraversal = function(root) {
+    const res = [];
+    const tracersal = (root) =>{
+        if(root==null){
+            return res;
+        }
+        tracersal(root.left);
+        res.push(root.val);
+        tracersal(root.right);
+    }
+    tracersal(root)
+    return res;
+};
+```
+
+> 不要忘记迭代
+
+```js
+var inorderTraversal = function(root) {
+    const res = [];
+    const stk = [];
+    while (root || stk.length) {
+        while (root) {
+            stk.push(root);
+            root = root.left;
+        }
+        root = stk.pop();
+        res.push(root.val);
+        root = root.right;
+    }
+    return res;
+};
+```
+
+#### [429. N 叉树的层序遍历](https://leetcode-cn.com/problems/n-ary-tree-level-order-traversal/)
+
+> 并不像二叉树层序那么简单
+
+```js
+/**
+ * @param {Node|null} root
+ * @return {number[][]}
+ */
+var levelOrder = function (root) {
+  let res = [];
+  if (root == null) return res;
+  let queue = [root];
+  while (queue.length) {
+    let size = queue.length;
+    let level = [];
+    while (size--) {
+      let cur = queue.shift();
+      level.push(cur.val);
+      for (let node of cur.children) { // 你不说谁知道这个是啥可迭代对象
+        if (node) queue.push(node);
+      }
+    }
+    res.push(level);
+  }
+  return res;
+};
+```
+
+#### [718. 最长重复子数组](https://leetcode-cn.com/problems/maximum-length-of-repeated-subarray/)
