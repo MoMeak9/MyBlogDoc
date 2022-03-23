@@ -27,5 +27,7 @@ projects:
 footer: <a href="https://beian.miit.gov.cn/">闽ICP备19026932号-1</a>
 ---
 
-这是我的技术杂文博客
+到底啦~
+
+还没想好加点啥
 
