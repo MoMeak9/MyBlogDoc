@@ -4,7 +4,7 @@ icon: page
 star: true
 ---
 
-# 字节跳动
+# 字节跳动CodeTop
 #### [400. 第 N 位数字](https://leetcode-cn.com/problems/nth-digit/)
 
 **解题思路**
@@ -674,3 +674,207 @@ var levelOrder = function (root) {
 ```
 
 #### [718. 最长重复子数组](https://leetcode-cn.com/problems/maximum-length-of-repeated-subarray/)
+
+二维dp去做，有点难理解
+
+#### [93. 复原 IP 地址](https://leetcode-cn.com/problems/restore-ip-addresses/)
+
+> ```
+> 输入：s = "25525511135"
+> 输出：["255.255.11.135","255.255.111.35"]
+> ```
+
+```js
+/**
+ * @param {string} s
+ * @return {string[]}
+ */
+var restoreIpAddresses = function(s) {
+    const SEG_COUNT = 4;
+    const segments = new Array(SEG_COUNT);
+    const ans = [];
+
+    const dfs = (s, segId, segStart) => {
+        // 如果找到了 4 段 IP 地址并且遍历完了字符串，那么就是一种答案
+        if (segId === SEG_COUNT) {
+            if (segStart === s.length) {
+                ans.push(segments.join('.'));
+            }
+            return;
+        }
+
+        // 如果还没有找到 4 段 IP 地址就已经遍历完了字符串，那么提前回溯
+        if (segStart === s.length) {
+            return;
+        }
+
+        // 由于不能有前导零，如果当前数字为 0，那么这一段 IP 地址只能为 0
+        if (s.charAt(segStart) === '0') {
+            segments[segId] = 0;
+            dfs(s, segId + 1, segStart + 1);
+        }
+
+        // 一般情况，枚举每一种可能性并递归
+        let addr = 0;
+        for (let segEnd = segStart; segEnd < s.length; ++segEnd) {
+            addr = addr * 10 + (s.charAt(segEnd) - '0');
+            if (addr > 0 && addr <= 0xFF) {
+                segments[segId] = addr;
+                dfs(s, segId + 1, segEnd + 1);
+            } else {
+                break;
+            }
+        }
+    }
+
+    dfs(s, 0, 0);
+    return ans;
+};
+```
+
+#### [912. 排序数组](https://leetcode-cn.com/problems/sort-an-array/)
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var sortArray = function(nums) {
+    return nums.sort((a,b)=> a - b)
+};
+```
+
+#### [104. 二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+var maxDepth = function (root) {
+    if (!root) return 0;
+    return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+};
+```
+
+#### [113. 路径总和 II](https://leetcode-cn.com/problems/path-sum-ii/)
+
+> 同时维护res 答案数组和path路径数组（用于回溯）
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} targetSum
+ * @return {number[][]}
+ */
+const pathSum = function (root, targetSum) {
+    // 递归法
+    // 要遍历整个树找到所有路径，所以递归函数不需要返回值, 与112不同
+    const res = [];
+    const travelsal = (node, cnt, path) => {
+        // 遇到了叶子节点且找到了和为sum的路径
+        if (cnt === 0 && !node.left && !node.right) {
+            res.push([...path]); // 不能写res.push(path), 要深拷贝
+            return;
+        }
+        if (!node.left && !node.right) return; // 遇到叶子节点而没有找到合适的边，直接返回
+        // 左 （空节点不遍历）
+        if (node.left) {
+            path.push(node.left.val);
+            travelsal(node.left, cnt - node.left.val, path); // 递归
+            path.pop(); // 回溯
+        }
+        // 右 （空节点不遍历）
+        if (node.right) {
+            path.push(node.right.val);
+            travelsal(node.right, cnt - node.right.val, path); // 递归
+            path.pop(); // 回溯
+        }
+    };
+    if (!root) return res;
+    travelsal(root, targetSum - root.val, [root.val]); // 把根节点放进路径
+    return res;
+};
+```
+
+#### [322. 零钱兑换](https://leetcode-cn.com/problems/coin-change/)
+
+> 贪心不一定是对的
+
+```js
+/**
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
+var coinChange = function(coins, amount) {
+    const dp = new Array(amount+1).fill(Number.MAX_SAFE_INTEGER);
+    dp[0] = 0;
+    for(let num of coins) {
+        for(let i=num; i<=amount; i++) {
+            dp[i] = Math.min(dp[i],dp[i-num]+1); // 记录之前的最小配比
+        }
+    }
+    return dp[amount] === Number.MAX_SAFE_INTEGER ? -1 : dp[amount];
+};
+```
+
+#### [剑指 Offer 09. 用两个栈实现队列](https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/)
+
+> 将一个栈当作输入栈，用于压入 appendTail 传入的数据；另一个栈当作输出栈，用于 deleteHead 操作。
+>
+> deleteHead 时，若输出栈为空则将输入栈的全部数据依次弹出并压入输出栈，这样输出栈从栈顶往栈底的顺序就是队列从队首往队尾的顺序。
+>
+
+```js
+var CQueue = function() {
+    this.stackA = [];
+    this.stackB = [];
+};
+
+/** 
+ * @param {number} value
+ * @return {void}
+ */
+CQueue.prototype.appendTail = function(value) {
+    this.stackA.push(value);
+};
+
+/**
+ * @return {number}
+ */
+CQueue.prototype.deleteHead = function() {
+    if(this.stackB.length){
+        return this.stackB.pop();
+    }else{
+        while(this.stackA.length){
+            this.stackB.push(this.stackA.pop());
+        }
+        if(!this.stackB.length){
+            return -1;
+        }else{
+            return this.stackB.pop();
+        }
+    }
+};
+
+/**
+ * Your CQueue object will be instantiated and called as such:
+ * var obj = new CQueue()
+ * obj.appendTail(value)
+ * var param_2 = obj.deleteHead()
+ */
+```
+
