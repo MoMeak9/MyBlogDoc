@@ -499,3 +499,39 @@ CSS3背景如background-size，background-origin
 CSS3 2D，3D 转换如 transform 等；
 
 CSS3 动画如 animation
+
+#### 说说 302，301，304 的状态
+
+301 Moved Permanently 永久移动。请求的资源已被永久的移动到新 URI，返回信息会包括新的 URI，浏览器会自动定向到新 URI。今后任何新的请求都应使用新的 URI 代替302 Found 临时移动。与 301 类似。但资源只是临时被移动。客户端应继续使用原有URI
+
+304 Not Modified 未修改。所请求的资源未修改，服务器返回此状态码时，不会返回任何资源。客户端通常会缓存访问过的资源，通过提供一个头信息指出客户端希望只返回在指定日期之后修改的资源
+
+### CSS
+
+#### 说一下 css 盒模
+
+简介：就是用来装页面上的元素的矩形区域。CSS 中的盒子模型包括 IE 盒子模型和标 准的 W3C 盒子模型。 box-sizing(有 3 个值哦)：border-box,padding-box,content-box. 标准盒子模型：
+
+![image-20220323215733110](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/image-20220323215733110.png)
+
+![image-20220323215740198](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/image-20220323215740198.png)
+
+#### 画一条 0.5px 的线
+
+采用 meta viewport 的方式
+
+\<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+采用 border-image 的方式  边框绘制的方式
+
+采用 transform: scale()的方 缩放的方式
+
+#### link 标签和 import 标签的区
+
+link 属于 html 标签，而@import 是 css 提供的
+
+页面被加载时，link 会同时被加载，而@import 引用的 css 会等到页面加载结束后加载。
+
+link 是 html 标签，因此没有兼容性，而@import 只有 IE5 以上才能识别。
+
+link 方式样式的权重高于@import 的
