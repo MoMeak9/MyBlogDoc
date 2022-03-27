@@ -8,6 +8,29 @@ category:
 
 # 快手面试题总结
 
+
+```js
+import axios from 'axios'
+
+const server = axios.create({})
+
+export default async function (url, data) {
+    return new Promise((resolve, reject) => {
+        const timer = setTimeout(() => {
+            reject('Time out')
+        }, 10000)
+        server.request({
+            method: 'get',
+            url,
+            data
+        }).then((res) => {
+            clearInterval(timer)
+            resolve(res)
+        })
+    })
+}
+```
+
 ## CSS
 
 **BFC**
