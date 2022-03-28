@@ -1,14 +1,18 @@
-console.log('script start');
-setTimeout(function() {
-    console.log('setTimeout');
-}, 0);
-new Promise((resolve) => {
-    console.log('Promise')
-    resolve()
-}).then(function() {
-    console.log('promise1');
-}).then(function() {
-    console.log('promise2');
-});
-console.log('script end');
-// script start => Promise => script end => promise1 => promise2 => setTimeout
+/**
+ * @param {number} x
+ * @return {number}
+ */
+var reverse = function (x) {
+    const arr = x.toString().split('');
+    let flag = arr[0]==='-'
+    if (flag) {
+        arr.shift();
+    }
+    const ans = Number(arr.reverse().join(''))
+    if (ans > 2 ** 31 - 1 || ans < -(2 ** 31)) {
+        return 0
+    }
+    return flag ? -ans : ans
+};
+
+console.log(reverse(-123450))
