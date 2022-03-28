@@ -142,3 +142,12 @@ yarn 也是一个包管理器，为了解决 npm 的一些缺点。yarn 依赖 n
 - 当每个阶段完成后，如果存在 `nextTick` 队列，**就会清空队列中的所有回调函数，并且优先于其他 `microtask` 执行。**
 
 **:star:一起说说Vue的API命名`nextTick`**
+
+**Vue 的 NextTicket**
+
+也就是说我们在设置`this.msg = 'some thing'`的时候，Vue并没有马上去更新DOM数据，而是将这个操作放进一个队列中；如果我们重复执行的话，队列还会进行去重操作；等待**同一事件循环中**的所有数据变化完成之后，会将队列中的事件拿出来处理。
+
+这样做主要是为了提升性能，因为如果在主线程中更新DOM，循环100次就要更新100次DOM；但是如果等事件循环完成之后更新DOM，只需要更新1次。还不了解事件循环的童鞋，可以看我的另一篇文章[从一道面试题来理解JS事件循环](https://link.juejin.cn?target=http%3A%2F%2Fxieyufei.com%2F2019%2F12%2F30%2FQuiz-Eventloop.html)
+
+为了在数据更新操作之后操作DOM，我们可以在数据变化之后立即使用`Vue.nextTick(callback)`；这样回调函数会在DOM更新完成后被调用，就可以拿到最新的DOM元素了。
+

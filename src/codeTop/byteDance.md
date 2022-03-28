@@ -767,14 +767,6 @@ var maxDepth = function (root) {
 
 ```js
 /**
- * Definition for a binary tree node.
- * function TreeNode(val, left, right) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.left = (left===undefined ? null : left)
- *     this.right = (right===undefined ? null : right)
- * }
- */
-/**
  * @param {TreeNode} root
  * @param {number} targetSum
  * @return {number[][]}
@@ -974,6 +966,120 @@ var longestCommonPrefix = function(strs) {
             return ans;
     }
     return ans;
+};
+```
+
+#### [468. 验证IP地址](https://leetcode-cn.com/problems/validate-ip-address/)
+
+```js
+var validIPAddress = function(IP) {
+    const arr4 = IP.split(".");
+    const arr6 = IP.split(":");
+    if (arr4.length === 4) {
+        if (arr4.every(part => (part.match(/^0$|^([1-9]\d{0,2})$/) && part < 256) )) {
+            return "IPv4";
+        }
+    } else if (arr6.length === 8) {
+        if (arr6.every(part => part.match(/^[0-9a-fA-F]{1,4}$/))) {
+            return "IPv6";
+        }
+    }
+    return "Neither";
+};
+```
+
+#### [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+
+> 查找分割点（子树的根节点）
+
+```js
+var buildTree = function(preorder, inorder) {
+    if(!preorder.length)
+        return null;
+    let root = new TreeNode(preorder[0]);
+    let mid = inorder.findIndex((number) => number === root.val);// 分割点的关键
+    root.left = buildTree(preorder.slice(1, mid + 1), inorder.slice(0, mid));
+    root.right = buildTree(preorder.slice(mid + 1, preorder.length), inorder.slice(mid + 1, inorder.length));
+    return root;
+};
+```
+
+
+
+> 中后序
+
+```js
+var buildTree = function(inorder, postorder) {
+    if (!postorder.length) return null
+    
+    let root = new TreeNode(postorder[postorder.length - 1])
+    
+    let index = inorder.findIndex(number => number === root.val)// 分割点的关键
+    
+    root.left = buildTree(inorder.slice(0, index), postorder.slice(0, index))
+    root.right = buildTree(inorder.slice(index + 1, inorder.length), postorder.slice(index, postorder.length - 1))
+    
+    return root
+};
+```
+
+#### [199. 二叉树的右视图](https://leetcode-cn.com/problems/binary-tree-right-side-view/)
+
+> 看图我们发现, 右视图的节点都是**每一层的最后一个节点**, 所以采用**层序遍历**最为方便
+
+```js
+var rightSideView = function(root) {
+    //二叉树右视图 只需要把每一层最后一个节点存储到res数组
+    let res=[],queue=[];
+    queue.push(root);
+    while(queue.length&&root!==null){
+        // 记录当前层级节点个数
+        let length=queue.length;
+        while(length--){
+            let node=queue.shift();
+            //length长度为0的时候表明到了层级最后一个节点
+            if(!length){
+                res.push(node.val);
+            }
+            node.left&&queue.push(node.left); // 同时成立，执行并返回第二个
+            node.right&&queue.push(node.right);
+        }
+    }
+    return res;
+};
+```
+
+#### [394. 字符串解码](https://leetcode-cn.com/problems/decode-string/)
+
+> 有效括号 pluse 栈操作
+
+双栈操作
+
+![image-20220328161937446](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/image-20220328161937446.png)
+
+```js
+const decodeString = (s) => {
+    let numStack = [];        // 存倍数的栈
+    let strStack = [];        // 存 待拼接的str 的栈
+    let num = 0;              // 倍数的“搬运工”
+    let result = '';          // 字符串的“搬运工”
+    
+    for (const char of s) {   // 逐字符扫描
+        if (!isNaN(char)) {   // 遇到数字
+            num = num * 10 + Number(char); // 算出倍数
+        } else if (char == '[') {  // 遇到 [
+            strStack.push(result); // result串入栈
+            result = '';           // 入栈后清零
+            numStack.push(num);    // 倍数num进入栈等待（是算好的，比如32）
+            num = 0;               // 入栈后清零
+        } else if (char == ']') {  // 遇到 ]，两个栈的栈顶出栈
+            let repeatTimes = numStack.pop(); // 获取拷贝次数
+            result = strStack.pop() + result.repeat(repeatTimes); // 构建子串
+        } else {                   
+            result += char;        // 遇到字母，追加给result串
+        }
+    }
+    return result;
 };
 ```
 

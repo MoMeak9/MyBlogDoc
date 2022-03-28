@@ -9,7 +9,7 @@ category:
 
 # 前端面试十万字书籍总结
 
-
+> [在线预览](https://my-doc-1259409954.cos.ap-guangzhou.myqcloud.com/pdf/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E5%8D%81%E4%B8%87%E5%AD%97%E8%B5%84%E6%96%99.pdf?ci-process=doc-preview&dstType=html)
 
 ## JavaScript专题
 
@@ -319,3 +319,213 @@ console.log('1', a) // -> '1' 1
 
 Proxy 是 ES6 中新增的功能，可以⽤来⾃定义对象中的操作
 
+可以很⽅便的使⽤ Proxy 来实现⼀个数据绑定和监听
+
+### 为什么 0.1 + 0.2 != 0.3
+
+因为 JS 采⽤ IEEE 754 双精度版本（64位），并且只要采⽤ IEEE 754 的语⾔都有该问题。 我们都知道计算机表示⼗进制是采⽤⼆进制表示的，所以 0.1 在⼆进制表示为
+
+`0.1 = 2^-4 * 1.10011(0011)` 符号位 + 2 次方位 + 小数精度位
+
+0.1 和 0.2 都是⽆限循环的⼆进制
+
+所以 2^-4 * 1.10011...001 进位后就变成了 2^-4 * 1.10011(0011 * 12次)010 。那么 把这两个⼆进制加起来会得出 2^-2 * 1.0011(0011 * 11次)0100 , 这个值算成⼗进制就是 0.30000000000000004
+
+下⾯说⼀下原⽣解决办法，如下代码所示
+
+```js
+parseFloat((0.1 + 0.2).toFixed(10))
+```
+
+### 正则表达式
+
+<img src="https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/image-20220328184718088.png" alt="image-20220328184718088" style="zoom:50%;" /><img src="https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/image-20220328184727564.png" alt="image-20220328184727564" style="zoom:50%;" />
+
+### V8 下的垃圾回收机制
+
+V8 实现了准确式 GC，GC 算法采⽤了分代式垃圾回收机制。因此，V8 将内存（堆）分为新 ⽣代和⽼⽣代两部分。
+
+## ⽹络章节
+
+### 事件机制
+
+**事件触发三阶段**
+
+事件触发有三个阶段
+
+- window 往事件触发处传播，遇到注册的捕获事件会触发
+- 传播到事件触发处时触发注册的事件
+- 从事件触发处往 window 传播，遇到注册的冒泡事件会触发
+
+事件触发⼀般来说会按照上⾯的顺序进⾏，但是也有特例，如果给⼀个⽬标节点同时注册冒
+泡和捕获事件，事件触发会按照注册的顺序执⾏。
+
+```js
+// 以下会先打印冒泡然后是捕获
+node.addEventListener('click',(event) =>{
+    console.log('冒泡')
+},false);
+node.addEventListener('click',(event) =>{
+    console.log('捕获 ')
+},true)
+```
+
+### 注册事件
+
+通常我们使⽤ addEventListener 注册事件，该函数的第三个参数可以是布尔值，也可以是对象。对于布尔值 useCapture 参数来说，该参数默认值为 false 。 useCapture 决定了注册的事件是捕获事件还是冒泡事件。对于对象参数来说，可以使⽤以下⼏个属性：
+
+- capture ，布尔值，和 useCapture 作⽤⼀样
+- once ，布尔值，值为 true 表示该回调只会调⽤⼀次，调⽤后会移除监听
+- passive ，布尔值，表示永远不会调⽤ preventDefault
+
+⼀般来说，我们只希望事件只触发在⽬标上，这时候可以使⽤ stopPropagation 来阻⽌事 件的进⼀步传播。通常**我们认为 stopPropagation 是⽤来阻⽌事件冒泡的，其实该函数也可以阻⽌捕获事件。**stopImmediatePropagation 同样也能实现阻⽌事件，但是还能阻⽌该 事件⽬标执⾏别的注册事件。
+
+```js
+node.addEventListener('click',(event) =>{
+    event.stopImmediatePropagation()
+    console.log('冒泡')
+},false);
+// 点击 node 只会执⾏上⾯的函数，该函数不会执⾏
+node.addEventListener('click',(event) => {
+    console.log('捕获 ')
+},true)
+```
+
+### 事件代理
+
+如果⼀个节点中的⼦节点是动态⽣成的，那么⼦节点需要注册事件的话应该注册在⽗节点上
+
+```html
+<ul id="ul">
+ <li>1</li>
+ <li>2</li>
+ <li>3</li>
+ <li>4</li>
+ <li>5</li>
+</ul>
+<script>
+ let ul = document.querySelector('#ul')
+ ul.addEventListener('click', (event) => {
+     console.log(event.target); 
+     // target是关键
+     //Event对象提供了一个属性叫target，可以返回事件的目标节点，我们成为事件源，也就是说，target就可以表示为当前的事件操作的dom
+ })
+</script>
+```
+
+事件代理的⽅式相对于直接给⽬标注册事件来说，有以下优点
+
+- 节省内存
+- 不需要给⼦节点注销事件
+
+### 跨域
+
+因为浏览器出于安全考虑，有同源策略。也就是说，如果协议、域名或者端⼝有⼀个不同就 是跨域，Ajax 请求会失败。 
+
+我们可以通过以下⼏种常⽤⽅法解决跨域的问题：
+
+- JSONP
+- CORS
+- document.domain
+- postMessage
+
+### Event loop :star: 事件循环
+
+众所周知 JS 是⻔⾮阻塞单线程语⾔，因为在最初 JS 就是为了和浏览器交互⽽诞⽣的。如果 JS 是⻔多线程的语⾔话，我们在多个线程中处理 DOM 就可能会发⽣问题（⼀个线程中新加 节点，另⼀个线程中删除节点），当然可以引⼊读写锁解决这个问题。
+
+JS 在执⾏的过程中会产⽣执⾏环境，这些执⾏环境会被顺序的加⼊到执⾏栈中。如果遇到异 步的代码，会被挂起并加⼊到 Task队列（任务队列，包括微任务，宏任务）中。⼀旦执⾏栈为空，Event Loop 就会从 Task 队列中拿出需要执⾏的代码并放⼊执⾏栈中执⾏，所以本质上来说 JS 中的异步 还是同步⾏为
+
+```js
+console.log('script start');
+setTimeout(function() {
+    console.log('setTimeout');
+}, 0);
+console.log('script end');
+```
+
+以上代码虽然 setTimeout 延时为 0，其实还是异步。这是因为 HTML5 标准规定这个函数 第⼆个参数不得⼩于 4 毫秒，不⾜会⾃动增加。所以 setTimeout 还是会在 script end 之后打印。
+
+不同的任务源会被分配到不同的 Task 队列中，任务源可以分为 微任务（microtask） 和 宏任务（macrotask）。在 ES6 规范中，microtask 称为 jobs ，macrotask 称为 task 。
+
+```js
+console.log('script start');
+setTimeout(function() {
+    console.log('setTimeout');
+}, 0);
+new Promise((resolve) => {
+    console.log('Promise') // 这个在主线哦
+    resolve()
+}).then(function() {
+    console.log('promise1');
+}).then(function() {
+    console.log('promise2');
+});
+console.log('script end');
+// script start => Promise => script end => promise1 => promise2 => setTimeout
+```
+
+以上代码虽然 setTimeout 写在 Promise 之前，但是因为 Promise 属于微任务⽽ setTimeout 属于宏任务，所以会有以上的打印。
+
+微任务包括 `process.nextTick` ， `promise.then` ， `Object.observe` ， `MutationObserver`
+
+宏任务包括 `script` ， `setTimeout` ， `setInterval` ， `setImmediate` ， `I/O` ， `UI rendering`
+
+很多⼈有个误区，认为微任务快于宏任务，其实是错误的。**<u>因为宏任务中包括了 script ， 浏览器会先执⾏⼀个宏任务，接下来有异步代码的话就先执⾏微任</u>务**。
+
+1. 执⾏同步代码，这属于宏任务
+2. 执⾏栈为空，查询是否有微任务需要执⾏
+3. 执⾏所有微任务
+4. 必要的话渲染 UI
+5. 然后开始下⼀轮 Event loop，执⾏宏任务中的异步代码
+
+通过上述的 Event loop 顺序可知，如果宏任务中的异步代码有⼤量的计算并且需要操作 DOM 的话，为了更快的 界⾯响应，我们可以把操作 DOM 放⼊微任务中。
+
+### Node 中的 Event loop
+
+Node 中的 Event loop 和浏览器中的不相同。
+
+Node 的 Event loop 分为6个阶段，它们会按照顺序反复运⾏
+
+1. timer
+2. I/O
+3. idle, prepare
+4. poll
+5. check
+6. close callbacks
+
+### 存储
+
+cookie，localStorage，sessionStorage，indexedDB（Web数据库）
+
+<img src="https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/image-20220328193531427.png" alt="image-20220328193531427" style="zoom: 80%;" />
+
+从上表可以看到， cookie 已经不建议⽤于存储。如果没有⼤量数据存储需求的话，可以使⽤ localStorage 和 sessionStorage 。对于不怎么改变的数据尽量使⽤ localStorage存储，否则可以⽤ sessionStorage 存储。
+
+对于 cookie ，我们还需要注意安全性。
+
+![image-20220328193611835](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/image-20220328193611835.png)
+
+### 渲染机制
+
+浏览器的渲染机制⼀般分为以下⼏个步骤
+1. 处理 HTML 并构建 DOM 树。
+2. 处理 CSS 构建 CSSOM 树。
+3. 将 DOM 与 CSSOM 合并成⼀个渲染树。
+4. 根据渲染树来布局，计算每个节点的位置。
+5. 调⽤ GPU 绘制，合成图层，显示在屏幕上。
+
+**在构建 CSSOM 树时，会阻塞渲染**，直⾄ CSSOM 树构建完成。并且构建 CSSOM 树是⼀个 ⼗分消耗性能的过程，所以应该尽量保证层级扁平，减少过度层叠，越是具体的 CSS 选择 器，执⾏速度越慢。
+
+当 HTML **解析到 script 标签时，会暂停构建 DOM**，完成后才会从暂停的地⽅重新开始。也 就是说，**如果你想⾸屏渲染的越快，就越不应该在⾸屏就加载 JS ⽂件**。**并且 CSS 也会影响 JS 的执⾏，<u>只有当解析完样式表才会执⾏ JS</u>，所以也可以认为这种情况下，CSS 也会暂停构建 DOM。**
+
+合理顺序
+
+- CSS
+- HTML
+- JS
+
+### Load 和 DOMContentLoaded 区别
+
+Load 事件触发代表⻚⾯中的 DOM，CSS，JS，图⽚已经全部加载完毕。
+
+DOMContentLoaded 事件触发代表初始的 **HTML 被完全加载和解析**，不需要等待 CSS， JS，图⽚加载。
