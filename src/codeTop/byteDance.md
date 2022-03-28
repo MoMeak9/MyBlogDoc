@@ -878,3 +878,102 @@ CQueue.prototype.deleteHead = function() {
  */
 ```
 
+#### [160. 相交链表](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/)
+
+> 一边一直访问，并存入set
+
+```js
+var getIntersectionNode = function(headA, headB) {
+    const visited = new Set();
+    let temp = headA;
+    while (temp !== null) {
+        visited.add(temp);
+        temp = temp.next;
+    }
+    temp = headB;
+    while (temp !== null) {
+        if (visited.has(temp)) {
+            return temp;
+        }
+        temp = temp.next;
+    }
+    return null;
+};
+```
+
+#### [62. 不同路径](https://leetcode-cn.com/problems/unique-paths/)
+
+> 寻路问题
+>
+> 动态规划 *f*(*i*,*j*)=*f*(*i*−1,*j*)+*f*(*i*,*j*−1)
+
+```js
+/**
+ * @param {number} m
+ * @param {number} n
+ * @return {number}
+ */
+var uniquePaths = function(m, n) {
+    const f = new Array(m).fill(0).map(() => new Array(n).fill(0));
+    for (let i = 0; i < m; i++) {
+        f[i][0] = 1; // 边界为1
+    }
+    for (let j = 0; j < n; j++) {
+        f[0][j] = 1; // 边界为1
+    }
+    for (let i = 1; i < m; i++) {
+        for (let j = 1; j < n; j++) {
+            f[i][j] = f[i - 1][j] + f[i][j - 1];
+        }
+    }
+    return f[m - 1][n - 1];
+};
+```
+
+#### [101. 对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/)
+
+> 递归对比左右子树，终止为左右子树均null
+
+```js
+const isSymmetric = function(root) {
+    if(!root) return true;
+    const isMirror = (l, r) => {
+        if(!l && !r) return true
+        return !!(l && r && l.val === r.val &&
+            isMirror(l.left, r.right) &&
+            isMirror(l.right, r.left));
+    }
+    
+    return isMirror(root.left, root.right);
+};
+```
+
+#### [14. 最长公共前缀](https://leetcode-cn.com/problems/longest-common-prefix/)
+
+> 取第一个字符串为默认ans（本就最长不超过此），后遍历
+
+<img src="https://my-doc-1259409954.file.myqcloud.com/MyImages/image-20220328124018508.png" alt="image-20220328124018508" style="zoom: 50%;" />
+
+```js
+/**
+ * @param {string[]} strs
+ * @return {string}
+ */
+var longestCommonPrefix = function(strs) {
+    if(strs.length == 0) 
+        return "";
+    let ans = strs[0];
+    for(let i =1;i<strs.length;i++) {
+        let j=0;
+        for(;j<ans.length && j < strs[i].length;j++) {
+            if(ans[j] != strs[i][j])
+                break;
+        }
+        ans = ans.substr(0, j);
+        if(ans === "")
+            return ans;
+    }
+    return ans;
+};
+```
+
