@@ -1,4 +1,5 @@
 import { defineSidebarConfig } from "vuepress-theme-hope";
 
-export default defineSidebarConfig([
-]);
+export default defineSidebarConfig({
+    "/codeTop/": "structure",
+});

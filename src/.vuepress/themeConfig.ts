@@ -10,6 +10,10 @@ export default defineThemeConfig({
         url: "https://yihuiBlog.top",
     },
 
+    sidebarDepth: 4,
+
+    displayAllHeaders: true,
+
     iconPrefix: "iconfont icon-",
 
     logo: "https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/ココアシガレット_91951407.png.png",
