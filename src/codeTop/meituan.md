@@ -6,153 +6,143 @@ category:
 - 美团
 ---
 
-# 牛客网美团校招笔试
+# 美团CodeTop
 
-## 糕点
 
-小团的蛋糕铺长期霸占着美团APP中“蛋糕奶茶”栏目的首位，因此总会吸引各路食客前来探店。
-
-小团一天最多可以烤n个蛋糕，每个蛋糕有一个正整数的重量。
-
-早上，糕点铺已经做好了m个蛋糕。
-
-现在，有一个顾客要来买两个蛋糕，他希望买这一天糕点铺烤好的最重的和最轻的蛋糕，并且希望这两个蛋糕的重量恰好为a和b。剩余的n-m个蛋糕可以现烤，请问小团能否满足他的要求？
-
-进阶：时间复杂度O(m)O(m) ,空间复杂度O(m)O(m) 
-
-##### **输入描述:**
-
-```
-输入包含多组数据，每组数据两行。每组数据的第一行包含4个整数，n,m,a,b，空格隔开。这里不保证a和b的大小关系。接下来一行m个数，空格隔开，代表烤好的蛋糕重量
-```
-
-##### **输出描述:**
-
-```
-对于每一组数据，如果可以办到顾客的要求，输出YES，否则输出NO
-```
-
-链接：https://www.nowcoder.com/questionTerminal/10661f4d02564ba686bcba4645e0a029
-来源：牛客网
-
-示例1
-
-输入
-
-```
-4 2 2 4
-3 3
-4 2 2 4
-1 1
-4 2 2 4
-5 5
-4 2 4 2
-2 4
-2 2 2 4
-3 3
-3 2 2 4
-3 3
-3 2 2 4
-3 3
-```
-
-输出
-
-```
-YES
-NO
-NO
-YES
-NO
-NO
-NO
-```
-
-> 思路：检查已有烘培蛋糕是否满足，然后计算需要重新烘培的数量，然后对比是否足够。注意，如果a，b有比其更小的蛋糕，则直接驳回
 
 ```js
-// 参考了别人代码，修改了一下，但是只有80%，希望指教一下
-var start = readline();
-while (start) {
-    var [n, m, a, b] = start.split(" ");
-    var dones = readline().split(" ");
-    dones = dones.sort((x, y) => x - y);
-    var left = n - m;
-    var muti = 0;
-    for (var i = 0; i < dones.length; i++) {
-        if (dones[i] == a) {
-            muti++;
-        }
-        if (dones[i] == b) {
-            muti++;
-        }
-    }
-    if (left == 0) {
-        if (dones.includes(a) && dones.includes(b)) {
-            print("YES");
-        } else {
-            print("NO");
-        }
-    }
-    if (left == 1) {
-        if (muti > 0) {
-            print("YES");
-        } else {
-            print("NO");
-        }
-    }
-    if (left >= 2) {
-        if (muti > 0) {
-            print("YES");
-        } else {
-            if (left > dones.length) {
-                print("YES");
-            } else if (a < dones[0] && b > dones[dones.length - 1]) {
-                print("YES");
-            } else {
-                print("NO");
+// 5. 动态规划：从起始点到终点
+var minPathSum = function(grid) {
+    const m = grid.length, n = grid[0].length
+
+    // 状态定义：dp[i][j] 表示从 [0,0] 到 [i,j] 的最小路径和
+    const dp = new Array(m).fill(0).map(() => new Array(n).fill(0))
+
+    // 状态初始化
+    dp[0][0] = grid[0][0]
+
+    // 状态转移
+    for (let i = 0; i < m ; i++) {
+        for (let j = 0; j < n ; j++) {
+            if (i == 0 && j != 0) {
+                dp[i][j] = grid[i][j] + dp[i][j - 1]
+            } else if (i != 0 && j == 0) {
+                dp[i][j] = grid[i][j] + dp[i - 1][j]
+            } else if (i != 0 && j != 0) {
+                dp[i][j] = grid[i][j] + Math.min(dp[i - 1][j], dp[i][j - 1])
             }
         }
     }
-    start = readline();
+
+    // 返回结果
+    return dp[m - 1][n - 1]
 }
 ```
 
+#### [718. 最长重复子数组](https://leetcode-cn.com/problems/maximum-length-of-repeated-subarray/)
 
+> 暴力
 
-## 淘汰分数
-
-某比赛已经进入了淘汰赛阶段,已知共有n名选手参与了此阶段比赛，他们的得分分别是a_1,a_2….a_n,小美作为比赛的裁判希望设定一个分数线m，使得所有分数大于m的选手晋级，其他人淘汰。  
-
-但是为了保护粉丝脆弱的心脏，小美希望晋级和淘汰的人数均在[x,y]之间。  
-
-显然这个m有可能是不存在的，也有可能存在多个m，如果不存在，请你输出-1，如果存在多个，请你输出符合条件的最低的分数线。 
-
-进阶：时间复杂度O(nlogn) O(nlogn)\ O(nlogn) ，空间复杂度O(n) O(n)\ O(n) 
-
-##### **输入描述:**
-
-```
-输入第一行仅包含三个正整数n,x,y，分别表示参赛的人数和晋级淘汰人数区间。(1<=n<=50000,1<=x,y<=n)输入第二行包含n个整数，中间用空格隔开，表示从1号选手到n号选手的成绩。(1<=|a_i|<=1000)
-```
-
-##### **输出描述:**
-
-```
-输出仅包含一个整数，如果不存在这样的m，则输出-1，否则输出符合条件的最小的值。
-```
-
-示例1
-
-## 输入
-
-```
-6 2 3
-1 2 3 4 5 6
+```js
+const findLength = (A, B) => {
+  const m = A.length;
+  const n = B.length;
+  let res = 0;
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (A[i] == B[j]) { // 遇到相同项
+        let subLen = 1;   // 公共子序列长度至少为1
+        while (i + subLen < m && j + subLen < n && A[i + subLen] == B[j + subLen]) { //新的一项也相同
+          subLen++; // 公共子序列长度每次增加 1，考察新的一项
+        }
+        res = Math.max(subLen, res);
+      }
+    }
+  }
+  return res;
+};
 ```
 
-## 输出
+![image.png](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/9b80364c7936ad0fdca0e9405025b2a207a10322e16872a6cb68eb163dee25ee-image.png)
 
+> DP
+
+```js
+/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number}
+ */
+const findLength = (nums1, nums2) => {
+    // nums1、nums2数组的长度
+    const [m, n] = [nums1.length, nums2.length];
+    // dp数组初始化，都初始化为0 ！！
+    const dp = new Array(m + 1).fill(0).map(x => new Array(n + 1).fill(0));
+    // 初始化最大长度为0
+    let res = 0;
+    for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+            // 遇到nums1[i - 1] === nums2[j - 1]，则更新dp数组
+            if (nums1[i - 1] === nums2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            }
+            // 更新res
+            res = dp[i][j] > res ? dp[i][j] : res;
+        }
+    }
+    // 遍历完成，返回res
+    return res;
+};
 ```
-3
+
+#### [24. 两两交换链表中的节点](https://leetcode-cn.com/problems/swap-nodes-in-pairs/)
+
+![image-20220330214024553](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/image-20220330214024553.png)
+
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var swapPairs = function(head) {
+    if (head === null|| head.next === null) {
+        return head; // 终止条件
+    }
+    const newHead = head.next;
+    head.next = swapPairs(newHead.next); // 子链来自后递归
+    newHead.next = head;
+    return newHead;
+};
 ```
+
+#### [48. 旋转图像](https://leetcode-cn.com/problems/rotate-image/)
+
+> 旋转二位矩阵
+
+> 创建新的矩阵
+
+```js
+var rotate = function(matrix) {
+    const n = matrix.length;
+    const matrix_new = new Array(n).fill(0).map(() => new Array(n).fill(0));
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n; j++) {
+            matrix_new[j][n - i - 1] = matrix[i][j]; // 行变列，列数值变成最后一个
+        }
+    }
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n; j++) {
+            matrix[i][j] = matrix_new[i][j];
+        }
+    }
+};
+```
+
+https://codetop.cc/home

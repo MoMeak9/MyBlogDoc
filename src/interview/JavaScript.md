@@ -68,7 +68,7 @@ const throttle = function (func, delay) {
     let timer = null;
     return function (...args) {
         if (!timer) {
-            setTimeout(() => {
+            timer = setTimeout(() => {
                 func.apply(this, args);
                 this.timer = null;
             }, delay)
@@ -417,7 +417,7 @@ console.log(tree2list(data))
 复制代码
 ```
 
-## 10. sleep:star:
+## 10. sleep延迟执行:star:
 
 > 实现一个函数，n秒后执行函数func
 
@@ -525,24 +525,24 @@ console.log(Date.now() - t1) // 接近4393
 
 ```javascript
 const fib = (n) => {
-  // 缓存过直接返回
-  if (typeof fib[ n ] !== 'undefined') {
-    return fib[ n ]
-  }
+    // 缓存过直接返回
+    if (fib[n]) {
+        return fib[n]
+    }
 
-  if (n === 0) {
-    return 0
-  }
+    if (n === 0) {
+        return 0
+    }
 
-  if (n === 1 || n === 2) {
-    return 1
-  }
+    if (n === 1 || n === 2) {
+        return 1
+    }
 
-  const res = fib(n -2) + fib(n - 1)
-  // 缓存计算的结果
-  fib[ n ] = res
+    const res = fib(n - 2) + fib(n - 1)
+    // 缓存计算的结果
+    fib[n] = res
 
-  return res
+    return res
 }
 
 console.log(fib(1)) // 1
@@ -638,7 +638,6 @@ console.log(instanceOf1(p1, Fn)) // true
 console.log(instanceOf1({}, Fn)) // false
 console.log(instanceOf1(null, Fn)) // false
 console.log(instanceOf1(1, Fn)) // false
-复制代码
 ```
 
 ### 遍历实现(方式2)
@@ -1108,3 +1107,176 @@ pro
 ```
 
 ## 4. 实现多维数组扁平化的3种方式 :star:
+
+```js
+
+/**
+ * 
+ * @param {*} array 深层嵌套的数据
+ * @returns array 新数组
+ */
+const flat1 = (array) => {
+  return array.reduce((result, it) => {
+    return result.concat(Array.isArray(it) ? flat1(it) : it)
+  }, [])
+}
+
+// 测试
+let arr1 = [
+  1,
+  [ 2, 3, 4 ],
+  [ 5, [ 6, [ 7, [ 8 ] ] ] ]
+]
+console.log(flat1(arr1)) // [1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+```js
+/**
+ * 
+ * @param {*} array 深层嵌套的数据
+ * @returns array 新数组
+ */
+ 
+const flat2 = (array) => {
+  const result = []
+  // 展开一层
+  const stack = [ ...array ] // 利用stack存储子array
+  
+  while (stack.length !== 0) {
+    // 取出最后一个元素
+    const val = stack.pop()
+    
+    if (Array.isArray(val)) {
+     // 遇到是数组的情况，往stack后面推入
+      stack.push(...val)
+    } else {
+      // 往数组前面推入
+      result.unshift(val)
+    }
+  }
+
+  return result
+}
+// 测试
+let arr2 = [
+  1,
+  [ 2, 3, 4 ],
+  [ 5, [ 6, [ 7, [ 8 ] ] ] ]
+]
+
+console.log(flat2(arr2)) // [1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+```js
+
+/**
+ * 
+ * @param {*} array 深层嵌套的数据
+ * @returns 新数组
+ */
+const flat3 = (array) => {
+  return array.flat(Infinity)
+}
+// 测试
+let arr3 = [
+  1,
+  [ 2, 3, 4 ],
+  [ 5, [ 6, [ 7, [ 8 ] ] ] ]
+]
+
+console.log(flat3(arr3)) // [1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+## 12. 实现trim方法的两种方式
+
+```js
+const trim = (str) => { 
+  return str.replace(/^\s*|\s*$/g, '')
+}
+```
+
+## 13. 实现Promise.all
+
+```js
+Promise.myAll = (promises) => {
+  // 符合条件3，返回一个Promise
+  return new Promise((rs, rj) => {
+    let count = 0
+    let result = []
+    const len = promises.length
+
+    promises.forEach((p, i) => {
+      // 符合条件1，将数组里的项通过Promise.resolve进行包装
+      Promise.resolve(p).then((res) => {
+        count += 1
+        result[ i ] = res
+        // 符合条件2 等待所有都完成
+        if (count === len) {
+          rs(result)
+        }
+        // 符合条件2  只要一个失败就都失败
+      }).catch(rj)
+    })
+  })
+}
+
+let p1 = Promise.resolve(1)
+let p2 = 2
+let p3 = new Promise((resolve, reject) => {
+  setTimeout(resolve, 100, 3)
+})
+
+let p4 = Promise.reject('出错啦')
+
+Promise.myAll([p1, p2, p3]).then((res) => {
+  console.log(res); // [ 1, 2, 3 ]
+});
+
+
+Promise.myAll([ p1, p2, 3 ]).then((res) => {
+  console.log(res) // [ 1, 2, 3 ]
+}).catch((err) => {
+  console.log('err', err)
+})
+
+
+Promise.myAll([ p1, p2, p4 ]).then((res) => {
+  console.log(res)
+}).catch((err) => {
+  console.log('err', err) // err 出错啦
+})
+```
+
+## 14. 实现Promise.race
+
+```js
+Promise.myRace = (promises) => {
+  // 返回一个新的Promise
+  return new Promise((rs, rj) => {
+    promises.forEach((p) => {
+      // 包装一下promises中的项，防止非Promise .then出错
+      // 只要有任意一个完成了或者拒绝了，race也就结束了
+      Promise.resolve(p).then(rs).catch(rj)
+    })
+  })
+}
+
+const promise1 = new Promise((resolve, reject) => {
+  setTimeout(resolve, 500, 1);
+});
+
+const promise2 = new Promise((resolve, reject) => {
+  setTimeout(resolve, 100, 2);
+});
+
+Promise.myRace([promise1, promise2]).then((value) => {
+  // 因为promise2更快所以打印出2
+  console.log(value) // 2
+});
+
+Promise.myRace([promise1, promise2, 3]).then((value) => {
+  // 3比其他两个更快
+  console.log(value) // 3
+});
+```
+

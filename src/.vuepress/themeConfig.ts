@@ -35,7 +35,7 @@ export default defineThemeConfig({
     pageInfo: ["Author", "Original", "Date", "Category", "Tag", "ReadingTime"],
 
     blog: {
-        description: "前端技术热爱者",
+        description: "前端技术狂热者",
         intro: "/intro.html",
         medias: {
             // Baidu: "https://example.com",

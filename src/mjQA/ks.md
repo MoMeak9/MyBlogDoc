@@ -20,7 +20,9 @@ position 为 fixed 和 absolute 的元素
 display 为 inline-block、table-cell、table-caption，flex，inline-flex 的元素
 overflow 不为 visible 的元
 
-## JS
+**优先级**
+
+![image-20220331121644231](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/image-20220331121644231.png)
 
 **判定以下输出**
 
@@ -122,7 +124,9 @@ CA 也拥有一个证书（内含公钥）和私钥。网上的公众用户通�
 
 如果一个用户想鉴别另一个证书的真伪，他就用 CA 的公钥对那个证书上的签字进行验证，一旦验证通过，该证书就被认为是有效的。
 
+用户向本地
 
+DNS 服务器发起请求属于递归请求，本地 DNS 服务器向各级域名服务器发起请求属于迭代请求。
 
 
 
@@ -131,3 +135,31 @@ CA 也拥有一个证书（内含公钥）和私钥。网上的公众用户通�
 **热更新实现原理**
 
 依赖express的本地socket服务
+
+
+
+### Vue
+
+Vue实现数据双向绑定主要利用的就是: **数据劫持**和**发布订阅模式**。
+所谓发布订阅模式就是，定义了对象间的一种**一对多的关系**，**让多个观察者对象同时监听某一个主题对象，当一个对象发生改变时，所有依赖于它的对象都将得到通知**。
+所谓数据劫持，就是**利用JavaScript的访问器属性**，即**Object.defineProperty()方法**，当对对象的属性进行赋值时，Object.defineProperty就可以**通过set方法劫持到数据的变化**，然后**通知发布者(主题对象)去通知所有观察者**，观察者收到通知后，就会对视图进行更新。
+
+可以使用 OPTIONS 方法对服务器发起请求，以检测服务器支持哪些 HTTP 方法：
+
+### TypeScript中interface和type
+
+1、声明方式不同
+
+2、类型别名（type）还可以用于其他类型，如基本类型（原始值）、联合类型、元组
+
+3、扩展时语法不同，且interface无法扩展联合类型的type
+
+4、interface可以定义多次，并将被视为单个接口(合并所有声明的成员)；type不可以
+
+5、interfac可以extends class，class也可以implements interface
+
+6、type支持计算属性，生成映射类型，interface不可以
+
+- type 能使用 in 关键字生成映射类型，但 interface 不行
+- 语法与索引签名的语法类型，内部使用了 for .. in
+
