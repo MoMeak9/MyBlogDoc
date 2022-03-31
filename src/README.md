@@ -2,7 +2,7 @@
 home: true
 layout: Blog
 icon: home
-title: 博客主页
+title: Home
 heroImage: 
 bgImage: https://my-doc-1259409954.file.myqcloud.com/MyImages/doc/202203212054591.jpeg
 heroText: 一方净土
