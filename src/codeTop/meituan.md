@@ -145,4 +145,105 @@ var rotate = function(matrix) {
 };
 ```
 
-https://codetop.cc/home
+```js
+var rotate = function(matrix) {
+    const n = matrix.length;
+    for (let i = 0; i < Math.floor(n / 2); ++i) {
+        for (let j = 0; j < Math.floor((n + 1) / 2); ++j) {
+            const temp = matrix[i][j];
+            matrix[i][j] = matrix[n - j - 1][i];
+            matrix[n - j - 1][i] = matrix[n - i - 1][n - j - 1];
+            matrix[n - i - 1][n - j - 1] = matrix[j][n - i - 1];
+            matrix[j][n - i - 1] = temp;
+        }
+    }
+};
+```
+
+#### [69. x 的平方根 ](https://leetcode-cn.com/problems/sqrtx/)
+
+```js
+/**
+ * @param {number} x
+ * @return {number}
+ */
+var mySqrt = function(x) {
+    let r = x
+
+    while (r ** 2 > x) {
+        r = ~~((r + x / r) / 2)
+    }//取整
+
+    return r
+};
+```
+
+#### [剑指 Offer 10- II. 青蛙跳台阶问题](https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/)
+
+```js
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var numWays = function(n) {
+    let sum = 0;
+    let x = 1;
+    let y = 1;
+    for(let i =0;i < n;i++){
+        sum = (x + y);
+        x = y;
+        y = sum
+    } 
+    return x;
+};
+```
+
+#### [387. 字符串中的第一个唯一字符](https://leetcode-cn.com/problems/first-unique-character-in-a-string/)
+
+**使用哈希表存储索引**
+
+`Object.entries()`方法返回一个给定对象自身可枚举属性的键值对数组，其排列与使用 [for...in...] 循环遍历该对象时返回的顺序一致（区别在于 for-in 循环还会枚举原型链中的属性）。
+
+```js
+var firstUniqChar = function(s) {
+    const position = new Map();
+    const n = s.length;
+    for (let [i, ch] of Array.from(s).entries()) {
+        if (position.has(ch)) {
+            position.set(ch, -1);
+        } else {
+            position.set(ch, i);
+        }
+    }
+    let first = -1;
+    for (let pos of position.values()) {
+        if (pos !== -1 && pos > first) {
+            first = pos;
+        }
+    }
+    return first;
+};
+```
+
+**队列**
+
+```js
+var firstUniqChar = function(s) {
+    const position = new Map();
+    const q = [];
+    const n = s.length;
+    for (let [i, ch] of Array.from(s).entries()) {
+        if (!position.has(ch)) {
+            position.set(ch, i);
+            q.push([s[i], i]);
+        } else {
+            position.set(ch, -1);
+            while (q.length && position.get(q[0][0]) === -1) {
+                q.shift();
+            }
+        }
+    }
+    return q.length ? q[0][1] : -1;
+};
+```
+
