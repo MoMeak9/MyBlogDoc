@@ -1,3 +1,7 @@
+---
+comment: false
+editLink: false
+---
 # Hey, MoMeak9 here! 🎃
 
 <p align="center"> 

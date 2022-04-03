@@ -1,8 +1,6 @@
 ---
 date: 2022-03-31
 icon: page
-sticky: true
-star: true
 category:
 - 面试题
 - 前端

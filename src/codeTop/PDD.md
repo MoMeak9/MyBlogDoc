@@ -6,7 +6,7 @@ category:
 - PDD
 ---
 
-# PPD codeTop
+# 拼多多CodeTop
 
 #### [56. 合并区间](https://leetcode-cn.com/problems/merge-intervals/)
 
