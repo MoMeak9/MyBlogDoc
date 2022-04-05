@@ -539,8 +539,114 @@ CSS3 动画如 animation
 
 link 属于 html 标签，而@import 是 css 提供的
 
-页面被加载时，link 会同时被加载，而@import 引用的 css 会等到页面加载结束后加载。
+页面被加载时，link 会同时被加载，而**@import 引用的 css 会等到页面加载结束后加载。**
 
 link 是 html 标签，因此没有兼容性，而@import 只有 IE5 以上才能识别。
 
 link 方式样式的权重高于@import 的
+
+####  transition 和 animation 的区别
+
+Animation 和 transition 大部分属性是相同的，他们都是随时间改变元素的属性值，他们的主要区别是 transition  需要触发一个事件才能改变属性，让属性变化成为一个持续一段时间的过程，而不是立即生效的。而 animation 不需要触发任何事件的情况下才会随时间改变属性值，并且 transition 为 2 帧，从 from .... to，而 animation 可以一帧一帧的。
+
+####  关于 JS 动画和 css3 动画的差异性
+
+渲染线程分为 main thread 和 compositor thread（合成线程），如果 css 动画只改变 transform 和 opacity，这时整个 CSS 动画得以在 compositor trhead 完成（而 JS 动画则会在 main thread 执行，然后出发 compositor thread 进行下一步操作），**特别注意的是如果改变 transform 和 opacity 是不会 layout 或者 paint 的（回流和重绘的）**。
+
+区别：
+
+功能涵盖面，JS 比 CSS 大
+
+实现/重构难度不一，CSS3 比 JS 更加简单，性能跳优方向固定
+
+对帧速表现不好的低版本浏览器，css3 可以做到自然降级
+
+css 动画有天然事件支持
+
+css3 有兼容性问题
+
+#### 说一下块元素和行元素
+
+块元素：独占一行，并且有自动填满父元素，可以设置 margin 和 pading 以及高度和宽 度 
+
+行元素：不会独占一行，**width 和 height 会失效**，**并且在垂直方向的 padding 和 margin会失效**
+
+#### visibility=hidden, opacity=0，display:none
+
+opacity=0，该元素隐藏起来了，但不会改变页面布局，并且，如果该元素已经绑定一些 事件，如 click 事件，那么点击该区域，也能触发点击事件的 
+
+visibility=hidden，该元素 隐藏起来了，但不会改变页面布局，但是不会触发该元素已经绑定的事件 
+
+display=none， 把元素隐藏起来，并且会改变页面布局，可以理解成在页面中把该元素删除掉一样。
+
+####  双边距重叠问题（外边距折叠）
+
+多个相邻（兄弟或者父子关系）普通流的块元素垂直方向（同一个BFC） marigin 会重叠 折叠的结果为：
+
+两个相邻的外边距都是正数时，折叠结果是它们两者之间较大的值。
+
+两个相邻的外边距都是负数时，折叠结果是两者绝对值的较大值。
+
+两个外边距一正一负时，折叠结果是两者的相加的和。
+
+### JavaScript
+
+
+
+## 前端核心
+
+### 服务端编程
+
+#### JSONP 的缺点
+
+JSONP 只支持 get，因为 script 标签只能使用 get 请求；（JSONP 是一种【请求一段 JS 脚本，把执行这段脚本的结果当做数据】的玩法。）
+
+JSONP 需要后端配合返回指定格式的数据。
+
+**实现跨域**
+
+JSONP：ajax 请求受同源策略影响，不允许进行跨域请求，而 script 标签 src 属性中的链接却可以访问跨域的 js 脚本，利用这个特性，服务端不再返回 JSON 格式的数据，而是返回一段调用某个函数的 js 代码，在 src 中进行了调用，这样实现了跨域。
+
+####  如何实现跨域
+
+iframe 跨域：两个页面都通过 js 强制设置 document.domain 为基础主域，就实现了同域。
+
+location.hash + iframe 跨域：a 欲与 b 跨域相互通信，通过中间页 c 来实现。 三个页面，不同域之间利用 iframe 的 location.hash 传值，相同域之间直接 js 访问来通信。
+
+window.name + iframe跨域：通过iframe的src属性由外域转向本地域，跨域数据即由iframe的 window.name 从外域传递到本地域。
+
+postMessage 跨域：可以跨域操作的 window 属性之一。
+
+CORS：服务端设置 Access-Control-Allow-Origin 即可，前端无须设置，若要带 cookie 请求，前后端都需要设置。
+
+代理跨域：起一个代理服务器，实现数据的转发
+
+#### dom 是什么，你的理解？
+
+文档对象模型（Document Object Model，简称 DOM），是 W3C 组织推荐的处理可扩展 标志语言的标准编程接口。在网页上，组织页面（或文档）的对象被组织在一个树形结 构中，用来表示文档中对象的标准模型就称为 DOM。
+
+#### 实现一个 Ajax
+
+Ajax 能够在不重新加载整个页面的情况下与服务器交换数据并更新部分网页内容，实现 局部刷新，大大降低了资源的浪费，是一门用于快速创建动态网页的技术，ajax 的使用 分为四部分：
+
+1、创建 XMLHttpRequest 对象 var xhr = new XMLHttpRequest();
+
+2、向服务器发送请求，使用 xmlHttpRequest 对象的 open 和 send 方法，
+
+3、监听状态变化，执行相应回调函数
+
+```js
+var xhr = new XMLHttpRequest();
+xhr.open('get', 'aabb.php', true);
+xhr.send(null);
+xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4) {
+        if (xhr.status == 200) {
+            console.log(xhr.responseText);
+        }
+    }
+}
+```
+
+### 移动 web 开发
+
