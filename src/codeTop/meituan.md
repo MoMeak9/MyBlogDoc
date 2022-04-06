@@ -247,3 +247,25 @@ var firstUniqChar = function(s) {
 };
 ```
 
+```js
+var firstUniqChar = function (str) {
+    const obj = {}
+    Array.from(str).forEach((val, index) => {
+        if (obj[val]) {
+            obj[val] = -1;
+        } else {
+            obj[val] = index;
+        }
+    })
+    let ans = -1;
+    for (const key in obj) {
+        let val = obj[key];
+        if (val !== -1) {
+            if (ans === -1) ans = val;
+            ans = Math.min(ans, val);
+        }
+    }
+    return ans;
+};
+```
+
