@@ -1,8 +1,9 @@
-showName()
-var showName = function() {
-    console.log(2)
+var myObj = {
+    name : " 极客时间 ",
+    showThis: function(){
+        this.name = " 极客邦 "
+        console.log(this)
+    }
 }
-function showName() {
-    console.log(1)
-}
-showName()
+var foo = myObj.showThis
+foo()

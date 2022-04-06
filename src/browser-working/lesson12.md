@@ -76,7 +76,7 @@ c = a
 
 对于各种语言的类型，你可以参考下图
 
-![](http://blog.poetries.top/img-repo/2019/11/2.png)
+![202203162155343926_1](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204061616282.jpg)
 
 ## JavaScript 的数据类型
 
@@ -120,7 +120,7 @@ console.log(typeof bar) //object
 其实 JavaScript 中的数据类型一种有 8 种，它们分别是：
 
 
-![](http://blog.poetries.top/img-repo/2019/11/3.png)
+![202203162155343926_2](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204061617612.jpg)
 
 了解这些类型之后，还有三点需要你注意一下。
 
@@ -143,7 +143,7 @@ let myObj = {
 
 要理解 JavaScript 在运行过程中数据是如何存储的，你就得先搞清楚其存储空间的种类。下面是我画的 JavaScript 的内存模型，你可以参考下：
 
-![](http://blog.poetries.top/img-repo/2019/11/4.png)
+<img src="https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204061617716.jpg" alt="202203162155343926_6" style="zoom: 33%;" />
 
 从图中可以看出， 在 JavaScript 的执行过程中， 主要有三种类型内存空间，分别是代码空间、栈空间和堆空间。
 
@@ -165,13 +165,13 @@ foo()
 
 前面文章我们已经讲解过了，当执行一段代码时，需要先编译，并创建执行上下文，然后再按照顺序执行代码。那么下面我们来看看，当执行到第 3 行代码时，其调用栈的状态，你可以参考下面这张调用栈状态图：
 
-![](http://blog.poetries.top/img-repo/2019/11/5.png)
+![202203162155343926_4](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204061618904.jpg)
 
 从图中可以看出来，当执行到第 3 行时，变量 a 和变量 b 的值都被保存在执行上下文中，而执行上下文又被压入到栈中，所以你也可以认为变量 a 和变量 b 的值都是存放在栈中的。
 
 接下来继续执行第 4 行代码，由于 JavaScript 引擎判断右边的值是一个引用类型，这时候处理的情况就不一样了，JavaScript 引擎并不是直接将该对象存放到变量环境中，而是将它分配到堆空间里面，分配后该对象会有一个在“堆”中的地址，然后再将该数据的地址写进 c 的变量值，最终分配好内存的示意图如下所示：
 
-![](http://blog.poetries.top/img-repo/2019/11/6.png)
+![202203162155343926_7](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204061618182.jpg)
 
 从上图你可以清晰地观察到，对象类型是存放在堆空间的，在栈空间中只是保留了对象的引用地址，当 JavaScript 需要访问该数据的时候，是通过栈中的引用地址来访问的，相当于多了一道转手流程。
 
@@ -179,7 +179,7 @@ foo()
 
 答案是不可以的。这是因为 JavaScript 引擎需要用栈来维护程序执行期间上下文的状态，如果栈空间大了话，所有的数据都存放在栈空间里面，那么会影响到上下文切换的效率，进而又影响到整个程序的执行效率。比如文中的 foo 函数执行结束了，JavaScript 引擎需要离开当前的执行上下文，只需要将指针下移到上个执行上下文的地址就可以了，foo 函数执行上下文栈区空间全部回收，具体过程你可以参考下图：
 
-![](http://blog.poetries.top/img-repo/2019/11/7.png)
+![202203162155343926_3](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204061618138.jpg)
 
 所以通常情况下，栈空间都不会设置太大，主要用来存放一些原始类型的小数据。而引用类型的数据占用的空间都比较大，所以这一类数据会被存放到堆中，堆空间很大，能存放很多大的数据，不过缺点是分配内存和回收内存都会占用一定的时间。
 
@@ -189,7 +189,7 @@ foo()
 
 所以d=c的操作就是把 c 的引用地址赋值给 d，你可以参考下图
 
-![](http://blog.poetries.top/img-repo/2019/11/8.png)
+![202203162155343926_0](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204061619185.jpg)
 
 从图中你可以看到，变量 c 和变量 d 都指向了同一个堆中的对象，所以这就很好地解释了文章开头的那个问题，通过 c 修改 name 的值，变量 d 的值也跟着改变，归根结底它们是同一个对象。
 
@@ -230,7 +230,7 @@ console.log(bar.getName())
 
 通过上面的分析，我们可以画出执行到 foo 函数中“return innerBar”语句时的调用栈状态，如下图所示：
 
-![](http://blog.poetries.top/img-repo/2019/11/9.png)
+![202203162155343926_5](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204061619794.jpg)
 
 从上图你可以清晰地看出，当执行到 foo 函数时，闭包就产生了；当 foo 函数执行结束之后，返回的 getName 和 setName 方法都引用“clourse(foo)”对象，所以即使 foo 函数退出了，“clourse(foo)”依然被其内部的 getName 和 setName 方法引用。所以在下次调用bar.setName或者bar.getName时，创建的执行上下文中就包含了“clourse(foo)”。
 
