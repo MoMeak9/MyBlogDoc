@@ -1,6 +1,6 @@
 import {defineThemeConfig} from "vuepress-theme-hope";
+import {zhSidebarConig} from "./sidebar";
 import navbar from "./navbar";
-import sidebar from "./sidebar";
 
 export default defineThemeConfig({
     hostname: "https://yihuiBlog.top",
@@ -26,7 +26,7 @@ export default defineThemeConfig({
     navbar: navbar,
 
     // sidebar
-    sidebar: sidebar,
+    sidebar: zhSidebarConig,
 
     footer: " ",
 

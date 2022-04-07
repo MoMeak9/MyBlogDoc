@@ -5,8 +5,8 @@ sticky: true
 star: true
 ---
 
-# 字节跳动CodeTop
-#### [400. 第 N 位数字](https://leetcode-cn.com/problems/nth-digit/)
+# 字节跳动CodeTop（一）
+## [400. 第 N 位数字](https://leetcode-cn.com/problems/nth-digit/)
 
 **解题思路**
 首先我们很容易明白如下规律:
@@ -42,7 +42,7 @@ var findNthDigit = function(n) {
 };
 ```
 
-#### [165. 比较版本号](https://leetcode-cn.com/problems/compare-version-numbers/)
+## [165. 比较版本号](https://leetcode-cn.com/problems/compare-version-numbers/)
 
 > 未标识位，如2.2和2，多出的位数比较视作为0
 
@@ -74,7 +74,7 @@ var compareVersion = function(version1, version2) {
 };
 ```
 
-#### [415. 字符串相加](https://leetcode-cn.com/problems/add-strings/)
+## [415. 字符串相加](https://leetcode-cn.com/problems/add-strings/)
 
 > 会溢出 ，去看一下字符串相乘
 
@@ -114,7 +114,7 @@ var addStrings = function(num1, num2) {
 };
 ```
 
-#### [43. 字符串相乘](https://leetcode-cn.com/problems/multiply-strings/)
+## [43. 字符串相乘](https://leetcode-cn.com/problems/multiply-strings/)
 
 > 通过模仿笔算的步骤实现
 
@@ -158,7 +158,7 @@ var multiply = function (num1, num2) {
 
 
 
-#### [1. 两数之和](https://leetcode-cn.com/problems/two-sum/)
+## [1. 两数之和](https://leetcode-cn.com/problems/two-sum/)
 
 > map记录差值
 
@@ -181,7 +181,7 @@ var twoSum = function(nums, target) {
 };
 ```
 
-#### [70. 爬楼梯](https://leetcode-cn.com/problems/climbing-stairs/)
+## [70. 爬楼梯](https://leetcode-cn.com/problems/climbing-stairs/)
 
 > 聊天的时候得知常考
 
@@ -222,7 +222,7 @@ var climbStairs = function (n) {
 };
 ```
 
-#### [5. 最长回文子串](https://leetcode-cn.com/problems/longest-palindromic-substring/)
+## [5. 最长回文子串](https://leetcode-cn.com/problems/longest-palindromic-substring/)
 
 > 中心扩散方法，区分偶数与奇数长度回文串
 
@@ -250,7 +250,7 @@ function palindrome(s, l, r) {
 }
 ```
 
-#### [200. 岛屿数量](https://leetcode-cn.com/problems/number-of-islands/)
+## [200. 岛屿数量](https://leetcode-cn.com/problems/number-of-islands/)
 
 ```js
 /**
@@ -294,7 +294,7 @@ var numIslands = function (grid) {
 };
 ```
 
-#### [695. 岛屿的最大面积](https://leetcode-cn.com/problems/max-area-of-island/)
+## [695. 岛屿的最大面积](https://leetcode-cn.com/problems/max-area-of-island/)
 
 > 方法1.dfs
 > 思路：深度优先，先循环网格， 当grid[x][y] === 1时，将当前单元格置为0并上下左右不断递归，计算每个岛屿的大小，然后不断更新最大岛屿
@@ -353,7 +353,7 @@ var maxAreaOfIsland = function(grid) {
 };
 ```
 
-#### [141. 环形链表](https://leetcode-cn.com/problems/linked-list-cycle/)
+## [141. 环形链表](https://leetcode-cn.com/problems/linked-list-cycle/)
 
 > 标记
 
@@ -399,7 +399,7 @@ var hasCycle = function (head) {
 };
 ```
 
-#### [15. 三数之和](https://leetcode-cn.com/problems/3sum/)
+## [15. 三数之和](https://leetcode-cn.com/problems/3sum/)
 
 ```js
 /**
@@ -435,7 +435,7 @@ var threeSum = function(nums) {
     }
 ```
 
-#### [155. 最小栈](https://leetcode-cn.com/problems/min-stack/)
+## [155. 最小栈](https://leetcode-cn.com/problems/min-stack/)
 
 > 双栈，维护一个最小值栈
 
@@ -464,7 +464,7 @@ MinStack.prototype.getMin = function() {
 };
 ```
 
-#### [209. 长度最小的子数组](https://leetcode-cn.com/problems/minimum-size-subarray-sum/)
+## [209. 长度最小的子数组](https://leetcode-cn.com/problems/minimum-size-subarray-sum/)
 
 > 滑动窗口
 
@@ -493,7 +493,7 @@ var minSubArrayLen = function(target, nums) {
 };
 ```
 
-#### [230. 二叉搜索树中第K小的元素](https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/)
+## [230. 二叉搜索树中第K小的元素](https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/)
 
 > 中序遍历（先找到最小元素并逐个遍历k次）
 
@@ -516,7 +516,7 @@ var kthSmallest = function(root, k) {
 };
 ```
 
-#### [226. 翻转二叉树](https://leetcode-cn.com/problems/invert-binary-tree/)
+## [226. 翻转二叉树](https://leetcode-cn.com/problems/invert-binary-tree/)
 
 ```js
 /**
@@ -551,7 +551,7 @@ const invertTree = (root) => {
 };
 ```
 
-#### [21. 合并两个有序链表](https://leetcode-cn.com/problems/merge-two-sorted-lists/)
+## [21. 合并两个有序链表](https://leetcode-cn.com/problems/merge-two-sorted-lists/)
 
 > 递归
 >
@@ -602,7 +602,7 @@ var mergeTwoLists = function(l1, l2) {
 };
 ```
 
-#### [94. 二叉树的中序遍历](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
+## [94. 二叉树的中序遍历](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
 
 > 手写一个递归
 
@@ -645,7 +645,7 @@ var inorderTraversal = function(root) {
 };
 ```
 
-#### [429. N 叉树的层序遍历](https://leetcode-cn.com/problems/n-ary-tree-level-order-traversal/)
+## [429. N 叉树的层序遍历](https://leetcode-cn.com/problems/n-ary-tree-level-order-traversal/)
 
 > 并不像二叉树层序那么简单
 
@@ -674,11 +674,11 @@ var levelOrder = function (root) {
 };
 ```
 
-#### [718. 最长重复子数组](https://leetcode-cn.com/problems/maximum-length-of-repeated-subarray/)
+## [718. 最长重复子数组](https://leetcode-cn.com/problems/maximum-length-of-repeated-subarray/)
 
 二维dp去做，有点难理解
 
-#### [93. 复原 IP 地址](https://leetcode-cn.com/problems/restore-ip-addresses/)
+## [93. 复原 IP 地址](https://leetcode-cn.com/problems/restore-ip-addresses/)
 
 > ```
 > 输入：s = "25525511135"
@@ -733,7 +733,7 @@ var restoreIpAddresses = function(s) {
 };
 ```
 
-#### [912. 排序数组](https://leetcode-cn.com/problems/sort-an-array/)
+## [912. 排序数组](https://leetcode-cn.com/problems/sort-an-array/)
 
 ```js
 /**
@@ -745,7 +745,7 @@ var sortArray = function(nums) {
 };
 ```
 
-#### [104. 二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)
+## [104. 二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)
 
 ```js
 /**
@@ -762,7 +762,7 @@ var maxDepth = function (root) {
 };
 ```
 
-#### [113. 路径总和 II](https://leetcode-cn.com/problems/path-sum-ii/)
+## [113. 路径总和 II](https://leetcode-cn.com/problems/path-sum-ii/)
 
 > 同时维护res 答案数组和path路径数组（用于回溯）
 
@@ -802,7 +802,7 @@ const pathSum = function (root, targetSum) {
 };
 ```
 
-#### [322. 零钱兑换](https://leetcode-cn.com/problems/coin-change/)
+## [322. 零钱兑换](https://leetcode-cn.com/problems/coin-change/)
 
 > 贪心不一定是对的
 
@@ -824,7 +824,7 @@ var coinChange = function(coins, amount) {
 };
 ```
 
-#### [剑指 Offer 09. 用两个栈实现队列](https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/)
+## [剑指 Offer 09. 用两个栈实现队列](https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/)
 
 > 将一个栈当作输入栈，用于压入 appendTail 传入的数据；另一个栈当作输出栈，用于 deleteHead 操作。
 >
@@ -871,7 +871,7 @@ CQueue.prototype.deleteHead = function() {
  */
 ```
 
-#### [160. 相交链表](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/)
+## [160. 相交链表](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/)
 
 > 一边一直访问，并存入set
 
@@ -894,7 +894,7 @@ var getIntersectionNode = function(headA, headB) {
 };
 ```
 
-#### [62. 不同路径](https://leetcode-cn.com/problems/unique-paths/)
+## [62. 不同路径](https://leetcode-cn.com/problems/unique-paths/)
 
 > 寻路问题
 >
@@ -923,7 +923,7 @@ var uniquePaths = function(m, n) {
 };
 ```
 
-#### [101. 对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/)
+## [101. 对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/)
 
 > 递归对比左右子树，终止为左右子树均null
 
@@ -941,7 +941,7 @@ const isSymmetric = function(root) {
 };
 ```
 
-#### [14. 最长公共前缀](https://leetcode-cn.com/problems/longest-common-prefix/)
+## [14. 最长公共前缀](https://leetcode-cn.com/problems/longest-common-prefix/)
 
 > 取第一个字符串为默认ans（本就最长不超过此），后遍历
 
@@ -970,7 +970,7 @@ var longestCommonPrefix = function(strs) {
 };
 ```
 
-#### [468. 验证IP地址](https://leetcode-cn.com/problems/validate-ip-address/)
+## [468. 验证IP地址](https://leetcode-cn.com/problems/validate-ip-address/)
 
 ```js
 var validIPAddress = function(IP) {
@@ -989,7 +989,7 @@ var validIPAddress = function(IP) {
 };
 ```
 
-#### [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+## [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
 
 > 查找分割点（子树的根节点）
 
@@ -1024,7 +1024,7 @@ var buildTree = function(inorder, postorder) {
 };
 ```
 
-#### [199. 二叉树的右视图](https://leetcode-cn.com/problems/binary-tree-right-side-view/)
+## [199. 二叉树的右视图](https://leetcode-cn.com/problems/binary-tree-right-side-view/)
 
 > 看图我们发现, 右视图的节点都是**每一层的最后一个节点**, 所以采用**层序遍历**最为方便
 
@@ -1050,7 +1050,7 @@ var rightSideView = function(root) {
 };
 ```
 
-#### [394. 字符串解码](https://leetcode-cn.com/problems/decode-string/)
+## [394. 字符串解码](https://leetcode-cn.com/problems/decode-string/)
 
 > 有效括号 pluse 栈操作
 
@@ -1081,6 +1081,349 @@ const decodeString = (s) => {
         }
     }
     return result;
+};
+```
+
+## [剑指 Offer 62. 圆圈中最后剩下的数字](https://leetcode-cn.com/problems/yuan-quan-zhong-zui-hou-sheng-xia-de-shu-zi-lcof/)
+
+> 迭代更合适
+
+```js
+var lastRemaining = function (n, m) {
+    let res = 0;
+    for (let i = 2; i <= n; i++) {
+        res = (m + res) % i; // 除以循环被削减的个数
+    }
+    return res;
+};
+```
+
+> 递归
+
+```js
+var lastRemaining = function (n, m) {
+    const f = (n, m) => {
+        if (n === 1) {
+            return 0
+        }
+        let x = f(n - 1, m)
+        return (m + x) % n
+    }
+    return f(n, m)
+};
+```
+
+## [103. 二叉树的锯齿形层序遍历](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/)
+
+> 程序遍历变种，微调即可
+
+```js
+var zigzagLevelOrder = function(root) {
+    if (!root) {
+        return [];
+    }
+
+    const ans = [];
+    const nodeQueue = [root]; // 记录访问的node点
+
+    let isOrderLeft = true; // 顺序标记
+
+    while (nodeQueue.length) {
+        let levelList = []; // 每层答案
+        const size = nodeQueue.length;
+        for (let i = 0; i < size; ++i) {
+            const node = nodeQueue.shift();
+            if (isOrderLeft) {
+                levelList.push(node.val);
+            } else {
+                levelList.unshift(node.val);
+            }
+            if (node.left !== null) {
+                nodeQueue.push(node.left);
+            }
+            if (node.right !== null) {
+                nodeQueue.push(node.right);
+            }
+        }            
+        ans.push(levelList);
+        isOrderLeft = !isOrderLeft; // 反转
+    }
+
+    return ans;
+};
+```
+
+## [31. 下一个排列](https://leetcode-cn.com/problems/next-permutation/)
+
+> 思路
+> 如何变大：从低位挑一个大一点的数，交换前面一个小一点的数。
+> 变大的幅度要尽量小。
+> 像 [3,2,1] 这样递减的，没有下一个排列，已经稳定了，没法变大。
+> 像 [1,5,2,4,3,2] 这种，怎么稍微变大？
+>
+> - **从右往左，寻找第一个比右邻居小的数**，把它换到后面去
+>   - “第一个”意味着尽量是低位，“比右邻居小”意味着它是从右往左的第一个波谷
+>     比如，1 5 (2) 4 3 2，中间这个 2。
+>
+> - **接着还是从右往左，寻找第一个比这个 2 大的数**。15 (2) 4 (3) 2，交换后：15 (3) 4 (2) 2。
+>
+> - 还没结束！变大的幅度可以再小一点，仟位微变大了，后三位可以再小一点。
+>
+> - **后三位肯定是递减的，翻转**，变成[1,5,3,2,2,4]，即为所求。
+
+```js
+function nextPermutation(nums) {
+    let i = nums.length - 2;                   // 向左遍历，i从倒数第二开始是为了nums[i+1]要存在
+    while (i >= 0 && nums[i] >= nums[i + 1]) { // 寻找第一个小于右邻居的数
+        i--;
+    }
+    if (i >= 0) {                             // 这个数在数组中存在，从它身后挑一个数，和它换
+        let j = nums.length - 1;                // 从最后一项，向左遍历
+        while (j >= 0 && nums[j] <= nums[i]) {  // 寻找第一个大于 nums[i] 的数
+            j--;
+        }
+        [nums[i], nums[j]] = [nums[j], nums[i]]; // 两数交换，实现变大
+    }
+    // 如果 i = -1，说明是递减排列，如 3 2 1，没有下一排列，直接翻转为最小排列：1 2 3
+    let l = i + 1;           
+    let r = nums.length - 1;
+    while (l < r) {                            // i 右边的数进行翻转，使得变大的幅度小一些
+        [nums[l], nums[r]] = [nums[r], nums[l]];
+        l++;
+        r--;
+    }
+}
+```
+
+## [283. 移动零](https://leetcode-cn.com/problems/move-zeroes/)
+
+```js
+var moveZeroes = function(nums) {
+     nums.sort((a,b) => b? 1: -1) // b = 0 ，逆序排列
+};
+```
+
+```js
+var moveZeroes = function (nums) {
+    let i = 0;
+    const zeroes = [];
+    while (i < nums.length) {
+        if (nums[i] === 0) {
+            let zero = nums.splice(i,1);
+            zeroes.push(...zero);
+            i--;
+        }
+        i++;
+    }
+    nums.push(...zeroes)
+};
+```
+
+## [394. 字符串解码](https://leetcode-cn.com/problems/decode-string/)
+
+> 有效括号加强版
+>
+
+```js
+const decodeString = (s) => {
+    let numStack = [];        // 存倍数的栈
+    let strStack = [];        // 存 待拼接的str 的栈
+    let num = 0;              // 倍数的“搬运工”
+    let result = '';          // 字符串的“搬运工”
+    for (const char of s) {   // 逐字符扫描
+        if (!isNaN(char)) {   // 遇到数字
+            num = num * 10 + Number(char); // 算出倍数
+        } else if (char == '[') {  // 遇到 [
+            strStack.push(result); // result串入栈
+            result = '';           // 入栈后清零
+            numStack.push(num);    // 倍数num进入栈等待
+            num = 0;               // 入栈后清零
+        } else if (char == ']') {  // 遇到 ]，两个栈的栈顶出栈
+            let repeatTimes = numStack.pop(); // 获取拷贝次数
+            result = strStack.pop() + result.repeat(repeatTimes); // 构建子串
+        } else {                   
+            result += char;        // 遇到字母，追加给result串
+        }
+    }
+    return result;
+};
+```
+
+## [171. Excel 表列序号](https://leetcode-cn.com/problems/excel-sheet-column-number/)
+
+```js
+var titleToNumber = function(columnTitle) {
+    let number = 0;
+    let multiple = 1;
+    for (let i = columnTitle.length - 1; i >= 0; i--) {
+        const k = columnTitle[i].charCodeAt() - 'A'.charCodeAt() + 1;
+        number += k * multiple;
+        multiple *= 26;
+    }
+    return number;
+};
+```
+
+## [168. Excel表列名称](https://leetcode-cn.com/problems/excel-sheet-column-title/)
+
+```js
+var convertToTitle = function(columnNumber) {
+    let ans = [];
+    while (columnNumber > 0) {
+        const a0 = (columnNumber - 1) % 26 + 1; // 算低位
+        ans.push(String.fromCharCode(a0 - 1 + 'A'.charCodeAt()));
+        columnNumber = Math.floor((columnNumber - a0) / 26); // 算进位
+    }
+    return ans.reverse().join('');
+};
+```
+
+## [349. 两个数组的交集](https://leetcode-cn.com/problems/intersection-of-two-arrays/)
+
+```js
+/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number[]}
+ */
+var intersection = function (nums1, nums2) {
+    const res = new Set();
+    if (nums1.length > nums2.length) {
+        return intersection(nums2, nums1);
+    }
+    for (const val of nums1) {
+        if (nums2.indexOf(val) !== -1) {
+            res.add(val);
+        }
+    }
+    return [...res];
+};
+```
+
+## [836. 矩形重叠](https://leetcode-cn.com/problems/rectangle-overlap/)
+
+> 转换为投影的公共部分
+
+<img src="https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204041647072.png" alt="ds_183" style="zoom:50%;" />
+
+```js
+var isRectangleOverlap = function(rec1, rec2) {
+    const [x1, y1, x2, y2] = rec1;
+    const [x3, y3, x4, y4] = rec2;
+    return !(x1 >= x4 || x3 >= x2 || y3 >= y2 || y1 >= y4);
+};
+```
+
+## [67. 二进制求和](https://leetcode-cn.com/problems/add-binary/)
+
+> 溢出了
+
+```js
+var addBinary = function (a, b) {
+    a = parseInt(a, 2);
+    b = parseInt(b, 2);
+    return (a + b).toString(2)
+};
+```
+
+> 逐个计算
+
+```js
+/**
+ * @param {string} a
+ * @param {string} b
+ * @return {string}
+ */
+var addBinary = function(a, b) {
+    let ans = "";
+    let ca = 0;
+    for(let i = a.length - 1, j = b.length - 1;i >= 0 || j >= 0; i--, j--) {
+        let sum = ca;
+        sum += i >= 0 ? parseInt(a[i]) : 0;
+        sum += j >= 0 ? parseInt(b[j]) : 0;
+        ans += sum % 2;
+        ca = Math.floor(sum / 2);
+    }
+    ans += ca == 1 ? ca : "";
+    return ans.split('').reverse().join('');
+};
+```
+
+## [2. 两数相加](https://leetcode-cn.com/problems/add-two-numbers/)
+
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+var addTwoNumbers = function(l1, l2) {
+    let head = null, tail = null; // 头节点和节点指针
+    let carry = 0;
+    while (l1 || l2) {
+        const n1 = l1 ? l1.val : 0;
+        const n2 = l2 ? l2.val : 0;
+        const sum = n1 + n2 + carry;
+        if (!head) {
+            head = tail = new ListNode(sum % 10);
+        } else {
+            tail.next = new ListNode(sum % 10);
+            tail = tail.next;
+        }
+        carry = Math.floor(sum / 10);
+        if (l1) {
+            l1 = l1.next;
+        }
+        if (l2) {
+            l2 = l2.next;
+        }
+    }
+    if (carry > 0) {
+        tail.next = new ListNode(carry);
+    }
+    return head;
+};
+```
+
+## [221. 最大正方形](https://leetcode-cn.com/problems/maximal-square/)
+
+<img src="https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204041724654.png" alt="fig1" style="zoom:50%;" />
+
+> 左、上、左上
+
+```js
+/**
+ * @param {character[][]} matrix
+ * @return {number}
+ */
+var maximalSquare = function (matrix) {
+  const row = matrix.length;
+  const col = matrix[0].length;
+  const dp = new Array(row).fill(0).map(() => new Array(col).fill(0));
+
+  let maxLen = 0;
+
+  for (let i = 0; i < row; i++) {
+    for (let j = 0; j < col; j++) {
+      if (matrix[i][j] === "0") continue;
+      dp[i][j] =
+        Math.min(
+          dp[i - 1]?.[j] || 0,
+          dp[i][j - 1] || 0,
+          dp[i - 1]?.[j - 1] || 0
+        ) + 1;
+      maxLen = Math.max(maxLen, dp[i][j]);
+    }
+  }
+
+  return maxLen * maxLen;
 };
 ```
 
