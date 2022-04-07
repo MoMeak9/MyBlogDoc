@@ -7,7 +7,7 @@ star: true
 
 # 字节跳动CodeTop（二）
 
-#### [700. 二叉搜索树中的搜索](https://leetcode-cn.com/problems/search-in-a-binary-search-tree/)
+## [700. 二叉搜索树中的搜索](https://leetcode-cn.com/problems/search-in-a-binary-search-tree/)
 
 > 递归
 
@@ -37,7 +37,7 @@ var searchBST = function(root, val) {
 };
 ```
 
-#### [剑指 Offer 54. 二叉搜索树的第k大节点](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/)
+## [剑指 Offer 54. 二叉搜索树的第k大节点](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/)
 
 > **二叉搜索树的 中序遍历倒序 为 递减序列 。**
 >
@@ -59,7 +59,7 @@ var kthLargest = function (root, k) {
 };
 ```
 
-#### [342. 4的幂](https://leetcode-cn.com/problems/power-of-four/)
+## [342. 4的幂](https://leetcode-cn.com/problems/power-of-four/)
 
 > 循环
 
@@ -92,7 +92,7 @@ var isPowerOfFour = function (n) {
 };
 ```
 
-#### [507. 完美数](https://leetcode-cn.com/problems/perfect-number/)
+## [507. 完美数](https://leetcode-cn.com/problems/perfect-number/)
 
 ```js
 var checkPerfectNumber = function(num) {
@@ -113,7 +113,7 @@ var checkPerfectNumber = function(num) {
 };
 ```
 
-#### [剑指 Offer 21. 调整数组顺序使奇数位于偶数前面](https://leetcode-cn.com/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/)
+## [剑指 Offer 21. 调整数组顺序使奇数位于偶数前面](https://leetcode-cn.com/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/)
 
 ```js
 /**
@@ -140,7 +140,7 @@ var exchange = function (nums) {
 };
 ```
 
-#### [122. 买卖股票的最佳时机 II](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/)
+## [122. 买卖股票的最佳时机 II](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/)
 
 > 贪心大法好
 
@@ -159,7 +159,7 @@ var maxProfit = function(prices) {
 };
 ```
 
-#### [252. 会议室](https://leetcode-cn.com/problems/meeting-rooms/)
+## [252. 会议室](https://leetcode-cn.com/problems/meeting-rooms/)
 
 ```js
 /**
@@ -181,7 +181,7 @@ var canAttendMeetings = function (intervals) {
 };
 ```
 
-#### [704. 二分查找](https://leetcode-cn.com/problems/binary-search/)
+## [704. 二分查找](https://leetcode-cn.com/problems/binary-search/)
 
 ```js
 /**
@@ -206,7 +206,7 @@ var search = function(nums, target) {
 };
 ```
 
-#### [9. 回文数](https://leetcode-cn.com/problems/palindrome-number/)
+## [9. 回文数](https://leetcode-cn.com/problems/palindrome-number/)
 
 ```js
 var isPalindrome = function (x) {
@@ -236,7 +236,7 @@ var isPalindrome = function(x) {
 };
 ```
 
-#### [234. 回文链表](https://leetcode-cn.com/problems/palindrome-linked-list/)
+## [234. 回文链表](https://leetcode-cn.com/problems/palindrome-linked-list/)
 
 ```js
 var isPalindrome = function(head) {
@@ -254,7 +254,7 @@ var isPalindrome = function(head) {
 };
 ```
 
-#### [125. 验证回文串](https://leetcode-cn.com/problems/valid-palindrome/)
+## [125. 验证回文串](https://leetcode-cn.com/problems/valid-palindrome/)
 
 ```js
 /**
@@ -272,7 +272,7 @@ var isPalindrome = function(s) {
 };
 ```
 
-#### [717. 1 比特与 2 比特字符](https://leetcode-cn.com/problems/1-bit-and-2-bit-characters/)
+## [717. 1 比特与 2 比特字符](https://leetcode-cn.com/problems/1-bit-and-2-bit-characters/)
 
 ```js
 var isOneBitCharacter = function(bits) {
@@ -284,7 +284,7 @@ var isOneBitCharacter = function(bits) {
 };
 ```
 
-#### [剑指 Offer 39. 数组中出现次数超过一半的数字](https://leetcode-cn.com/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/)
+## [剑指 Offer 39. 数组中出现次数超过一半的数字](https://leetcode-cn.com/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/)
 
 > 超过一半的数一定是中间数
 
@@ -298,7 +298,7 @@ var majorityElement = function (nums) {
 };
 ```
 
-#### [1356. 根据数字二进制下 1 的数目排序](https://leetcode-cn.com/problems/sort-integers-by-the-number-of-1-bits/)
+## [1356. 根据数字二进制下 1 的数目排序](https://leetcode-cn.com/problems/sort-integers-by-the-number-of-1-bits/)
 
 ```js
 /**
@@ -320,7 +320,7 @@ function sortByBits(arr) {
 }
 ```
 
-#### [111. 二叉树的最小深度](https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/)
+## [111. 二叉树的最小深度](https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/)
 
 ```js
 /**
@@ -345,7 +345,7 @@ const minDepth = function(root) {
 };
 ```
 
-#### [783. 二叉搜索树节点最小距离](https://leetcode-cn.com/problems/minimum-distance-between-bst-nodes/)
+## [783. 二叉搜索树节点最小距离](https://leetcode-cn.com/problems/minimum-distance-between-bst-nodes/)
 
 > 中序遍历
 
@@ -374,7 +374,7 @@ var minDiffInBST = function(root) {
 };
 ```
 
-#### [剑指 Offer 42. 连续子数组的最大和](https://leetcode-cn.com/problems/lian-xu-zi-shu-zu-de-zui-da-he-lcof/)
+## [剑指 Offer 42. 连续子数组的最大和](https://leetcode-cn.com/problems/lian-xu-zi-shu-zu-de-zui-da-he-lcof/)
 
 ```js
 /**
@@ -410,7 +410,7 @@ var maxSubArray = function (nums) {
 };
 ```
 
-#### [257. 二叉树的所有路径](https://leetcode-cn.com/problems/binary-tree-paths/)
+## [257. 二叉树的所有路径](https://leetcode-cn.com/problems/binary-tree-paths/)
 
 ```js
 var binaryTreePaths = function(root) {
@@ -432,7 +432,7 @@ var binaryTreePaths = function(root) {
 };
 ```
 
-#### [680. 验证回文字符串 Ⅱ](https://leetcode-cn.com/problems/valid-palindrome-ii/)
+## [680. 验证回文字符串 Ⅱ](https://leetcode-cn.com/problems/valid-palindrome-ii/)
 
 ```js
 function isPali(str, l, r) { // 判断str是否回文
@@ -459,7 +459,7 @@ var validPalindrome = function (str) {
 };
 ```
 
-#### [剑指 Offer 04. 二维数组中的查找](https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/)
+## [剑指 Offer 04. 二维数组中的查找](https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/)
 
 开始位置即竖排最大，横排最小
 
@@ -484,7 +484,7 @@ var findNumberIn2DArray = function(matrix, target) {
 };
 ```
 
-#### [242. 有效的字母异位词](https://leetcode-cn.com/problems/valid-anagram/)
+## [242. 有效的字母异位词](https://leetcode-cn.com/problems/valid-anagram/)
 
 > 慢吞吞 O*(*n*log*n*)，
 
@@ -516,7 +516,7 @@ var isAnagram = function(s, t) {
 };
 ```
 
-#### [1047. 删除字符串中的所有相邻重复项](https://leetcode-cn.com/problems/remove-all-adjacent-duplicates-in-string/)
+## [1047. 删除字符串中的所有相邻重复项](https://leetcode-cn.com/problems/remove-all-adjacent-duplicates-in-string/)
 
 > 栈  因为不考虑连续多个，只有俩俩
 
@@ -531,6 +531,24 @@ var removeDuplicates = function(s) {
         }
     }
     return stk.join('');
+};
+```
+
+## [1556. 千位分隔数](https://leetcode-cn.com/problems/thousand-separator/)
+
+```js
+/**
+ * @param {number} n
+ * @return {string}
+ */
+var thousandSeparator = function (n) {
+    return n.toString().split('').reduce((pre, cur, index, arr) => {
+        if (index !== 0 && (arr.length - index) % 3 === 0) {
+            return pre + '.' + cur
+        } else {
+            return pre + cur
+        }
+    }, '')
 };
 ```
 
