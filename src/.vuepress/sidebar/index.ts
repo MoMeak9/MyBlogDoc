@@ -4,4 +4,5 @@ import {code} from "./browser";
 export const zhSidebarConig: HopeThemeSidebarConfig = {
     "/codeTop/": code,
     "/browser-working/": "structure",
+    "/Node/": "structure",
 };

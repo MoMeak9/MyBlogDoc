@@ -1,8 +1,6 @@
 ---
 date: 2022-04-04
 icon: page
-sticky: true
-star: true
 ---
 
 # 字节跳动CodeTop（二）
