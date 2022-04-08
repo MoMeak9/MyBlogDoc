@@ -269,3 +269,57 @@ var firstUniqChar = function (str) {
 };
 ```
 
+#### [172. 阶乘后的零](https://leetcode-cn.com/problems/factorial-trailing-zeroes/)
+
+> 5 的个数
+
+```js
+var trailingZeroes = function(n) {
+    let ans = 0;
+    for (let i = 5; i <= n; i += 5) {
+        for (let x = i; x % 5 == 0; x /= 5) {
+            ++ans;
+        }
+    }
+    return ans;
+};
+```
+
+#### [1518. 换酒问题](https://leetcode-cn.com/problems/water-bottles/)
+
+```js
+var numWaterBottles = function(numBottles, numExchange) {
+    let bottle = numBottles, ans = numBottles;
+    while (bottle >= numExchange) {
+        bottle -= numExchange;
+        ++ans;
+        ++bottle;
+    }
+    return ans;
+};
+```
+
+#### [557. 反转字符串中的单词 III](https://leetcode-cn.com/problems/reverse-words-in-a-string-iii/)
+
+```js
+var reverseWords = function(s) {
+    const ret = [];
+    const length = s.length;
+    let i = 0;
+    while (i < length) {
+        let start = i;
+        while (i < length && s.charAt(i) != ' ') {
+            i++;
+        }
+        for (let p = start; p < i; p++) {
+            ret.push(s.charAt(start + i - 1 - p));
+        }
+        while (i < length && s.charAt(i) == ' ') {
+            i++;
+            ret.push(' ');
+        }
+    }
+    return ret.join('');
+};
+```
+
