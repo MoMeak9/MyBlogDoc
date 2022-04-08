@@ -1,8 +1,6 @@
 ---
 date: 2022-04-06
 icon: page
-sticky: true
-star: true
 ---
 
 # 字节跳动CodeTop（三）
@@ -303,3 +301,27 @@ const sortedArrayToBST = nums => {
 };
 ```
 
+#### [剑指 Offer 53 - I. 在排序数组中查找数字 I](https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/)
+
+```js
+var search = function (nums, target) {
+    let count = 0;
+    nums.forEach((val) => {
+        if (val === target) count++;
+    })
+    return count;
+};
+```
+
+#### [剑指 Offer 40. 最小的k个数](https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/)
+
+```js
+var getLeastNumbers = function (arr, k) {
+    arr.sort((a, b) => a - b);
+    const res = [];
+    for (let i = 0; i < k; i++) {
+        res.push(arr[i]);
+    }
+    return res;
+};
+```
