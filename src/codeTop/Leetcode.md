@@ -193,3 +193,142 @@ var fizzBuzz = function (n) {
     return res;
 };
 ```
+
+#### [278. 第一个错误的版本](https://leetcode-cn.com/problems/first-bad-version/)
+
+> 二分查找
+
+```js
+/**
+ * Definition for isBadVersion()
+ * 
+ * @param {integer} version number
+ * @return {boolean} whether the version is bad
+ * isBadVersion = function(version) {
+ *     ...
+ * };
+ */
+
+/**
+ * @param {function} isBadVersion()
+ * @return {function}
+ */
+var solution = function(isBadVersion) {
+    return function(n) {
+        let left = 1, right = n;
+        while (left < right) { // 循环直至区间左右端点相同
+            const mid = Math.floor( right + left / 2); // 防止计算时溢出
+            if (isBadVersion(mid)) {
+                right = mid; // 答案在区间 [left, mid] 中之后的为错误版本
+            } else {
+                left = mid + 1; // 答案在区间 [mid+1, right] 中
+            }
+        }
+        // 此时有 left == right，区间缩为一个点，即为答案
+        return left;
+    };
+};
+```
+
+#### [剑指 Offer 24. 反转链表](https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/)
+
+> 暂存下一节点，前驱节点和当前节点
+
+```js
+var reverseList = function(head) {
+    let prev = null;
+    let curr = head;
+    while (curr) {
+        const next = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = next; // 下移
+    }
+    return prev;
+};
+```
+
+#### [剑指 Offer 30. 包含min函数的栈](https://leetcode-cn.com/problems/bao-han-minhan-shu-de-zhan-lcof/)
+
+```js
+var MinStack = function() {
+    this.x_stack = [];
+    this.min_stack = [Infinity];
+};
+
+MinStack.prototype.push = function(x) {
+    this.x_stack.push(x);
+    this.min_stack.push(Math.min(this.min_stack[this.min_stack.length - 1], x));
+};
+
+MinStack.prototype.pop = function() {
+    this.x_stack.pop();
+    this.min_stack.pop();
+};
+
+MinStack.prototype.top = function() {
+    return this.x_stack[this.x_stack.length - 1];
+};
+
+MinStack.prototype.min = function() {
+    return this.min_stack[this.min_stack.length - 1];
+};
+```
+
+#### [434. 字符串中的单词数](https://leetcode-cn.com/problems/number-of-segments-in-a-string/)
+
+```js
+var countSegments = function(s) {
+    let segmentCount = 0;
+
+    for (let i = 0; i < s.length; i++) {
+        if ((i === 0 || s[i - 1] === ' ') && s[i] !== ' ') { // 确定为每个单词的开始且不为空
+            segmentCount++;
+        }
+    }
+
+    return segmentCount;
+};
+```
+
+#### [575. 分糖果](https://leetcode-cn.com/problems/distribute-candies/)
+
+```js
+/**
+ * @param {number[]} candyType
+ * @return {number}
+ */
+var distributeCandies = function (candyType) {
+    const type = {count: 0};
+    candyType.forEach(val => {
+        if (!type[val]) {
+            type[val] = true;
+            type.count++;
+        }
+    })
+    return type.count < candyType.length / 2 ? type.count : candyType.length / 2;
+};
+```
+
+#### [27. 移除元素](https://leetcode-cn.com/problems/remove-element/)
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} val
+ * @return {number}
+ */
+var removeElement = function(nums, val) {
+    let left = 0, right = nums.length;
+    while (left < right) {
+        if (nums[left] === val) {
+            nums[left] = nums[right - 1];
+            right--;
+        } else {
+            left++;
+        }
+    }
+    return left;
+};
+```
+
