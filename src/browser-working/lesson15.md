@@ -1,6 +1,8 @@
 ---
-sidebarDepth: 2
-pageClass: custom-code-highlight
+icon: edit
+date: 2022-04-05
+category:
+- 浏览器原理
 ---
 
 # 消息队列和事件循环：页面是怎么活起来的
@@ -35,7 +37,7 @@ void MainThread(){
 
 在上面的执行代码中，我们把所有任务代码按照顺序写进主线程里，等线程执行时，这些任务会按照顺序在线程中依次被执行；等所有任务执行完成之后，线程会自动退出。可以参考下图来直观地理解下其执行过程：
 
-![](http://blog.poetries.top/img-repo/2019/11/25.png)
+![img](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204121642275.png)
 
 ## 在线程运行过程中处理新任务
 
@@ -71,7 +73,7 @@ void MainThread(){
 
 通过引入事件循环机制，就可以让该线程“活”起来了，我们每次输入两个数字，都会打印出两数字相加的结果，你可以结合下图来参考下这个改进版的线程：
 
-![](http://blog.poetries.top/img-repo/2019/11/26.png)
+![img](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204121645823.png)
 
 ## 处理其他线程发送过来的任务
 
@@ -79,7 +81,7 @@ void MainThread(){
 
 那下面我们就来看看其他线程是如何发送消息给渲染主线程的，具体形式你可以参考下图：
 
-![](http://blog.poetries.top/img-repo/2019/11/27.png)
+![img](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204121645263.png)
 
 从上图可以看出，渲染主线程会频繁接收到来自于 IO 线程的一些任务，接收到这些任务之后，渲染进程就需要着手处理，比如接收到资源加载完成的消息后，渲染进程就要着手进行 DOM 解析了；接收到鼠标点击的消息后，渲染主线程就要开始执行相应的 JavaScript 脚本来处理该点击事件。
 
@@ -87,13 +89,13 @@ void MainThread(){
 
 一个通用模式是使用消息队列。在解释如何实现之前，我们先说说什么是消息队列，可以参考下图：
 
-![](http://blog.poetries.top/img-repo/2019/11/28.png)
+![img](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204121646166.png)
 
 从图中可以看出，消息队列是一种数据结构，可以存放要执行的任务。它符合队列“先进先出”的特点，也就是说要添加任务的话，添加到队列的尾部；要取出任务的话，从队列头部去取。
 
 有了队列之后，我们就可以继续改造线程模型了，改造方案如下图所示：
 
-![](http://blog.poetries.top/img-repo/2019/11/29.png)
+![img](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204121647628.png)
 
 从上图可以看出，我们的改造可以分为下面三个步骤：
 
@@ -141,7 +143,7 @@ task_queue.pushTask(clickTask)
 
 通过使用消息队列，我们实现了线程之间的消息通信。在 Chrome 中，跨进程之间的任务也是频繁发生的，那么如何处理其他进程发送过来的任务？你可以参考下图：
 
-![](http://blog.poetries.top/img-repo/2019/11/30.png)
+![img](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204121647054.png)
 
 从图中可以看出，渲染进程专门有一个 IO 线程用来接收其他进程传进来的消息，接收到消息之后，会将这些消息组装成任务发送给渲染主线程，后续的步骤就和前面讲解的“处理其他线程发送的任务”一样了，这里就不再重复了。
 
@@ -156,9 +158,9 @@ task_queue.pushTask(clickTask)
 
 ## 如何安全退出
 
-当页面主线程执行完成之后，又该如何保证页面主线程能够安全退出呢？Chrome 是这样解决的，确定要退出当前页面时，页面主线程会设置一个退出标志的变量，在每次执行完一个任务时，判断是否有设置退出标志。
+当页面主线程执行完成之后，又该如何保证页面主线程能够安全退出呢？Chrome 是这样解决的，**确定要退出当前页面时，页面主线程会设置一个退出标志的变量，在每次执行完一个任务时，判断是否有设置退出标志。**
 
-如果设置了，那么就直接中断当前的所有任务，退出线程，你可以参考下面代码：
+如果设置了，**那么就直接<u>中断当前的所有任务</u>，退出线程**，你可以参考下面代码：
 
 ```c
 TaskQueue task_queue；

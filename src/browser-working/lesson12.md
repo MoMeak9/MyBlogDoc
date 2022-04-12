@@ -1,6 +1,8 @@
 ---
-sidebarDepth: 3
-pageClass: custom-code-highlight
+icon: edit
+date: 2022-04-05
+category:
+- 浏览器原理
 ---
 
 # 栈空间和堆空间：数据是如何存储的

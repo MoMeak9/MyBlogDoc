@@ -1,6 +1,8 @@
 ---
-sidebarDepth: 3
-pageClass: custom-code-highlight
+icon: edit
+date: 2022-04-05
+category:
+- 浏览器原理
 ---
 
 # 块级作用域：var缺陷以及为什么要引入let和const
