@@ -2,4 +2,4 @@
 User-agent:*
 Disallow:
 
-Sitemap: https://yihuiBlog.top/sitemap.xml
+Sitemap: https://yihuiBlog.top/MyBlogDoc/sitemap.xml
