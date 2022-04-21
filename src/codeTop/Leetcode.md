@@ -332,3 +332,254 @@ var removeElement = function(nums, val) {
 };
 ```
 
+#### [594. 最长和谐子序列](https://leetcode-cn.com/problems/longest-harmonious-subsequence/)
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var findLHS = function(nums) {
+    const cnt = new Map();
+    let res = 0;
+    for (const num of nums) {
+        cnt.set(num, (cnt.get(num) || 0) + 1);
+    }
+    for (const key of cnt.keys()) {
+        if (cnt.has(key + 1)) {
+            res = Math.max(res, cnt.get(key) + cnt.get(key + 1));
+        }
+    }
+    return res;
+};
+```
+
+#### [605. 种花问题](https://leetcode-cn.com/problems/can-place-flowers/)
+
+```js
+/**
+ * @param {number[]} flowerbed
+ * @param {number} n
+ * @return {boolean}
+ */
+var canPlaceFlowers = function (flowerbed, n) {
+    let count = 0
+    for (let i = 0, length = flowerbed.length; i < length; i++) {
+      //当前位置是0，并且前后都不是1，考虑在最前和最后的特殊情况
+        if (flowerbed[i] === 0 && flowerbed[i - 1] !== 1 && flowerbed[i + 1] !== 1) {
+            count++
+            i++
+        }
+    }
+    return count >= n
+};
+```
+
+#### [235. 二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+
+- 二叉搜索树性质决定了：如果 p.val 和 q.val 都比 root.val 小，则p、q肯定在 root 的左子树。
+- 那问题规模就变小了，递归左子树就行！
+- 如果 p.val 和 q.val 都比 root.val 大，递归右子树就行！
+- 其他情况，root 即为所求！
+
+````js
+const lowestCommonAncestor = (root, p, q) => {
+    if (p.val < root.val && q.val < root.val) {
+        return lowestCommonAncestor(root.left, p, q);
+    }
+    if (p.val > root.val && q.val > root.val) {
+        return lowestCommonAncestor(root.right, p, q);
+    }
+    return root;
+};
+````
+
+#### [258. 各位相加](https://leetcode-cn.com/problems/add-digits/)
+
+```js
+var addDigits = function (num) {
+    const nums = num.toString().split('');
+    if (nums.length === 1) return parseInt(nums.join(''));
+    num = nums.reduce((a, b) => {
+        return a + parseInt(b)
+    }, 0)
+    return addDigits(num);
+};
+```
+
+#### [405. 数字转换为十六进制数](https://leetcode-cn.com/problems/convert-a-number-to-hexadecimal/)
+
+```js
+/**
+ * @param {number} num
+ * @return {string}
+ */
+var toHex = function (num) {
+    if (num >= 0) return num.toString(16)
+    let fill = 2**32;
+    return (fill+num).toString(16)
+};
+```
+
+#### [997. 找到小镇的法官](https://leetcode-cn.com/problems/find-the-town-judge/)
+
+计算出度，入度，法官入度n-1，出度0
+
+```js
+var findJudge = function(n, trust) {
+    const inDegrees = new Array(n + 1).fill(0);
+    const outDegrees = new Array(n + 1).fill(0);
+    for (const edge of trust) {
+        const x = edge[0], y = edge[1];
+        ++inDegrees[y];
+        ++outDegrees[x];
+    }
+    for (let i = 1; i <= n; ++i) {
+        if (inDegrees[i] === n - 1 && outDegrees[i] === 0) {
+            return i;
+        }
+    }
+    return -1;
+};
+```
+
+#### [566. 重塑矩阵](https://leetcode-cn.com/problems/reshape-the-matrix/)
+
+![image-20220414144744678](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204141447850.png)
+
+```js
+/**
+ * @param {number[][]} mat
+ * @param {number} r
+ * @param {number} c
+ * @return {number[][]}
+ */
+var matrixReshape = function(nums, r, c) {
+    const m = nums.length;
+    const n = nums[0].length;
+    if (m * n != r * c) {
+        return nums;
+    }
+
+    const ans = new Array(r).fill(0).map(() => new Array(c).fill(0));
+    for (let x = 0; x < m * n; ++x) {
+        ans[Math.floor(x / c)][x % c] = nums[Math.floor(x / n)][x % n]; // 新旧映射关系
+    }
+    return ans;
+};
+```
+
+
+
+
+
+**方法一：模拟**
+
+```js
+var luckyNumbers  = function(matrix) {
+    const m = matrix.length, n = matrix[0].length;
+    const ret = [];
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            let isMin = true, isMax = true;
+            for (let k = 0; k < n; k++) {
+                if (matrix[i][k] < matrix[i][j]) {
+                    isMin = false;
+                    break;
+                }
+            }
+            if (!isMin) {
+                continue;
+            }
+            for (let k = 0; k < m; k++) {
+                if (matrix[k][j] > matrix[i][j]) {
+                    isMax = false;
+                    break;
+                }
+            }
+            if (isMax) {
+                ret.push(matrix[i][j]);
+            }
+        }
+    }
+    return ret;
+};
+```
+
+**方法二：预处理 + 模拟**
+
+思路与算法
+
+![image-20220414161719559](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204141617622.png)
+
+```js
+var luckyNumbers  = function(matrix) {
+    const m = matrix.length, n = matrix[0].length;
+    const minRow = new Array(m).fill(Number.MAX_SAFE_INTEGER);
+    const maxCol = new Array(n).fill(0);
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            minRow[i] = Math.min(minRow[i], matrix[i][j]);
+            maxCol[j] = Math.max(maxCol[j], matrix[i][j]);
+        }
+    }
+    const ret = [];
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            if (matrix[i][j] === minRow[i] && matrix[i][j] === maxCol[j]) {
+                ret.push(matrix[i][j]);
+            }
+        }
+    }
+    return ret;
+};
+```
+
+#### [50. Pow(x, n)](https://leetcode-cn.com/problems/powx-n/)
+
+```js
+/**
+ * @param {number} x
+ * @param {number} n
+ * @return {number}
+ */
+var myPow = function(x, n) {
+    return x**n;
+};
+
+var myPow = function (x, n) {
+    if (n === 0) return 1 // n=0直接返回1
+    if (n < 0) {   				//n<0时 x的n次方等于1除以x的-n次方分
+        return 1 / myPow(x, -n)
+    }
+    if (n % 2) {    //n是奇数时 x的n次方 = x*x的n-1次方
+        return x * myPow(x, n - 1)
+    }
+    return myPow(x * x, n / 2) //n是偶数，使用分治，一分为二，等于x*x的n/2次方 
+}
+```
+
+#### [11. 盛最多水的容器](https://leetcode-cn.com/problems/container-with-most-water/)
+
+```js
+/**
+ * @param {number[]} height
+ * @return {number}
+ */
+var maxArea = function(height) {
+    let left = 0, right = height.length - 1, max = 0;
+    while(left < right) {
+        // 先 底乘高 ，底是两指针距离，高是两指针指向的数值小的那个，不然会水溢出
+        max = Math.max(max, (right - left) * Math.min(height[left], height[right]));
+        // 如果左指针指向的高度，小于等于 右指针，那就该它移
+        if(height[left] <= height[right]) {
+            left++;
+        } else {
+            right--;
+        }
+    }
+
+    return max;
+};
+```
+
