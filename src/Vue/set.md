@@ -61,7 +61,7 @@ import { set } from '../observer/index'
 Vue.prototype.$set = set
 ```
 
-结果我们发现Vue.set()和this.$set()这两个api的实现原理基本一模一样，都是使用了set函数。set函数是从 ../observer/index 文件中导出的，区别在于Vue.set()是将set函数绑定在Vue构造函数上，this.$set()是将set函数绑定在Vue原型上。
+结果我们发现Vue.set()和`this.$set()`这两个api的实现原理基本一模一样，都是使用了set函数。set函数是从 ../observer/index 文件中导出的，区别在于Vue.set()是将set函数绑定在Vue构造函数上，`this.$set()`是将set函数绑定在Vue原型上。
 
 ```ts
 function set (target: Array<any> | Object, key: any, val: any): any {

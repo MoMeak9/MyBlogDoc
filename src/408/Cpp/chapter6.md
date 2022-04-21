@@ -1,11 +1,9 @@
 ---
-title: C语言训练营Chaptrt06 函数
 date: 2022-01-28
-author: MoMeaks
-sidebar: 'auto'
-categories:
-- 408
+category:
+- 计算机408
 ---
+# C语言训练营Chaptrt06 函数
 
 ### 6.3 图的遍历
 

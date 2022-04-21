@@ -1,12 +1,5 @@
 ---
-title: Vue 使用技巧
-date: 2022-2-17
-author: MoMeaks
-sidebar: 'auto'
-categories:
-- wiki
-tags:
-- Vue
+
 ---
 
 > 截取：

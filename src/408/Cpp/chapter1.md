@@ -1,12 +1,9 @@
 ---
-title: C语言训练营Chaptrt01
 date: 2022-01-28
-author: MoMeaks
-sidebar: 'auto'
-categories:
-- 408
+category:
+- 计算机408
 ---
-
+# C语言训练营Chaptrt01
 
 ### 1.1 常量与变量
 

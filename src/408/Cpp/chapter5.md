@@ -1,11 +1,9 @@
 ---
-title: C语言训练营Chaptrt04 指针
 date: 2022-01-28
-author: MoMeaks
-sidebar: 'auto'
-categories:
-- 408
+category:
+- 计算机408
 ---
+# C语言训练营Chaptrt05 指针
 
 > 本节须参考C语言基础描述页
 

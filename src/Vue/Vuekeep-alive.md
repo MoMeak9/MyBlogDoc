@@ -1,14 +1,3 @@
----
-title: Vue keep-alive 学习
-date: 2021-04-28
-author: MoMeaks
-sidebar: 'auto'
-categories:
-- fontEnd
-- blog
-tags:
-- Vue
----
 
 ## 什么是 `keep-alive`
 

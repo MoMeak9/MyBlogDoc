@@ -1,11 +1,9 @@
 ---
-title: C语言训练营Chaptrt03 选择与循环
 date: 2022-01-28
-author: MoMeaks
-sidebar: 'auto'
-categories:
-- 408
+category:
+- 计算机408
 ---
+# C语言训练营Chaptrt02 选择与循环
 
 ### 3.1 栈
 

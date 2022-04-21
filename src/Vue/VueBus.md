@@ -1,15 +1,6 @@
 ---
-title: VueBus 总线传参数
-date: 2021-09-28
-author: MoMeaks
-sidebar: 'auto'
-categories:
-- fontEnd
-- blog
-tags:
-- Vue
 ---
-
+# VueBus 总线传参数
 ## 简介
 
 vue组件非常常见的有父子组件通信，兄弟组件通信。而父子组件通信就很简单，父组件会通过 `props` 向下传数据给子组件，当子组件有事情要告诉父组件时会通过 `$emit` 事件告诉父组件。今天就来说说如果两个页面没有任何引入和被引入关系，该如何通信了？
@@ -171,9 +162,9 @@ Object.defineProperties(Vue.prototype, {
 // 这个初始化的第一种方法，个人感觉区别不大
 ```
 
-#### 使用 $on和$emit
+#### 使用 `$on`和`$emit`
 
-在这个特定的总线中使用两个方法。一个用于创建发出的事件，它就是$emit；另一个用于订阅$on：
+在这个特定的总线中使用两个方法。一个用于创建发出的事件，它就是`$emit`；另一个用于订阅`$on`：
 
 ```vue
 this.$bus.$emit('nameOfEvent',{ ... pass some event data ...});

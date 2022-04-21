@@ -1,15 +1,5 @@
----
-title: Vue 常用第三方库
-date: 2021-11-18
-author: MoMeaks
-sidebar: 'auto'
-categories:
-- fontEnd
-- blog
-tags:
-- Vue
----
 
+# 库
 - axios
 - clipboard.js 剪贴板
   https://juejin.cn/post/6844903854442561543
