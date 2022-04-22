@@ -33,11 +33,11 @@ jobs:
       uses: AEnterprise/rsync-deploy@v1.0  # 使用别人包装好的步骤镜像
       env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}   # 引用配置，SSH私钥
-        ARGS: -avz --delete --exclude='*.pyc'   # rsync参数，排除.pyc文件
+        ARGS: "-e -c -r --delete"
         SERVER_PORT: '22'  # SSH端口
         FOLDER: ./dist/*  # 要推送的文件夹，路径相对于代码仓库的根目录
-        SERVER_IP: ${{ secrets.SSH_HOST }}  # 引用配置，服务器的host名（IP或者域名domain.com）
-        USERNAME: ${{ secrets.SSH_USERNAME }}  # 引用配置，服务器登录名
+        SERVER_IP: '124.220.27.112'  # 引用配置，服务器的host名（IP或者域名domain.com）
+        USERNAME: 'root'  # 引用配置，服务器登录名
         SERVER_DESTINATION: /www/wwwroot/lmsworld.cn/   # 部署到目标文件夹
 
     # - name: Restart server   # 第五步，重启服务
