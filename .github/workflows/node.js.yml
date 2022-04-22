@@ -37,7 +37,7 @@ jobs:
         SERVER_PORT: '22'  # SSH端口
         FOLDER: ./dist/*  # 要推送的文件夹，路径相对于代码仓库的根目录
         SERVER_IP: '124.220.27.112'  # 引用配置，服务器的host名（IP或者域名domain.com）
-        USERNAME: 'lwmc'  # 引用配置，服务器登录名
+        USERNAME: 'root'  # 引用配置，服务器登录名
         SERVER_DESTINATION: /www/wwwroot/lmsworld.cn/   # 部署到目标文件夹
 
     # - name: Restart server   # 第五步，重启服务
