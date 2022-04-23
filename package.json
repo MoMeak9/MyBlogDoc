@@ -7,10 +7,10 @@
     "docs:build": "vuepress build src",
     "docs:clean-dev": "vuepress dev src --clean-cache",
     "docs:dev": "vuepress dev src",
-    "deploy": "npm run docs:build && serverless deploy"
+    "deploy": "npm run docs:build && components deploy"
   },
   "devDependencies": {
-    "serverless": "^3.15.2",
+    "@serverless/components": "^3.18.2",
     "vuepress": "^2.0.0-beta.36",
     "vuepress-theme-hope": "^2.0.0-beta.22"
   },
