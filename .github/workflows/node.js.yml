@@ -26,10 +26,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - name: Install dependencies
-      run: npm install
-    - name: Build
-     run: npm run docs:build
+    - run: npm install
+    - run: npm run docs:build
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
