@@ -28,7 +28,7 @@ jobs:
         cache: 'npm'
     - run: npm install
     - run: npm install -g serverless
-    - run: npm run deploy
+    - run: npm run docs:build
     - name: deploy serverless
       run: sls deploy --debug
       env: # 环境变量
