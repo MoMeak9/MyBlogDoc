@@ -10,7 +10,6 @@
     "deploy": "npm run docs:build && components deploy"
   },
   "devDependencies": {
-    "@serverless/components": "^3.18.2",
     "vuepress": "^2.0.0-beta.36",
     "vuepress-theme-hope": "^2.0.0-beta.22"
   },
