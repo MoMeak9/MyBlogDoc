@@ -27,7 +27,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm install
-    - run: npm run docs:build
+    - run: set TENCENT_SECRET_ID=${{ secrets.TENCENT_SECRET_ID }} && set TENCENT_SECRET_KEY=${{secrets.TENCENT_SECRET_KEY}}
+    - run: npm run deploy
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
