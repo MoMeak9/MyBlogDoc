@@ -23,8 +23,6 @@
 
 ### 实现内容
 
-实际上都是Hope先生的主题实现的~列一下开启的功能
-
 - SEO
 
 - Algolia的搜索
@@ -41,10 +39,14 @@
 
 **辅助**
 
-- 腾讯云Serverless部署
+- CDN自定义源站加速GitHub Page （国内访问）
 
-- CDN自定义静态源站加速域名
-
-- COS存储在线图片 + CDN
+- COS存储文档在线图片
 
 - COS + 数据万象的在线文档预览
+
+### 部署
+
+- 腾讯云Serverless部署
+
+- Github Action 自动部署 Github Page （见deploy分支）
