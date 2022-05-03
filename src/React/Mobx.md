@@ -1,3 +1,9 @@
+---
+date: 2022-05-02
+category:
+- React
+---
+
 # Mobx
 
 ## 简介
