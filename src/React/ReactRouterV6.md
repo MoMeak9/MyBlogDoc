@@ -1,10 +1,4 @@
----
-date: 2022-05-02
-category:
-- React
----
-
-# React-Router
+# ReactRouterV6
 
 ## 基础使用
 
@@ -48,7 +42,7 @@ category:
 <Route path="/about" element={<About/>}/>
 ```
 
-**说明：**当url路径为 ‘/about’ 时，会渲染 <About/> 组件
+**说明：**当url路径为 ‘/about’ 时，会渲染` <About/> `组件
 
 ## 编程式导航
 
@@ -104,13 +98,13 @@ category:
 
    ![image-20220501164359039](https://my-doc-1259409954.file.myqcloud.com/MyImages/image-20220501164359039.png)
 
-2. Layout.js: 使用 <Outlet />指定二级路由出口
+2. Layout.js: 使用 `<Outlet />`指定二级路由出口
 
    ![image-20220501164447292](https://my-doc-1259409954.file.myqcloud.com/MyImages/image-20220501164447292.png)
 
 ### 默认二级路由
 
-**场景** **：**应用首次渲染完毕就需要显示的二级路由
+**场景：** 应用首次渲染完毕就需要显示的二级路由
 
 **怎么做：** 1. 给默认路由标记index  2. 修改跳转路径path
 
@@ -118,7 +112,7 @@ category:
 
 ## 404页配置
 
-**场景** **：**当所有的路径都没有匹配的时候显示
+**场景：**当所有的路径都没有匹配的时候显示
 
 **语法说明：** 在各级路由的最后添加 * 号路由 作为兜底
 
