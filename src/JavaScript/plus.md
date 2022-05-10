@@ -1,4 +1,4 @@
-# JavaScript 进阶
+# JavaScript 进阶整合
 
 ## 20个 Javascript 技巧
 
@@ -387,3 +387,168 @@ Object.keys(obj);
 Object.values(obj);
 (3) [1, 2, 3]
 ```
+
+## 如何动态导入ECMAScript模块？
+
+> 原文：https://dmitripavlutin.com/ecmascript-modules-dynamic-import/
+
+ECMAScript(又名ES2015或ES)模块是在JavaScript中组织内聚代码块的一种方法。
+
+ES模块系统有2个部分：
+
+- `import`模块 - 使用 `import { func } from './myModule'`
+- `export`模块-  使用 `export const func = () => {}`
+
+`import` 模块是使用 `import` 语法导入依赖项的模块:
+
+```js
+import { concat } from './concatModule';
+
+concat('a', 'b'); // => 'ab'
+```
+
+而被导入的模块使用`export`语法从自身导出组件:
+
+```js
+export const concat = (paramA, paramB) => paramA + paramB;
+```
+
+`import { concat } from './concatModule'`使用ES模块的方式是静态的：**意味着模块之间的依赖关系在编译时就已经知道了。**
+
+虽然静态导入在大多数情况下是有效的，但有时我们想节省客户的带宽并有条件地加载模块。
+
+为了实现这一点，**我们可以用不同的方式使用 `import(pathToModule)` 语法对模块进行新的动态导入：作为一个函数。动态导入是`ES2020`开始的一个JavaScript语言特性。**
+
+### 1. 动态模块的导入
+
+当`import`关键字用作函数而不是静态导入语法时:
+
+```js
+const module = await import(pathToModule);
+```
+
+它返回一个`promise` ，并开始一个加载模块的异步任务。如果模块被成功加载，那么`promise`就会解析到模块的内容，否则，`promise` 就会被拒绝。
+
+请注意，`pathToModule`可以是任何表达式，其值为表示导入模块路径的字符串。有效的值是普通的字符串字面意义（如`./myModule`）或有字符串的变量。
+
+例如，我们在一个异步函数中加载一个模块。
+
+```js
+async function loadMyModule() {
+  const myModule = await import('./myModule');
+  // ... use myModule
+}
+
+loadMyModule();
+```
+
+有趣的是，与静态导入相反，动态导入接受以模块路径求值的表达式
+
+```js
+async function loadMyModule(pathToModule) {
+  const myModule = await import(pathToModule);
+  // ... use myModule
+}
+
+loadMyModule('./myModule');
+```
+
+现在，了解了如何加载模块后，我们来看看如何从导入的模块中提取组件。
+
+### 2.导入组件
+
+#### 2.1 导入命名组件
+
+考虑下面的模块：
+
+```js
+// namedConcat.js
+export const concat = (paramA, paramB) => paramA + paramB;
+```
+
+这里导出了一个 `concat` 函数。
+
+如果想动态导入`namedConcat.js`，并访问命名的导出`concat`，那么只需通解构的方式就行了：
+
+```js
+async function loadMyModule() {
+  const { concat } = await import('./namedConcat');
+  concat('b', 'c'); // => 'bc'
+}
+
+loadMyModule();
+```
+
+#### 2.2 默认导出
+
+如果模块是默认导出的，我们可以使用`default`属性来访问。
+
+还是上面的例子，我们将`defaultConcat.js`里面的`concat`函数默认导出:
+
+```js
+// defaultConcat.js
+export default (paramA, paramB) => paramA + paramB;
+```
+
+在动态导入模块中,可以使用`default`属性来访问:
+
+```js
+async function loadMyModule() {
+  const { default: defaultImport } = await import('./defaultConcat');
+  defaultImport('b', 'c'); // => 'bc'
+}
+
+loadMyModule();
+```
+
+注意，`default`在JavaScript中是一个关键字，所以它不能用作变量名。
+
+#### 2.3导入混合形式
+
+如果模块里面既有默认导出也有命名导出，同样也是使用解构的方式来访问：
+
+```js
+async function loadMyModule() {
+  const { 
+    default: defaultImport,
+    namedExport1,
+    namedExport2
+  } = await import('./mixedExportModule');
+  // ...
+}
+
+loadMyModule();
+```
+
+#### 3.何时使用动态导入
+
+建议在模块比较大的，或者要根据条件才导入的模块可以使用**动态导入**。
+
+```js
+async function execBigModule(condition) {
+  if (condition) {
+    const { funcA } = await import('./bigModuleA');
+    funcA();
+  } else {
+    const { funcB } = await import('./bigModuleB');
+    funcB();
+  }
+}
+
+execBigModule(true);
+```
+
+对于小模块(如前面例子中的`namedConcat.js`或`defaultConcat.js`)，只有几十行代码，使用动态导入在点杀鸡用牛刀感觉。
+
+### 总结
+
+当调用 `import(pathToModule)` 作为一个函数时，其参数表示一个模块的指定符（又称路径），那么就会动态加载该模块。
+
+在这种情况下，`module = await import(pathToModule)` 返回一个 promise ，该承诺解析为一个包含导入模块组件的对象。
+
+Node.js（13.2及以上版本）和大多数现代浏览器都支持动态导入。
+
+
+
+
+
