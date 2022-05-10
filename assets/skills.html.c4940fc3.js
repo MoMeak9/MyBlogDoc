@@ -1,0 +1,72 @@
+import{_ as n}from"./plugin-vue_export-helper.21dcd24c.js";import{b as a}from"./app.28325d67.js";const s={},e=a(`<h1 id="javascript\u4F18\u96C5\u5199\u6CD5\u53CA\u9A9A\u64CD\u4F5C" tabindex="-1"><a class="header-anchor" href="#javascript\u4F18\u96C5\u5199\u6CD5\u53CA\u9A9A\u64CD\u4F5C" aria-hidden="true">#</a> JavaScript\u4F18\u96C5\u5199\u6CD5\u53CA\u9A9A\u64CD\u4F5C</h1><h3 id="_1\u3001-\u5224\u65AD\u4E3A\u7A7A" tabindex="-1"><a class="header-anchor" href="#_1\u3001-\u5224\u65AD\u4E3A\u7A7A" aria-hidden="true">#</a> 1\u3001 \u5224\u65AD\u4E3A\u7A7A</h3><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code>a = a || [];
+    
+params.success&amp;&amp;params.success(res);
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><h3 id="_2\u3001\u591A\u6761\u4EF6\u5224\u65AD" tabindex="-1"><a class="header-anchor" href="#_2\u3001\u591A\u6761\u4EF6\u5224\u65AD" aria-hidden="true">#</a> 2\u3001\u591A\u6761\u4EF6\u5224\u65AD</h3><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code>//\u5C06\u5224\u65AD\u6761\u4EF6\u4F5C\u4E3A\u5BF9\u8C61\u7684\u5C5E\u6027\u540D\uFF0C\u5C06\u5904\u7406\u903B\u8F91\u4F5C\u4E3A\u5BF9\u8C61\u7684\u5C5E\u6027\u503C
+var Statistics = function () {
+    console.log(&#39;\u6267\u884C&#39;)
+}
+const comparativeTotles = new Map([
+    [0, Statistics],
+    [1, Statistics],
+    [2, Statistics],
+    [3, Statistics]
+])
+let map = function (val) {
+    return comparativeTotles.get(val)
+}
+let getMap = map(1); //\u5982\u679C\u67E5\u627E\u4E0D\u5230\u8FD4\u56DEundefined
+if (!getMap) {
+    console.log(&#39;\u67E5\u627E\u4E0D\u5230&#39;)
+} else {
+    console.log(&#39;\u6267\u884C\u64CD\u4F5C&#39;)
+    getMap()
+}
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br></div></div><p>if-else \u6539\u5584</p><blockquote><p>\u611F\u89C9\u5BF9\u8C61\u66F4\u597D\u4E00\u4E9B</p></blockquote><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code>//\u5229\u7528\u6570\u7EC4\u5FAA\u73AF\u7684\u7279\u6027\uFF0C\u7B26\u5408\u6761\u4EF6\u7684\u903B\u8F91\u90FD\u4F1A\u88AB\u6267\u884C\uFF0C\u90A3\u5C31\u53EF\u4EE5\u540C\u65F6\u6267\u884C\u516C\u5171\u903B\u8F91\u548C\u5355\u72EC\u903B\u8F91\u3002
+const functionA = ()=&gt;{/*do sth*/}       // \u5355\u72EC\u4E1A\u52A1\u903B\u8F91
+const functionB = ()=&gt;{/*do sth*/}       // \u5355\u72EC\u4E1A\u52A1\u903B\u8F91
+const functionC = ()=&gt;{/*send log*/}   // \u516C\u5171\u4E1A\u52A1\u903B\u8F91
+const actions = new Map([
+    [&#39;guest_1&#39;, () =&gt; { functionA }],
+    [&#39;guest_2&#39;, () =&gt; {  functionB }],
+    [&#39;guest_3&#39;, () =&gt; { functionC }],
+    [&#39;guest_4&#39;, () =&gt; { functionA }],
+    [&#39;default&#39;, () =&gt; { functionC  }],
+    //...
+])
+ 
+/**
+ * \u6309\u94AE\u70B9\u51FB\u4E8B\u4EF6
+ * @param {string} identity \u8EAB\u4EFD\u6807\u8BC6\uFF1Aguest\u5BA2\u6001 master\u4E3B\u6001
+  * @param {number} status \u6D3B\u52A8\u72B6\u6001\uFF1A1\u5F00\u7968\u4E2D 2\u5F00\u7968\u5931\u8D25 3 \u5F00\u7968\u6210\u529F 4 \u5546\u54C1\u552E\u7F44 5 \u6709\u5E93\u5B58\u672A\u5F00\u56E2
+ */
+const onButtonClick = (identity, status) =&gt; {
+  let action = actions.get(\`\${identity}_\${status}\`) || actions.get(&#39;default&#39;)
+  action.call(this)
+}
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br></div></div><h4 id="\u751F\u6210\u968F\u673Aid" tabindex="-1"><a class="header-anchor" href="#\u751F\u6210\u968F\u673Aid" aria-hidden="true">#</a> \u751F\u6210\u968F\u673AID</h4><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code>// \u751F\u6210\u957F\u5EA6\u4E3A10\u7684\u968F\u673A\u5B57\u6BCD\u6570\u5B57\u5B57\u7B26\u4E32
+Math.random().toString(36).substring(2);
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><h4 id="\u6BCF\u79D2\u66F4\u65B0\u5F53\u524D\u65F6\u95F4" tabindex="-1"><a class="header-anchor" href="#\u6BCF\u79D2\u66F4\u65B0\u5F53\u524D\u65F6\u95F4" aria-hidden="true">#</a> \u6BCF\u79D2\u66F4\u65B0\u5F53\u524D\u65F6\u95F4</h4><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code>setInterval(()=&gt;document.body.innerHTML=new Date().toLocaleString().slice(10,18))
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br></div></div><h4 id="\u751F\u6210\u968F\u673A-16-\u8FDB\u5236-\u989C\u8272-\u7801-\u5982-ffffff" tabindex="-1"><a class="header-anchor" href="#\u751F\u6210\u968F\u673A-16-\u8FDB\u5236-\u989C\u8272-\u7801-\u5982-ffffff" aria-hidden="true">#</a> \u751F\u6210\u968F\u673A 16 \u8FDB\u5236 \u989C\u8272 \u7801 \u5982 # ffffff</h4><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code>&#39;#&#39; + Math.floor(Math.random() * 0xffffff).toString(16).padEnd(6, &#39;0&#39;);
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br></div></div><h4 id="\u4F18\u96C5\u7684\u53D6\u6574" tabindex="-1"><a class="header-anchor" href="#\u4F18\u96C5\u7684\u53D6\u6574" aria-hidden="true">#</a> \u4F18\u96C5\u7684\u53D6\u6574</h4><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code>var a = ~~2.33   ----&gt; 2
+var b = 2.33 | 0   ----&gt; 2
+var c = 2.33 &gt;&gt; 0   ----&gt; 2
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><h4 id="\u4F18\u96C5\u7684\u91D1\u94B1\u683C\u5F0F\u5316" tabindex="-1"><a class="header-anchor" href="#\u4F18\u96C5\u7684\u91D1\u94B1\u683C\u5F0F\u5316" aria-hidden="true">#</a> \u4F18\u96C5\u7684\u91D1\u94B1\u683C\u5F0F\u5316</h4><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code>// 1\u3001\u4F7F\u7528\u6B63\u5219\u5B9E\u73B0
+var test1 = &#39;1234567890&#39;
+var format = test1.replace(/\\B(?=(\\d{3})+(?!\\d))/g, &#39;,&#39;)
+console.log(format) // 1,234,567,890
+// 2\u3001\u4F7F\u7528\u9A9A\u64CD\u4F5C
+function formatCash(str) {
+       return str.split(&#39;&#39;).reverse().reduce((prev, next, index) =&gt; {
+            return ((index % 3) ? next : (next + &#39;,&#39;)) + prev
+       })
+}
+console.log(format) // 1,234,567,890
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><h4 id="\u4E94\u79CD\u65B9\u6CD5\u5B9E\u73B0\u503C\u4EA4\u6362" tabindex="-1"><a class="header-anchor" href="#\u4E94\u79CD\u65B9\u6CD5\u5B9E\u73B0\u503C\u4EA4\u6362" aria-hidden="true">#</a> \u4E94\u79CD\u65B9\u6CD5\u5B9E\u73B0\u503C\u4EA4\u6362</h4><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code>[a, b] = [b, a]; 
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br></div></div><h4 id="\u5B9E\u73B0\u6DF1\u62F7\u8D1D" tabindex="-1"><a class="header-anchor" href="#\u5B9E\u73B0\u6DF1\u62F7\u8D1D" aria-hidden="true">#</a> \u5B9E\u73B0\u6DF1\u62F7\u8D1D</h4><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code>var b = JSON.parse(JSON.string(a))
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br></div></div><h4 id="\u9012\u5F52\u6C42\u9636\u4E58" tabindex="-1"><a class="header-anchor" href="#\u9012\u5F52\u6C42\u9636\u4E58" aria-hidden="true">#</a> \u9012\u5F52\u6C42\u9636\u4E58</h4><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code>function factorial(n) {
+    return (n &gt; 1) ? n * f(n - 1) : n
+}
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><h3 id="\u5BF9\u8C61\u8BBF\u95EE" tabindex="-1"><a class="header-anchor" href="#\u5BF9\u8C61\u8BBF\u95EE" aria-hidden="true">#</a> \u5BF9\u8C61\u8BBF\u95EE</h3><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code>const obj = {a:{b:22}}
+
+console.log(obj?.a?.b)
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div>`,26);function r(i,l){return e}var t=n(s,[["render",r],["__file","skills.html.vue"]]);export{t as default};

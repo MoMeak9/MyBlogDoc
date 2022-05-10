@@ -1,1 +1,0 @@
-import{_ as t}from"./plugin-vue_export-helper.21dcd24c.js";import{c as n,o,F as r,a as e}from"./app.3dedad24.js";const _={},a=e("p",null,"\u5230\u5E95\u5566~",-1),c=e("p",null,"\u8FD8\u6CA1\u60F3\u597D\u52A0\u70B9\u5565",-1);function s(l,i){return o(),n(r,null,[a,c],64)}var f=t(_,[["render",s],["__file","index.html.vue"]]);export{f as default};
