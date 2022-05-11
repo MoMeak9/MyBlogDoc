@@ -1,8 +1,6 @@
 ---
 date: 2022-03-31
 icon: page
-sticky: true
-star: true
 category:
 - 面试题
 - 前端
@@ -178,7 +176,7 @@ let quickSort = function (arr) {
 
 ------
 
-## 归并排序
+## 归并排序:star:
 
 将两个有序数列合并成一个有序数列，我们称之为“归并”
 

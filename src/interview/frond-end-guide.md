@@ -539,8 +539,253 @@ CSS3 动画如 animation
 
 link 属于 html 标签，而@import 是 css 提供的
 
-页面被加载时，link 会同时被加载，而@import 引用的 css 会等到页面加载结束后加载。
+页面被加载时，link 会同时被加载，而**@import 引用的 css 会等到页面加载结束后加载。**
 
 link 是 html 标签，因此没有兼容性，而@import 只有 IE5 以上才能识别。
 
 link 方式样式的权重高于@import 的
+
+####  transition 和 animation 的区别
+
+Animation 和 transition 大部分属性是相同的，他们都是随时间改变元素的属性值，他们的主要区别是 transition  需要触发一个事件才能改变属性，让属性变化成为一个持续一段时间的过程，而不是立即生效的。而 animation 不需要触发任何事件的情况下才会随时间改变属性值，并且 transition 为 2 帧，从 from .... to，而 animation 可以一帧一帧的。
+
+####  关于 JS 动画和 css3 动画的差异性
+
+渲染线程分为 main thread 和 compositor thread（合成线程），如果 css 动画只改变 transform 和 opacity，这时整个 CSS 动画得以在 compositor trhead 完成（而 JS 动画则会在 main thread 执行，然后出发 compositor thread 进行下一步操作），**特别注意的是如果改变 transform 和 opacity 是不会 layout 或者 paint 的（回流和重绘的）**。
+
+区别：
+
+功能涵盖面，JS 比 CSS 大
+
+实现/重构难度不一，CSS3 比 JS 更加简单，性能跳优方向固定
+
+对帧速表现不好的低版本浏览器，css3 可以做到自然降级
+
+css 动画有天然事件支持
+
+css3 有兼容性问题
+
+#### 说一下块元素和行元素
+
+块元素：独占一行，并且有自动填满父元素，可以设置 margin 和 pading 以及高度和宽 度 
+
+行元素：不会独占一行，**width 和 height 会失效**，**并且在垂直方向的 padding 和 margin会失效**
+
+#### visibility=hidden, opacity=0，display:none
+
+opacity=0，该元素隐藏起来了，但不会改变页面布局，并且，如果该元素已经绑定一些 事件，如 click 事件，那么点击该区域，也能触发点击事件的 
+
+visibility=hidden，该元素 隐藏起来了，但不会改变页面布局，但是不会触发该元素已经绑定的事件 
+
+display=none， 把元素隐藏起来，并且会改变页面布局，可以理解成在页面中把该元素删除掉一样。
+
+####  双边距重叠问题（外边距折叠）
+
+多个相邻（兄弟或者父子关系）普通流的块元素垂直方向（同一个BFC） marigin 会重叠 折叠的结果为：
+
+两个相邻的外边距都是正数时，折叠结果是它们两者之间较大的值。
+
+两个相邻的外边距都是负数时，折叠结果是两者绝对值的较大值。
+
+两个外边距一正一负时，折叠结果是两者的相加的和。
+
+### JavaScript
+
+
+
+## 前端核心
+
+### 服务端编程
+
+#### JSONP 的缺点
+
+JSONP 只支持 get，因为 script 标签只能使用 get 请求；（JSONP 是一种【请求一段 JS 脚本，把执行这段脚本的结果当做数据】的玩法。）
+
+JSONP 需要后端配合返回指定格式的数据。
+
+**实现跨域**
+
+JSONP：ajax 请求受同源策略影响，不允许进行跨域请求，而 script 标签 src 属性中的链接却可以访问跨域的 js 脚本，利用这个特性，服务端不再返回 JSON 格式的数据，而是返回一段调用某个函数的 js 代码，在 src 中进行了调用，这样实现了跨域。
+
+####  如何实现跨域
+
+iframe 跨域：两个页面都通过 js 强制设置 document.domain 为基础主域，就实现了同域。
+
+location.hash + iframe 跨域：a 欲与 b 跨域相互通信，通过中间页 c 来实现。 三个页面，不同域之间利用 iframe 的 location.hash 传值，相同域之间直接 js 访问来通信。
+
+window.name + iframe跨域：通过iframe的src属性由外域转向本地域，跨域数据即由iframe的 window.name 从外域传递到本地域。
+
+postMessage 跨域：可以跨域操作的 window 属性之一。
+
+CORS：服务端设置 Access-Control-Allow-Origin 即可，前端无须设置，若要带 cookie 请求，前后端都需要设置。
+
+代理跨域：起一个代理服务器，实现数据的转发
+
+#### dom 是什么，你的理解？
+
+文档对象模型（Document Object Model，简称 DOM），是 W3C 组织推荐的处理可扩展 标志语言的标准编程接口。在网页上，组织页面（或文档）的对象被组织在一个树形结 构中，用来表示文档中对象的标准模型就称为 DOM。
+
+#### 实现一个 Ajax
+
+Ajax 能够在不重新加载整个页面的情况下与服务器交换数据并更新部分网页内容，实现 局部刷新，大大降低了资源的浪费，是一门用于快速创建动态网页的技术，ajax 的使用 分为四部分：
+
+1、创建 XMLHttpRequest 对象 var xhr = new XMLHttpRequest();
+
+2、向服务器发送请求，使用 xmlHttpRequest 对象的 open 和 send 方法，
+
+3、监听状态变化，执行相应回调函数
+
+```js
+var xhr = new XMLHttpRequest();
+xhr.open('get', 'aabb.php', true);
+xhr.send(null);
+xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4) {
+        if (xhr.status == 200) {
+            console.log(xhr.responseText);
+        }
+    }
+}
+```
+
+### 移动 web 开发
+
+
+
+## 前端进阶
+
+### 前端工程化
+
+####  Babel 的原理是什么?
+
+babel 的转译过程也分为三个阶段，这三步具体是：
+
+- **解析 Parse**: 将代码解析生成**抽象语法树**( 即 **AST** )，即词法分析与语法分析的过程。
+
+- **转换 Transform**: 对于 AST 进行变换一系列的操作，babel 接受得到AST 并通过 babel-traverse 对其进行遍历，**在此过程中进行添加、更新及移除等操作**。
+
+- **生成 Generate**: 将变换后的 AST 再转换为 JS 代码, 使用到的模块是babel-generator。
+
+![image-20220407114237037](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204071142124.png)
+
+#### 如何写一个 babel 插件?
+
+
+
+### Git
+
+#### rebase 和 merge 的区别
+
+git rebase 和 git merge 一样都是用于从一个分支获取并且合并到当前分支.
+
+<img src="https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204071149969.png" alt="image-20220407114906889" style="zoom: 80%;" />
+
+- marge 特点：自动创建一个新的 commit 如果合并的时候遇到冲突，仅需 要修改后重新 commit。
+- 优点：记录了真实的 commit 情况，包括每个分支的详情。
+- 缺点：因为每次 merge 会自动产生一个 merge commit，所以在使用一些 git 的 GUI tools，特别是 commit 比较频繁时，看到分支很杂。
+
+![image-20220407115329273](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202204071153342.png)
+
+- rebase 特点：会合并之前的 commit 历史
+- 优点：得到更简洁的项目历史，去掉了 merge commit
+- 缺点：如果合并出现代码问题不容易定位，因为 re-write 了 history
+
+因此,当需要保留详细的合并信息的时候建议使用 git merge，特别是需要将分支合并进入 master 分支时；当发现自己修改某个功能时，频繁进行了 git commit 提交时，发现其实 过多的提交信息没有必要时，可以尝试 git rebase。
+
+#### git reset、git revert 和 git checkout 有什么区别
+
+这个问题同样也需要先了解 git 仓库的三个组成部分：工作区（Working Directory）、 暂存区（Stage）和历史记录区（History）。
+
+- 工作区：在 git 管理下的正常目录都算是工作区，我们平时的编辑工作 都是在工作区完成
+-  暂存区：临时区域。里面存放将要提交文件的快照
+-  历史记录区：git commit 后的记录区
+
+####  webpack 和 gulp 区别（模块化与流的区别）
+
+gulp 强调的是前端开发的工作流程，我们可以通过配置一系列的 task，定义 task 处理的 事务（例如文件压缩合并、雪碧图、启动 server、版本控制等），然后定义执行顺序， 来让 gulp 执行这些 task，从而构建项目的整个前端开发流程。 
+
+webpack 是一个前端模块化方案，更侧重模块打包，我们可以把开发中的所有资源（图 片、js 文件、css 文件等）都看成模块，通过 loader（加载器）和 plugins（插件）对资源 进行处理，打包成符合生产环境部署的前端资源。
+
+### Vue 框架
+
+#### 有使用过 Vue 吗？说说你对 Vue 的理解
+
+Vue 是一个构建数据驱动的渐进性框架，它的目标是通过 API 实现响应数据绑定和视图更新。
+
+####  说说 Vue 的优缺点
+
+优点：
+
+1、数据驱动视图，对真实 dom 进行抽象出 virtual dom（本质就是一个 js 对象），
+并配合 diff 算法、响应式和观察者、异步队列等手段以最小代价更新 dom，渲染
+页面
+
+2、组件化，组件用单文件的形式进行代码的组织编写，使得我们可以在一个文
+件里编写 html\css（scoped 属性配置 css 隔离）\js 并且配合 Vue-loader 之后，支
+持更强大的预处理器等功能
+
+3、强大且丰富的 API 提供一系列的 api 能满足业务开发中各类需求
+
+4、由于采用虚拟 dom，让 Vue ssr 先天就足
+
+5、生命周期钩子函数，选项式的代码组织方式，写熟了还是蛮顺畅的，但仍然
+有优化空间（Vue3 composition-api）
+
+6、生态好，社区活跃
+
+缺点：
+
+1、由于底层基于 Object.defineProperty 实现响应式，而这个 api 本身不支持 IE8
+及以下浏览器
+
+2、csr 的先天不足，首屏性能问题（白屏）
+
+3、由于百度等搜索引擎爬虫无法爬取 js 中的内容，故 spa 先天就对 seo 优化心
+有余力不足（谷歌的 puppeteer 就挺牛逼的，实现预渲染底层也是用到了这个工
+具）
+
+####  vue 如何监听键盘事件？
+
+1. @keyup. 方法
+2. addEventListener
+
+#### watch 怎么深度监听对象变化
+
+deep 设置为 true 就可以监听到对象的变化
+
+```js
+let vm = new Vue({
+    el: "#first", data: {msg: {name: '北京'}}, watch: {
+        msg: {
+            handler(newMsg, oldMsg) {
+                console.log(newMsg);
+            }, immediate: true, deep: true
+        }
+    }
+})
+```
+
+#### 删除数组用 delete 和 Vue.delete 有什么区别？
+
+- delete：只是被删除数组成员变为 empty / undefined，其他元素键值不变
+- Vue.delete：直接删了数组成员，并改变了数组的键值（对象是响应式的，确保 删除能触发更新视图，这个方法主要用于避开 Vue 不能检测到属性被删除的限 制）
+
+####  watch 和计算属性有什么区别？
+
+通俗来讲，既能用 computed 实现又可以用 watch 监听来实现的功能，推荐用 computed， 重点在于 computed 的缓存功能 computed 计算属性是用来声明式的描述一个值依赖了其它的值，当所依赖的值或者变量 改变时，计算属性也会跟着改变； watch 监听的是已经在 data 中定义的变量，当该变量变化时，会触发 watch 中的方法。
+
+####  Vue 双向绑定原理
+
+Vue 数据双向绑定是通过数据劫持结合发布者-订阅者模式的方式来实现的。利用了Object.defineProperty() 这个方法重新定义了对象获取属性值(get)和设置属性值(set)。
+
+#### v-model 是什么？有什么用呢？
+
+一则语法糖，相当于 v-bind:value="xxx" 和 @input，意思是绑定了一个 value 属性的值， 子组件可对 value 属性监听，通过$emit('input', xxx)的方式给父组件通讯。自己实现 v-model 方式的组件也是这样的思路。
+
+#### axios 是什么？怎样使用它？怎么解决跨域的问题？
+
+axios 的是一种异步请求，用法和 ajax 类似，安装 npm install axios --save 即可使用，请 求中包括 get,post,put, patch ,delete 等五种请求方式，解决跨域可以在请求头中添加 Access-Control-Allow-Origin，也可以在 index.js 文件中更改 proxyTable 配置等解决跨域 问题。
+
+####  在 vue 项目中如何引入第三方库（比如 jQuery）？有哪些方法可以做到？
+
+1、绝对路径直接引入 在 index.html 中用 script 引入 然后在 webpack 中配置 external externals: { 'jquery': 'jQuery' } 在组件中使用时 import import $ from 'jquery' 2 、在 webpack 中配置 alias resolve: { extensions: ['.js', '.vue', '.json'], alias: { '@': resolve('src'), 'jquery': resolve('static/jquery-1.12.4.js') } } 然后在组件中 import 3、在 webpack 中配置 plugins plugins: [ new webpack.ProvidePlugin({ $: 'jquery' }) ] 全局使用，但在使用 eslint 情况下会报错，需要在使用了 $ 的代码前添加 /* eslint-disable*/ 来去掉 ESLint 的检查。

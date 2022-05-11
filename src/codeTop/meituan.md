@@ -145,4 +145,181 @@ var rotate = function(matrix) {
 };
 ```
 
-https://codetop.cc/home
+```js
+var rotate = function(matrix) {
+    const n = matrix.length;
+    for (let i = 0; i < Math.floor(n / 2); ++i) {
+        for (let j = 0; j < Math.floor((n + 1) / 2); ++j) {
+            const temp = matrix[i][j];
+            matrix[i][j] = matrix[n - j - 1][i];
+            matrix[n - j - 1][i] = matrix[n - i - 1][n - j - 1];
+            matrix[n - i - 1][n - j - 1] = matrix[j][n - i - 1];
+            matrix[j][n - i - 1] = temp;
+        }
+    }
+};
+```
+
+#### [69. x 的平方根 ](https://leetcode-cn.com/problems/sqrtx/)
+
+```js
+/**
+ * @param {number} x
+ * @return {number}
+ */
+var mySqrt = function(x) {
+    let r = x
+
+    while (r ** 2 > x) {
+        r = ~~((r + x / r) / 2)
+    }//取整
+
+    return r
+};
+```
+
+#### [剑指 Offer 10- II. 青蛙跳台阶问题](https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/)
+
+```js
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var numWays = function(n) {
+    let sum = 0;
+    let x = 1;
+    let y = 1;
+    for(let i =0;i < n;i++){
+        sum = (x + y);
+        x = y;
+        y = sum
+    } 
+    return x;
+};
+```
+
+#### [387. 字符串中的第一个唯一字符](https://leetcode-cn.com/problems/first-unique-character-in-a-string/)
+
+**使用哈希表存储索引**
+
+`Object.entries()`方法返回一个给定对象自身可枚举属性的键值对数组，其排列与使用 [for...in...] 循环遍历该对象时返回的顺序一致（区别在于 for-in 循环还会枚举原型链中的属性）。
+
+```js
+var firstUniqChar = function(s) {
+    const position = new Map();
+    const n = s.length;
+    for (let [i, ch] of Array.from(s).entries()) {
+        if (position.has(ch)) {
+            position.set(ch, -1);
+        } else {
+            position.set(ch, i);
+        }
+    }
+    let first = -1;
+    for (let pos of position.values()) {
+        if (pos !== -1 && pos > first) {
+            first = pos;
+        }
+    }
+    return first;
+};
+```
+
+**队列**
+
+```js
+var firstUniqChar = function(s) {
+    const position = new Map();
+    const q = [];
+    const n = s.length;
+    for (let [i, ch] of Array.from(s).entries()) {
+        if (!position.has(ch)) {
+            position.set(ch, i);
+            q.push([s[i], i]);
+        } else {
+            position.set(ch, -1);
+            while (q.length && position.get(q[0][0]) === -1) {
+                q.shift();
+            }
+        }
+    }
+    return q.length ? q[0][1] : -1;
+};
+```
+
+```js
+var firstUniqChar = function (str) {
+    const obj = {}
+    Array.from(str).forEach((val, index) => {
+        if (obj[val]) {
+            obj[val] = -1;
+        } else {
+            obj[val] = index;
+        }
+    })
+    let ans = -1;
+    for (const key in obj) {
+        let val = obj[key];
+        if (val !== -1) {
+            if (ans === -1) ans = val;
+            ans = Math.min(ans, val);
+        }
+    }
+    return ans;
+};
+```
+
+#### [172. 阶乘后的零](https://leetcode-cn.com/problems/factorial-trailing-zeroes/)
+
+> 5 的个数
+
+```js
+var trailingZeroes = function(n) {
+    let ans = 0;
+    for (let i = 5; i <= n; i += 5) {
+        for (let x = i; x % 5 == 0; x /= 5) {
+            ++ans;
+        }
+    }
+    return ans;
+};
+```
+
+#### [1518. 换酒问题](https://leetcode-cn.com/problems/water-bottles/)
+
+```js
+var numWaterBottles = function(numBottles, numExchange) {
+    let bottle = numBottles, ans = numBottles;
+    while (bottle >= numExchange) {
+        bottle -= numExchange;
+        ++ans;
+        ++bottle;
+    }
+    return ans;
+};
+```
+
+#### [557. 反转字符串中的单词 III](https://leetcode-cn.com/problems/reverse-words-in-a-string-iii/)
+
+```js
+var reverseWords = function(s) {
+    const ret = [];
+    const length = s.length;
+    let i = 0;
+    while (i < length) {
+        let start = i;
+        while (i < length && s.charAt(i) != ' ') {
+            i++;
+        }
+        for (let p = start; p < i; p++) {
+            ret.push(s.charAt(start + i - 1 - p));
+        }
+        while (i < length && s.charAt(i) == ' ') {
+            i++;
+            ret.push(' ');
+        }
+    }
+    return ret.join('');
+};
+```
+
