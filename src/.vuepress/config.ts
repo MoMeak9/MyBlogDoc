@@ -1,4 +1,5 @@
 import { defineUserConfig } from "vuepress";
+// @ts-ignore
 import theme from "./theme";
 
 export default defineUserConfig({
