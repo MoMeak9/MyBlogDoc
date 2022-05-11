@@ -1,5 +1,5 @@
-import { defineSidebarConfig } from "vuepress-theme-hope";
+import {sidebar} from "vuepress-theme-hope";
 
-export default defineSidebarConfig({
+export default sidebar({
     "/codeTop/": "structure",
 });

@@ -1,8 +1,8 @@
-import {defineThemeConfig} from "vuepress-theme-hope";
+import { hopeTheme } from "vuepress-theme-hope";
 import navbar from "./navbar";
 import sidebar from "./sidebar";
 
-export default defineThemeConfig({
+export default hopeTheme({
     hostname: "https://yihuiBlog.top",
 
     author: {
@@ -95,15 +95,6 @@ export default defineThemeConfig({
             presentation: {
                 plugins: ["highlight", "math", "search", "notes", "zoom"],
             },
-        },
-
-        search: {
-            locales: {
-                '/': {
-                    placeholder: '搜索',
-                },
-            },
-            isSearchable: (page) => page.path !== '/',
         },
     },
 });
