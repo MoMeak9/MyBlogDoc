@@ -1,1 +1,0 @@
-const t={key:"v-679adf12",path:"/mjQA/PDD.html",title:"PDD \u9762\u7ECF",lang:"zh-CN",frontmatter:{icon:"edit",date:"2022-03-19T00:00:00.000Z",category:["\u9762\u7ECF","PDD"]},excerpt:"",headers:[{level:3,title:"\u4E0A\u6D77\u780D\u4E00\u5200\u4E00\u9762",slug:"\u4E0A\u6D77\u780D\u4E00\u5200\u4E00\u9762",children:[]}]};export{t as data};

@@ -1,1 +1,0 @@
-const e={key:"v-5ea929f8",path:"/mjQA/ali.html",title:"\u963F\u91CC\u9762\u7ECF\u95EE\u9898\u96C6\u5408",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:2,title:"\u963F\u91CC\u5DF4\u5DF4ICBU",slug:"\u963F\u91CC\u5DF4\u5DF4icbu",children:[]}]};export{e as data};

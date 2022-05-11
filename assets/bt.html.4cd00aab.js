@@ -1,1 +1,0 @@
-const e={key:"v-3b372d6f",path:"/other/bt.html",title:"BT \u7AD9\u70B9",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:2,title:"\u4F20\u7EDF\u7AD9",slug:"\u4F20\u7EDF\u7AD9",children:[]},{level:2,title:"\u4E8C\u6B21\u5143",slug:"\u4E8C\u6B21\u5143",children:[]}]};export{e as data};

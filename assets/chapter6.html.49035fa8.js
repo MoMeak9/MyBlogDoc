@@ -1,1 +1,0 @@
-const t={key:"v-2ce5b5f8",path:"/408/Cpp/chapter6.html",title:"C\u8BED\u8A00\u8BAD\u7EC3\u8425Chaptrt06 \u51FD\u6570",lang:"zh-CN",frontmatter:{date:"2022-01-28T00:00:00.000Z",category:["\u8BA1\u7B97\u673A408"]},excerpt:"",headers:[{level:3,title:"6.3 \u56FE\u7684\u904D\u5386",slug:"_6-3-\u56FE\u7684\u904D\u5386",children:[]}]};export{t as data};

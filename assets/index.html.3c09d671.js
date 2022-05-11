@@ -1,1 +1,0 @@
-const t={key:"v-3448eb71",path:"/TypeScript/",title:"\u91CD\u5B66TS",lang:"zh-CN",frontmatter:{icon:"edit",date:"2022-03-19T00:00:00.000Z",category:["\u7EC3\u4E60\u9898","\u524D\u7AEF","TypeScript"]},excerpt:"",headers:[]};export{t as data};
