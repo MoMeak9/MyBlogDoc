@@ -1,3 +1,8 @@
+---
+date: 2022-05-12
+category:
+- React
+---
 # React+Hooks
 
 >  React-hooks是react16.8以后，react新增的钩子API，目的是增加代码的可复用性，逻辑性，弥补无状态组件没有生命周期，没有数据管理状态state的缺陷。笔者认为，react-hooks思想和初衷，也是把组件，颗粒化，单元化，形成独立的渲染环境，减少渲染次数，优化性能。
