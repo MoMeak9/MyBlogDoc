@@ -1,5 +1,27 @@
 import {sidebar} from "vuepress-theme-hope";
 
 export default sidebar({
-    "/codeTop/": "structure",
+    "/codeTop/": [],
+    "/Node/": [
+        {
+            text: "Node基础笔记",
+            children: [
+                "01",
+                "02-03",
+                "04",
+                "05",
+                "06",
+                "Stream",
+                "07",
+                "09",
+                "10",
+            ]
+        },
+        {
+            text: "Node 进阶",
+            children: [
+                "npmPatch" /* /foo/ */,
+            ],
+        },
+    ],
 });
