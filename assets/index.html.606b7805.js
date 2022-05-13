@@ -1,0 +1,3 @@
+const t={key:"v-01560935",path:"/timeline/",title:"\u65F6\u95F4\u8F74",lang:"zh-CN",frontmatter:{title:"\u65F6\u95F4\u8F74",blog:{type:"type",key:"timeline"},layout:"Blog",summary:"",head:[["meta",{property:"og:url",content:"https://yihuiBlog.top/timeline/"}],["meta",{property:"og:site_name",content:"Yihui's Blog"}],["meta",{property:"og:title",content:"\u65F6\u95F4\u8F74"}],["meta",{property:"og:type",content:"website"}],["meta",{property:"og:locale",content:"zh-CN"}]]},excerpt:"",headers:[],git:{},readingTime:{minutes:0,words:0},copyright:`\u8457\u4F5C\u6743\u5F52YihuiBlog\u6240\u6709
+\u57FA\u4E8EMIT\u534F\u8BAE
+\u539F\u6587\u94FE\u63A5\uFF1Ahttps://yihuiBlog.top/timeline/`,filePathRelative:null};export{t as data};
