@@ -1,4 +1,4 @@
-import { hopeTheme } from "vuepress-theme-hope";
+import {hopeTheme} from "vuepress-theme-hope";
 import navbar from "./navbar";
 import sidebar from "./sidebar";
 
@@ -96,5 +96,14 @@ export default hopeTheme({
                 plugins: ["highlight", "math", "search", "notes", "zoom"],
             },
         },
+        copyright: {
+            hostname: "https://yihuiBlog.top",
+            author: 'YihuiBlog',
+            license: 'MIT',
+            global: true,
+            triggerWords: 20,
+            // disableCopy: true,
+            // disableSelection: true,
+        }
     },
 });
