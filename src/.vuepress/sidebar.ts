@@ -1,27 +1,30 @@
 import {sidebar} from "vuepress-theme-hope";
-
+import nodeSidebar from "./sidebars/node";
+import vueSidebar from "./sidebars/vue";
 export default sidebar({
     "/codeTop/": [],
-    "/Node/": [
+    "/Node/": nodeSidebar,
+    "/Vue/": vueSidebar,
+    "/Network/": [
         {
-            text: "Node基础笔记",
+            text: "HTTP",
+            prefix: "HTTP",
             children: [
-                "01",
-                "02-03",
-                "04",
-                "05",
-                "06",
-                "Stream",
-                "07",
-                "09",
-                "10",
+                "HTTPS",
+                "HTTPS",
+                "TLS",
             ]
         },
         {
-            text: "Node 进阶",
+            text: "网络基础笔记",
             children: [
-                "npmPatch" /* /foo/ */,
-            ],
+                "CDN",
+                "Nginx",
+                "HTTPProxy",
+                "OpenResty",
+                "WAF",
+                "WebSocket",
+            ]
         },
-    ],
+    ]
 });
