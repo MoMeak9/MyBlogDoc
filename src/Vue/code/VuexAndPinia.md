@@ -225,7 +225,7 @@ export const useCounterStore = defineStore('count', () => {
 
 首先我们进入到 Pinia 的 GitHub 中，我们可以在 packages/pinia/src/createPinia.ts 中看到 createPinia 函数的实现。
 
-下面的代码中，我们通过 effectScope 创建一个作用域对象，并且通过 ref 创建了响应式的数据对象 state。然后通过 install 方法支持了 app.use 的注册，内部通过 provide 的语法和全局的 $pinia 变量配置 Pinia 对象，并且通过 use 方法和 toBeInstalled 数组实现了 Pinia 的插件机制。**最后还通过 pinia.use(devtoolsPlugin) 实现了对 VueDevtools 的支持。**
+下面的代码中，我们通过 effectScope 创建一个作用域对象，并且通过 ref 创建了响应式的数据对象 state。然后通过 install 方法支持了 app.use 的注册，内部通过 provide 的语法和全局的 `$pinia` 变量配置 Pinia 对象，并且通过 use 方法和 toBeInstalled 数组实现了 Pinia 的插件机制。**最后还通过 pinia.use(devtoolsPlugin) 实现了对 VueDevtools 的支持。**
 
 ```ts
 export function createPinia(): Pinia {
@@ -402,7 +402,7 @@ function createOptionsStore<
 }
 ```
 
-最后我们来看一下 createSetupStore 函数的实现。这个函数也是 Pinia 中最复杂的函数实现，内部的 $patch 函数可以实现数据的更新。如果传递的参数 partialStateOrMutator 是函数，则直接执行，否则就通过 mergeReactiveObjects 方法合并到 state 中，最后生成 subscriptionMutation 对象，**通过 triggerSubscriptions 方法触发数据的更新。**
+最后我们来看一下 createSetupStore 函数的实现。这个函数也是 Pinia 中最复杂的函数实现，内部的 `$patch` 函数可以实现数据的更新。如果传递的参数 partialStateOrMutator 是函数，则直接执行，否则就通过 mergeReactiveObjects 方法合并到 state 中，最后生成 subscriptionMutation 对象，**通过 triggerSubscriptions 方法触发数据的更新。**
 
 ```ts
 
@@ -447,7 +447,7 @@ function createOptionsStore<
   }
 ```
 
-然后定义 partialStore 对象去存储 ID、$patch、Pinia 实例，并且新增了 subscribe 方法。再调用 reactive 函数把 partialStore 包裹成响应式对象，通过 pinia._s.set 的方法实现 store 的挂载。最后我们通过 pinia._s.get 获取的就是 partialStore 对象，defineStore 返回的方法 useStore 就可以通过 useStore 去获取缓存的 Pinia 对象，实现对数据的更新和读取。这里我们也可以看到，除了直接执行 Action 方法，还可以通过调用内部的 count.$patch({count:count+1}) 的方式来实现数字的累加。
+然后定义 partialStore 对象去存储 ID、`$patch`、Pinia 实例，并且新增了 subscribe 方法。再调用 reactive 函数把 partialStore 包裹成响应式对象，通过 pinia._s.set 的方法实现 store 的挂载。最后我们通过 pinia.\_s.get 获取的就是 partialStore 对象，defineStore 返回的方法 useStore 就可以通过 useStore 去获取缓存的 Pinia 对象，实现对数据的更新和读取。这里我们也可以看到，除了直接执行 Action 方法，还可以通过调用内部的 count.$patch({count:count+1}) 的方式来实现数字的累加。
 
 ```ts
   const partialStore = {

@@ -1,6 +1,7 @@
 import { defineUserConfig } from "vuepress";
 // @ts-ignore
 import theme from "./theme";
+import { searchPlugin } from "@vuepress/plugin-search";
 
 export default defineUserConfig({
   base: "/",
@@ -16,5 +17,10 @@ export default defineUserConfig({
       description: "前端小白的技术博客",
     },
   },
+  plugins: [
+    // @ts-ignore
+    searchPlugin({
+    }),
+  ],
   theme,
 });
