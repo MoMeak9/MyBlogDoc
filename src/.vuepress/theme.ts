@@ -104,6 +104,9 @@ export default hopeTheme({
             triggerWords: 20,
             // disableCopy: true,
             // disableSelection: true,
+        },
+        copyCode:{
+
         }
     },
 });

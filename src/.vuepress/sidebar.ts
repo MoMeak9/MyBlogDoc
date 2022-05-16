@@ -1,6 +1,8 @@
 import {sidebar} from "vuepress-theme-hope";
 import nodeSidebar from "./sidebars/node";
 import vueSidebar from "./sidebars/vue";
+import reactSidebar from "./sidebars/react";
+
 export default sidebar({
     "/codeTop/": [],
     "/Node/": nodeSidebar,
@@ -26,5 +28,6 @@ export default sidebar({
                 "WebSocket",
             ]
         },
-    ]
+    ],
+    "/React/": reactSidebar,
 });
