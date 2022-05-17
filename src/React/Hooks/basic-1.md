@@ -1,3 +1,8 @@
+---
+date: 2022-05-17
+category:
+- React
+---
 # 内置 Hooks（1）：如何保存组件状态和使用生命周期？
 
 ## useState：让函数组件具有维持状态的能力
@@ -166,5 +171,23 @@ function Sample() {
 
 ```sh
 npm install eslint-plugin-react-hooks --save-dev
+```
+
+然后在你的 ESLint 配置文件中加入两个规则：rules-of-hooks 和 exhaustive-deps。如下：
+
+```json
+{
+  "plugins": [
+    // ...
+    "react-hooks"
+  ],
+  "rules": {
+    // ...
+    // 检查 Hooks 的使用规则
+    "react-hooks/rules-of-hooks": "error", 
+    // 检查依赖项的声明
+    "react-hooks/exhaustive-deps": "warn"
+  }
+}
 ```
 
