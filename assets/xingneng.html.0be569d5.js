@@ -1,0 +1,1 @@
+import{_ as e}from"./plugin-vue_export-helper.21dcd24c.js";import{c as n,o as t}from"./app.c6c89e20.js";const r={};function c(o,_){return t(),n("p",null,"https://time.geekbang.org/column/article/455487")}var m=e(r,[["render",c],["__file","xingneng.html.vue"]]);export{m as default};
