@@ -1,4 +1,6 @@
-export default [
+import {HopeThemeSidebarArrayConfig} from "vuepress-theme-hope/src/shared/sidebar";
+
+const reactSidebar: HopeThemeSidebarArrayConfig = [
     {
         text: 'React基础',
         children: [
@@ -7,6 +9,20 @@ export default [
             "project",
             "Hooks",
             "Mobx",
+        ]
+    },
+    {
+        text: 'React Hooks',
+        prefix: 'Hooks',
+        children: [
+            "basic",
+            "basic-1",
+            "basic-2",
+            "basic-3",
+            "basic-4",
+            "basic-5",
+            "basic-6",
+            "basic-7",
         ]
     },
     {
@@ -22,3 +38,5 @@ export default [
         children: []
     }
 ]
+
+export default reactSidebar;

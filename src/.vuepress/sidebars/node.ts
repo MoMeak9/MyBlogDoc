@@ -1,4 +1,6 @@
-export default  [
+import {HopeThemeSidebarArrayConfig} from "vuepress-theme-hope/src/shared/sidebar";
+
+const nodeSidebar: HopeThemeSidebarArrayConfig = [
     {
         text: "Node基础笔记",
         children: [
@@ -20,3 +22,5 @@ export default  [
         ],
     },
 ];
+
+export default nodeSidebar;

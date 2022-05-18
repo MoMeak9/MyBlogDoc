@@ -1,4 +1,6 @@
-export default [
+import {HopeThemeSidebarArrayConfig} from "vuepress-theme-hope/src/shared/sidebar";
+
+const vueSidebar: HopeThemeSidebarArrayConfig = [
     {
         text: "Vue源码解析",
         prefix: "code",
@@ -11,3 +13,5 @@ export default [
     },
     "structure",
 ]
+
+export default vueSidebar;

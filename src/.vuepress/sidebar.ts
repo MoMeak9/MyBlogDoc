@@ -1,12 +1,9 @@
 import {sidebar} from "vuepress-theme-hope";
-import nodeSidebar from "./sidebars/node";
-import vueSidebar from "./sidebars/vue";
-import reactSidebar from "./sidebars/react";
+import sidebars from "./sidebars";
 
 export default sidebar({
+    ...sidebars,
     "/codeTop/": [],
-    "/Node/": nodeSidebar,
-    "/Vue/": vueSidebar,
     "/Network/": [
         {
             text: "HTTP",
@@ -29,5 +26,4 @@ export default sidebar({
             ]
         },
     ],
-    "/React/": reactSidebar,
 });

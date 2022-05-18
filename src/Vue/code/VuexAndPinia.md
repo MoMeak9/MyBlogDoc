@@ -1,3 +1,9 @@
+---
+date: 2022-05-12
+category:
+- Vue
+---
+
 # 数据流原理：Vuex & Pinia
 
 ## 如何使用Vuex设计你的数据流
