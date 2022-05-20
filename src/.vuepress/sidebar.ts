@@ -3,7 +3,6 @@ import sidebars from "./sidebars";
 
 export default sidebar({
     ...sidebars,
-    "/codeTop/": [],
     "/Network/": [
         {
             text: "HTTP",
@@ -26,4 +25,10 @@ export default sidebar({
             ]
         },
     ],
+    "/browser-working/": "structure",
+    "/codeTop/": "structure",
+    "/408/": "structure",
+    "/interview/": "structure",
+    "/JavaScript/": "structure",
+    "/nowcoder/": "structure",
 });

@@ -236,7 +236,7 @@ const MyContext = React.createContext(initialValue);
 
 一个主题的切换机制。代码如下：
 
-```js
+```jsx
 const themes = {
   light: {
     foreground: "#000000",

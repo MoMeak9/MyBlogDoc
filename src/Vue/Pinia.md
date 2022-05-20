@@ -1,3 +1,8 @@
+---
+date: 2022-04-12
+category:
+- Vue
+---
 # Pinia 笔记
 
 # 前言
