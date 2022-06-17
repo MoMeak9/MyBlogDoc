@@ -1,3 +1,10 @@
+---
+date: 2022-06-17
+category:
+- MySQL
+- DB
+---
+
 # MySQL
 
 MySQL是一个关系型数据库，其实本质上就是一款软件、一个程序：
@@ -245,12 +252,3 @@ SELECT select_expr [, select_expr]...
 	[GROUP BY expr]
 	[HAVING where_condition]
 ```
-
-## 基本查询
-
-
-
-
-
-### where查询条件
-
