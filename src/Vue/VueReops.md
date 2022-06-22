@@ -1,5 +1,10 @@
+---
+date: 2022-06-12
+category:
+- Vue
+---
 
-# 库
+# Vue项目常用库
 - axios
 - clipboard.js 剪贴板
   https://juejin.cn/post/6844903854442561543

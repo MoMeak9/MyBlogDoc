@@ -27,11 +27,8 @@ const reactSidebar: HopeThemeSidebarArrayConfig = [
     },
     {
         text: 'React面试题',
-        children: [
-            "interview",
-            "interview-1",
-            "interview-2",
-        ]
+        prefix: 'interview',
+        children: 'structure',
     },
     {
         text: 'React Native',

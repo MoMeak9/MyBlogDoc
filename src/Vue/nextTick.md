@@ -43,5 +43,3 @@ category:
 
 还有`$nextTick`和`nextTick`区别就是`nextTick`多了一个context参数，用来指定上下文。但两个的本质是一样的，`$nextTick`是实例方法，`nextTick`是类的静态方法而已；实例方法的一个好处就是，自动给你绑定为调用实例的`this`罢了。
 
-
-作者：乐嫣

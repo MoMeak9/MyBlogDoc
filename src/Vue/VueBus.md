@@ -1,5 +1,9 @@
 ---
+date: 2022-06-12
+category:
+- Vue
 ---
+
 # VueBus 总线传参数
 ## 简介
 

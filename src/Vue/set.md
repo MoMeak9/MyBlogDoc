@@ -1,3 +1,9 @@
+---
+date: 2022-05-12
+category:
+- Vue
+---
+
 # Vue.set()和this.$set()
 
 > 用以解决Vue2.x的响应式缺陷

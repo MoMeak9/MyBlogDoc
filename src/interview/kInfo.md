@@ -1,8 +1,6 @@
 ---
 icon: edit
 date: 2022-03-19
-star: true
-sticky: true
 category:
 - 面试题
 - 前端

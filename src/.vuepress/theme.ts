@@ -108,4 +108,8 @@ export default hopeTheme({
         },
         copyCode: {},
     },
+    fullscreen: false,
+    themeColor: false,
+    darkmode: "switch",
+    titleIcon: true,
 });

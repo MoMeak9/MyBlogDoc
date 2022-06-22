@@ -1,4 +1,4 @@
-# Faas
+# Faas 功能即服务
 
 > https://time.geekbang.org/column/article/226574
 
