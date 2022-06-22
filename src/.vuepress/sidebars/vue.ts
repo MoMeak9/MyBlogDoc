@@ -4,12 +4,7 @@ const vueSidebar: HopeThemeSidebarArrayConfig = [
     {
         text: "Vue源码解析",
         prefix: "code",
-        children: [
-            "Compiler",
-            "reactive",
-            "Vite",
-            "VDom",
-        ]
+        children: "structure",
     },
     "structure",
 ]

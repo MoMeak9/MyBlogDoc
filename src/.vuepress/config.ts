@@ -1,26 +1,25 @@
-import { defineUserConfig } from "vuepress";
-// @ts-ignore
+import {defineUserConfig} from "vuepress";
 import theme from "./theme";
-import { searchPlugin } from "@vuepress/plugin-search";
+const { searchPlugin } = require("@vuepress/plugin-search");
 
 export default defineUserConfig({
-  base: "/",
+    base: "/",
 
-  dest: "./dist",
+    dest: "./dist",
 
-  head: [],
+    head: [],
 
-  locales: {
-    "/": {
-      lang: "zh-CN",
-      title: "Yihui's Blog",
-      description: "前端小白的技术博客",
+    locales: {
+        "/": {
+            lang: "zh-CN",
+            title: "Yihui's Blog",
+            description: "前端小白的技术博客",
+        },
     },
-  },
-  plugins: [
-    // @ts-ignore
-    searchPlugin({
-    }),
-  ],
-  theme,
+    plugins: [
+        searchPlugin({
+            // 你的选项
+        }),
+    ],
+    theme,
 });

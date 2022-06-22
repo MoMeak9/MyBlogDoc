@@ -3,6 +3,7 @@ import navbar from "./navbar";
 import sidebar from "./sidebar";
 
 export default hopeTheme({
+    outlookLocales: undefined,
     hostname: "https://yihuiBlog.top",
 
     author: {
@@ -102,11 +103,9 @@ export default hopeTheme({
             license: 'MIT',
             global: true,
             triggerWords: 20,
-            // disableCopy: true,
-            // disableSelection: true,
+            disableCopy: true,
+            disableSelection: true,
         },
-        copyCode:{
-
-        }
+        copyCode: {},
     },
 });
