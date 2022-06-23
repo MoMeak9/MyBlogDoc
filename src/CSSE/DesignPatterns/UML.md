@@ -1,3 +1,9 @@
+---
+date: 2021-12-3
+categories:
+- 设计模式
+---
+
 **在 Java 或其它[面向对象设计模式](https://www.zhihu.com/search?q=面向对象设计模式&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"article"%2C"sourceId"%3A24576502})中，类与类之间主要有 6 种关系，他们分别为：依赖，关联，聚合，组合，继承，实现。他们的耦合度依次增强。**
 
 # UML图关系详解

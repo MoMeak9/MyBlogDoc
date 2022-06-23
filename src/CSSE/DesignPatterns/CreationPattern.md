@@ -1,12 +1,6 @@
 ---
-title: Creation Pattern 创建模式
 date: 2021-12-3
-author: MoMeaks
-sidebar: 'auto'
 categories:
-- 大学课程
-- wiki
-tags:
 - 设计模式
 ---
 
