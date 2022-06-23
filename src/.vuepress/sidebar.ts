@@ -26,7 +26,7 @@ export default sidebar({
         },
     ],
     "/browser-working/": "structure",
-    "/codeTop/": "structure",
+    "/leetcode/": "structure",
     "/408/": "structure",
     "/interview/": "structure",
     "/JavaScript/": "structure",

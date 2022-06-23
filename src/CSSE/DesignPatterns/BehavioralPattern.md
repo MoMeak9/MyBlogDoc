@@ -1,6 +1,6 @@
 ---
 date: 2021-12-3
-categories:
+category:
 - 设计模式
 ---
 # Behavior Pattern 行为模式

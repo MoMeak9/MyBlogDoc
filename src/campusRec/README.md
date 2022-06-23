@@ -9,10 +9,10 @@ editLink: false
 
 [CodeTop网址](https://codetop.cc/home) 不同公司之间有重复，不会重复记录刷题内容~
 
-- [ ] [字节](/leetcode/codeTop/byteDance.html)
-- [x] [腾讯](/leetcode/codeTop/Tencent.html)
-- [ ] [阿里](/leetcode/codeTop/Tencent.html)
-- [ ] [开水团](/leetcode/codeTop/meituan.html)
+- [字节](/leetcode/codeTop/byteDance.html)
+- [腾讯](/leetcode/codeTop/Tencent.html)
+- [阿里](/leetcode/codeTop/Tencent.html)
+- [开水团](/leetcode/codeTop/meituan.html)
 
 ### Leetcode刷题
 

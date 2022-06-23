@@ -1,6 +1,6 @@
 ---
 date: 2021-12-3
-categories:
+category:
 - 设计模式
 ---
 
