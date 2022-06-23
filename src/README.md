@@ -5,9 +5,9 @@ icon: home
 title: Home
 heroImage: 
 bgImage: https://my-doc-1259409954.file.myqcloud.com/MyImages/doc/202203212054591.jpeg
-heroText: 一心净土
+heroText: 上下求索 & 一心净土
 heroFullScreen: true
-tagline: 为热爱而坚持
+tagline: 为热爱而坚持<br>知识库 随笔 面经 文档
 projects:
 
 - icon: project
