@@ -4,3 +4,5 @@ src/.vuepress/.cache/
 src/.vuepress/.temp/
 src/.vuepress/dist/
 /.env
+# 可以在这里添加测试文件
+/test.js

@@ -167,6 +167,106 @@ var findMin = function(nums) {
 
 #### [补充题：检测循环依赖](https://mp.weixin.qq.com/s/pCRscwKqQdYYN7M1Sia7xA)
 
+> 拓扑排序
 
+js实现
+
+```js
+```
+
+
+
+```python
+def haveCircularDependency(self, n: int, prerequisites):
+    g = [[]for i in range(n)] #邻接表存储图结构
+    indeg = [0 for i in range(n)] #每个点的入度
+    res = [] #存储结果序列
+    q = deque()
+    #将依赖关系加入邻接表中g，并各个点入度
+    for pre in prerequisites:
+        a, b = pre[0], pre[1]
+        g[a].append(b)
+        indeg[b] += 1
+    #一次性将入度为0的点全部入队
+    for i in range(n):
+        if indeg[i] == 0:
+            q.append(i)
+    while q:
+        t = q.popleft()
+        res.append(t)
+        #删除边时，将终点的入度-1。若入度为0，果断入队
+        for j in g[t]:
+            indeg[j] -= 1
+            if indeg[j] == 0:
+                q.append(j)
+    if len(res) == n:
+        return res
+    else:
+        return []
+```
 
 #### [IP地址与int整数的转换](https://mp.weixin.qq.com/s/UWCuEtNS2kuAuDY-eIbghg)
+
+> 例如，ip地址为10.0.3.193，把每段拆分成一个二进制形式组合起来为`00001010 00000000 00000011 11000001`，然后把这个二进制数转变成十进制整数就是167773121。
+
+![](https://cdn.yihuiblog.top/images/202206241516296.png)
+
+```js
+const solution = (ip) => {
+    const arr = ip.split('.');
+    let res = 0;
+    arr.forEach((item, index) => {
+        res += parseInt(item) << ((3 - index) * 8)
+    })
+    return res;
+}                
+```
+
+#### [107. 二叉树的层序遍历 II](https://leetcode.cn/problems/binary-tree-level-order-traversal-ii/)
+
+> 给你二叉树的根节点 `root` ，返回其节点值 **自底向上的层序遍历** 。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
+
+
+
+#### [402. 移掉 K 位数字](https://leetcode.cn/problems/remove-k-digits/)
+
+```js
+var removeKdigits = function(num, k) {
+    const stk = [];
+    for (const digit of num) {
+        while (stk.length > 0 && stk[stk.length - 1] > digit && k) {
+            stk.pop();
+            k -= 1;
+        }
+        stk.push(digit);
+    }
+    // 此时已从小到大排列
+
+    for (; k > 0; --k) {
+        stk.pop(); // 删除尾部还要删除的项目
+    }
+
+    let ans = "";
+    let isLeadingZero = true;
+    for (const digit of stk) {
+        if (isLeadingZero && digit === '0') {
+            continue;
+        }
+        isLeadingZero = false;
+        ans += digit;
+    }
+    return ans === "" ? "0" : ans;
+};
+```
+
+
+
+#### [8. 字符串转换整数 (atoi)](https://leetcode.cn/problems/string-to-integer-atoi/)
+
+
+
+#### [670. 最大交换](https://leetcode.cn/problems/maximum-swap/)
+
+
+
+#### [214. 最短回文串](https://leetcode.cn/problems/shortest-palindrome/)
