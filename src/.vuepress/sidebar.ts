@@ -31,4 +31,6 @@ export default sidebar({
     "/interview/": "structure",
     "/JavaScript/": "structure",
     "/nowcoder/": "structure",
+    "/CSS/": "structure",
+    "/HTML/": "structure",
 });

@@ -14,15 +14,15 @@ export default navbar([
         link: "/star",
     },
     {
-        text: "校招汇总",
+        text: "知识大纲",
         link: "/campusRec",
     },
     {
         text: "友链",
         children: [
             {
-                text: "vuepress-theme-hope",
-                link: "https://vuepress-theme-hope.github.io/v2/zh/",
+                text: "辉光世界",
+                link: "https://lwmc.net",
             }
         ]
     }
