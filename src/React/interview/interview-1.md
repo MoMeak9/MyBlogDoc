@@ -5,6 +5,7 @@ sticky: true
 star: true
 category:
 - React
+- 面试题
 ---
 
 # React 高频面试题汇总（1）
