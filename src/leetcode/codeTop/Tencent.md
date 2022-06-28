@@ -259,14 +259,284 @@ var removeKdigits = function(num, k) {
 };
 ```
 
-
-
 #### [8. 字符串转换整数 (atoi)](https://leetcode.cn/problems/string-to-integer-atoi/)
 
+模拟自动机：
 
+![fig1](https://cdn.yihuiblog.top/images/202206281457630.png)
+
+我们也可以用下面的表格来表示这个自动机：
+
+![image-20220628145834471](https://cdn.yihuiblog.top/images/202206281458525.png)
+
+```js
+/**
+ * @param {string} str
+ * @return {number}
+ */
+var myAtoi = function(str) {
+    // 自动机类
+    class Automaton{
+        constructor() {
+            // 执行阶段，默认处于开始执行阶段
+            this.state = 'start';
+            // 正负符号，默认是正数
+            this.sign = 1;
+            // 数值，默认是0
+            this.answer = 0;
+            /*
+            关键点：
+            状态和执行阶段的对应表
+            含义如下：
+            [执行阶段, [空格, 正负, 数值, 其他]]
+            */
+            this.map = new Map([
+                ['start', ['start', 'signed', 'in_number', 'end']],
+                ['signed', ['end', 'end', 'in_number', 'end']],
+                ['in_number', ['end', 'end', 'in_number', 'end']],
+                ['end', ['end', 'end', 'end', 'end']]
+            ])
+        }
+
+        // 获取状态的索引
+        getIndex(char) {
+            if (char === ' ') {
+                // 空格判断
+                return 0;
+            } else if (char === '-' || char === '+') {
+                // 正负判断
+                return 1;
+            } else if (typeof Number(char) === 'number' && !isNaN(char)) {
+                // 数值判断
+                return 2;
+            } else {
+                // 其他情况
+                return 3;
+            }
+        }
+
+        /*
+        关键点：
+        字符转换执行函数
+        */
+        get(char) {
+            /*
+            易错点：
+            每次传入字符时，都要变更自动机的执行阶段
+            */
+            this.state = this.map.get(this.state)[this.getIndex(char)];
+
+            if(this.state === 'in_number') {
+                /*
+                小技巧：
+                在JS中，对字符串类型进行减法操作，可以将得到一个数值型（Number）的值
+        
+                易错点：
+                本处需要利用括号来提高四则运算的优先级
+                */
+                this.answer = this.answer * 10 + (char - 0);
+
+                /*
+                易错点：
+                在进行负数比较时，需要将INT_MIN变为正数
+                */
+                this.answer = this.sign === 1 ? Math.min(this.answer, Math.pow(2, 31) - 1) : Math.min(this.answer, -Math.pow(-2, 31));
+            } else if (this.state === 'signed') {
+                /*
+                优化点：
+                对于一个整数来说，非正即负，
+                所以正负号的判断，只需要一次。
+                故，可以降低其判断的优先级
+                */
+                this.sign = char === '+' ? 1 : -1;
+            }
+        }
+    }
+
+    // 生成自动机实例
+    let automaton = new Automaton();
+
+    // 遍历每个字符
+    for(let char of str) {
+        // 依次进行转换
+        automaton.get(char);
+    }
+
+    // 返回值，整数 = 正负 * 数值
+    return automaton.sign * automaton.answer;
+};
+```
 
 #### [670. 最大交换](https://leetcode.cn/problems/maximum-swap/)
+
+>  参考递减规则，贪心算法
+>
+> 核心就一句话：就是把第一个小数和它后面最大的大数进行交换
+
+```js
+/**
+ * @param {number} num
+ * @return {number}
+ */
+var maximumSwap = function (num) {
+    let last = new Array(10).fill(-1);
+    num = Array.from(num.toString());
+    //找到相同值最后出现的位置
+    for (let i = 0; i < num.length; i++) {
+        last[num[i] - '0'] = i;
+    }
+    //原数组从左到右遍历，索引数组从后往前遍历
+    //遇到比当前位值大的，交换，因为索引数组从后往前遍历的，所以保证了值为最大
+    for (let i = 0; i < num.length; i++) {
+        for (let d = 9; d > (num[i] - '0'); d--) {
+            if (last[d] > i) {
+                let temp = num[last[d]];
+                num[last[d]] = num[i];
+                num[i] = temp;
+                return Number(num.join(""));
+            }
+        }
+    }
+    return Number(num.join(""));
+};
+```
+
+> 数字最多只有 8 位，因此只有 28 个可用的互换。 :small_airplane:
+
+```java
+public class Solution {
+
+    public int maximumSwap(int num) {
+        String s = String.valueOf(num);
+        int len = s.length();
+        char[] charArray = s.toCharArray();
+        int max = num;
+        for (int i = 0; i < len; i++) {
+            for (int j = i + 1; j < len; j++) {
+                swap(charArray, i, j);
+                max = Math.max(max, Integer.parseInt(new String(charArray)));
+                swap(charArray, i, j);
+            }
+        }
+        return max;
+    }
+
+    private void swap(char[] charArray, int index1, int index2) {
+        char temp = charArray[index1];
+        charArray[index1] = charArray[index2];
+        charArray[index2] = temp;
+    }
+}
+```
+
+#### [214. 最短回文串](https://leetcode.cn/problems/shortest-palindrome/)
+
+> 双指针
+>
+> ![image-20220628152153178](https://cdn.yihuiblog.top/images/202206281521229.png)
+
+```js
+var searchRange = function (nums, target) {
+    const res = [];
+    res.push(nums.indexOf(target));
+    res.push(nums.lastIndexOf(target));
+    return res;
+};
+```
+
+#### [面试题 01.05. 一次编辑](https://leetcode.cn/problems/one-away-lcci/)
+
+
+
+
+
+#### [847. 访问所有节点的最短路径](https://leetcode.cn/problems/shortest-path-visiting-all-nodes/)
+
+
 
 
 
 #### [214. 最短回文串](https://leetcode.cn/problems/shortest-palindrome/)
+
+
+
+#### [179. 最大数](https://leetcode.cn/problems/largest-number/)
+
+> 输入：nums = [3,30,34,5,9]
+> 输出："9534330"
+>
+> 注意：怎么选择3，30而不是30，3（长度不同如何选择）
+
+
+
+
+
+#### [287. 寻找重复数](https://leetcode.cn/problems/find-the-duplicate-number/)
+
+> **进阶：**
+>
+> - 如何证明 `nums` 中至少存在一个重复的数字?
+> - 你可以设计一个线性级时间复杂度 `O(n)` 的解决方案吗？
+
+> 超时方法
+
+```js
+var findDuplicate = function (nums) {
+    let res = -1;
+    nums.forEach(item => {
+        if(nums.indexOf(item)!==nums.lastIndexOf(item)){
+            res =  item;
+        }
+    })
+    return res;
+};
+```
+
+> 哈希
+
+```js
+var findDuplicate = function (nums) {
+    let obj = {};
+    for (const val of nums) {
+        if (!obj[val]) {
+            obj[val] = 1;
+        } else {
+            return val;
+        }
+    }
+};
+```
+
+> 二分查找
+
+
+
+
+
+> 方法二：二进制
+
+
+
+#### [61. 旋转链表](https://leetcode.cn/problems/rotate-list/)
+
+
+
+
+
+#### [189. 轮转数组](https://leetcode.cn/problems/rotate-array/)
+
+> 一个一个来
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var rotate = function (nums, k) {
+    for (let i = 0; i < k; i++) {
+        nums.unshift(nums.pop());
+    }
+};
+```
+
