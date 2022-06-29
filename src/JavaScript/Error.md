@@ -1,3 +1,10 @@
+---
+date: 2022-04-01
+category:
+- 前端
+- JavaScript
+---
+
 # JavaScript 错误处理指南
 
 ## 什么是编程中的错误

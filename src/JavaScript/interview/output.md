@@ -1,3 +1,10 @@
+---
+date: 2022-06-28
+category:
+- 前端
+- JavaScript
+---
+
 > [「2021」高频前端面试题汇总之代码输出结果篇](https://juejin.cn/post/6959043611161952269)
 
 # JavaScript 输出判断

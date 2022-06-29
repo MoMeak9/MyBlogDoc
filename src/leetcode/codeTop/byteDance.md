@@ -1,6 +1,5 @@
 ---
 date: 2022-03-22
-icon: page
 ---
 
 # 字节跳动CodeTop（一）

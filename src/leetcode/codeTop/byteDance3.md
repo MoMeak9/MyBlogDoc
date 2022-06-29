@@ -1,6 +1,6 @@
 ---
 date: 2022-04-06
-icon: page
+
 ---
 
 # 字节跳动CodeTop（三）
@@ -325,3 +325,143 @@ var getLeastNumbers = function (arr, k) {
     return res;
 };
 ```
+
+#### [71. 简化路径](https://leetcode.cn/problems/simplify-path/)
+
+> ![image-20220629153730110](https://cdn.yihuiblog.top/images/202206291537170.png)
+
+```js
+var simplifyPath = function(path) {
+    const names = path.split("/");
+    const stack = [];
+    for (const name of names) {
+        if (name === "..") {
+            if (stack.length) {
+                stack.pop();
+            } 
+        } else if (name.length && name !== ".") {
+            stack.push(name);
+
+        }
+    }
+    
+    return "/" + stack.join("/");
+};
+```
+
+#### [162. 寻找峰值](https://leetcode.cn/problems/find-peak-element/)
+
+**方法一：寻找最大值**
+
+**方法二：迭代爬坡**
+
+> 你必须实现时间复杂度为 `O(log n)` 的算法来解决此问题。
+
+**方法三：方法二的二分查找优化**
+
+```js
+var findPeakElement = function(nums) {
+    const n = nums.length;
+    let left = 0, right = n - 1, ans = -1;
+    while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        if (compare(nums, mid - 1, mid) < 0 && compare(nums, mid, mid + 1) > 0) {
+            ans = mid;
+            break;
+        }
+        if (compare(nums, mid, mid + 1) < 0) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return ans;
+}
+
+// 辅助函数，输入下标 i，返回一个二元组 (0/1, nums[i])
+// 方便处理 nums[-1] 以及 nums[n] 的边界情况
+const get = (nums, idx) => {
+    if (idx === -1 || idx === nums.length) {
+        return [0, 0];
+    }
+    return [1, nums[idx]];
+}
+
+const compare = (nums, idx1, idx2) => {
+    const num1 = get(nums, idx1);
+    const num2 = get(nums, idx2);
+    if (num1[0] !== num2[0]) {
+        return num1[0] > num2[0] ? 1 : -1;
+    }
+    if (num1[1] === num2[1]) {
+        return 0;
+    }
+    return num1[1] > num2[1] ? 1 : -1;
+}
+```
+
+#### [443. 压缩字符串](https://leetcode.cn/problems/string-compression/)
+
+> 压缩后得到的字符串 s 不应该直接返回 ，需要转储到字符数组 chars 中。需要注意的是，如果组长度为 10 或 10 以上，则在 chars 数组中会被拆分为多个字符。
+>
+> 请在 修改完输入数组后 ，返回该数组的新长度。
+>
+> 你必须设计并实现一个只使用常量额外空间的算法来解决此问题。
+
+```
+输入：chars = ["a","a","b","b","c","c","c"]
+输出：返回 6 ，输入数组的前 6 个字符应该是：["a","2","b","2","c","3"]
+解释："aa" 被 "a2" 替代。"bb" 被 "b2" 替代。"ccc" 被 "c3" 替代。
+```
+
+> 参考  双指针
+
+```js
+var compress = function(chars) {
+    const n = chars.length;
+    let write = 0, left = 0;
+    for (let read = 0; read < n; read++) {
+        if (read === n - 1 || chars[read] !== chars[read + 1]) {
+            chars[write++] = chars[read];
+            let num = read - left + 1;
+            if (num > 1) {
+                const anchor = write;
+                while (num > 0) {
+                    chars[write++] = '' + num % 10;
+                    num = Math.floor(num / 10);
+                }
+                reverse(chars, anchor, write - 1);
+            }
+            left = read + 1;
+        }
+    }
+    return write;
+};
+
+const reverse = (chars, left, right) => {
+    while (left < right) {
+        const temp = chars[left];
+        chars[left] = chars[right];
+        chars[right] = temp;
+        left++;
+        right--;
+    }
+}
+```
+
+> 正则
+
+```js
+const compress = function (chars) {
+    const charStr = chars.join("");
+    const matchList = charStr.match(/(.)\1*/g) || [];
+    
+    const result = matchList.reduce((prev, item) => {
+        prev += item.length > 1 ? item[0] + item.length : item
+        return prev
+    }, "").split("");
+    
+    chars.splice(0, chars.length, ...result)
+};
+```
+

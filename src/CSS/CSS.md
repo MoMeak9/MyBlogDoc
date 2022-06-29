@@ -1207,3 +1207,62 @@ div {
 
 将元素的长宽都设置为0，显示出来的效果是这样的：
 
+![image-20220628214345168](https://cdn.yihuiblog.top/images/202206282143283.png)
+
+所以我们就可以根据border这个特性来绘制三角形：
+
+**（1）三角1**
+
+```css
+div {
+    width: 0;
+    height: 0;
+    border-top: 50px solid red;
+    border-right: 50px solid transparent;
+    border-left: 50px solid transparent;
+}
+```
+
+![在这里插入图片描述](https://cdn.yihuiblog.top/images/202206282155688.png)
+
+**（2）三角2**
+
+```css
+div {
+    width: 0;
+    height: 0;
+    border-bottom: 50px solid red;
+    border-right: 50px solid transparent;
+    border-left: 50px solid transparent;
+}
+```
+
+**（3）三角3**
+
+```css
+div {
+    width: 0;
+    height: 0;
+    border-top: 100px solid red;
+    border-right: 100px solid transparent;
+}
+```
+
+![在这里插入图片描述](https://cdn.yihuiblog.top/images/202206282156512.png)
+
+还有很多，就不一一实现了，总体的原则就是通过上下左右边框来控制三角形的方向，用边框的宽度比来控制三角形的角度。
+
+### 2. CSS绘制扇形
+
+用CSS实现扇形的思路和三角形基本一致，就是多了一个圆角的样式，首先先实现一个90°的扇形：
+
+```css
+div{
+    border: 100px solid transparent;
+    width: 0;
+    heigt: 0;
+    border-radius: 100px;
+    border-top-color: red;
+}
+```
+
