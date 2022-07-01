@@ -39,8 +39,8 @@ category:
 
 - !important声明的样式的优先级最高；
 - 如果优先级相同，则最后出现的样式生效；
-- 继承得到的样式的优先级最低；
-- 通用选择器（*）、子选择器（>）和相邻同胞选择器（+）并不在这四个等级中，所以它们的权值都为 0 ；
+- <u>继承得到的样式的优先级最低；</u>
+- <u>通用选择器（*）、子选择器（>）和相邻同胞选择器（+）并不在这四个等级中，所以它们的权值都为 0 ；</u>
 - 样式表的来源不同时，优先级顺序为：内联样式 > 内部样式 > 外部样式 > 浏览器用户自定义样式 > 浏览器默认样式。
 
 ### 2. CSS中可继承与不可继承属性有哪些
@@ -323,7 +323,7 @@ CSSSprites（精灵图），将一个页面涉及到的所有图片都包含到�
 
 对于图片来说，为了保证其不失真，1 个图片像素至少要对应一个物理像素，假如原始图片是 500300 像素，那么在 3 倍屏上就要放一个 1500900 像素的图片才能保证 1 个物理像素至少对应一个图片像素，才能不失真。
 
-![img](https://cdn.yihuiblog.top/images/202206252132953.jpeg)
+<img src="https://cdn.yihuiblog.top/images/202206252132953.jpeg" alt="img" style="zoom: 25%;" />
 
 当然，也可以针对所有屏幕，都只提供最高清图片。虽然低密度屏幕用不到那么多图片像素，而且会因为下载多余的像素造成带宽浪费和下载延迟，但从结果上说能保证图片在所有屏幕上都不会失真。
 
@@ -513,7 +513,7 @@ CSS 工程化是为了解决以下问题：
 
 预处理器，其实就是 CSS 世界的“轮子”。预处理器支持我们写一种类似 CSS、但实际并不是 CSS 的语言，然后把它编译成 CSS 代码：
 
-![image-20220625213429647](https://cdn.yihuiblog.top/images/202206252134718.png)
+<img src="https://cdn.yihuiblog.top/images/202206252134718.png" alt="image-20220625213429647" style="zoom: 50%;" />
 
 那为什么写 CSS 代码写得好好的，偏偏要转去写“类 CSS”呢？这就和本来用 JS 也可以实现所有功能，但最后却写 React 的 jsx 或者 Vue 的模板语法一样——为了爽！要想知道有了预处理器有多爽，首先要知道的是传统 CSS 有多不爽。随着前端业务复杂度的提高，前端工程中对 CSS 提出了以下的诉求：
 
@@ -532,7 +532,7 @@ CSS 工程化是为了解决以下问题：
 
 **（2）PostCss：PostCss 是如何工作的？我们在什么场景下会使用 PostCss？**
 
-![image-20220625213501471](https://cdn.yihuiblog.top/images/202206252135537.png)
+<img src="https://cdn.yihuiblog.top/images/202206252135537.png" alt="image-20220625213501471" style="zoom:50%;" />
 
 它和预处理器的不同就在于，预处理器处理的是 类CSS，而 PostCss 处理的就是 CSS 本身。Babel 可以将高版本的 JS 代码转换为低版本的 JS 代码。PostCss 做的是类似的事情：它可以编译尚未被浏览器广泛支持的先进的 CSS 语法，还可以自动为一些需要额外兼容的语法增加前缀。更强的是，由于 PostCss 有着强大的插件机制，支持各种各样的扩展，极大地强化了 CSS 的能力。
 
@@ -565,7 +565,7 @@ PostCss 在业务中的使用场景非常多：
 - `imgs.offsetTop` 是元素顶部距离文档顶部的高度（包括滚动条的距离）；
 - 内容达到显示区域的：`img.offsetTop < window.innerHeight + document.body.scrollTop;`
 
-![img](https://cdn.yihuiblog.top/images/202206252137490.webp)
+<img src="https://cdn.yihuiblog.top/images/202206252137490.webp" alt="img" style="zoom: 25%;" />
 
 ### 30. z-index属性在什么情况下会失效
 
@@ -1131,7 +1131,7 @@ clear属性只有块级元素才有效的，而::after等伪元素默认都是�
 
 层叠顺序，英文称作 stacking order，表示元素发生层叠时有着特定的垂直显示顺序。下面是盒模型的层叠规则：
 
-![U66x3](https://cdn.yihuiblog.top/images/202206252150283.png)
+<img src="https://cdn.yihuiblog.top/images/202206252150283.png" alt="U66x3" style="zoom: 67%;" />
 
  对于上图，由上到下分别是： （1）背景和边框：建立当前层叠上下文元素的背景和边框。 （2）负的z-index：当前层叠上下文中，z-index属性值为负的元素。 （3）块级盒：文档流内非行内级非定位后代元素。 （4）浮动盒：非定位浮动元素。 （5）行内盒：文档流内行内级非定位后代元素。 （6）z-index:0：层叠级数为0的定位元素。 （7）正z-index：z-index属性值为正的定位元素。
 
@@ -1207,7 +1207,7 @@ div {
 
 将元素的长宽都设置为0，显示出来的效果是这样的：
 
-![image-20220628214345168](https://cdn.yihuiblog.top/images/202206282143283.png)
+<img src="https://cdn.yihuiblog.top/images/202206282143283.png" alt="image-20220628214345168" style="zoom:50%;" />
 
 所以我们就可以根据border这个特性来绘制三角形：
 
@@ -1223,7 +1223,7 @@ div {
 }
 ```
 
-![在这里插入图片描述](https://cdn.yihuiblog.top/images/202206282155688.png)
+<img src="https://cdn.yihuiblog.top/images/202206282155688.png" alt="在这里插入图片描述" style="zoom:33%;" />
 
 **（2）三角2**
 
@@ -1248,7 +1248,7 @@ div {
 }
 ```
 
-![在这里插入图片描述](https://cdn.yihuiblog.top/images/202206282156512.png)
+<img src="https://cdn.yihuiblog.top/images/202206282156512.png" alt="在这里插入图片描述" style="zoom:33%;" />
 
 还有很多，就不一一实现了，总体的原则就是通过上下左右边框来控制三角形的方向，用边框的宽度比来控制三角形的角度。
 
@@ -1265,4 +1265,151 @@ div{
     border-top-color: red;
 }
 ```
+
+<img src="https://cdn.yihuiblog.top/images/202206291847974.png" alt="image-20220629184740879" style="zoom:33%;" />
+
+### 3. 实现一个宽高自适应的正方形
+
+- 利用vw来实现：
+
+```css
+.square {
+  width: 10%;
+  height: 10vw;
+  background: tomato;
+}
+```
+
+- 利用元素的margin/padding百分比是相对父元素width的性质来实现：
+
+```css
+.square {
+  width: 20%;
+  height: 0;
+  padding-top: 20%;
+  background: orange;
+}
+```
+
+- 利用子元素的margin-top的值来实现：
+
+```css
+.square {
+  width: 30%;
+  overflow: hidden;
+  background: yellow;
+}
+.square::after {
+  content: '';
+  display: block;
+  margin-top: 100%;
+}
+```
+
+### 4. 画一条0.5px的线
+
+- **采用transform: scale()的方式**，该方法用来定义元素的2D 缩放转换：
+
+```css
+transform: scale(0.5,0.5);
+```
+
+- **采用meta viewport的方式**
+
+```css
+<meta name="viewport" content="width=device-width, initial-scale=0.5, minimum-scale=0.5, maximum-scale=0.5"/>
+```
+
+这样就能缩放到原来的0.5倍，如果是1px那么就会变成0.5px。viewport只针对于移动端，只在移动端上才能看到效果
+
+### 5. 设置小于12px的字体
+
+在谷歌下css设置字体大小为12px及以下时，显示都是一样大小，都是默认12px。
+
+**解决办法：**
+
+- 使用Webkit的内核的-webkit-text-size-adjust的私有CSS属性来解决，只要加了-webkit-text-size-adjust:none;字体大小就不受限制了。但是chrome更新到27版本之后就不可以用了。所以高版本chrome谷歌浏览器已经不再支持-webkit-text-size-adjust样式，所以要使用时候慎用。
+- 使用css3的transform缩放属性-webkit-transform:scale(0.5); 注意-webkit-transform:scale(0.75);收缩的是整个元素的大小，这时候，如果是内联元素，必须要将内联元素转换成块元素，可以使用display：block/inline-block/...；
+- 使用图片：如果是内容固定不变情况下，使用将小于12px文字内容切出做图片，这样不影响兼容也不影响美观。
+
+### 6. 如何解决 1px 问题？
+
+1px 问题指的是：在一些 `Retina屏幕` 的机型上，移动端页面的 1px 会变得很粗，呈现出不止 1px 的效果。原因很简单——CSS 中的 1px 并不能和移动设备上的 1px 划等号。它们之间的比例关系有一个专门的属性来描述：
+
+```html
+window.devicePixelRatio = 设备的物理像素 / CSS像素。
+```
+
+打开 Chrome 浏览器，启动移动端调试模式，在控制台去输出这个 `devicePixelRatio` 的值。这里选中 iPhone6/7/8 这系列的机型，输出的结果就是2： ![img](https://cdn.yihuiblog.top/images/202206291848158.webp)
+
+这就意味着设置的 1px CSS 像素，在这个设备上实际会用 2 个物理像素单元来进行渲染，所以实际看到的一定会比 1px 粗一些。 **解决1px 问题的三种思路：**
+
+#### 思路一：直接写 0.5px
+
+如果之前 1px 的样式这样写：
+
+```css
+border:1px solid #333
+```
+
+可以先在 JS 中拿到 window.devicePixelRatio 的值，然后把这个值通过 JSX 或者模板语法给到 CSS 的 data 里，达到这样的效果（这里用 JSX 语法做示范）：
+
+```javascript
+<div id="container" data-device={{window.devicePixelRatio}}></div>
+```
+
+然后就可以在 CSS 中用属性选择器来命中 devicePixelRatio 为某一值的情况，比如说这里尝试命中 devicePixelRatio 为2的情况：
+
+```css
+#container[data-device="2"] {
+  border:0.5px solid #333
+}
+```
+
+直接把 1px 改成 1/devicePixelRatio 后的值，这是目前为止最简单的一种方法。这种方法的缺陷在于兼容性不行，IOS 系统需要8及以上的版本，安卓系统则直接不兼容。
+
+#### 思路二：伪元素先放大后缩小
+
+这个方法的可行性会更高，兼容性也更好。唯一的缺点是代码会变多。
+
+思路是**先放大、后缩小：在目标元素的后面追加一个 ::after 伪元素，让这个元素布局为 absolute 之后、整个伸展开铺在目标元素上，然后把它的宽和高都设置为目标元素的两倍，border值设为 1px。接着借助 CSS 动画特效中的放缩能力，把整个伪元素缩小为原来的 50%。此时，伪元素的宽高刚好可以和原有的目标元素对齐，而 border 也缩小为了 1px 的二分之一，间接地实现了 0.5px 的效果。**
+
+代码如下：
+
+```css
+#container[data-device="2"] {
+    position: relative;
+}
+#container[data-device="2"]::after{
+      position:absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      content:"";
+      transform: scale(0.5);
+      transform-origin: left top;
+      box-sizing: border-box;
+      border: 1px solid #333;
+    }
+}
+```
+
+#### 思路三：viewport 缩放来解决
+
+这个思路就是对 meta 标签里几个关键属性下手：
+
+```html
+<meta name="viewport" content="initial-scale=0.5, maximum-scale=0.5, minimum-scale=0.5, user-scalable=no">
+```
+
+这里针对像素比为2的页面，把整个页面缩放为了原来的1/2大小。这样，本来占用2个物理像素的 1px 样式，现在占用的就是标准的一个物理像素。根据像素比的不同，这个缩放比例可以被计算为不同的值，用 js 代码实现如下：
+
+```javascript
+const scale = 1 / window.devicePixelRatio;
+// 这里 metaEl 指的是 meta 标签对应的 Dom
+metaEl.setAttribute('content', `width=device-width,user-scalable=no,initial-scale=${scale},maximum-scale=${scale},minimum-scale=${scale}`);
+```
+
+这样解决了，但这样做的副作用也很大，整个页面被缩放了。这时 1px 已经被处理成物理像素大小，这样的大小在手机上显示边框很合适。但是，一些原本不需要被缩小的内容，比如文字、图片等，也被无差别缩小掉了。
 

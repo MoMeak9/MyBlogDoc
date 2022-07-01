@@ -113,7 +113,7 @@ export default function createStore(reducer, initialState, middleFunc) {
 
 可以在 componentDidmount 中直接进⾏请求⽆须借助redux。但是在⼀定规模的项⽬中,上述⽅法很难进⾏异步流的管理,通常情况下我们会借助redux的异步中间件进⾏异步处理。redux异步流中间件其实有很多，当下主流的异步中间件有两种redux-thunk、redux-saga。
 
-**（1）使用react-thunk中间件**
+**（1）使用react-thunk中间件**:star:
 
 **redux-thunk**优点:
 

@@ -465,3 +465,181 @@ const compress = function (chars) {
 };
 ```
 
+#### [673. 最长递增子序列的个数](https://leetcode.cn/problems/number-of-longest-increasing-subsequence/)
+
+**方法一：动态规划**
+
+![image-20220630184638629](https://cdn.yihuiblog.top/images/202206301846700.png)
+
+#### [12. 整数转罗马数字](https://leetcode.cn/problems/integer-to-roman/)
+
+```js
+/**
+ * @param {number} num
+ * @return {string}
+ */
+var intToRoman = function (num) {
+    const values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
+    const symbols = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"];
+
+    let res = '';
+    for (let i = 0; i < 13; i++) {
+        while (num >= values[i]) {
+            num -= values[i];
+            res += symbols[i];
+        }
+    }
+    return res;
+};
+```
+
+#### [498. 对角线遍历](https://leetcode.cn/problems/diagonal-traverse/)
+
+![image-20220630190325081](https://cdn.yihuiblog.top/images/202206301903147.png)
+
+
+
+
+
+> 错误模拟
+
+```js
+/**
+ * @param {number[][]} mat
+ * @return {number[]}
+ */
+var findDiagonalOrder = function (mat) {
+    const res = [];
+    let x = 0, y = 0
+    while (x < mat[0].length && y < mat.length) {
+        res.push(mat[x][y])
+        if ((x + y) % 2 !== 0) {
+            if (x === mat.length - 1) {
+                y++;
+            } else if (y === 0) {
+                x++;
+            } else {
+                x++;
+                y--;
+            }
+        } else {
+            if (y === mat[0].length - 1) {
+                x++;
+            } else if (x === 0) {
+                y++;
+            } else {
+                x--;
+                y++;
+            }
+        }
+    }
+    return res;
+};
+```
+
+> 解决单行单列等特殊情况
+
+```js
+/**
+ * @param {number[][]} mat
+ * @return {number[]}
+ */
+var findDiagonalOrder = function(mat) {
+    const m = mat.length;
+    const n = mat[0].length;
+    const res = new Array(m * n).fill(0);
+    let pos = 0;
+    for (let i = 0; i < m + n - 1; i++) {
+        if (i % 2 === 1) {
+            let x = i < n ? 0 : i - n + 1;
+            let y = i < n ? i : n - 1;
+            while (x < m && y >= 0) {
+                res[pos] = mat[x][y];
+                pos++;
+                x++;
+                y--;
+            }
+        } else {
+            let x = i < m ? i : m - 1;
+            let y = i < m ? 0 : i - m + 1;
+            while (x >= 0 && y < n) {
+                res[pos] = mat[x][y];
+                pos++;
+                x--;
+                y++;
+            }
+        }
+    }
+    return res;
+};
+```
+
+#### [面试题 01.03. URL化](https://leetcode.cn/problems/string-to-url-lcci/)
+
+```js
+/**
+ * @param {string} S
+ * @param {number} length
+ * @return {string}
+ */
+var replaceSpaces = function(S, length) {
+    return S.substr(0, length).split(' ').join('%20')
+};
+```
+
+```js
+var replaceSpaces = function (S, length) {
+    const arr = S.substring(0, length).split('')
+    return arr.reduce((pre, item) => {
+        if (item === ' ') {
+            return pre + '%20'
+        } else {
+            return pre + item;
+        }
+    }, '')
+};
+```
+
+#### [119. 杨辉三角 II](https://leetcode.cn/problems/pascals-triangle-ii/)
+
+> **递推方法：**
+>
+> 注意到对第 i+1 行的计算仅用到了第 i*i* 行的数据，因此可以使用**滚动数组**的思想优化空间复杂度。
+
+```js
+/**
+ * @param {number} rowIndex
+ * @return {number[]}
+ */
+var getRow = function(rowIndex) {
+    let pre = [], cur = [];
+    for (let i = 0; i <= rowIndex; ++i) {
+        cur = new Array(i + 1).fill(0);
+        cur[0] = cur[i] =1;
+        for (let j = 1; j < i; ++j) {
+            cur[j] = pre[j - 1] + pre[j];
+        }
+        pre = cur;
+    }
+    return pre;
+};
+```
+
+
+
+#### [414. 第三大的数](https://leetcode.cn/problems/third-maximum-number/)
+
+> 默认排序顺序是在将元素转换为字符串，然后比较它们的 UTF-16 代码单元值序列时构建的
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var thirdMax = function (nums) {
+    nums = Array.from([...new Set(nums)]).sort((a,b)=>a-b)
+    if (nums.length < 3) return nums[nums.length - 1]
+    return nums[nums.length - 3]
+};
+```
+

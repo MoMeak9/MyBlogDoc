@@ -103,9 +103,9 @@ HOC的优缺点∶
 
 **（2）Render props** 官方解释∶
 
-> "render prop"是指一种在 React 组件之间使用一个值为函数的 prop 共享代码的简单技术
+> "render prop"是指一种在 React 组件之间使用一个**值为函数的 prop 共享代码的简单技术**
 
-具有render prop 的组件接受一个返回React元素的函数，将render的渲染逻辑注入到组件内部。在这里，"render"的命名可以是任何其他有效的标识符。
+具有render prop 的组件接受一个返回React元素的函数，将render的渲染逻辑注入到组件内部。在这里，**"render"的命名可以是任何其他有效的标识符。**
 
 ```javascript
 // DataProvider组件内部的渲染逻辑如下
@@ -259,7 +259,7 @@ const BlogPostWithSubscription = withSubscription(BlogPost,
 **1）HOC的优缺点**
 
 - 优点∶逻辑服用、不影响被包裹组件的内部逻辑。
-- **缺点∶hoc传递给被包裹组件的props容易和被包裹后的组件重名，进而被覆盖**
+- **缺点∶hoc传递给被包裹组件的props容易和被包裹后的组件<u>重名，进而被覆盖</u>**
 
 **2）适用场景**
 
@@ -329,7 +329,7 @@ export default withAdminAuth(PageB);
 
 - **组件渲染性能追踪：** 借助父组件子组件生命周期规则捕获子组件的生命周期，可以方便的对某个组件的渲染时间进行记录∶
 
-```javascript
+```jsx
 class Home extends React.Component {
         render() {
             return (<h1>Hello World.</h1>);
@@ -439,10 +439,10 @@ class App extends React.Component {
 **（2）重新渲染 render 会做些什么?**
 
 - 会对新旧 VNode 进行对比，也就是我们所说的Diff算法。
-- 对新旧两棵树进行一个深度优先遍历，这样每一个节点都会一个标记，在到深度遍历的时候，每遍历到一和个节点，就把该节点和新的节点树进行对比，如果有差异就放到一个对象里面
+- 对新旧两棵树进行一个<u>深度优先遍历，这样每一个节点都会一个标记</u>，在到深度遍历的时候，每遍历到一和个节点，就把该节点和新的节点树进行对比，如果有差异就放到一个对象里面
 - 遍历差异对象，根据差异的类型，根据对应对规则更新VNode
 
-React 的处理 render 的基本思维模式是每次一有变动就会去重新渲染整个应用。在 Virtual DOM 没有出现之前，最简单的方法就是直接调用 innerHTML。Virtual DOM厉害的地方并不是说它比直接操作 DOM 快，而是说不管数据怎么变，都会尽量以最小的代价去更新 DOM。React 将 render 函数返回的虚拟 DOM 树与老的进行比较，从而确定 DOM 要不要更新、怎么更新。当 DOM 树很大时，遍历两棵树进行各种比对还是相当耗性能的，特别是在顶层 setState 一个微小的修改，默认会去遍历整棵树。尽管 React 使用高度优化的 Diff 算法，但是这个过程仍然会损耗性能.
+React 的处理 render 的基本思维模式是每次一有变动就会去重新渲染整个应用。在 Virtual DOM 没有出现之前，最简单的方法就是直接调用 innerHTML。Virtual DOM厉害的地方并不是说它比直接操作 DOM 快，而是说不管数据怎么变，都会尽量以最小的代价去更新 DOM。React 将 render 函数返回的虚拟 DOM 树与老的进行比较，从而确定 DOM 要不要更新、怎么更新。当 DOM 树很大时，遍历两棵树进行各种比对还是相当耗性能的，<u>特别是在顶层 setState 一个微小的修改，默认会去遍历整棵树。尽管 React 使用高度优化的 Diff 算法，但是这个过程仍然会损耗性能.</u>
 
 ### 12. React如何判断什么时候重新渲染组件？:star:
 
@@ -471,7 +471,7 @@ React **声明组件**的三种方式：
 **① 函数this自绑定**
 
 - React.createClass创建的组件，其每一个成员函数的this都有React**自动绑定**，函数中的this会被正确设置。
-- React.Component创建的组件，**其成员函数不会自动绑定this，需要开发者手动绑定，否则this不能获取当前组件实例对象。**
+- React.Component创建的组件，**<u>其成员函数不会自动绑定this，需要开发者手动绑定，否则this不能获取当前组件实例对象。</u>**
 
 **② 组件属性类型propTypes及其默认props属性defaultProps配置不同**
 
@@ -535,7 +535,7 @@ React **声明组件**的三种方式：
 
 > React 中的一个常见模式是一个组件返回多个元素。Fragments 允许你将子列表分组，而无需向 DOM 添加额外节点。
 
-```javascript
+```jsx
 import React, { Component, Fragment } from 'react'
 
 // 一般形式
@@ -570,7 +570,7 @@ render() {
 
 ### 17. React中可以在render访问refs吗？为什么？
 
-```javascript
+```jsx
 <>
   <span id="name" ref={this.spanRef}>{this.state.title}</span>
   <span>{
@@ -589,7 +589,7 @@ React 官方对 Portals 的定义：
 
 > Portal 提供了一种将子节点渲染到存在于父组件以外的 DOM 节点的优秀的方案
 
-Portals 是React 16提供的官方解决方案，**使得组件可以脱离父组件层级挂载在DOM树的任何位置。**通俗来讲，就是我们 render 一个组件，但这个组件的 DOM 结构并不在本组件内。
+Portals 是React 16提供的官方解决方案，**<u>使得组件可以脱离父组件层级挂载在DOM树的任何位置</u>。**通俗来讲，就是我们 render 一个组件，但这个组件的 DOM 结构并不在本组件内。
 
 > 注意有别于Vue的slot 插槽的概念
 
@@ -673,15 +673,15 @@ JS的代码块在执行期间，会创建一个相应的作用域链，这个作
 - 对于组件之间的数据通信或者状态管理，有效使用props或者state解决，然后再考虑使用第三方的成熟库进行解决，以上的方法都不是最佳的方案的时候，在考虑context。
 - context的更新需要通过setState()触发，但是这并不是很可靠的，Context支持跨组件的访问，但是如果中间的子组件通过一些方法不影响更新，比如 shouldComponentUpdate() 返回false 那么不能保证Context的更新一定可以使用Context的子组件，因此，Context的可靠性需要关注
 
-### 23. React中什么是受控组件和非控组件？
+### 23. React中什么是受控组件和非控组件？:star::star:
 
-**（1）受控组件** 在使用表单来收集用户输入时，例如`<input><select><textearea>`等元素都要绑定一个change事件，当表单的状态发生变化，就会触发onChange事件，更新组件的state。这种组件在React中被称为**受控组件**，在受控组件中，组件渲染出的状态与它的value或checked属性相对应，react通过这种方式消除了组件的局部状态，使整个状态可控。react官方推荐使用受控表单组件。
+**（1）受控组件** 在使用表单来收集用户输入时，例如`<input><select><textearea>`等元素<u>都要绑定一个change事件，当表单的状态发生变化，就会触发onChange事件，更新组件的state。这种组件在React中被称为**受控组件**，</u>在受控组件中，组件渲染出的状态与它的value或checked属性相对应，react通过这种方式消除了组件的局部状态，使整个状态可控。react官方推荐使用受控表单组件。
 
-受控组件更新state的流程：
+<u>受控组件更新state的流程</u>：
 
 - 可以通过初始state中设置表单的默认值
 - 每当表单的值发生变化时，调用onChange事件处理器
-- 事件处理器通过事件对象e拿到改变后的状态，并更新组件的state
+- 事件处理器通过事件对象拿到改变后的状态，并更新组件的state
 - 一旦通过setState方法更新state，就会触发视图的重新渲染，完成表单组件的更新
 
 **受控组件缺陷：** 表单元素的值都是由React组件进行管理，当有多个输入框，或者多个这种组件时，如果想同时获取到全部的值就必须每个都要编写事件处理函数，这会让代码看着很臃肿，所以为了解决这种情况，出现了非受控组件。
@@ -694,7 +694,7 @@ React官方的解释：
 
 例如，下面的代码在非受控组件中接收单个属性：
 
-```javascript
+```jsx
 class NameForm extends React.Component {
   constructor(props) {
     super(props);
@@ -718,19 +718,19 @@ class NameForm extends React.Component {
 }
 ```
 
-**总结：** 页面中所有输入类的DOM如果是现用现取的称为非受控组件，而通过setState将输入的值维护到了state中，需要时再从state中取出，这里的数据就受到了state的控制，称为受控组件。
+:star:**总结：** 页面中所有输入类的DOM如果是现用现取的称为非受控组件，而通过setState将输入的值维护到了state中，需要时再从state中取出，这里的数据就受到了state的控制，称为受控组件。
 
 ### 24. React中refs的作用是什么？有哪些应用场景？
 
 Refs 提供了一种方式，用于访问在 render 方法中创建的 React 元素或 DOM 节点。Refs 应该谨慎使用，如下场景使用 Refs 比较适合：
 
-- 处理焦点、文本选择或者媒体的控制
-- 触发必要的动画
-- 集成第三方 DOM 库
+- **处理焦点、文本选择或者媒体的控制**
+- **触发必要的动画**
+- **集成第三方 DOM 库**
 
 Refs 是使用 `React.createRef()` 方法创建的，他通过 `ref` 属性附加到 React 元素上。要在整个组件中使用 Refs，需要将 `ref` 在构造函数中分配给其实例属性：
 
-```javascript
+```jsx
 class MyComponent extends React.Component {
   constructor(props) {
     super(props)
@@ -744,7 +744,7 @@ class MyComponent extends React.Component {
 
 由于函数组件没有实例，因此不能在函数组件上直接使用 `ref`：
 
-```javascript
+```jsx
 function MyFunctionalComponent() {
   return <input />;
 }
@@ -790,12 +790,7 @@ function CustomTextInput(props) {
 
 - 不应该过度的使用 Refs
 
-- ```
-  ref
-  ```
-
-   的返回值取决于节点的类型：
-
+- ref的返回值取决于节点的类型：
   - 当 `ref` 属性被用于一个普通的 HTML 元素时，`React.createRef()` 将接收底层 DOM 元素作为他的 `current` 属性以创建 `ref`。
   - 当 `ref` 属性被用于一个自定义的类组件时，`ref` 对象将接收该组件已挂载的实例作为他的 `current`。
 
@@ -808,7 +803,7 @@ function CustomTextInput(props) {
 - 通过将对象分配给this.state来初始化本地状态
 - 将事件处理程序方法绑定到实例上
 
-所以，当在React class中需要设置state的初始值或者绑定事件时，需要加上构造函数，官方Demo：
+<u>所以，当在React class中需要设置state的初始值或者绑定事件时，需要加上构造函数，官方Demo：</u>
 
 ```javascript
 class LikeButton extends React.Component {
@@ -817,7 +812,7 @@ class LikeButton extends React.Component {
     this.state = {
       liked: false
     };
-    this.handleClick = this.handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this); // 手动绑定
   }
   handleClick() {
     this.setState({liked: !this.state.liked});
@@ -842,7 +837,7 @@ ReactDOM.render(
 **注意：**
 
 - constructor () 必须配上 super(), 如果要在constructor 内部使用 this.props 就要 传入props , 否则不用
-- JavaScript中的 bind 每次都会返回一个新的函数, 为了性能等考虑, 尽量在constructor中绑定事件
+- <u>JavaScript中的 bind 每次都会返回一个新的函数, 为了性能等考虑, 尽量在constructor中绑定事件</u>
 
 ### 27. React.forwardRef是什么？它有什么作用？
 
@@ -851,19 +846,21 @@ React.forwardRef 会创建一个React组件，这个组件能够将其接受的 
 - 转发 refs 到 DOM 组件
 - 在高阶组件中转发 refs
 
-### 28. 类组件与函数组件有什么异同？
+### 28. 类组件与函数组件有什么异同？:star::star:
 
 **相同点：** 组件是 React 可复用的最小代码片段，它们会返回要在页面中渲染的 React 元素。也正因为组件是 React 的最小编码单位，所以无论是函数组件还是类组件，在使用方式和最终呈现效果上都是完全一致的。
 
-我们甚至可以将一个类组件改写成函数组件，或者把函数组件改写成一个类组件（虽然并不推荐这种重构行为）。从使用者的角度而言，很难从使用体验上区分两者，而且在现代浏览器中，闭包和类的性能只在极端场景下才会有明显的差别。所以，基本可认为两者作为组件是完全一致的。
+我们甚至可以将一个类组件改写成函数组件，或者把函数组件改写成一个类组件（虽然并不推荐这种重构行为）<u>。从使用者的角度而言，很难从使用体验上区分两者，而且在现代浏览器中，闭包和类的性能只在极端场景下才会有明显的差别。所以，基本可认为两者作为组件是完全一致的。</u>
 
 **不同点：**
 
 - 它们在开发时的心智模型上却存在巨大的差异。类组件是基于面向对象编程的，它主打的是继承、生命周期等核心概念；而函数组件内核是函数式编程，主打的是 immutable、没有副作用、引用透明等特点。
 - 之前，在使用场景上，如果存在需要使用生命周期的组件，那么主推类组件；设计模式上，如果需要使用继承，那么主推类组件。但现在由于 React Hooks 的推出，生命周期概念的淡出，函数组件可以完全取代类组件。其次继承并不是组件最佳的设计模式，官方更推崇“组合优于继承”的设计概念，所以类组件在这方面的优势也在淡出。
 - 性能优化上，类组件主要依靠 shouldComponentUpdate 阻断渲染来提升性能，而函数组件依靠 React.memo 缓存渲染结果来提升性能。
-- 从上手程度而言，类组件更容易上手，从未来趋势上看，由于React Hooks 的推出，函数组件成了社区未来主推的方案。
+- 从上手程度而言，类组件更容易上手（？？），从未来趋势上看，由于React Hooks 的推出，函数组件成了社区未来主推的方案。
 - 类组件在未来时间切片与并发模式中，由于生命周期带来的复杂度，并不易于优化。而函数组件本身轻量简单，且在 Hooks 的基础上提供了比原先更细粒度的逻辑组织与复用，更能适应 React 的未来发展。
+
+****
 
 ## 二、数据管理
 
