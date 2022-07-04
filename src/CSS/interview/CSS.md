@@ -66,6 +66,8 @@ category:
 
 **二、有继承性的属性**
 
+> 字体文本可见、列表光标
+
 1. **字体系列属性**
 
 - font-family：字体系列
@@ -73,7 +75,7 @@ category:
 - font-size：字体的大小
 - font-style：字体的风格
 
-1. **文本系列属性**
+2. **文本系列属性**
 
 - text-indent：文本缩进
 - text-align：文本水平对齐
@@ -83,15 +85,15 @@ category:
 - text-transform：控制文本大小写（就是uppercase、lowercase、capitalize这三个）
 - color：文本颜色
 
-1. **元素可见性**
+3. **元素可见性**
 
 - visibility：控制元素显示隐藏
 
-1. **列表布局属性**
+4. **列表布局属性**
 
 - list-style：列表风格，包括list-style-type、list-style-image等
 
-1. **光标属性**
+5. **光标属性**
 
 - cursor：光标显示为何种形态
 
@@ -302,7 +304,7 @@ translate 是 transform 属性的⼀个值。改变transform或opacity不会触�
 
 ### 17. 对 CSSSprites 的理解
 
-CSSSprites（精灵图），将一个页面涉及到的所有图片都包含到一张大图中去，然后利用CSS的 background-image，background-repeat，background-position属性的组合进行背景定位。
+CSSSprites（精灵图、雪碧图），将一个页面涉及到的所有图片都包含到一张大图中去，然后利用CSS的 background-image，background-repeat，background-position属性的组合进行背景定位。
 
 **优点：**
 
@@ -995,7 +997,7 @@ Flex是FlexibleBox的缩写，意为"弹性布局"，用来为盒状模型提供
 
 ### 1. 为什么需要清除浮动？清除浮动的方式
 
-**浮动的定义：** 非IE浏览器下，容器不设高度且子元素浮动时，容器高度不能被内容撑开。 此时，内容会溢出到容器外面而影响布局。这种现象被称为浮动（溢出）。
+**浮动的定义：** <u>非IE浏览器下，容器不设高度且子元素浮动时，容器高度不能被内容撑开。 此时，内容会溢出到容器外面而影响布局。这种现象被称为浮动（溢出）。</u>
 
 **浮动的工作原理：**
 
@@ -1133,7 +1135,21 @@ clear属性只有块级元素才有效的，而::after等伪元素默认都是�
 
 <img src="https://cdn.yihuiblog.top/images/202206252150283.png" alt="U66x3" style="zoom: 67%;" />
 
- 对于上图，由上到下分别是： （1）背景和边框：建立当前层叠上下文元素的背景和边框。 （2）负的z-index：当前层叠上下文中，z-index属性值为负的元素。 （3）块级盒：文档流内非行内级非定位后代元素。 （4）浮动盒：非定位浮动元素。 （5）行内盒：文档流内行内级非定位后代元素。 （6）z-index:0：层叠级数为0的定位元素。 （7）正z-index：z-index属性值为正的定位元素。
+ 对于上图，由上到下分别是： 
+
+（1）背景和边框：建立当前层叠上下文元素的背景和边框。 
+
+（2）负的z-index：当前层叠上下文中，z-index属性值为负的元素。 
+
+（3）块级盒：文档流内非行内级非定位后代元素。 
+
+（4）浮动盒：非定位浮动元素。 
+
+（5）行内盒：文档流内行内级非定位后代元素。 
+
+（6）z-index:0：层叠级数为0的定位元素。 
+
+（7）正z-index：z-index属性值为正的定位元素。
 
 **注意:** 当定位元素z-index:auto，生成盒在当前层叠上下文中的层级为 0，不会建立新的层叠上下文，除非是根元素。
 
@@ -1186,7 +1202,9 @@ position有以下属性值：
 
 sticky 英文字面意思是粘贴，所以可以把它称之为粘性定位。语法：**position: sticky;** 基于用户的滚动位置来定位。
 
-粘性定位的元素是依赖于用户的滚动，在 **position:relative** 与 **position:fixed** 定位之间切换。它的行为就像 **position:relative;** 而当页面滚动超出目标区域时，它的表现就像 **position:fixed;**，它会固定在目标位置。元素定位表现为在跨越特定阈值前为相对定位，之后为固定定位。这个特定阈值指的是 top, right, bottom 或 left 之一，换言之，指定 top, right, bottom 或 left 四个阈值其中之一，才可使粘性定位生效。否则其行为与相对定位相同。
+粘性定位的元素是依赖于用户的滚动，在 **position:relative** 与 **position:fixed** 定位之间切换。
+
+它的行为就像 **position:relative;** 而当页面滚动超出目标区域时，它的表现就像 **position:fixed;**，它会固定在目标位置。元素定位表现为在跨越特定阈值前为相对定位，之后为固定定位。这个特定阈值指的是 top, right, bottom 或 left 之一，换言之，指定 top, right, bottom 或 left 四个阈值其中之一，才可使粘性定位生效。否则其行为与相对定位相同。
 
 ## 四、场景应用
 
