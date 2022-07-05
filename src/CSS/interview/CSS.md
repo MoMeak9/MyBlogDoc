@@ -1001,7 +1001,7 @@ Flex是FlexibleBox的缩写，意为"弹性布局"，用来为盒状模型提供
 
 **浮动的工作原理：**
 
-- 浮动元素脱离文档流，不占据空间（引起“高度塌陷”现象）
+- 浮动元素脱离文档流，不占据空间（引起“<u>高度塌陷</u>”现象）
 - 浮动元素碰到包含它的边框或者其他浮动元素的边框停留
 
 浮动元素可以左右移动，直到遇到另一个浮动元素或者遇到它外边缘的包含框。浮动框不属于文档流中的普通流，当元素浮动之后，不会影响块级元素的布局，只会影响内联元素布局。此时文档流中的普通流就会表现得该浮动框不存在一样的布局模式。当包含框的高度小于浮动框的时候，此时就会出现“高度塌陷”。
@@ -1015,9 +1015,9 @@ Flex是FlexibleBox的缩写，意为"弹性布局"，用来为盒状模型提供
 **清除浮动的方式如下：**
 
 - 给父级div定义`height`属性
-- 最后一个浮动元素之后添加一个空的div标签，并添加`clear:both`样式
-- 包含浮动元素的父级标签添加`overflow:hidden`或者`overflow:auto`
-- 使用 :after 伪元素。由于IE6-7不支持 :after，使用 zoom:1 触发 hasLayout**
+- 最后一个浮动元素之后添加一个空的div标签，<u>并添加`clear:both`样式</u>
+- 包含浮动元素的父级标签添加<u>`overflow:hidden`或者`overflow:auto`</u>
+- 使用 `:after` 伪元素。由于IE6-7不支持 :after，使用 zoom:1 触发 hasLayout
 
 ```css
 .clearfix:after{
@@ -1043,12 +1043,16 @@ clear:none|left|right|both
 
 官方对clear属性解释：“**元素盒子的边不能和前面的浮动元素相邻**”，对元素设置clear属性是为了避免浮动元素对该元素的影响，而不是清除掉浮动。
 
-还需要注意 clear 属性指的是元素盒子的边不能和前面的浮动元素相邻，注意这里“**前面的**”3个字，也就是clear属性对“后面的”浮动元素是不闻不问的。考虑到float属性要么是left，要么是right，不可能同时存在，同时由于clear属性对“后面的”浮动元素不闻不问，因此，当clear:left有效的时候，clear:right必定无效，也就是此时clear:left等同于设置clear:both；同样地，clear:right如果有效也是等同于设置clear:both。由此可见，clear:left和clear:right这两个声明就没有任何使用的价值，至少在CSS世界中是如此，直接使用clear:both吧。
+还需要注意 clear 属性指的是元素盒子的边不能和前面的浮动元素相邻，注意这里“**前面的**”3个字，也就是clear属性对“后面的”浮动元素是不闻不问的。考虑到float属性要么是left，要么是right，不可能同时存在，同时由于clear属性对“后面的”浮动元素不闻不问，因此，当clear:left有效的时候，clear:right必定无效，也就是此时clear:left等同于设置clear:both；同样地，clear:right如果有效也是等同于设置clear:both。<u>由此可见，clear:left和clear:right这两个声明就没有任何使用的价值，至少在CSS世界中是如此，直接使用clear:both吧。</u>
 
 一般使用伪元素的方式清除浮动：
 
 ```css
-.clear::after{  content:'';  display: block;   clear:both;}
+.clear::after{  
+    content:'';  
+    display: block;   
+    clear:both;
+}
 ```
 
 clear属性只有块级元素才有效的，而::after等伪元素默认都是内联水平，这就是借助伪元素清除浮动影响时需要设置display属性值的原因。
@@ -1066,11 +1070,11 @@ clear属性只有块级元素才有效的，而::after等伪元素默认都是�
 
 **创建BFC的条件：**
 
-- 根元素：body；
-- 元素设置浮动：float 除 none 以外的值；
-- 元素设置绝对定位：position (absolute、fixed)；
-- display 值为：inline-block、table-cell、table-caption、flex等；
-- overflow 值为：hidden、auto、scroll；
+- **根元素**：body；
+- **元素设置浮动**：float 除 none 以外的值；
+- **元素设置绝对定位**：position (absolute、fixed)；
+- **display** 值为：inline-block、table-cell、table-caption、flex等；
+- **overflow** 值为：hidden、auto、scroll；
 
 **BFC的特点：**
 
@@ -1116,7 +1120,9 @@ clear属性只有块级元素才有效的，而::after等伪元素默认都是�
 - 如果是一正一负，就会正值减去负值的绝对值
 - 两个都是负值时，用0减去两个中绝对值大的那个
 
-**解决办法：** 对于折叠的情况，主要有两种：**兄弟之间重叠**和**父子之间重叠** （1）兄弟之间重叠
+**解决办法：** 对于折叠的情况，主要有两种：**兄弟之间重叠**和**父子之间重叠**
+
+ （1）兄弟之间重叠
 
 - 底部元素变为行内盒子：`display: inline-block`
 - 底部元素设置浮动：`float`
