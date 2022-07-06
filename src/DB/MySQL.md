@@ -5,7 +5,7 @@ category:
 - DB
 ---
 
-# MySQL
+# MySQL从入门到入院
 
 MySQL是一个关系型数据库，其实本质上就是一款软件、一个程序：
 

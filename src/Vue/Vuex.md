@@ -1,4 +1,4 @@
-# Vuex
+# Vuex 基础与进阶使用
 
 ```js
 // 1.vuex其实是一个对象 里面有一个install方法和一个Store类，在vue.use(plugin)的阶段，如果穿进去的plugin是对象，则必须拥有install方法，调用install方法，如果穿进去的是函数，则直接把函数当作install方法。

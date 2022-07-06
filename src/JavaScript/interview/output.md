@@ -32,7 +32,7 @@ console.log(4);
 4
 ```
 
-promise.then 是微任务，它会在所有的宏任务执行完之后才会执行，同时需要promise内部的状态发生变化，因为这里内部没有发生变化，一直处于pending状态，所以不输出3。
+promise.then 是微任务，它会在所有的宏任务执行完之后才会执行，同时需要promise内部的状态发生变化，<u>因为这里内部没有发生变化，一直处于pending状态，所以不输出3。</u>
 
 ### 2. 代码输出结果
 
@@ -52,7 +52,7 @@ console.log('2', promise2);
 
 ```javascript
 promise1
-1 Promise{<resolved>: resolve1}
+1 Promise{<fulfilled>: resolve1}
 2 Promise{<pending>}
 resolve1
 ```
@@ -65,7 +65,7 @@ resolve1
 2. 首先进入Promise，执行该构造函数中的代码，打印`promise1`；
 3. 碰到`resolve`函数, 将`promise1`的状态改变为`resolved`, 并将结果保存下来；
 4. 碰到`promise1.then`这个微任务，将它放入微任务队列；
-5. `promise2`是一个新的状态为`pending`的`Promise`；
+5. <u>`promise2`是一个新的状态为`pending`的`Promise`；</u>
 6. 执行同步代码1， 同时打印出`promise1`的状态是`resolved`；
 7. 执行同步代码2，同时打印出`promise2`的状态是`pending`；
 8. 宏任务执行完毕，查找微任务队列，发现`promise1.then`这个微任务且状态为`resolved`，执行它。
@@ -94,14 +94,16 @@ console.log(4);
 1
 2
 4
+// 下一次循环
 timerStart
 timerEnd
+// 微任务
 success
 ```
 
 代码执行过程如下：
 
-- 首先遇到Promise构造函数，会先执行里面的内容，打印`1`；
+- 首先遇到<u>Promise构造函数</u>，会先执行里面的内容，打印`1`；
 - 遇到定时器`steTimeout`，它是一个宏任务，放入宏任务队列；
 - 继续向下执行，打印出2；
 - 由于`Promise`的状态此时还是`pending`，所以`promise.then`先不执行；
@@ -131,10 +133,13 @@ console.log('start');
 输出结果如下：
 
 ```javascript
+// 1
 start
 promise1
+// 2
 timer1
 promise2
+// 3
 timer2
 ```
 
@@ -172,26 +177,6 @@ then：success1
 ```
 
 这个题目考察的就是**Promise的状态在发生变化之后，就不会再发生变化**。开始状态由`pending`变为`resolve`，说明已经变为已完成状态，下面的两个状态的就不会再执行，同时下面的catch也不会捕获到错误。
-
-### 6. 代码输出结果
-
-```javascript
-Promise.resolve(1)
-  .then(2)
-  .then(Promise.resolve(3))
-  .then(console.log)
-```
-
-输出结果如下：
-
-```javascript
-1
-Promise {<fulfilled>: undefined}
-```
-
-Promise.resolve方法的参数如果是一个原始值，或者是一个不具有then方法的对象，则Promise.resolve方法返回一个新的Promise对象，状态为resolved，Promise.resolve方法的参数，会同时传给回调函数。
-
-then方法接受的参数是函数，而如果传递的并非是一个函数，它实际上会将其解释为then(null)，这就会导致前一个Promise的结果会传递下面。
 
 ### 7. 代码输出结果
 
@@ -383,7 +368,7 @@ finally2后面的then函数 2
 - `.finally()`方法不管Promise对象最后的状态如何都会执行
 - `.finally()`方法的回调函数不接受任何的参数，也就是说你在`.finally()`函数中是无法知道Promise最终的状态是`resolved`还是`rejected`的
 - 它最终返回的默认会是一个上一次的Promise对象值，不过如果抛出的是一个异常则返回异常的Promise对象。
-- finally本质上是then方法的特例
+- <u>finally本质上是then方法的特例</u>
 
 `.finally()`的错误捕获：
 
@@ -583,8 +568,10 @@ async1 start
 async2
 start
 async1 end
+//
 timer2
 timer3
+//
 timer1
 ```
 
@@ -714,12 +701,12 @@ setTimeout
 async function async1 () {
   await async2();
   console.log('async1');
-  return 'async1 success'
+  return 'async1 success';
 }
 async function async2 () {
   return new Promise((resolve, reject) => {
     console.log('async2')
-    reject('error')
+    reject('error');
   })
 }
 async1().then(res => console.log(res))
@@ -732,7 +719,7 @@ async2
 Uncaught (in promise) error
 ```
 
-可以看到，如果async函数中抛出了错误，就会终止错误结果，不会继续向下执行。
+<u>可以看到，如果async函数中抛出了错误，就会终止错误结果，不会继续向下执行。</u>
 
 如果想要让错误不足之处后面的代码执行，可以使用catch来捕获：
 
@@ -1133,7 +1120,7 @@ Promise.resolve().then(() => {
 6
 ```
 
-在这道题目中，我们需要知道，无论是thne还是catch中，只要throw 抛出了错误，就会被catch捕获，如果没有throw出错误，就被继续执行后面的then。
+在这道题目中，我们需要知道，无论是then还是catch中，只要throw 抛出了错误，就会被catch捕获并无视中间的then过程，如果没有throw出错误，就被继续执行后面的then。
 
 ### 31. 代码输出结果
 
@@ -1193,7 +1180,7 @@ function foo() {
 }
 
 function doFoo() {
-  foo();
+  foo(); // 相当于直接函数调用
 }
 
 var obj = {
@@ -1209,20 +1196,40 @@ obj.doFoo()
 
 在Javascript中，this指向函数执行时的当前对象。在执行foo的时候，执行环境就是doFoo函数，执行环境为全局。所以，foo中的this是指向window的，所以会打印出2。
 
+> 修改，使用bind或者箭头函数
+
+```js
+function foo() {
+    console.log( this.a );
+}
+
+function doFoo() {
+    foo.bind(this)();
+}
+
+var obj = {
+    a: 1,
+    doFoo: doFoo
+};
+
+var a = 2;
+obj.doFoo() // 1
+```
+
 ### 2. 代码输出结果
 
 ```javascript
-var a = 10
+var a = 10;
 var obj = {
   a: 20,
   say: () => {
-    console.log(this.a)
+    console.log(this.a);
   }
 }
-obj.say() 
+obj.say();
 
-var anotherObj = { a: 30 } 
-obj.say.apply(anotherObj) 
+var anotherObj = { a: 30 };
+obj.say.apply(anotherObj);
 ```
 
 输出结果：10  10
@@ -1259,9 +1266,9 @@ a.call(null);
 
 打印结果：window对象
 
-根据ECMAScript262规范规定：如果第一个参数传入的对象调用者是null或者undefined，call方法将把全局对象（浏览器上是window对象）作为this的值。所以，不管传入null 还是 undefined，其this都是全局对象window。所以，在浏览器上答案是输出 window 对象。
+根据ECMAScript262规范规定：如果第一个参数传入的对象调用者是null或者undefined，call方法将把全局对象（浏览器上是window对象）作为this的值。所以，不管传入null 还是 undefined，其this都是全局对象window。所以，<u>在浏览器上答案是输出 window 对象。</u>
 
-要注意的是，在严格模式中，null 就是 null，undefined 就是 undefined：
+<u>要注意的是，在严格模式中，null 就是 null，undefined 就是 undefined：</u>
 
 ```javascript
 'use strict';
@@ -1272,6 +1279,8 @@ function a() {
 a.call(null); // null
 a.call(undefined); // undefined
 ```
+
+> 补充，在node环境下，则为`global`对象
 
 ### 4. 代码输出结果
 
@@ -1323,6 +1332,8 @@ window对象
 1. o()，o是在全局执行的，而f1是箭头函数，它是没有绑定this的，它的this指向其父级的this，其父级say方法的this指向的是全局作用域，所以会打印出window；
 2. obj.say()，谁调用say，say 的this就指向谁，所以此时this指向的是obj对象；
 3. obj.pro.getPro()，我们知道，箭头函数时不绑定this的，getPro处于pro中，而对象不构成单独的作用域，所以箭头的函数的this就指向了全局作用域window。
+
+**2020.7.4**
 
 ### 7. 代码输出结果
 

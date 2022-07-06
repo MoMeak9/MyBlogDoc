@@ -3,7 +3,8 @@ date: 2021-09-12
 category:
 - Vue
 ---
-# $nextTick of Vue
+# `$nextTick` of Vue 深入理解 $nextTick
+
 ## Vue.$nextTick()
 
 其实一句话就可以把`$nextTick`这个东西讲明白：就是你放在`$nextTick  `当中的操作不会立即执行，而是等数据更新、DOM更新完成之后再执行，这样我们拿到的肯定就是最新的了。

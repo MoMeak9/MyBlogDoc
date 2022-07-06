@@ -7,6 +7,8 @@ category:
 
 > [「2021」高频前端面试题汇总之JavaScript篇（上）](https://juejin.cn/post/6959043611161952269)
 
+# JavaScript面试题汇总（一）
+
 ## 一、数据类型
 
 ### 1. JavaScript有哪些数据类型，它们的区别？
@@ -15,12 +17,12 @@ JavaScript共有八种数据类型，分别是 Undefined、Null、Boolean、Numb
 
 其中 Symbol 和 BigInt 是ES6 中新增的数据类型：
 
-- Symbol 代表创建后独一无二且不可变的数据类型，它主要是为了解决可能出现的全局变量冲突的问题。
-- BigInt 是一种数字类型的数据，它可以表示任意精度格式的整数，使用 BigInt 可以安全地存储和操作大整数，即使这个数已经超出了 Number 能够表示的安全整数范围。
+- **Symbol** 代表创建后独一无二且不可变的数据类型，它主要是为了解决可能出现的全局变量冲突的问题。
+- **BigInt** 是一种数字类型的数据，它可以表示任意精度格式的整数，使用 BigInt 可以安全地存储和操作大整数，即使这个数已经超出了 Number 能够表示的安全整数范围。
 
 这些数据可以分为原始数据类型和引用数据类型：
 
-- 栈：原始数据类型（Undefined、Null、Boolean、Number、String）
+- 栈：原始数据类型（Undefined、Null、Boolean、Number、String、Symbol、BigInt）
 - 堆：引用数据类型（对象、数组和函数）
 
 两种类型的区别在于**存储位置的不同：**
