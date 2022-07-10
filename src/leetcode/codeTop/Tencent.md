@@ -446,9 +446,45 @@ var searchRange = function (nums, target) {
 
 #### [面试题 01.05. 一次编辑](https://leetcode.cn/problems/one-away-lcci/)
 
+```js
+var oneEditAway = function(first, second) {
+    const m = first.length, n = second.length;
+    if (n - m === 1) {
+        return oneInsert(first, second);
+    } else if (m - n === 1) {
+        return oneInsert(second, first);
+    } else if (m === n) {
+        let foundDifference = false;
+        for (let i = 0; i < m; i++) {
+            if (first[i] != second[i]) {
+                if (!foundDifference) {
+                    foundDifference = true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    } else {
+        return false;
+    }
+}
 
-
-
+const oneInsert = (shorter, longer) => {
+    const length1 = shorter.length, length2 = longer.length;
+    let index1 = 0, index2 = 0;
+    while (index1 < length1 && index2 < length2) {
+        if (shorter[index1] == longer[index2]) {
+            index1++;
+        }
+        index2++;
+        if (index2 - index1 > 1) {
+            return false;
+        }
+    }
+    return true;
+};
+```
 
 #### [847. 访问所有节点的最短路径](https://leetcode.cn/problems/shortest-path-visiting-all-nodes/)
 
@@ -537,6 +573,152 @@ var rotate = function (nums, k) {
     for (let i = 0; i < k; i++) {
         nums.unshift(nums.pop());
     }
+};
+```
+
+#### [387. 字符串中的第一个唯一字符](https://leetcode.cn/problems/first-unique-character-in-a-string/)
+
+> 2n
+
+```js
+var firstUniqChar = function (s) {
+    const obj = {}
+    Array.from(s).forEach((item, index) => {
+        if (!obj[item]) {
+            obj[item] = index + 1;
+        } else {
+            obj[item] = -1;
+        }
+    })
+    for (const objKey in obj) {
+        if (obj[objKey] !== -1) {
+            return obj[objKey] - 1;
+        }
+    }
+    return -1;
+};
+
+```
+
+> 队列方法
+
+```js
+var firstUniqChar = function(s) {
+    const position = new Map();
+    const q = [];
+    const n = s.length;
+    for (let [i, ch] of Array.from(s).entries()) {
+        if (!position.has(ch)) {
+            position.set(ch, i);
+            q.push([s[i], i]);
+        } else {
+            position.set(ch, -1);
+            while (q.length && position.get(q[0][0]) === -1) {
+                q.shift();
+            }
+        }
+    }
+    return q.length ? q[0][1] : -1;
+};
+```
+
+#### [28. 实现 strStr()](https://leetcode.cn/problems/implement-strstr/)
+
+```js
+/**
+ * @param {string} haystack
+ * @param {string} needle
+ * @return {number}
+ */
+var strStr = function(haystack, needle) {
+    return needle.length>0?haystack.indexOf(needle):0; 
+};
+```
+
+#### [674. 最长连续递增序列](https://leetcode.cn/problems/longest-continuous-increasing-subsequence/)
+
+```js
+var findLengthOfLCIS = function(nums) {
+    let ans = 0;
+    const n = nums.length;
+    let start = 0;
+    for (let i = 0; i < n; i++) {
+        if (i > 0 && nums[i] <= nums[i - 1]) {
+            start = i;
+        }
+        ans = Math.max(ans, i - start + 1);
+    }
+    return ans;
+};
+```
+
+#### [172. 阶乘后的零](https://leetcode.cn/problems/factorial-trailing-zeroes/)
+
+> 考虑尾数0是由2X5提供的
+>
+> 由于质因子 5 的个数不会大于质因子 2 的个数（具体证明见方法二），<u>我们可以仅考虑质因子 5 的个数。</u>
+
+> 优化计算
+
+```js
+/**
+ * @param {number} n
+ * @return {number}n
+ */
+var trailingZeroes = function(n) {
+    let count = 0;
+    while (n > 0) {
+        n = Math.floor(n / 5);
+        count += n;
+    }
+    return count;
+};
+```
+
+#### [628. 三个数的最大乘积](https://leetcode.cn/problems/maximum-product-of-three-numbers/)
+
+> 错误的
+
+```js
+var maximumProduct = function(nums) {
+    nums.sort((a,b)=>a-b);
+    const len = nums.length;
+    return nums[len-1]*nums[len-2]*nums[len-3];
+};
+```
+
+> 注意双负数情况，最小的两个负数与最大整数相乘
+
+```js
+var maximumProduct = function(nums) {
+    nums.sort((a, b) => a - b);
+    const n = nums.length;
+    return Math.max(nums[0] * nums[1] * nums[n - 1], nums[n - 1] * nums[n - 2] * nums[n - 3]);
+};
+```
+
+#### [204. 计数质数](https://leetcode.cn/problems/count-primes/)
+
+> 逐个枚举法
+>
+> ![image-20220703155553306](https://cdn.yihuiblog.top/images/202207041643342.png)
+
+```js
+const isPrime = (x) => {
+    for (let i = 2; i * i <= x; ++i) {
+        if (x % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+var countPrimes = function(n) {
+    let ans = 0;
+    for (let i = 2; i < n; ++i) {
+        ans += isPrime(i);
+    }
+    return ans;
 };
 ```
 

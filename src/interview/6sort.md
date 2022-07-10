@@ -156,7 +156,7 @@ let quickSort = function (arr) {
     let index = Math.floor(arr.length / 2)
     // 使用splice截取中间值，第一个参数为截取的索引，第二个参数为截取的长度；
     // 如果此处使用pivot=arr[index]; 那么将会出现无限递归的错误；
-    // splice影响原数组
+    // splice影响原数组，splice影响原数组,应当被删除
     let pivot = arr.splice(index, 1)[0],
         left = [],
         right = [];
