@@ -8,7 +8,7 @@
     "docs:clean-dev": "vuepress dev src --clean-cache",
     "docs:dev": "vuepress dev src",
     "deploy": "npm run docs:build && components deploy",
-    "commit": "cz"
+    "commit": "npx git-cz"
   },
   "config": {
     "commitizen": {

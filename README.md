@@ -52,3 +52,5 @@
 - Github Action 自动部署 Github Page （见deploy分支）
 
 ### Git 提交
+
+commitizen+git-cz 实现
