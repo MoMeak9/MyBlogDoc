@@ -1,19 +1,20 @@
 ---
 date: 2022-06-28
+star: true
 category:
 - 前端
 - JavaScript
 ---
 
-> https://juejin.cn/post/6946136940164939813
+> [2021」高频前端面试题汇总之手写代码篇](https://juejin.cn/post/6946136940164939813)
 
-# 高频手写
+# JavaScript 高频手撕
 
 ## 一、JavaScript 基础
 
 ### 1. 手写 Object.create
 
-思路：将传入的对象作为原型
+<u>思路：将传入的对象作为新构造函数对象原型</u>
 
 ```javascript
 function create(obj) {
@@ -23,11 +24,11 @@ function create(obj) {
 }
 ```
 
-### 2. 手写 instanceof 方法
+### 2. 手写 instanceof 方法 :star::star:
 
 instanceof 运算符用于判断构造函数的 prototype 属性是否出现在对象的原型链中的任何位置。
 
-实现步骤：
+**实现步骤：**
 
 1. 首先获取类型的原型
 2. 然后获得对象的原型
@@ -50,7 +51,7 @@ function myInstanceof(left, right) {
 }
 ```
 
-### 3. 手写 new 操作符
+### 3. 手写 new 操作符:star::star:
 
 在调用 `new` 的过程中会发生以上四件事情：
 
@@ -63,9 +64,10 @@ function myInstanceof(left, right) {
 （4）判断函数的返回值类型，如果是值类型，返回创建的对象。如果是引用类型，就返回这个引用类型的对象。
 
 ```javascript
-function objectFactory() {
+function objectFactory(...args) {
   let newObject = null;
-  let constructor = Array.prototype.shift.call(arguments); // arguments并不是数组，只是类数组对象
+  // let constructor = Array.prototype.shift.call(arguments); // arguments并不是数组，只是类数组对象，无法使用arguments[0]访问
+  let constructor = args.shift();
   let result = null;
   // 判断参数是否是一个函数
   if (typeof constructor !== "function") {
@@ -75,7 +77,7 @@ function objectFactory() {
   // 新建一个空对象，对象的原型为构造函数的 prototype 对象
   newObject = Object.create(constructor.prototype);
   // 将 this 指向新建对象，并执行函数
-  result = constructor.apply(newObject, arguments);
+  result = constructor.apply(newObject, args);
   // 判断返回对象
   let flag = result && (typeof result === "object" || typeof result === "function");
   // 判断返回结果
@@ -85,7 +87,19 @@ function objectFactory() {
 objectFactory(构造函数, 初始化参数);
 ```
 
-### 4. 手写 Promise
+简化版本
+
+- 创建了新空对象 
+
+- 将构造函数的作用域赋值给新对象(this指向新对象)
+
+- 执行构造函数代码 （为这个新对象添加属性）
+
+- 返回新对象
+
+
+
+### 4. 手写 Promise:star:
 
 ```javascript
 const PENDING = "pending";
@@ -196,7 +210,7 @@ MyPromise.prototype.then = function(onResolved, onRejected) {
 };
 ```
 
-### 5. 手写 Promise.then
+### 5. 手写 Promise.then:star:
 
 `then` 方法返回一个新的 `promise` 实例，为了在 `promise` 状态发生变化时（`resolve` / `reject` 被调用时）再执行 `then` 里的函数，我们使用一个 `callbacks` 数组先把传给then的函数暂存起来，等状态改变时再调用。
 
@@ -249,15 +263,15 @@ then(onFulfilled, onReject){
 - 连续多个 `then` 里的回调方法是同步注册的，但注册到了不同的 `callbacks` 数组中，因为每次 `then` 都返回新的 `promise` 实例（参考上面的例子和图）
 - 注册完成后开始执行构造函数中的异步事件，异步完成之后依次调用 `callbacks` 数组中提前注册的回调
 
-### 6. 手写 Promise.all
+### 6. 手写 Promise.all:star::star:
 
 **1) 核心思路**
 
-1. 接收一个 Promise 实例的数组或具有 Iterator 接口的对象作为参数
-2. 这个方法返回一个新的 promise 对象，
+1. 接收一个 <u>**Promise 实例的数组**或具有 **Iterator 接口的对象（可迭代对象）**</u>作为参数
+2. 这个方法返回一个**<u>新的 promise 对象</u>**，
 3. 遍历传入的参数，用Promise.resolve()将参数"包一层"，使其变成一个promise对象
-4. 参数所有回调成功才是成功，返回值数组与参数顺序一致
-5. 参数数组其中一个失败，则触发失败状态，第一个触发失败的 Promise 错误信息作为 Promise.all 的错误信息。
+4. <u>参数所有回调成功才是成功，返回值数组与参数顺序一致</u>
+5. 参数数组其中一个失败，则触发失败状态，<u>第一个触发失败的 Promise 错误信息作为 Promise.all 的错误信息。</u>
 
 **2）实现代码**
 
@@ -266,12 +280,14 @@ then(onFulfilled, onReject){
 ```javascript
 function promiseAll(promises) {
   return new Promise(function(resolve, reject) {
+    // 参数校验
     if(!Array.isArray(promises)){
         throw new TypeError(`argument must be a array`)
     }
     var resolvedCounter = 0;
     var promiseNum = promises.length;
     var resolvedResult = [];
+    // 循环执行
     for (let i = 0; i < promiseNum; i++) {
       Promise.resolve(promises[i]).then(value=>{
         resolvedCounter++;
@@ -306,11 +322,11 @@ promiseAll([p3, p1, p2]).then(res => {
 })
 ```
 
-### 7. 手写 Promise.race
+### 7. 手写 Promise.race:star:
 
 该方法的参数是 Promise 实例数组, 然后其 then 注册的回调方法是数组中的某一个 Promise 的状态变为 fulfilled 的时候就执行. 因为 Promise 的状态**只能改变一次**, 那么我们只需要把 <u>Promise.race 中产生的 Promise 对象的 resolve 方法, 注入到数组中的每一个 Promise 实例中的回调函数中即可.</u>
 
-> 之后将由args[i]去执行new Promise的resolve, reject
+> 外部resolve, reject，将由args[i]去执行new Promise的resolve, reject
 
 ```javascript
 Promise.race = function (args) {
@@ -326,7 +342,7 @@ Promise.race = function (args) {
 
 
 
-### 8. 手写防抖函数
+### 8. 手写防抖函数:star::star:
 
 函数防抖是指在事件被触发 n 秒后再执行回调，如果在这 n 秒内事件又被触发，则重新计时。这可以使用在一些点击请求的事件上，避免因为用户的多次点击向后端发送多次请求。
 
@@ -336,7 +352,7 @@ function debounce(fn, wait) {
   let timer = null;
 
   return function() {
-    let context = this,
+    let context = this, // 保存当前函数执行上下文
         args = arguments;
 
     // 如果此时存在定时器的话，则取消之前的定时器重新记时
@@ -353,7 +369,7 @@ function debounce(fn, wait) {
 }
 ```
 
-### 9. 手写节流函数
+### 9. 手写节流函数:star::star:
 
 函数节流是指规定一个单位时间，在这个单位时间内，只能有一次触发事件的回调函数执行，如果在同一个单位时间内某事件被触发多次，只有一次能生效。节流可以使用在 scroll 函数的事件监听上，通过事件节流来降低事件调用的频率。
 
@@ -376,18 +392,22 @@ function throttle(fn, delay) {
 }
 ```
 
-### 10. 手写类型判断函数
+### 10. 手写类型判断函数:star:
+
+1. 判断数据是 null 的情况
+2. `typeof`判断数据是引用类型的情况
+3. `typeof`判断数据是基本数据类型的情况和函数的情况
 
 ```javascript
 function getType(value) {
   // 判断数据是 null 的情况
-  if (value === null) {
+  if (value == null) {
     return value + "";
   }
   // 判断数据是引用类型的情况
   if (typeof value === "object") {
     let valueClass = Object.prototype.toString.call(value),
-      type = valueClass.split(" ")[1].split("");
+    type = valueClass.split(" ")[1].split("");
     type.pop();
     return type.join("").toLowerCase();
   } else {
@@ -397,7 +417,7 @@ function getType(value) {
 }
 ```
 
-### 11. 手写 call 函数
+### 11. 手写 call 函数:star::star:
 
 call 函数的实现步骤：
 
@@ -431,7 +451,7 @@ Function.prototype.myCall = function(context) {
 };
 ```
 
-### 12. 手写 apply 函数
+### 12. 手写 apply 函数:star::star:
 
 apply 函数的实现步骤：
 
@@ -467,7 +487,7 @@ Function.prototype.myApply = function(context) {
 };
 ```
 
-### 13. 手写 bind 函数
+### 13. 手写 bind 函数:star::star:
 
 bind 函数的实现步骤：
 
@@ -496,7 +516,7 @@ Function.prototype.myBind = function(context) {
 };
 ```
 
-### 14. 函数柯里化的实现
+### 14. 函数柯里化的实现:star:
 
 函数柯里化指的是一种将使用多个参数的一个函数转换成一系列使用一个参数的函数的技术。
 
@@ -532,7 +552,7 @@ function curry(fn, ...args) {
 }
 ```
 
-### 15. 实现AJAX请求
+### 15. 实现AJAX请求:star::star:
 
 AJAX是 Asynchronous JavaScript and XML 的缩写，指的是通过 JavaScript 的 异步通信，从服务器获取 XML 文档从中提取数据，再更新当前网页的对应部分，而不用刷新整个网页。
 
@@ -606,7 +626,9 @@ function getJSON(url) {
 
 ### 17. 实现浅拷贝
 
-浅拷贝是指，一个新的对象对原始对象的属性值进行精确地拷贝，如果拷贝的是基本数据类型，拷贝的就是基本数据类型的值，如果是引用数据类型，拷贝的就是内存地址。如果其中一个对象的引用内存地址发生改变，另一个对象也会发生变化。
+> 对基本数据类型没有深浅拷贝之分
+
+浅拷贝是指，<u>一个新的对象对原始对象的属性值进行精确地拷贝，如果拷贝的是基本数据类型，拷贝的就是基本数据类型的值，如果是引用数据类型，拷贝的就是内存地址。</u>如果其中一个对象的引用内存地址发生改变，另一个对象也会发生变化。
 
 #### （1）Object.assign()
 
@@ -718,7 +740,7 @@ function shallowCopy(object) {
 }
 ```
 
-### 18. 实现深拷贝
+### 18. 实现深拷贝 :star::star:
 
 - **浅拷贝：** 浅拷贝指的是将一个对象的属性值复制到另一个对象，如果有的属性的值为引用类型的话，那么会将这个引用的地址复制给对象，因此两个对象会有同一个引用类型的引用。浅拷贝可以使用  Object.assign 和展开运算符来实现。
 - **深拷贝：** 深拷贝相对浅拷贝而言，如果遇到属性值为引用类型的时候，它新建一个引用类型并将对应的值复制给它，因此对象获得的一个新的引用类型而不是一个原有类型的引用。深拷贝对于一些对象可以使用 JSON 的两个函数来实现，但是由于 JSON 的对象格式比 js 的对象格式更加严格，所以如果属性值里边出现函数或者 Symbol 类型的值时，会转换失败
@@ -726,7 +748,7 @@ function shallowCopy(object) {
 #### （1）JSON.stringify()
 
 - `JSON.parse(JSON.stringify(obj))`是目前比较常用的深拷贝方法之一，它的原理就是利用`JSON.stringify` 将`js`对象序列化（JSON字符串），再使用`JSON.parse`来反序列化(还原)`js`对象。
-- 这个方法可以简单粗暴的实现深拷贝，但是还存在问题，拷贝的对象中如果有函数，undefined，symbol，当使用过`JSON.stringify()`进行处理之后，都会消失。
+- 这个方法可以简单粗暴的实现深拷贝，但是还存在问题，**拷贝的对象中如果有函数，undefined，symbol，当使用过`JSON.stringify()`进行处理之后，都会消失。并且无法处理循环引用**
 
 ```javascript
 let obj1 = {  a: 0,
@@ -766,7 +788,7 @@ function deepCopy(object) {
   let newObject = Array.isArray(object) ? [] : {};
 
   for (let key in object) {
-    if (object.hasOwnProperty(key)) {
+    if (object.hasOwnProperty(key)) { // 指示对象自身属性中是否具有指定的属性
       newObject[key] =
         typeof object[key] === "object" ? deepCopy(object[key]) : object[key];
     }
@@ -778,7 +800,7 @@ function deepCopy(object) {
 
 ## 二、数据处理
 
-### 1. 实现日期格式化函数
+### 1. 实现日期格式化函数 :star:
 
 输入：
 
@@ -807,7 +829,7 @@ b = a - b
 a = a - b
 ```
 
-### 3. 实现数组的乱序输出
+### 3. 实现数组的乱序输出 :star::star:
 
 主要的实现思路就是：
 
@@ -840,7 +862,7 @@ let length = arr.length,
 console.log(arr)
 ```
 
-### 4. 实现数组元素求和
+### 4. 实现数组元素求和 :star:
 
 - arr=[1,2,3,4,5,6,7,8,9,10]，求和
 
@@ -874,7 +896,7 @@ console.log(add(arr)) // 21
 
 
 
-### 5. 实现数组的扁平化
+### 5. 实现数组的扁平化 :star::star:
 
 **（1）递归实现**
 
@@ -973,7 +995,7 @@ function flatten(arr) {
 console.log(flatten(arr)); //  [1, 2, 3, 4，5]
 ```
 
-### 6. 实现数组去重
+### 6. 实现数组去重 :star::star:
 
 给定某无序数组，要求去除数组中的重复数字并且返回新的无重复数组。
 
@@ -1097,7 +1119,7 @@ console.log(res);    // olleh
 
 需要注意的是，必须通过实例化对象之后再去调用定义的方法，不然找不到该方法。
 
-### 13. 将数字每千分位用逗号隔开
+### 13. 将数字每千分位用逗号隔开:star::star:
 
 **数字有小数版本：**
 
@@ -1146,8 +1168,6 @@ format(1232323)  // '1,232,323'
 
 [1556. 千位分隔数](https://leetcode-cn.com/problems/thousand-separator/) :star:
 
-****
-
 ```js
 /**
  * @param {number} n
@@ -1164,7 +1184,7 @@ var thousandSeparator = function (n) {
 };
 ```
 
-### 14. 实现非负大整数相加
+### 14. 实现非负大整数相加:star::star:
 
 JavaScript对数值有范围的限制，限制如下：
 
@@ -1204,7 +1224,7 @@ function sumBigNumber(a, b) {
 - 判断当前位是否大于9，也就是是否会进位，若是则将temp赋值为true，因为在加法运算中，true会自动隐式转化为1，以便于下一次相加
 - 重复上述操作，直至计算结束
 
-### 13. 实现 add(1)(2)(3)
+### 13. 实现 add(1)(2)(3):star::star: 柯里化
 
 函数柯里化概念： **柯里化（Currying）是把接受多个参数的函数转变为接受一个单一参数的函数，并且返回接受余下的参数且返回结果的新函数的技术。**
 
@@ -1391,7 +1411,7 @@ function jsonToTree(data) {
 }
 ```
 
-### 17. 使用ES5和ES6求函数参数的和
+### 17. 使用ES5和ES6求函数参数的和 :star::star:
 
 ES5：
 
@@ -1454,7 +1474,7 @@ function parseParam(url) {
 
 ## 三、场景应用
 
-### 1. 循环打印红黄绿
+### 1. 循环打印红黄绿 :star::star:
 
 下面来看一道比较典型的问题，通过这个问题来对比几种异步编程方法：**红灯 3s 亮一次，绿灯 1s 亮一次，黄灯 2s 亮一次；如何让三个灯不断交替重复亮灯？**
 
@@ -1500,7 +1520,7 @@ task(3000, 'red', () => {
 
 这里存在一个 bug：代码只是完成了一次流程，执行后红黄绿灯分别只亮一次。该如何让它交替重复进行呢？
 
-上面提到过递归，可以递归亮灯的一个周期：
+<u>上面提到过递归，可以递归亮灯的一个周期：</u>
 
 ```javascript
 const step = () => {
@@ -1530,9 +1550,10 @@ const task = (timer, light) =>
             else if (light === 'yellow') {
                 yellow()
             }
-            resolve()
+            resolve() // 重要
         }, timer)
     })
+
 const step = () => {
     task(3000, 'red')
         .then(() => task(2000, 'green'))
@@ -1689,7 +1710,7 @@ class EventCenter{
 }
 ```
 
-### 6. 查找文章中出现频率最高的单词
+### 6. 查找文章中出现频率最高的单词 :star:
 
 ```javascript
 function findMostWord(article) {
@@ -1797,7 +1818,7 @@ subInstance.flag1;   // true
 subInstance.flag2;   // false
 ```
 
-### 9. 实现双向数据绑定
+### 9. 实现双向数据绑定 :star:
 
 ```javascript
 let obj = {}
@@ -1850,7 +1871,7 @@ class Route{
 }
 ```
 
-### 11. 实现斐波那契数列
+### 11. 实现斐波那契数列 :star:
 
 ```javascript
 // 递归
@@ -1915,7 +1936,7 @@ var lengthOfLongestSubstring = function (s) {
 };
 ```
 
-### 13. 使用 setTimeout 实现 setInterval
+### 13. 使用 setTimeout 实现 setInterval :star:
 
 setInterval 的作用是每隔一段指定时间执行一个函数，但是这个执行不是真的到了时间立即执行，它真正的作用是每隔一段时间将事件加入事件队列中去，只有当当前的执行栈为空的时候，才能去从事件队列中取出事件执行。所以可能会出现这样的情况，就是当前执行栈执行的时间很长，导致事件队列里边积累多个定时器加入的事件，当执行栈结束的时候，这些事件会依次执行，因此就不能到间隔一段时间执行的效果。
 
@@ -1943,7 +1964,7 @@ function mySetInterval(fn, timeout) {
 }
 ```
 
-### 14. 实现 jsonp
+### 14. 实现 jsonp :star:
 
 ```javascript
 // 动态的加载js文件
@@ -1962,7 +1983,7 @@ function handleRes(res) {
 handleRes({a: 1, b: 2});
 ```
 
-### 15. 判断对象是否存在循环引用
+### 15. 判断对象是否存在循环引用 :star:
 
 循环引用对象本来没有什么问题，但是序列化的时候就会发生问题，比如调用`JSON.stringify()`对该类对象进行序列化，就会报错: `Converting circular structure to JSON.`
 

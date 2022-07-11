@@ -209,11 +209,196 @@ var insertionSortList = function(head) {
 
 #### [560. 和为 K 的子数组](https://leetcode.cn/problems/subarray-sum-equals-k/)
 
+> 土办法，向前枚举
+
+```js
+var subarraySum = function(nums, k) {
+    let count = 0;
+    for (let start = 0; start < nums.length; ++start) {
+        let sum = 0;
+        for (let end = start; end >= 0; --end) {
+            sum += nums[end];
+            if (sum == k) {
+                count++;
+            }
+        }
+    }
+    return count;
+};
+```
+
+> 前缀和
+>
+> ![img](https://cdn.yihuiblog.top/images/202207111301866.png)
+
+```js
+var subarraySum = function(nums, k) {
+    const mp = new Map();
+    mp.set(0, 1);
+    let count = 0, pre = 0;
+    for (const x of nums) {
+        pre += x;
+        if (mp.has(pre - k)) {
+            count += mp.get(pre - k);
+        }
+        if (mp.has(pre)) {
+            mp.set(pre, mp.get(pre) + 1);
+        } else {
+            mp.set(pre, 1);
+        }
+    }
+    return count;
+};
+```
+
 
 
 #### [剑指 Offer 46. 把数字翻译成字符串](https://leetcode.cn/problems/ba-shu-zi-fan-yi-cheng-zi-fu-chuan-lcof/)
 
+```js
+/**
+ * @param {number} num
+ * @return {number}
+ */
+var translateNum = function(num) {
+    if(num < 10)return 1;
+    if (num % 100 < 26 && num % 100 > 9) {
+        return translateNum(~~(num / 10)) + translateNum(~~(num / 100));
+    } else {
+        return translateNum(~~(num / 10));
+    }
+};
+```
+
 
 
 #### [207. 课程表](https://leetcode.cn/problems/course-schedule/)
+
+> 类似图的依赖关系
+>
+> 本题是一道经典的「拓扑排序」问题，找一找有没有环
+
+拓扑排序
+
+```js
+/**
+ * @param {number} numCourses
+ * @param {number[][]} prerequisites
+ * @return {boolean}
+ */
+const canFinish = (numCourses, prerequisites) => {
+  const inDegree = new Array(numCourses).fill(0); // 入度数组
+  const map = {};                                 // 邻接表
+  for (let i = 0; i < prerequisites.length; i++) {
+    inDegree[prerequisites[i][0]]++;              // 求课的初始入度值
+    if (map[prerequisites[i][1]]) {               // 当前课已经存在于邻接表
+      map[prerequisites[i][1]].push(prerequisites[i][0]); // 添加依赖它的后续课
+    } else {                                      // 当前课不存在于邻接表
+      map[prerequisites[i][1]] = [prerequisites[i][0]];
+    }
+  }
+  const queue = [];
+  for (let i = 0; i < inDegree.length; i++) { // 所有入度为0的课入列
+    if (inDegree[i] == 0) queue.push(i);
+  }
+  let count = 0;
+  while (queue.length) {
+    const selected = queue.shift();           // 当前选的课，出列
+    count++;                                  // 选课数+1
+    const toEnQueue = map[selected];          // 获取这门课对应的后续课
+    if (toEnQueue && toEnQueue.length) {      // 确实有后续课
+      for (let i = 0; i < toEnQueue.length; i++) {
+        inDegree[toEnQueue[i]]--;             // 依赖它的后续课的入度-1
+        if (inDegree[toEnQueue[i]] == 0) {    // 如果因此减为0，入列
+          queue.push(toEnQueue[i]);
+        }
+      }
+    }
+  }
+  return count == numCourses; // 选了的课等于总课数，true，否则false
+};
+```
+
+#### [1424. 对角线遍历 II](https://leetcode.cn/problems/diagonal-traverse-ii/)
+
+![img](https://cdn.yihuiblog.top/images/202207111336268.png)
+
+> 从左上角进行广度优先搜索
+
+```js
+/**
+ * @param {number[][]} nums
+ * @return {number[]}
+ */
+var findDiagonalOrder = function(nums) {
+    let q = [[0,0]];
+    let res = [];
+    while(q.length !== 0){
+        let cur = q.pop();
+        if(cur[1] === 0 && cur[0]+1 < nums.length) q.unshift([cur[0]+1,cur[1]]);
+        if(cur[1]+1 < nums[cur[0]].length) q.unshift([cur[0],cur[1]+1]);
+        res.push(nums[cur[0]][cur[1]]);
+    }
+    return res;
+};
+
+```
+
+#### [79. 单词搜索](https://leetcode.cn/problems/word-search/)
+
+> 广度优先、区分方向
+
+```js
+/**
+ * @param {character[][]} board
+ * @param {string} word
+ * @return {boolean}
+ */
+var exist = function (board, word) {
+  const W = board.length;
+  const H = board[0].length
+  const K = word.length
+
+  //搜索的方向
+  const dirs = [[0, -1], [1, 0],[0, 1],[-1, 0]]
+  function helper(i, j, k) {
+    if (k>=K) return true
+    if (i >= W || j >= H || i < 0 || j < 0) return false
+
+    if (board[i][j] !== word[k]) return false
+    board[i][j]='*'
+    for (let [x,y] of dirs) {
+      if(helper(i+x,j+y,k+1)) return true
+    }
+    board[i][j]=word[k]
+    return false
+  }
+  for (let i = 0; i < W; i++) {
+    for (let j = 0; j < H; j++) {
+      if (helper(i,j,0)) return true
+    }
+  }
+  return false
+};
+```
+
+#### [139. 单词拆分](https://leetcode.cn/problems/word-break/) :star:稍后查看
+
+```ts
+function wordBreak(s: string, wordDict: string[]): boolean {
+    const n: number = s.length;
+    const wordDictSet: Set<string> = new Set(wordDict);
+    const dp: Array<boolean> = new Array(n + 1).fill(false);
+    dp[0] = true;
+    for (let i = 1; i <= n; i++) {
+        for (let j = 0; j < i; j++) {
+            if (dp[j] && wordDictSet.has(s.substr(j, i - j))) {
+                dp[i] = true;
+                break;
+            }
+        }
+    }
+    return dp[n];
+};
+```
 

@@ -1,7 +1,6 @@
 ---
 icon: edit
 date: 2022-05-16
-sticky: true
 category:
 - React
 - 面试题

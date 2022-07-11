@@ -27,10 +27,31 @@ export default sidebar({
     ],
     "/browser-working/": "structure",
     "/leetcode/": "structure",
-    "/408/": "structure",
     "/interview/": "structure",
-    "/JavaScript/": "structure",
+    "/JavaScript/": [
+        {
+            text: "JavaScript面试题",
+            prefix: "interview",
+            children: "structure"
+        },
+        {
+            text: "JavaScript知识体系",
+            prefix:"",
+            children: "structure"
+        }
+    ],
     "/nowcoder/": "structure",
-    "/CSS/": "structure",
+    "/CSS/": [
+        {
+            text: "CSS面试题",
+            prefix: "interview",
+            children: "structure"
+        },
+        {
+            text: "CSS知识体系",
+            prefix:"",
+            children: "structure"
+        }
+    ],
     "/HTML/": "structure",
 });

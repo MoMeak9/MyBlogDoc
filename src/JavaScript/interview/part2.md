@@ -6,6 +6,7 @@ category:
 ---
 
 > [「2021」高频前端面试题汇总之JavaScript篇（下）](https://juejin.cn/post/6959043611161952269)
+# JavaScript 面试题汇总（下）
 
 ## 六、this/call/apply/bind
 
