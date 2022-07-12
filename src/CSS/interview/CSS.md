@@ -68,6 +68,8 @@ category:
 
 **二、有继承性的属性**
 
+> 字体文本可见、列表光标
+
 1. **字体系列属性**
 
 - font-family：字体系列
@@ -75,7 +77,7 @@ category:
 - font-size：字体的大小
 - font-style：字体的风格
 
-1. **文本系列属性**
+2. **文本系列属性**
 
 - text-indent：文本缩进
 - text-align：文本水平对齐
@@ -85,15 +87,15 @@ category:
 - text-transform：控制文本大小写（就是uppercase、lowercase、capitalize这三个）
 - color：文本颜色
 
-1. **元素可见性**
+3. **元素可见性**
 
 - visibility：控制元素显示隐藏
 
-1. **列表布局属性**
+4. **列表布局属性**
 
 - list-style：列表风格，包括list-style-type、list-style-image等
 
-1. **光标属性**
+5. **光标属性**
 
 - cursor：光标显示为何种形态
 
@@ -304,7 +306,7 @@ translate 是 transform 属性的⼀个值。改变transform或opacity不会触�
 
 ### 17. 对 CSSSprites 的理解
 
-CSSSprites（精灵图），将一个页面涉及到的所有图片都包含到一张大图中去，然后利用CSS的 background-image，background-repeat，background-position属性的组合进行背景定位。
+CSSSprites（精灵图、雪碧图），将一个页面涉及到的所有图片都包含到一张大图中去，然后利用CSS的 background-image，background-repeat，background-position属性的组合进行背景定位。
 
 **优点：**
 
@@ -997,11 +999,11 @@ Flex是FlexibleBox的缩写，意为"弹性布局"，用来为盒状模型提供
 
 ### 1. 为什么需要清除浮动？清除浮动的方式
 
-**浮动的定义：** 非IE浏览器下，容器不设高度且子元素浮动时，容器高度不能被内容撑开。 此时，内容会溢出到容器外面而影响布局。这种现象被称为浮动（溢出）。
+**浮动的定义：** <u>非IE浏览器下，容器不设高度且子元素浮动时，容器高度不能被内容撑开。 此时，内容会溢出到容器外面而影响布局。这种现象被称为浮动（溢出）。</u>
 
 **浮动的工作原理：**
 
-- 浮动元素脱离文档流，不占据空间（引起“高度塌陷”现象）
+- 浮动元素脱离文档流，不占据空间（引起“<u>高度塌陷</u>”现象）
 - 浮动元素碰到包含它的边框或者其他浮动元素的边框停留
 
 浮动元素可以左右移动，直到遇到另一个浮动元素或者遇到它外边缘的包含框。浮动框不属于文档流中的普通流，当元素浮动之后，不会影响块级元素的布局，只会影响内联元素布局。此时文档流中的普通流就会表现得该浮动框不存在一样的布局模式。当包含框的高度小于浮动框的时候，此时就会出现“高度塌陷”。
@@ -1015,9 +1017,9 @@ Flex是FlexibleBox的缩写，意为"弹性布局"，用来为盒状模型提供
 **清除浮动的方式如下：**
 
 - 给父级div定义`height`属性
-- 最后一个浮动元素之后添加一个空的div标签，并添加`clear:both`样式
-- 包含浮动元素的父级标签添加`overflow:hidden`或者`overflow:auto`
-- 使用 :after 伪元素。由于IE6-7不支持 :after，使用 zoom:1 触发 hasLayout**
+- 最后一个浮动元素之后添加一个空的div标签，<u>并添加`clear:both`样式</u>
+- 包含浮动元素的父级标签添加<u>`overflow:hidden`或者`overflow:auto`</u>
+- 使用 `:after` 伪元素。由于IE6-7不支持 :after，使用 zoom:1 触发 hasLayout
 
 ```css
 .clearfix:after{
@@ -1043,12 +1045,16 @@ clear:none|left|right|both
 
 官方对clear属性解释：“**元素盒子的边不能和前面的浮动元素相邻**”，对元素设置clear属性是为了避免浮动元素对该元素的影响，而不是清除掉浮动。
 
-还需要注意 clear 属性指的是元素盒子的边不能和前面的浮动元素相邻，注意这里“**前面的**”3个字，也就是clear属性对“后面的”浮动元素是不闻不问的。考虑到float属性要么是left，要么是right，不可能同时存在，同时由于clear属性对“后面的”浮动元素不闻不问，因此，当clear:left有效的时候，clear:right必定无效，也就是此时clear:left等同于设置clear:both；同样地，clear:right如果有效也是等同于设置clear:both。由此可见，clear:left和clear:right这两个声明就没有任何使用的价值，至少在CSS世界中是如此，直接使用clear:both吧。
+还需要注意 clear 属性指的是元素盒子的边不能和前面的浮动元素相邻，注意这里“**前面的**”3个字，也就是clear属性对“后面的”浮动元素是不闻不问的。考虑到float属性要么是left，要么是right，不可能同时存在，同时由于clear属性对“后面的”浮动元素不闻不问，因此，当clear:left有效的时候，clear:right必定无效，也就是此时clear:left等同于设置clear:both；同样地，clear:right如果有效也是等同于设置clear:both。<u>由此可见，clear:left和clear:right这两个声明就没有任何使用的价值，至少在CSS世界中是如此，直接使用clear:both吧。</u>
 
 一般使用伪元素的方式清除浮动：
 
 ```css
-.clear::after{  content:'';  display: block;   clear:both;}
+.clear::after{  
+    content:'';  
+    display: block;   
+    clear:both;
+}
 ```
 
 clear属性只有块级元素才有效的，而::after等伪元素默认都是内联水平，这就是借助伪元素清除浮动影响时需要设置display属性值的原因。
@@ -1066,11 +1072,11 @@ clear属性只有块级元素才有效的，而::after等伪元素默认都是�
 
 **创建BFC的条件：**
 
-- 根元素：body；
-- 元素设置浮动：float 除 none 以外的值；
-- 元素设置绝对定位：position (absolute、fixed)；
-- display 值为：inline-block、table-cell、table-caption、flex等；
-- overflow 值为：hidden、auto、scroll；
+- **根元素**：body；
+- **元素设置浮动**：float 除 none 以外的值；
+- **元素设置绝对定位**：position (absolute、fixed)；
+- **display** 值为：inline-block、table-cell、table-caption、flex等；
+- **overflow** 值为：hidden、auto、scroll；
 
 **BFC的特点：**
 
@@ -1116,7 +1122,9 @@ clear属性只有块级元素才有效的，而::after等伪元素默认都是�
 - 如果是一正一负，就会正值减去负值的绝对值
 - 两个都是负值时，用0减去两个中绝对值大的那个
 
-**解决办法：** 对于折叠的情况，主要有两种：**兄弟之间重叠**和**父子之间重叠** （1）兄弟之间重叠
+**解决办法：** 对于折叠的情况，主要有两种：**兄弟之间重叠**和**父子之间重叠**
+
+ （1）兄弟之间重叠
 
 - 底部元素变为行内盒子：`display: inline-block`
 - 底部元素设置浮动：`float`
@@ -1135,7 +1143,21 @@ clear属性只有块级元素才有效的，而::after等伪元素默认都是�
 
 <img src="https://cdn.yihuiblog.top/images/202206252150283.png" alt="U66x3" style="zoom: 67%;" />
 
- 对于上图，由上到下分别是： （1）背景和边框：建立当前层叠上下文元素的背景和边框。 （2）负的z-index：当前层叠上下文中，z-index属性值为负的元素。 （3）块级盒：文档流内非行内级非定位后代元素。 （4）浮动盒：非定位浮动元素。 （5）行内盒：文档流内行内级非定位后代元素。 （6）z-index:0：层叠级数为0的定位元素。 （7）正z-index：z-index属性值为正的定位元素。
+ 对于上图，由上到下分别是： 
+
+（1）背景和边框：建立当前层叠上下文元素的背景和边框。 
+
+（2）负的z-index：当前层叠上下文中，z-index属性值为负的元素。 
+
+（3）块级盒：文档流内非行内级非定位后代元素。 
+
+（4）浮动盒：非定位浮动元素。 
+
+（5）行内盒：文档流内行内级非定位后代元素。 
+
+（6）z-index:0：层叠级数为0的定位元素。 
+
+（7）正z-index：z-index属性值为正的定位元素。
 
 **注意:** 当定位元素z-index:auto，生成盒在当前层叠上下文中的层级为 0，不会建立新的层叠上下文，除非是根元素。
 
@@ -1188,7 +1210,9 @@ position有以下属性值：
 
 sticky 英文字面意思是粘贴，所以可以把它称之为粘性定位。语法：**position: sticky;** 基于用户的滚动位置来定位。
 
-粘性定位的元素是依赖于用户的滚动，在 **position:relative** 与 **position:fixed** 定位之间切换。它的行为就像 **position:relative;** 而当页面滚动超出目标区域时，它的表现就像 **position:fixed;**，它会固定在目标位置。元素定位表现为在跨越特定阈值前为相对定位，之后为固定定位。这个特定阈值指的是 top, right, bottom 或 left 之一，换言之，指定 top, right, bottom 或 left 四个阈值其中之一，才可使粘性定位生效。否则其行为与相对定位相同。
+粘性定位的元素是依赖于用户的滚动，在 **position:relative** 与 **position:fixed** 定位之间切换。
+
+它的行为就像 **position:relative;** 而当页面滚动超出目标区域时，它的表现就像 **position:fixed;**，它会固定在目标位置。元素定位表现为在跨越特定阈值前为相对定位，之后为固定定位。这个特定阈值指的是 top, right, bottom 或 left 之一，换言之，指定 top, right, bottom 或 left 四个阈值其中之一，才可使粘性定位生效。否则其行为与相对定位相同。
 
 ## 四、场景应用
 

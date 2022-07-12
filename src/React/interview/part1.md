@@ -916,7 +916,7 @@ function enqueueUpdate(component) {
 
 **注意：**`batchingStrategy` 对象可以理解为“锁管理器”。这里的“锁”，是指 React 全局唯一的 `isBatchingUpdates` 变量，`isBatchingUpdates` 的初始值是 `false`，意味着“当前并未进行任何批量更新操作”。每当 React 调用 `batchedUpdate` 去执行更新动作时，会先把这个锁给“锁上”（置为 `true`），表明“现在正处于批量更新过程中”。当锁被“锁上”的时候，任何需要更新的组件都只能暂时进入 `dirtyComponents` 里排队等候下一次的批量更新，而不能随意“插队”。此处体现的“任务锁”的思想，是 React 面对大量状态仍然能够实现有序分批处理的基石。
 
-### 2. React setState 调用之后发生了什么？是同步还是异步？
+### 2. React setState 调用之后发生了什么？是同步还是异步？:star::star:
 
 **（1）React中setState后发生了什么**
 
@@ -928,12 +928,12 @@ function enqueueUpdate(component) {
 
 **（2）setState 是同步还是异步的**
 
-假如所有setState是同步的，意味着每执行一次setState时（有可能一个同步代码中，多次setState），都重新vnode diff + dom修改，这对性能来说是极为不好的。如果是异步，则可以把一个同步代码中的多个setState合并成一次组件更新。所以默认是异步的，但是在一些情况下是同步的。
+假如所有setState是同步的，意味着每执行一次setState时（有可能一个同步代码中，多次setState），都重新vnode diff + dom修改，这对性能来说是极为不好的。如果是异步，则可以把一个同步代码中的多个setState合并成一次组件更新。<u>所以默认是异步的，但是在一些情况下是同步的。</u>
 
 setState 并不是单纯同步/异步的，它的表现会因调用场景的不同而不同。在源码中，通过 isBatchingUpdates 来判断setState 是先存进 state 队列还是直接更新，如果值为 true 则执行异步操作，为 false 则直接更新。
 
-- **异步：** 在 React 可以控制的地方，就为 true，比如在 React 生命周期事件和合成事件中，都会走合并操作，延迟更新的策略。
-- **同步：** 在 React 无法控制的地方，比如原生事件，具体就是在 addEventListener 、setTimeout、setInterval 等事件中，就只能同步更新。
+- **异步：** 在 React 可以控制的地方，就为 true，比如在 React 生命周期事件和合成事件中，都会走合并操作，延迟更新的策略。:star:
+- **同步：** 在 React 无法控制的地方，比如原生事件，具体就是在 addEventListener 、setTimeout、setInterval 等事件中，就只能同步更新。:star:
 
 一般认为，做异步设计是为了性能优化、减少渲染次数：
 
@@ -988,7 +988,7 @@ this.setState({
 }, callback) // 第二个参数是 state 更新完成后的回调函数
 ```
 
-### 6. React中的setState和replaceState的区别是什么？
+### 6. React中的setState和replaceState的区别是什么？:star:
 
 **（1）setState()** setState()用于设置状态对象，其语法如下：
 
@@ -1010,7 +1010,7 @@ replaceState(object nextState[, function callback])
 - nextState，将要设置的新状态，该状态会替换当前的state。
 - callback，可选参数，回调函数。该函数会在replaceState设置成功，且组件重新渲染后调用。
 
-**总结：** setState 是修改其中的部分状态，相当于 Object.assign，只是覆盖，不会减少原来的状态。而replaceState 是完全替换原来的状态，相当于赋值，将原来的 state 替换为另一个对象，如果新状态属性减少，那么 state 中就没有这个状态了。
+**总结：** setState 是**修改其中的部分状态**，相当于 Object.assign，只是覆盖，不会减少原来的状态。而replaceState **是完全替换原来的状态**，相当于赋值，将原来的 state 替换为另一个对象，如果新状态属性减少，那么 state 中就没有这个状态了。
 
 ### 7. 在React中组件的this.state和setState有什么区别？
 
@@ -1123,7 +1123,7 @@ state的主要作用是用于组件保存、控制以及修改自己的状态，
 
 ### 10. React中的props为什么是只读的？
 
-`this.props`是组件之间沟通的一个接口，原则上来讲，它只能从父组件流向子组件。React具有浓重的函数式编程的思想。
+`this.props`是组件之间沟通的一个接口，原则上来讲，<u>它只能从父组件流向子组件。React具有浓重的函数式编程的思想。</u>
 
 提到函数式编程就要提一个概念：纯函数。它有几个特点：
 
@@ -1189,13 +1189,13 @@ Greeting.propTypes = {
 
 ## 三、生命周期
 
-### 1. React的生命周期有哪些？
+### 1. React的生命周期有哪些？:star::star:
 
 React 通常将组件生命周期分为三个阶段：
 
-- 装载阶段（Mount），组件第一次在DOM树中被渲染的过程；
-- 更新过程（Update），组件状态发生变化，重新更新渲染的过程；
-- 卸载过程（Unmount），组件从DOM树中被移除的过程；
+- **装载阶段（Mount），**组件第一次在DOM树中被渲染的过程；
+- **更新过程（Update），**组件状态发生变化，重新更新渲染的过程；
+- **卸载过程（Unmount），**组件从DOM树中被移除的过程；
 
 ![结构](https://cdn.yihuiblog.top/images/202206262153684.png)
 
@@ -1216,8 +1216,8 @@ React 通常将组件生命周期分为三个阶段：
 
 constructor中通常只做两件事：
 
-- 初始化组件的 state
-- 给事件处理方法绑定 this
+- **初始化组件的 state**
+- **给事件处理方法绑定 this**
 
 ```javascript
 constructor(props) {
@@ -1238,7 +1238,7 @@ static getDerivedStateFromProps(props, state)
 
 该函数会在装载时，接收到新的 `props` 或者调用了 `setState` 和 `forceUpdate` 时被调用。如当接收到新的属性想修改 `state` ，就可以使用。
 
-```javascript
+```jsx
 // 当 props.counter 变化时，赋值给 state 
 class App extends React.Component {
   constructor(props) {
@@ -1431,7 +1431,7 @@ React常见的生命周期如下：
 
 ![在这里插入图片描述](https://img-bc.icode.best/358c9fd1b588424cb125d2e4213e713f.png)
 
-**React常见生命周期的过程大致如下：**
+**React常见生命周期的过程大致如下：**:star::star:
 
 - 挂载阶段，首先执行constructor构造方法，来创建组件
 - 创建完成之后，就会执行render方法，该方法会返回需要渲染的内容
