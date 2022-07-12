@@ -4,6 +4,7 @@ category:
 - MySQL
 - DB
 ---
+# 从MySQL开始学习数据库
 
 ## 数据库基础知识
 

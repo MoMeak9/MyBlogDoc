@@ -8,6 +8,8 @@ category:
 > [「2021」高频前端面试题汇总之JavaScript篇（下）](https://juejin.cn/post/6959043611161952269)
 # JavaScript 面试题汇总（下）
 
+# JavaScript面试题汇总（二）
+
 ## 六、this/call/apply/bind
 
 ### 1. 对this对象的理解
