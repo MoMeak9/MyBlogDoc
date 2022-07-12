@@ -402,3 +402,101 @@ function wordBreak(s: string, wordDict: string[]): boolean {
 };
 ```
 
+#### [967. 连续差相同的数字](https://leetcode.cn/problems/numbers-with-same-consecutive-differences/)
+
+> DFS + 回溯法
+
+```js
+/**
+ * @param {number} n
+ * @param {number} k
+ * @return {number[]}
+ */
+var numsSameConsecDiff = function (n, k) {
+    let ans = [];
+    for (let i = 1; i <= 9; i++) {
+        backtrack(ans, [i], 1, n, k);
+    }
+    return ans;
+};
+
+function backtrack(ans, track, i, n, k) {
+    if (i === n) {
+        let str = track.join("");
+        ans.push(+str);
+        return;
+    }
+    if (track[track.length - 1] + k <= 9) {
+        track.push(track[track.length - 1] + k)
+        backtrack(ans, track, i + 1, n, k);
+        track.pop();
+    }
+    if (k !== 0) {
+        if (track[track.length - 1] - k >= 0) {
+            track.push(track[track.length - 1] - k)
+            backtrack(ans, track, i + 1, n, k);
+            track.pop();
+        }
+    }
+}
+```
+
+#### [451. 根据字符出现频率排序](https://leetcode.cn/problems/sort-characters-by-frequency/)
+
+> map统计后再进行排序复原
+
+```js
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var frequencySort = function(s) {
+    const map = new Map();
+    const length = s.length;
+    // map统计
+    for (let i = 0; i < length; i++) {
+        const c = s[i];
+        const frequency = (map.get(c) || 0) + 1;
+        map.set(c, frequency);
+    }
+    const list = [...map.keys()]; // 获取字符并排序
+    list.sort((a, b) => map.get(b) - map.get(a));
+    // 还原为字符串
+    const sb = []; // 答案寄存
+    const size = list.length;
+    for (let i = 0; i < size; i++) {
+        const c = list[i];
+        const frequency = map.get(c);
+        for (let j = 0; j < frequency; j++) {
+            sb.push(c);
+        }
+    }
+    return sb.join('');
+};
+```
+
+#### [986. 区间列表的交集](https://leetcode.cn/problems/interval-list-intersections/)
+
+> 双指针移动法
+
+```js
+const intervalIntersection = (A, B) => {
+	const res = [];
+	let i = 0;
+	let j = 0;
+	while (i < A.length && j < B.length) {
+		const start = Math.max(A[i][0], B[j][0]); // 交集区间的左端，取它们的较大者
+		const end = Math.min(A[i][1], B[j][1]); // 交集区间的右端，取它们的较小者
+		if (start <= end) {       // 形成了交集区间
+			res.push([start, end]);
+		}
+		if (A[i][1] < B[j][1]) {  // 谁先结束，谁的指针就步进，考察下一个子区间
+			i++;
+		} else {
+			j++;
+		}
+	}
+	return res;
+};
+```
+
