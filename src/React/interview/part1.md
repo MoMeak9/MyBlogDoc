@@ -1,8 +1,6 @@
 ---
 icon: edit
 date: 2022-06-26
-sticky: true
-star: true
 category:
 - React
 - 面试题
@@ -1577,6 +1575,3 @@ const o2 = JSON.parse(JSON.stringify(this.state.obj))
 ### 5. state 和 props 触发更新的生命周期分别有什么区别？
 
 **state 更新流程：**
-
-
-
