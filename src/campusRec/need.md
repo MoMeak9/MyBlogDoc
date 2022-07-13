@@ -7,6 +7,7 @@ category:
 # offer，三方，两方，毁约 这些你需要知道的事
 
 > 参照：
+> 
 > [应届生扫盲，求职必看！三方协议&签约违约你必须了解的事](https://www.nowcoder.com/discuss/581242)
 >
 > [毕业生签三方协议要留心六个细节](http://www.hciit.edu.cn/tyb/info/1017/1239.htm)

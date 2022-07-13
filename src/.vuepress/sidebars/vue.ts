@@ -6,7 +6,11 @@ const vueSidebar: HopeThemeSidebarArrayConfig = [
         prefix: "code",
         children: "structure",
     },
-    "structure",
+    {
+        text: "Vue基础知识体系",
+        prefix: "",
+        children: "structure",
+    }
 ]
 
 export default vueSidebar;

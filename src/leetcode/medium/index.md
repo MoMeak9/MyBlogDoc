@@ -500,3 +500,80 @@ const intervalIntersection = (A, B) => {
 };
 ```
 
+#### [593. 有效的正方形](https://leetcode.cn/problems/valid-square/)
+
+> 正方形内只存在两种边长
+
+```js
+/**
+ * @param {number[]} p1
+ * @param {number[]} p2
+ * @param {number[]} p3
+ * @param {number[]} p4
+ * @return {boolean}
+ */
+var validSquare = function (p1, p2, p3, p4) {
+    // arguments数组收集了四个点
+    const res = new Set(),arr = arguments
+    // 暴力遍历任意两点的距离并存入set
+    for (let i = 0; i < 3; i++) {
+        for(let j = i+1;j<4;j++){
+            res.add(
+                Math.sqrt((arr[i][0] - arr[j][0])**2 + (arr[i][1] - arr[j][1])**2)
+            )
+            // 如果已经出现第三种距离，提前false
+            if(res.size > 2)return false
+        }
+    }
+    // 理论上正方形只有两种距离（边和对角线）
+    if(res.size !== 2)return false
+
+    // const temp = [...res].sort((a,b) => a - b)
+    // return temp[0] > 0 && temp[1] === temp[0]*Math.sqrt(2)
+    // 注意没必要判断长距离是短距离的根号2 倍，会出现精度问题
+
+    // 任意四边形的对角线距离和边长若只有两种
+    // 等价于（互为充分必要）
+    // 这个四边形是正方形
+
+    const temp = [...res]
+    return temp[0] > 0 && temp[1] > 0
+};
+```
+
+#### [264. 丑数 II](https://leetcode.cn/problems/ugly-number-ii/)
+
+> *x* 是最小的丑数，由于 2x, 3x, 5x2*x*,3*x*,5*x* 也是丑数
+>
+> ![image-20220713113504235](https://cdn.yihuiblog.top/images/202207131135298.png)
+
+```js
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var nthUglyNumber = function(n) {
+    const dp = new Array(n + 1).fill(0);
+    dp[1] = 1;
+    let p2 = 1, p3 = 1, p5 = 1;
+    for (let i = 2; i <= n; i++) {
+        const num2 = dp[p2] * 2, num3 = dp[p3] * 3, num5 = dp[p5] * 5;
+        dp[i] = Math.min(Math.min(num2, num3), num5);
+        if (dp[i] === num2) {
+            p2++;
+        }
+        if (dp[i] === num3) {
+            p3++;
+        }
+        if (dp[i] === num5) {
+            p5++;
+        }
+    }
+    return dp[n];
+};
+```
+
+#### [面试题 16.25. LRU 缓存](https://leetcode.cn/problems/lru-cache-lcci/)
+
+> 设计和构建一个“最近最少使用”缓存，该缓存会删除最近最少使用的项目。缓存应该从键映射到值(允许你插入和检索特定键对应的值)，并在初始化时指定最大容量。当缓存被填满时，它应该删除最近最少使用的项目。
+>

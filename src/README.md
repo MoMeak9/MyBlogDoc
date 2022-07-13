@@ -10,24 +10,29 @@ heroFullScreen: true
 tagline: 为热爱而坚持<br>知识库 随笔 面经 文档
 projects:
 
-- icon: project
+- icon: link
   name: 博客仓库
   desc: 本博客仓库地址
   link: https://github.com/MoMeak9/MyBlogDoc
 
-- icon: project
-  name: 个人文档库
-  desc: 旧文档库
+- icon: link
+  name: 个人文档库仓库
+  desc: 旧文档库仓库地址
   link: https://github.com/MoMeak9/MyDocs
 
-- icon: project
-  name: 我的世界服务器网站
-  desc: LightWorld辉光世界
-  link: https://lwmc.net
+- icon: link
+  name: LightWorld 后端
+  desc: 网站后端仓库，基于TypeScript + Express
+  link: https://github.com/MoMeak9/MC-official-website
 
-- icon: project
-  name: 我的世界服务器网站前端仓库
-  desc: 网站仓库
+- icon: link
+  name: LightWorld 前端
+  desc: 网站前端仓库，基于Nuxt + Vue
+  link: https://github.com/MoMeak9/MC-official-website
+
+- icon: link
+  name: LightWorld CMS
+  desc: 网站CMS内容管理系统仓库
   link: https://github.com/MoMeak9/MC-official-website
 
 footer: <a href="https://beian.miit.gov.cn/">闽ICP备19026932号-1</a>
