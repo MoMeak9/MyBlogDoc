@@ -1,6 +1,6 @@
 ---
-icon: edit
 date: 2022-06-26
+star: true
 category:
 - React
 - 面试题

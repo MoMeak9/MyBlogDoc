@@ -5,9 +5,9 @@ category:
 - DB 
 ---
 
-> [Redis](https://juejin.cn/post/6844904127055527950)
+> https://juejin.cn/post/6844904127055527950
 
-# 一起学习Redis
+# Redis 学习笔记
 
 ## 概述
 

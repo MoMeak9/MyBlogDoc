@@ -120,4 +120,38 @@ category:
 
 13. ES6中的类可以视为ES5中构造函数的另一种写法，所以`typeof` `Phone`的输出结果为function而不是Object
 
-14. 
+14. 下面哪些方法可以用于JavaScript 异步模式的编程？
+
+    回调函数，这是异步编程最基本的方法。
+    事件监听，另一种思路是采用事件驱动模式。任务的执行不取决于代码的顺序，而取决于某个事件是否发生。
+    发布/订阅，上一节的"事件"，完全可以理解成"信号"。
+    Promises对象，Promises 对象是CommonJS 工作组提出的一种规范，目的是为异步编程提供统一接口。
+
+15. **ES5:**
+
+    orEach(), filter(), reduce(), every() 和some()都会跳过空位。
+
+    map()会跳过空位，但会保留这个值
+
+    join()和toString()会将空位视为undefined，而undefined和null会被处理成空字符串。
+
+    **ES6 中都会将空位当做undefined**
+
+16. 类型隐式转换：
+
+    参照左侧转换为右侧
+
+17. Referer是request Header里的内容，不是response header里的内容
+
+18. preventDefault()    取消事件默认行为，如阻止点击提交按钮时对表单的提交（本题中click并没有什么默认行为）
+    stopImmediatePropagation()   取消事件冒泡同时阻止当前节点上的事件处理程序被调用，影响当前的事件
+
+    stopPropagation()   取消事件冒泡，不影响事件
+
+    cancelBubbe()     取消事件冒泡
+
+    returnValue()      取消事件默认行为
+
+19. a标签不能套a标签，p标签不能套块标签
+
+20. 
