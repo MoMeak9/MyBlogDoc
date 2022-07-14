@@ -30,11 +30,6 @@ export default sidebar({
     "/interview/": "structure",
     "/JavaScript/": [
         {
-            text: "JavaScript面试题",
-            prefix: "interview",
-            children: "structure"
-        },
-        {
             text: "JavaScript知识体系",
             prefix:"",
             children: "structure"
