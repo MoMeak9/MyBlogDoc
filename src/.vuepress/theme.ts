@@ -29,7 +29,9 @@ export default hopeTheme({
     // sidebar
     sidebar: sidebar,
 
-    footer: " ",
+    footer: "<a href=\"https://beian.miit.gov.cn/\">闽ICP备19026932号-1</a>",
+
+    copyright: "Licensed under <a href=\"https://creativecommons.org/licenses/by/4.0/\">CC-BY 4.0</a>",
 
     displayFooter: true,
 

@@ -155,3 +155,4 @@ category:
 19. a标签不能套a标签，p标签不能套块标签
 
 20. B选项输出值为0是因为forEach方法在数组元素为空时会跳过执行回调函数，相当于此选项回调函数并未执行，所以还是输出0。
+21. 行内js——javascript:return void(0)或javascript:return confirm("……");
