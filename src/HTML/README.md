@@ -9,6 +9,9 @@ category:
 
 # HTML知识点汇总
 
+> 参照：
+> [「2021」高频前端面试题汇总之HTML篇](https://juejin.cn/post/6905294475539513352) 补充
+
 ### 1. src和href的区别 :star::star:
 
 src和href都是**用来引用外部的资源**，它们的区别如下：
@@ -77,7 +80,7 @@ js脚本网络加载时间，红色代表js脚本执行时间，绿色代表html
 **（1）`charset`，用来描述HTML文档的编码类型：**
 
 ```html
-<meta charset="UTF-8" >
+<meta charset="UTF-8" />
 ```
 
 **（2） `keywords`，页面关键词：**
@@ -101,7 +104,7 @@ js脚本网络加载时间，红色代表js脚本执行时间，绿色代表html
 **（5）`viewport`，适配移动端，可以控制视口的大小和比例：**
 
 ```html
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 ```
 
 其中，`content` 参数有以下几种：
@@ -250,7 +253,19 @@ HTML5 提供了两种在客户端存储数据的新方法：
 - SVG：SVG 指可伸缩矢量图形，用于定义用于网络的基于矢量的图形，使用 XML 格式定义图形，图像在放大或改变尺寸的情况下其图形质量不会有损失，它是万维网联盟的标准
 - 地理定位：Geolocation（地理定位）用于定位用户的位置。‘
 
-**总结：** （1）新增语义化标签：nav、header、footer、aside、section、article （2）音频、视频标签：audio、video （3）数据存储：localStorage、sessionStorage （4）canvas（画布）、Geolocation（地理定位）、websocket（通信协议） （5）input标签新增属性：placeholder、autocomplete、autofocus、required （6）history API：go、forward、back、pushstate
+**总结：** 
+
+（1）新增语义化标签：nav、header、footer、aside、section、article 
+
+（2）音频、视频标签：audio、video 
+
+（3）数据存储：localStorage、sessionStorage 
+
+（4）canvas（画布）、Geolocation（地理定位）、websocket（通信协议）
+
+（5）input标签新增属性：placeholder、autocomplete、autofocus、required 
+
+（6）history API：go、forward、back、pushstate
 
 **移除的元素有：**
 
@@ -330,9 +345,9 @@ sizes就是指默认显示128px, 如果视区宽度大于360px, 则显示340px�
 
 ### 10. HTML5的离线储存怎么使用，它的工作原理是什么
 
-离线存储指的是：在用户没有与因特网连接时，可以正常访问站点或应用，在用户与因特网连接时，更新用户机器上的缓存文件。
+<u>离线存储指的是：在用户没有与因特网连接时，可以正常访问站点或应用，在用户与因特网连接时，更新用户机器上的缓存文件。（不同于缓存）</u>
 
-**原理：**HTML5的离线存储是基于一个新建的 `.appcache` 文件的缓存机制(不是存储技术)，通过这个文件上的解析清单离线存储资源，这些资源就会像cookie一样被存储了下来。之后当网络在处于离线状态下时，浏览器会通过被离线存储的数据进行页面展示
+**原理**：HTML5的离线存储是基于一个新建的 `.appcache` 文件的缓存机制(不是存储技术)，通过这个文件上的解析清单离线存储资源，这些资源就会像cookie一样被存储了下来。之后当网络在处于离线状态下时，浏览器会通过被离线存储的数据进行页面展示
 
 **使用方法：** （1）创建一个和 html 同名的 manifest 文件，然后在页面头部加入 manifest 属性：
 
@@ -387,6 +402,9 @@ CACHE MANIFEST
 ### 11. 浏览器是如何对 HTML5 的离线储存资源进行管理和加载？
 
 - **在线的情况下**，浏览器发现 html 头部有 manifest 属性，它会请求 manifest 文件，如果是第一次访问页面 ，那么浏览器就会根据 manifest 文件的内容下载相应的资源并且进行离线存储。如果已经访问过页面并且资源已经进行离线存储了，那么浏览器就会使用离线的资源加载页面，然后浏览器会对比新的 manifest 文件与旧的 manifest 文件，如果文件没有发生改变，就不做任何操作，如果文件改变了，就会重新下载文件中的资源并进行离线存储。
+
+  （第一次去下载，第二次进行新旧对比）
+
 - **离线的情况下**，浏览器会直接使用离线存储的资源。
 
 ### 12. title与h1的区别、b与strong的区别、i与em的区别？:star:
@@ -437,7 +455,7 @@ iframe 元素会创建包含另外一个文档的内联框架（即行内框架�
 - 不依赖分辨率
 - 支持事件处理器
 - 最适合带有大型渲染区域的应用程序（比如谷歌地图）
-- 复杂度高会减慢渲染速度（任何过度使用 DOM 的应用都不快）
+- <u>复杂度高会减慢渲染速度（任何过度使用 DOM 的应用都不快，不适合复杂场景绘制）</u>
 - 不适合游戏应用
 
 **（2）Canvas：** Canvas是画布，通过Javascript来绘制2D图形，是逐像素进行渲染的。其位置发生改变，就会重新进行绘制。
@@ -460,7 +478,7 @@ iframe 元素会创建包含另外一个文档的内联框架（即行内框架�
 
 下面这些标签可用在 head 部分：`<base>, <link>, <meta>, <script>, <style>, <title>`。
 
-其中 `<title>` 定义文档的标题，它是 head 部分中<u>唯一必需的元素。</u>
+<u>其中 `<title>` 定义文档的标题，它是 head 部分中唯一必需的元素。</u>
 
 ### 17. 文档声明（Doctype）和`<!Doctype html>`有何作用? 严格模式与混杂模式如何区分？它们有何意义?:star:
 
@@ -498,7 +516,9 @@ iframe 元素会创建包含另外一个文档的内联框架（即行内框架�
 
 ### 19. 渐进增强和优雅降级之间的区别
 
-**（1）渐进增强（progressive enhancement）**：主要是针对低版本的浏览器进行页面重构，保证基本的功能情况下，再针对高级浏览器进行效果、交互等方面的改进和追加功能，以达到更好的用户体验。 **（2）优雅降级 graceful degradation**： 一开始就构建完整的功能，然后再针对低版本的浏览器进行兼容。
+**（1）渐进增强（progressive enhancement）**：主要是针对低版本的浏览器进行页面重构，保证基本的功能情况下，再针对高级浏览器进行效果、交互等方面的改进和追加功能，以达到更好的用户体验。 （由低到高）
+
+**（2）优雅降级 graceful degradation**： 一开始就构建完整的功能，然后再针对低版本的浏览器进行兼容。（由高级完整到低级）
 
 **两者区别：**
 
@@ -521,26 +541,26 @@ iframe 元素会创建包含另外一个文档的内联框架（即行内框架�
 
 ### 21. 前端页面有哪三层构成，分别是什么？
 
-构成：`结构层`、`表示层`、`行为层`
+<u>构成：`结构层`、`表示层`、`行为层`</u>
 
-1. 结构层（structural layer）
+1. **结构层（structural layer）**
 
    结构层类似于盖房子需要打地基以及房子的悬梁框架，它是由HTML超文本标记语言来创建的，也就是页面中的各种标签，在结构层中保存了用户可以看到的所有内容，比如说：一段文字、一张图片、一段视频等等
 
-2. 表示层（presentation layer）
+2. **表示层（presentation layer）**
 
    表示层是由CSS负责创建，它的作用是如何显示有关内容，学名：`层叠样式表`，也就相当于装修房子，看你要什么风格的，田园的、中式的、地中海的，总之CSS都能办妥
 
-3. 行为层（behaviorlayer）
+3. **行为层（behaviorlayer）**
 
    行为层表示网页内容跟用户之间产生交互性，简单来说就是用户操作了网页，网页给用户一个反馈，这是`JavaScript`和`DOM`主宰的领域
 
-### 22. img上 title 与 alt
+### 22. img 上 title 与 alt :star:
 
 - alt：全称`alternate`，切换的意思，如果无法显示图像，浏览器将显示alt指定的内容
 - title：当鼠标移动到元素上时显示title的内容
 
-区别：
+**区别：**
 
 一般当鼠标滑动到元素身上的时候显示`title`，而`alt`是img标签特有的属性，是图片内容的等价描述，用于图片无法加载时显示，这样用户还能看到关于丢失了什么东西的一些信息，相对来说比较友好。
 

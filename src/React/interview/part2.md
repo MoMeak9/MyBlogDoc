@@ -12,9 +12,9 @@ category:
 
 ## 六、Redux
 
-### 1. 对 Redux 的理解，主要解决什么问题
+### 1. 对 Redux 的理解，主要解决什么问题 :star::star:
 
-React是视图层框架。Redux是一个用来管理数据状态和UI状态的JavaScript应用工具。随着JavaScript单页应用（SPA）开发日趋复杂， JavaScript需要管理比任何时候都要多的state（状态）， Redux就是降低管理难度的。（Redux支持React、Angular、jQuery甚至纯JavaScript）。
+React是视图层框架。Redux是一个用来管理数据状态和UI状态的JavaScript应用工具。随着JavaScript单页应用（SPA）开发日趋复杂， <u>JavaScript需要管理比任何时候都要多的state（状态）， Redux就是降低管理难度的。</u>（Redux支持React、Angular、jQuery甚至纯JavaScript）。
 
 在 React 中，UI 以组件的形式来搭建，组件之间可以嵌套组合。但 React 中组件间通信的数据流是单向的，顶层组件可以通过 props 属性向下层组件传递数据，而下层组件不能向上层组件传递数据，兄弟组件之间同样不能。这样简单的单向数据流支撑起了 React 中的数据可控性。
 
@@ -24,15 +24,15 @@ Redux 提供了一个叫 store 的统一仓储库，组件通过 dispatch 将 st
 
 **主要解决的问题：** 单纯的Redux只是一个状态机，是没有UI呈现的，react- redux作用是将Redux的状态机和React的UI呈现绑定在一起，当你dispatch action改变state的时候，会自动更新页面。
 
-### 2. Redux 原理及工作流程
+### 2. Redux 原理及工作流程 :star::star:
 
 **（1）原理** Redux源码主要分为以下几个模块文件
 
-- compose.js 提供从右到左进行函数式编程
-- createStore.js 提供作为生成唯一store的函数
-- combineReducers.js 提供合并多个reducer的函数，保证store的唯一性
-- bindActionCreators.js 可以让开发者在不直接接触dispacth的前提下进行更改state的操作
-- applyMiddleware.js 这个方法通过中间件来增强dispatch的功能
+- `compose.js` 提供从右到左进行函数式编程
+- `createStore.js` 提供作为生成唯一store的函数:star:
+- `combineReducers.js` 提供合并多个reducer的函数，保证store的唯一性:star:
+- `bindActionCreators.js` 可以让开发者在不直接接触dispacth的前提下进行更改state的操作:star:
+- `applyMiddleware.js` 这个方法通过中间件来增强dispatch的功能:star:
 
 ```javascript
 const actionTypes = {
@@ -111,7 +111,7 @@ export default function createStore(reducer, initialState, middleFunc) {
 
 以 store 为核心，可以把它看成数据存储中心，但是他要更改数据的时候不能直接修改，数据修改更新的角色由Reducers来担任，store只做存储，中间人，当Reducers的更新完成以后会通过store的订阅来通知react component，组件把新的状态重新获取渲染，组件中也能主动发送action，创建action后这个动作是不会执行的，所以要dispatch这个action，让store通过reducers去做更新React Component 就是react的每个组件。
 
-### 3. Redux 中异步的请求怎么处理
+### 3. Redux 中异步的请求怎么处理:star:
 
 可以在 componentDidmount 中直接进⾏请求⽆须借助redux。但是在⼀定规模的项⽬中,上述⽅法很难进⾏异步流的管理,通常情况下我们会借助redux的异步中间件进⾏异步处理。redux异步流中间件其实有很多，当下主流的异步中间件有两种redux-thunk、redux-saga。
 
@@ -255,7 +255,7 @@ componentDidMount(){
 }
 ```
 
-### 4. Redux 怎么实现属性传递，介绍下原理
+### 4. Redux 怎么实现属性传递，介绍下原理:star:
 
 react-redux 数据传输∶ view-->action-->reducer-->store-->view。看下点击事件的数据是如何通过redux传到view上：
 
@@ -427,7 +427,7 @@ const takeLatest = (pattern, saga, ...args) => fork(function*() {
 - 操作更新状态方式统一，并且可控（通常以action方式提供更新状态的途径）;
 - 支持将store与React组件连接，如react-redux，mobx- react;
 
-**（2）区别** Redux更多的是遵循Flux模式的一种实现，是一个 JavaScript库，它关注点主要是以下几方面∶
+**（2）区别** Redux更多的是遵循`Flux`模式的一种实现，是一个 JavaScript库，它关注点主要是以下几方面∶
 
 - Action∶ 一个JavaScript对象，描述动作相关信息，主要包含type属性和payload属性∶
 
@@ -461,13 +461,37 @@ Mobx是一个透明函数响应式编程的状态管理库，它使得状态管�
 - mobx相对来说比较简单，在其中有很多的抽象，mobx更多的使用面向对象的编程思维;redux会比较复杂，因为其中的函数式编程思想掌握起来不是那么容易，同时需要借助一系列的中间件来处理异步和副作用
 - mobx中有更多的抽象和封装，调试会比较困难，同时结果也难以预测;而redux提供能够进行时间回溯的开发工具，同时其纯函数以及更少的抽象，让调试变得更加的容易
 
-### 9. Redux 和 Vuex 有什么区别，它们的共同思想
+> **补充：Rlux模式**
+>
+> React 标榜自己是 MVC 里面 V 的部分，那么 Flux 就相当于添加 M 和 C 的部分。
+>
+> Flux 是 Facebook 使用的一套前端应用的架构模式。
+>
+> 一个 Flux 应用主要包含四个部分：
+>
+> - the dispatcher
+>
+>   *处理动作分发，维护 Store 之间的依赖关系*
+>
+> - the stores
+>
+>   *数据和逻辑部分*
+>
+> - the views
+>
+>   *React 组件，这一层可以看作 controller-views，作为视图同时响应用户交互*
+>
+> - the actions
+>
+>   *提供给 dispatcher 传递数据给 store*
+
+### 9. Redux 和 Vuex 有什么区别，它们的共同思想 :star::star:
 
 **（1）Redux 和 Vuex区别**
 
-- Vuex改进了Redux中的Action和Reducer函数，以mutations变化函数取代Reducer，无需switch，只需在对应的mutation函数里改变state值即可
-- Vuex由于Vue自动重新渲染的特性，无需订阅重新渲染函数，只要生成新的State即可
-- Vuex数据流的顺序是∶View调用store.commit提交对应的请求到Store中对应的mutation函数->store改变（vue检测到数据变化自动渲染）
+- Vuex改进了Redux中的Action和Reducer函数，<u>以`mutations`变化函数取代Reducer，无需switch，只需在对应的mutation函数里改变state值即可</u>
+- Vuex由于Vue自动重新渲染的特性，<u>无需订阅重新渲染函数，只要生成新的State即可</u>
+- Vuex数据流的顺序是∶<u>View调用store.commit提交对应的请求到Store中对应的mutation函数->store改变（Vue检测到数据变化自动渲染）</u>
 
 通俗点理解就是，vuex 弱化 dispatch，通过commit进行 store状态的一次更变；取消了action概念，不必传入特定的 action形式进行指定变更；弱化reducer，基于commit参数直接对数据进行转变，使得框架更加简易;
 
@@ -476,7 +500,7 @@ Mobx是一个透明函数响应式编程的状态管理库，它使得状态管�
 - 单—的数据源
 - 变化可以预测
 
-本质上∶ redux与vuex都是对mvvm思想的服务，将数据从视图中抽离的一种方案。
+<u>本质上∶ redux与vuex都是对mvvm思想的服务，将数据从视图中抽离的一种方案。</u>
 
 ### 10. Redux 中间件是怎么拿到store 和 action? 然后怎么处理?
 
@@ -862,13 +886,13 @@ useEffect(()=>{
 
 ## 八、虚拟DOM
 
-### 1. 对虚拟 DOM 的理解？虚拟 DOM 主要做了什么？虚拟 DOM 本身是什么？
+### 1. 对虚拟 DOM 的理解？虚拟 DOM 主要做了什么？虚拟 DOM 本身是什么？ :star::star:
 
-从本质上来说，Virtual Dom是一个JavaScript对象，通过对象的方式来表示DOM结构。将页面的状态抽象为JS对象的形式，配合不同的渲染工具，使跨平台渲染成为可能。通过事务处理机制，将多次DOM修改的结果一次性的更新到页面上，从而有效的减少页面渲染的次数，减少修改DOM的重绘重排次数，提高渲染性能。
+从本质上来说，Virtual Dom是一个JavaScript对象，通过对象的方式来表示DOM结构。将页面的状态抽象为JS对象的形式，配合不同的渲染工具，使**跨平台**渲染成为可能。通过事务处理机制，将多次DOM修改的结果一次性的更新到页面上，从而有效的减少页面渲染的次数，减少修改DOM的重绘重排次数，提高渲染性能。
 
 虚拟DOM是对DOM的抽象，这个对象是更加轻量级的对DOM的描述。它设计的最初目的，就是更好的跨平台，比如node.js就没有DOM，如果想实现SSR，那么一个方式就是借助虚拟dom，因为虚拟dom本身是js对象。 在代码渲染到页面之前，vue或者react会把代码转换成一个对象（虚拟DOM）。以对象的形式来描述真实dom结构，最终渲染到页面。在每次数据发生变化前，虚拟dom都会缓存一份，变化之时，现在的虚拟dom会与缓存的虚拟dom进行比较。在vue或者react内部封装了diff算法，通过这个算法来进行比较，渲染时修改改变的变化，原先没有发生改变的通过原先的数据进行渲染。
 
-另外现代前端框架的一个基本要求就是无须手动操作DOM，一方面是因为手动操作DOM无法保证程序性能，多人协作的项目中如果review不严格，可能会有开发者写出性能较低的代码，另一方面更重要的是省略手动DOM操作可以大大提高开发效率。
+<u>另外现代前端框架的一个基本要求就是无须手动操作DOM，一方面是因为手动操作DOM无法保证程序性能，多人协作的项目中如果review不严格，可能会有开发者写出性能较低的代码，另一方面更重要的是省略手动DOM操作可以大大提高开发效率。</u>
 
 **为什么要用 Virtual DOM：**
 
@@ -879,9 +903,11 @@ useEffect(()=>{
 - 真实DOM∶ 生成HTML字符串＋ 重建所有的DOM元素
 - Virtual DOM∶ 生成vNode＋ DOMDiff＋必要的DOM更新
 
-Virtual DOM的更新DOM的准备工作耗费更多的时间，也就是JS层面，相比于更多的DOM操作它的消费是极其便宜的。尤雨溪在社区论坛中说道∶ 框架给你的保证是，你不需要手动优化的情况下，我依然可以给你提供过得去的性能。 **（2）跨平台** Virtual DOM本质上是JavaScript的对象，它可以很方便的跨平台操作，比如服务端渲染、uniapp等。
+Virtual DOM的更新DOM的准备工作耗费更多的时间，也就是JS层面，相比于更多的DOM操作它的消费是极其便宜的。尤雨溪在社区论坛中说道∶ <u>框架给你的保证是，你不需要手动优化的情况下，我依然可以给你提供过得去的性能。</u>
 
-### 2. React diff 算法的原理是什么？
+ **（2）跨平台** Virtual DOM本质上是JavaScript的对象，它可以很方便的跨平台操作，比如服务端渲染、uniapp等。
+
+### 2. React diff 算法的原理是什么？ :star::star:
 
 实际上，diff 算法探讨的就是虚拟 DOM 树发生变化后，生成 DOM 树更新补丁的方式。它通过对比新旧两株虚拟 DOM 树的变更差异，将更新补丁作用于真实 DOM，以最小成本完成视图更新。
 
@@ -890,14 +916,14 @@ Virtual DOM的更新DOM的准备工作耗费更多的时间，也就是JS层面�
 具体的流程如下：
 
 - 真实的 DOM 首先会映射为虚拟 DOM；
-- 当虚拟 DOM 发生变化后，就会根据差距计算生成 patch，这个 patch 是一个结构化的数据，内容包含了增加、更新、移除等；
+- 当虚拟 DOM 发生变化后，<u>就会根据差距计算生成 patch，这个 patch 是一个结构化的数据，内容包含了增加、更新、移除等；</u>
 - 根据 patch 去更新真实的 DOM，反馈到用户的界面上。
 
 ![React」一文带你了解React diff 算法_CUG-GZ的博客-CSDN博客_diff算法是深度优先还是广度优先](https://cdn.yihuiblog.top/images/202206302323903.jpeg)
 
 一个简单的例子：
 
-```javascript
+```jsx
 import React from 'react'
 export default class ExampleComponent extends React.Component {
   render() {
@@ -911,13 +937,13 @@ export default class ExampleComponent extends React.Component {
 
 这里，首先假定 ExampleComponent 可见，然后再改变它的状态，让它不可见 。映射为真实的 DOM 操作是这样的，React 会创建一个 div 节点。
 
-```javascript
+```jsx
 <div class="visible">visbile</div>
 ```
 
 当把 visbile 的值变为 false 时，就会替换 class 属性为 hidden，并重写内部的 innerText 为 hidden。**这样一个生成补丁、更新差异的过程统称为 diff 算法。**
 
-diff算法可以总结为三个策略，分别从树、组件及元素三个层面进行复杂度的优化：
+diff算法可以总结为三个策略，分别从树、组件及元素三个层面进行复杂度的优化：:star::star:
 
 **策略一：忽略节点跨层级操作场景，提升比对效率。（基于树进行对比）**
 
@@ -936,7 +962,7 @@ diff算法可以总结为三个策略，分别从树、组件及元素三个层�
 
 元素比对主要发生在同层级中，通过标记节点操作生成补丁。节点操作包含了插入、移动、删除等。其中节点重新排序同时涉及插入、移动、删除三个操作，所以效率消耗最大，此时策略三起到了至关重要的作用。通过标记 key 的方式，React 可以直接移动 DOM 节点，降低内耗。
 
-### 3. React key 是干嘛用的 为什么要加？key 主要是解决哪一类问题的
+### 3. React key 是干嘛用的 为什么要加？key 主要是解决哪一类问题的:star:
 
 Keys 是 React 用于追踪哪些列表中元素被修改、被添加或者被移除的辅助标识。在开发过程中，我们需要保证某个元素的 key 在其同级元素中具有唯一性。
 
@@ -948,13 +974,13 @@ Keys 是 React 用于追踪哪些列表中元素被修改、被添加或者被�
 - 尽量不要用数组的index去作为key；
 - 不要在render的时候用随机数或者其他操作给元素加上不稳定的key，这样造成的性能开销比不加key的情况下更糟糕。
 
-### 4. 虚拟 DOM 的引入与直接操作原生 DOM 相比，哪一个效率更高，为什么
+### 4. 虚拟 DOM 的引入与直接操作原生 DOM 相比，哪一个效率更高，为什么 :star:
 
 虚拟DOM相对原生的DOM不一定是效率更高，如果只修改一个按钮的文案，那么虚拟 DOM 的操作无论如何都不可能比真实的 DOM 操作更快。在首次渲染大量DOM时，由于多了一层虚拟DOM的计算，虚拟DOM也会比innerHTML插入慢。它能保证性能下限，在真实DOM操作的时候进行针对性的优化时，还是更快的。所以要根据具体的场景进行探讨。
 
 在整个 DOM 操作的演化过程中，其实主要矛盾并不在于性能，而在于开发者写得爽不爽，在于研发体验/研发效率。虚拟 DOM 不是别的，正是前端开发们为了追求更好的研发体验和研发效率而创造出来的高阶产物。虚拟 DOM 并不一定会带来更好的性能，React 官方也从来没有把虚拟 DOM 作为性能层面的卖点对外输出过。**虚拟 DOM 的优越之处在于，它能够在提供更爽、更高效的研发模式（也就是函数式的 UI 编程方式）的同时，仍然保持一个还不错的性能。**
 
-### 5. React 与 Vue 的 diff 算法有何不同？
+### 5. React 与 Vue 的 diff 算法有何不同？:star:
 
 diff 算法是指生成更新补丁的方式，主要应用于虚拟 DOM 树变化后，更新真实 DOM。所以 diff 算法一定存在这样一个过程：触发更新 → 生成补丁 → 应用补丁。
 
@@ -964,7 +990,7 @@ React 的 diff 算法，触发更新的时机主要在 state 变化与 hooks 调
 - 组件比对：如果组件是同一类型，则进行树比对，如果不是，则直接放入到补丁中。
 - 元素比对：主要发生在同层级中，通过标记节点操作生成补丁，节点操作对应真实的 DOM 剪裁操作。
 
-以上是经典的 React diff 算法内容。自 React 16 起，引入了 Fiber 架构。为了使整个更新过程可随时暂停恢复，节点与树分别采用了 FiberNode 与 FiberTree 进行重构。fiberNode 使用了双链表的结构，可以直接找到兄弟节点与子节点。整个更新过程由 current 与 workInProgress 两株树双缓冲完成。workInProgress 更新完成后，再通过修改 current 相关指针指向新节点。
+以上是经典的 React diff 算法内容。自 React 16 起，<u>引入了 Fiber 架构。为了使整个更新过程可随时暂停恢复，节点与树分别采用了 FiberNode 与 FiberTree 进行重构。</u>fiberNode 使用了双链表的结构，可以直接找到兄弟节点与子节点。整个更新过程由 current 与 workInProgress 两株树双缓冲完成。workInProgress 更新完成后，再通过修改 current 相关指针指向新节点。
 
 Vue 的整体 diff 策略与 React 对齐，虽然缺乏时间切片能力，但这并不意味着 Vue 的性能更差，因为在 Vue 3 初期引入过，后期因为收益不高移除掉了。除了高帧率动画，在 Vue 中其他的场景几乎都可以使用防抖和节流去提高响应性能。
 
@@ -986,20 +1012,26 @@ React推荐的方法：
 export default class TodoApp extends React.Component {  // ...}
 ```
 
-### 2. react 最新版本解决了什么问题，增加了哪些东西
+### 2. react 最新版本解决了什么问题，增加了哪些东西 :star:
 
 React 16.x的三大新特性 Time Slicing、Suspense、 hooks
 
 - **Time Slicing（解决CPU速度问题**）使得在执行任务的期间可以随时暂停，跑去干别的事情，这个特性使得react能在性能极其差的机器跑时，仍然保持有良好的性能
-- **Suspense （解决网络IO问题）** 和lazy配合，实现异步加载组件。 能暂停当前组件的渲染， 当完成某件事以后再继续渲染，解决从react出生到现在都存在的「异步副作用」的问题，而且解决得非的优雅，使用的是 T异步但是同步的写法，这是最好的解决异步问题的方式
-- 提供了一个**内置函数componentDidCatch**，当有错误发生时，可以友好地展示 fallback 组件; 可以捕捉到它的子元素（包括嵌套子元素）抛出的异常; 可以复用错误组件。
+
+- **Suspense （解决网络IO问题）** 和**lazy**配合，实现异步加载组件。 能暂停当前组件的渲染， 当完成某件事以后再继续渲染，解决从react出生到现在都存在的「异步副作用」的问题，而且解决得非的优雅，使用的是 T异步但是同步的写法，这是最好的解决异步问题的方式
+
+  > Suspense :焦虑，悬念，兴奋；<法律> 暂停，权利中止
+  >
+  > > apprehension about what is going to happen.
+
+- 提供了一个**内置函数componentDidCatch（组件异常捕获）**，当有错误发生时，可以友好地展示 fallback 组件; 可以捕捉到它的子元素（包括嵌套子元素）抛出的异常; 可以复用错误组件。
 
 **（1）React16.8** 加入hooks，让React函数式组件更加灵活，hooks之前，React存在很多问题：
 
-- 在组件间复用状态逻辑很难
-- 复杂组件变得难以理解，高阶组件和函数组件的嵌套过深。
-- class组件的this指向问题
-- 难以记忆的生命周期
+- <u>在组件间复用状态逻辑很难</u>
+- <u>复杂组件变得难以理解，高阶组件和函数组件的嵌套过深。</u>
+- <u>class组件的this指向问题</u>
+- <u>难以记忆的生命周期</u>
 
 hooks很好的解决了上述问题，hooks提供了很多方法
 
@@ -1155,12 +1187,12 @@ css：
 }
 ```
 
-### 4. React 数据持久化有什么实践吗？
+### 4. React 数据持久化有什么实践吗？ :star:
 
 封装数据持久化组件：
 
 ```javascript
-】let storage={
+let storage={
     // 增加
     set(key, value){
         localStorage.setItem(key, JSON.stringify(value));
@@ -1179,7 +1211,7 @@ export default Storage;
 
 在React项目中，通过redux存储全局数据时，会有一个问题，如果用户刷新了网页，那么通过redux存储的全局数据就会被全部清空，比如登录信息等。这时就会有全局数据持久化存储的需求。首先想到的就是localStorage，localStorage是没有时间限制的数据存储，可以通过它来实现数据的持久化存储。
 
-但是在已经使用redux来管理和存储全局数据的基础上，再去使用localStorage来读写数据，这样不仅是工作量巨大，还容易出错。那么有没有结合redux来达到持久数据存储功能的框架呢？当然，它就是**redux-persist**。redux-persist会将redux的store中的数据缓存到浏览器的localStorage中。其使用步骤如下：
+但是在已经使用redux来管理和存储全局数据的基础上，再去使用localStorage来读写数据，这样不仅是工作量巨大，还容易出错。那么有没有结合redux来达到持久数据存储功能的框架呢？当然，它就是**redux-persist**。`redux-persis`会将redux的store中的数据缓存到浏览器的localStorage中。其使用步骤如下：
 
 **（1）首先要安装redux-persist：**
 
@@ -1224,28 +1256,28 @@ ReactDOM.render(<Provider store={store}>
 
 这就完成了通过redux-persist实现React持久化本地数据存储的简单应用。
 
-### 5. 对 React 和 Vue 的理解，它们的异同
+### 5. 对 React 和 Vue 的理解，它们的异同:star::star:
 
 **相似之处：**
 
-- 都将注意力集中保持在核心库，而将其他功能如路由和全局状态管理交给相关的库
-- 都有自己的构建工具，能让你得到一个根据最佳实践设置的项目模板。
-- 都使用了Virtual DOM（虚拟DOM）提高重绘性能
-- 都有props的概念，允许组件间的数据传递
-- 都鼓励组件化应用，将应用分拆成一个个功能明确的模块，提高复用性
+- 都将注意力集中保持在核心库（UI显示），而将其他功能如路由和全局状态管理交给相关的库。
+- 都有自己的构建工具和脚手架，能让你得到一个根据最佳实践设置的项目模板。
+- 都使用了Virtual DOM（虚拟DOM）提高重绘性能。
+- 都有props的概念，允许组件间的数据传递。
+- 都鼓励组件化应用，将应用分拆成一个个功能明确的模块，提高复用性。
 
 **不同之处：**
 
 **1）数据流**
 
-Vue默认支持数据双向绑定，而React一直提倡单向数据流
+Vue默认支持数据双向绑定（也是单项数据流），而React一直提倡单向数据流
 
 **2）虚拟DOM**
 
 Vue2.x开始引入"Virtual DOM"，消除了和React在这方面的差异，但是在具体的细节还是有各自的特点。
 
 - Vue宣称可以更快地计算出Virtual DOM的差异，这是由于它在渲染过程中，会跟踪每一个组件的依赖关系，不需要重新渲染整个组件树。
-- 对于React而言，每当应用的状态被改变时，全部子组件都会重新渲染。当然，这可以通过 PureComponent/shouldComponentUpdate这个生命周期方法来进行控制，但Vue将此视为默认的优化。
+- 对于React而言，每当应用的状态被改变时，<u>全部子组件都会重新渲染</u>。当然，这可以通过 PureComponent/shouldComponentUpdate这个生命周期方法来进行控制，但Vue将此视为默认的优化。（React 粒度更高）
 
 **3）组件化**
 
@@ -1254,18 +1286,18 @@ React与Vue最大的不同是模板的编写。
 - Vue鼓励写近似常规HTML的模板。写起来很接近标准 HTML元素，只是多了一些属性。
 - React推荐你所有的模板通用JavaScript的语法扩展——JSX书写。
 
-具体来讲：React中render函数是支持闭包特性的，所以我们import的组件在render中可以直接调用。但是在Vue中，由于模板中使用的数据都必须挂在 this 上进行一次中转，所以 import 完组件之后，还需要在 components 中再声明下。
+**具体来讲：**React中render函数是支持闭包特性的，所以我们import的组件在render中可以直接调用。但是在Vue中，由于模板中使用的数据都必须挂在 this 上进行一次中转，所以 import 完组件之后，还需要在 components 中再声明下。
 
 **4）监听数据变化的实现原理不同**
 
-- Vue 通过 getter/setter 以及一些函数的劫持，能精确知道数据变化，不需要特别的优化就能达到很好的性能
-- React 默认是通过比较引用的方式进行的，如果不优化（PureComponent/shouldComponentUpdate）可能导致大量不必要的vDOM的重新渲染。这是因为 Vue 使用的是可变数据，而React更强调数据的不可变。
+- Vue 通过 **getter/setter** 以及一些函数的劫持，能精确知道数据变化，不需要特别的优化就能达到很好的性能
+- React 默认是通过**比较引用**的方式进行的，如果不优化（PureComponent/shouldComponentUpdate）可能导致大量不必要的vDOM的重新渲染。<u>这是因为 Vue 使用的是可变数据，而React更强调数据的不可变。</u>
 
 **5）高阶组件**
 
 react可以通过高阶组件（Higher Order Components-- HOC）来扩展，而vue需要通过mixins来扩展。
 
-原因高阶组件就是高阶函数，而React的组件本身就是纯粹的函数，所以高阶函数对React来说易如反掌。相反Vue.js使用HTML模板创建视图组件，这时模板无法有效的编译，因此Vue不采用HOC来实现。
+<u>原因高阶组件就是高阶函数，而React的组件本身就是纯粹的函数，所以高阶函数对React来说易如反掌。</u>相反Vue.js使用HTML模板创建视图组件，这时模板无法有效的编译，因此Vue不采用HOC来实现。
 
 **6）构建工具**
 
@@ -1277,7 +1309,7 @@ react可以通过高阶组件（Higher Order Components-- HOC）来扩展，而v
 **7）跨平台**
 
 - React ==> React Native
-- Vue ==> Weex
+- Vue ==> Weex、uni-app
 
 ### 6. 可以使用TypeScript写React应用吗？怎么操作？
 
@@ -1285,7 +1317,7 @@ react可以通过高阶组件（Higher Order Components-- HOC）来扩展，而v
 
 - 直接创建一个具有 typescript 的 Create React App 项目：
 
-```javascript
+```shell
  npx create-react-app demo --typescript
 ```
 
@@ -1299,13 +1331,13 @@ npm install --save typescript @types/node @types/react @types/react-dom @types/j
 
 - 将项目中任何 后缀名为 ‘.js’ 的 JavaScript 文件重命名为 TypeScript 文件即后缀名为 ‘.tsx’（例如 src/index.js 重命名为 src/index.tsx ）
 
-### 7. React 设计思路，它的理念是什么？
+### 7. React 设计思路，它的理念是什么？:star:
 
-**（1）编写简单直观的代码**
+<u>**（1）编写简单直观的代码**</u>
 
-React最大的价值不是高性能的虚拟DOM、封装的事件机制、服务器端渲染，而是声明式的直观的编码方式。react文档第一条就是声明式，React 使创建交互式 UI 变得轻而易举。为应用的每一个状态设计简洁的视图，当数据改变时 React 能有效地更新并正确地渲染组件。 以声明式编写 UI，可以让代码更加可靠，且方便调试。
+React最大的价值不是高性能的虚拟DOM、封装的事件机制、服务器端渲染，<u>而是声明式的直观的编码方式。</u>react文档第一条就是声明式，React 使创建交互式 UI 变得轻而易举。为应用的每一个状态设计简洁的视图，当数据改变时 React 能有效地更新并正确地渲染组件。 以声明式编写 UI，可以让代码更加可靠，且方便调试。
 
-**（2）简化可复用的组件**
+<u>**（2）简化可复用的组件**</u>
 
 React框架里面使用了简化的组件模型，但更彻底地使用了组件化的概念。React将整个UI上的每一个功能模块定义成组件，然后将小的组件通过组合或者嵌套的方式构成更大的组件。React的组件具有如下的特性∶
 
@@ -1314,21 +1346,25 @@ React框架里面使用了简化的组件模型，但更彻底地使用了组件
 - 可维护：和组件相关的逻辑和UI都封装在了组件的内部，方便维护
 - 可测试：因为组件的独立性，测试组件就变得方便很多。
 
-**（3) Virtual DOM**
+<u>**（3) Virtual DOM**</u>
 
 真实页面对应一个 DOM 树。在传统页面的开发模式中，每次需要更新页面时，都要手动操作 DOM 来进行更新。 DOM 操作非常昂贵。在前端开发中，性能消耗最大的就是 DOM 操作，而且这部分代码会让整体项目的代码变得难 以维护。React 把真实 DOM 树转换成 JavaScript 对象树，也就是 Virtual DOM，每次数据更新后，重新计算 Virtual DOM，并和上一次生成的 Virtual DOM 做对比，对发生变化的部分做批量更新。React 也提供了直观的 shouldComponentUpdate 生命周期回调，来减少数据变化后不必要的 Virtual DOM 对比过程，以保证性能。
 
-**（4）函数式编程**
+<u>**（4）函数式编程**</u>
 
 React 把过去不断重复构建 UI 的过程抽象成了组件，且在给定参数的情况下约定渲染对应的 UI 界面。React 能充分利用很多函数式方法去减少冗余代码。此外，由于它本身就是简单函数，所以易于测试。
 
-**（5）一次学习，随处编写**
+<u>**（5）一次学习，随处编写**</u>
 
 无论现在正在使用什么技术栈，都可以随时引入 React来开发新特性，而不需要重写现有代码。
 
 React 还可以使用 Node 进行服务器渲染，或使用 React Native 开发原生移动应用。因为 React 组件可以映射为对应的原生控件。在输出的时候，是输出 Web DOM，还是 Android 控件，还是 iOS 控件，就由平台本身决定了。所以，react很方便和其他平台集成
 
-### 8. React中props.children和React.Children的区别
+****
+
+### 8. React中props.children和React.Children的区别:star:
+
+****
 
 在React中，当涉及组件嵌套，在父组件中使用`props.children`把所有子组件显示出来。如下：
 
@@ -1399,7 +1435,7 @@ export default App;
 
 以上，`React.Children.map`让我们对父组件的所有子组件又更灵活的控制。
 
-### 9. React的状态提升是什么？使用场景有哪些？
+### 9. React的状态提升是什么？使用场景有哪些？:star:
 
 React的状态提升就是用户对子组件操作，子组件不改变自己的状态，通过自己的props把这个操作改变的数据传递给父组件，改变父组件的状态，从而改变受父组件控制的所有子组件的状态，这也是React单项数据流的特性决定的。官方的原话是：共享 state(状态) 是通过将其移动到需要它的组件的最接近的共同祖先组件来实现的。 这被称为“状态提升(Lifting State Up)”。
 

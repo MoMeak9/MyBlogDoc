@@ -21,8 +21,12 @@ export default navbar([
         text: "友链",
         children: [
             {
-                text: "辉光世界",
+                text: "辉光世界官网",
                 link: "https://lwmc.net",
+            },
+            {
+                text: "DiF1202 博客",
+                link: "http://182.61.38.183:3000/home"
             }
         ]
     }

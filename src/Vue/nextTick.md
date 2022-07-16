@@ -1,9 +1,10 @@
 ---
 date: 2021-09-12
+star: true
 category:
 - Vue
 ---
-# `$nextTick` of Vue 深入理解 $nextTick
+# `$nextTick`深入探究
 
 ## Vue.$nextTick()
 
