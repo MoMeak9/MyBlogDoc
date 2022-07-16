@@ -1,0 +1,3 @@
+const t={key:"v-77b09139",path:"/tag/uni-app/",title:"uni-app \u6807\u7B7E",lang:"zh-CN",frontmatter:{title:"uni-app \u6807\u7B7E",blog:{type:"category",name:"uni-app",key:"tag"},layout:"Blog",summary:"",head:[["meta",{property:"og:url",content:"https://yihuiBlog.top/tag/uni-app/"}],["meta",{property:"og:site_name",content:"Yihui's Blog"}],["meta",{property:"og:title",content:"uni-app \u6807\u7B7E"}],["meta",{property:"og:type",content:"website"}],["meta",{property:"og:locale",content:"zh-CN"}]]},excerpt:"",headers:[],git:{},readingTime:{minutes:0,words:0},copyright:`\u8457\u4F5C\u6743\u5F52YihuiBlog\u6240\u6709
+\u57FA\u4E8EMIT\u534F\u8BAE
+\u539F\u6587\u94FE\u63A5\uFF1Ahttps://yihuiBlog.top/tag/uni-app/`,filePathRelative:null};export{t as data};
