@@ -145,6 +145,43 @@ category:
     ​     loop(循环播放)
 
     可以为没有controls控件属性的video嵌套按钮控件
+    
+11. metadata content（元数据内容）包括以下内容：
+
+    link、script、title、base、meta、noscript、template、style.
+
+13. embed是HTML5中新增的标签，可以在页面中嵌入任何类型的文档。用户的机器上必须已经安装了能够正确显示文档内容的程序，一般常用于在网页中插入多媒体格式 embed src=url 说明：embed可以用来插入各种媒体，格式可以是 Midi、Wav、AIFF、AU、MP3等等， Netscape及新版的IE 都支持。url为音频或视频文件及其路径，可以是相对路径或绝对路径。 示例
+
+14. label只有两个属性**for**（规定 label 绑定到哪个表单元素）和**form**（规定 label 字段所属的一个或多个表单）
+
+15. **JSON和XML之间的区别：**
+
+    1、JSON是JavaScript Object Notation；XML是可扩展标记语言。
+
+    2、JSON是基于JavaScript语言；XML源自SGML。
+
+    3、JSON是一种表示对象的方式；XML是一种标记语言，使用标记结构来表示数据项。
+
+    4、JSON不提供对命名空间的任何支持；XML支持名称空间。
+
+    5、JSON支持数组；XML不支持数组。
+
+    6、XML的文件相对难以阅读和解释；与XML相比，JSON的文件非常易于阅读。
+
+    7、JSON不使用结束标记；XML有开始和结束标签。
+
+    8、JSON的安全性较低；XML比JSON更安全。
+
+    9、JSON不支持注释；XML支持注释。
+
+    10、JSON仅支持UTF-8编码；XML支持各种编码。
+
+16. `<abbr>` 标签用来表示一个缩写词或者首字母缩略词，如"WWW"或者"NATO"。
+
+    通过对缩写词语进行标记，您就能够为浏览器、拼写检查程序、翻译系统以及搜索引擎分度器提供有用的信息。
+    在某些浏览器中，当您把鼠标移至带有 `<abbr>` 标签的缩写词/首字母缩略词上时，`<abbr> `标签的 title 属性可被用来展示缩写词/首字母缩略词的完整版本。
+
+17. 
 
 
 
