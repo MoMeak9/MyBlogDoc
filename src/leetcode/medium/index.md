@@ -576,4 +576,10 @@ var nthUglyNumber = function(n) {
 #### [面试题 16.25. LRU 缓存](https://leetcode.cn/problems/lru-cache-lcci/)
 
 > 设计和构建一个“最近最少使用”缓存，该缓存会删除最近最少使用的项目。缓存应该从键映射到值(允许你插入和检索特定键对应的值)，并在初始化时指定最大容量。当缓存被填满时，它应该删除最近最少使用的项目。
->
+
+#### [739. 每日温度](https://leetcode.cn/problems/daily-temperatures/)
+
+> **单调栈**，将最小数维持在栈顶
+
+
+

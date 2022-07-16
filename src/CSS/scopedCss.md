@@ -8,7 +8,7 @@ category:
 
 > 关于写公司项目的时候因为没有给组件的`<style>`加上`scoped` 属性，导致影响了整个项目的样式，而且还`push`上了`gitlab`，特别写了此篇避坑，希望大家引以为戒。
 
-# 浅析Vue中scoped属性的用途和原理
+# scoped属性的用途和工作原理
 
 ## style加scoped的用途和原理
 

@@ -6,7 +6,7 @@ category:
 - TypeScript
 ---
 
-# TypeScript 修仙进阶笔记（一）:sake:
+# TypeScript修仙笔记（一）:sake:
 
 > 参照来源：
 >
