@@ -1,3 +1,9 @@
+---
+date: 2022-07-18
+category:
+- React
+---
+
 # UmiJS 乌米学习实战:rice:
 
 > 参照文档
@@ -262,4 +268,4 @@ Umi 通过提供插件和插件集的机制来满足不同场景和业务的需�
 
 ## 额外的:octopus:
 
-**基于 React 的应用研发框架 icejs** [[**飞冰**](https://ice.work/)](https://ice.work/)
+**基于 React 的应用研发框架 icejs** [**飞冰**](https://ice.work/)

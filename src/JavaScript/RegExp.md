@@ -1,5 +1,6 @@
 ---
 date: 2022-07-13
+star: true
 category:
 - 前端
 - JavaScript
