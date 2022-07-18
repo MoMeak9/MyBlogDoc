@@ -1,3 +1,11 @@
+---
+date: 2022-07-18
+category:
+- 面试题
+tag:
+- 计算机网络
+---
+
 # CDN 内容分发网络
 
 CDN（Content Delivery Network 或 Content Distribution Network），中文名叫“内容分发网络”。
