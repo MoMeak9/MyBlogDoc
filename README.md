@@ -56,3 +56,7 @@
 ### Git 提交
 
 commitizen+git-cz 实现的有趣而规范的commits信息
+
+### ❓ 问题 | Issue
+
+欢迎提 Issues 或者 联系 [shi_yihui@qq.com](mailto:shi_yihui@qq.com)
