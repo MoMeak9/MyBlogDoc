@@ -7,3 +7,5 @@ src/.vuepress/dist/
 # 可以在这里添加测试文件
 /test.js
 /test.html
+.idea
+/dist/
