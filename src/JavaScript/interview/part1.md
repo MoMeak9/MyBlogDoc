@@ -5,10 +5,8 @@ category:
 - JavaScript
 ---
 
-> [「2021」高频前端面试题汇总之JavaScript篇（上）](https://juejin.cn/post/6959043611161952269)
+> [「2021」高频前端面试题汇总之JavaScript篇（上）](https://juejin.cn/post/6940945178899251230)
 # JavaScript 面试题汇总（上）
-
-# JavaScript面试题汇总（一）
 
 ## 一、数据类型
 
