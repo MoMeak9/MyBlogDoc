@@ -18,6 +18,10 @@ export default navbar([
         link: "/campusRec",
     },
     {
+        text: "必读文章",
+        link: "/skills/article",
+    },
+    {
         text: "友链",
         children: [
             {
