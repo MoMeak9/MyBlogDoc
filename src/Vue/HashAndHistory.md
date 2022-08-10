@@ -2,6 +2,10 @@
 
 ## 储备知识
 
+### SPA
+
+**SPA**，即**单页面应用**(Single Page Application)。所谓单页 `Web` 应用，就是只有一张 `Web` 页面的应用。单页应用程序 (SPA) 是加载单个 `HTML` 页面并在**用户与应用程序交互时**动态更新该页面的 `Web` 应用程序。浏览器一开始会加载必需的 `HTML` 、 `CSS` 和 `JavaScript` ，所有的操作都在这张页面上完成，都由 `JavaScript` 来控制。
+
 ### 网页URL组成部分
 
 | 属性               | 含义     |
@@ -35,14 +39,19 @@
 
 - `onhashchange()`事件
 
-**简介：**hash模式是开发中默认的模式，它的URL带着一个#，例如：[www.abc.com/#/mock]()，它的hash值就是`#/mock`，hash指的是地址中#号以及后面的字符，也称为散列值。hash也称作锚点，本身是用来做页面跳转定位的。。
+**简介：**
+
+hash模式是开发中默认的模式，它的URL带着一个#，例如：[www.abc.com/#/mock]()，它的hash值就是`#/mock`，hash指的是地址中#号以及后面的字符，也称为散列值。hash也称作锚点，本身是用来做页面跳转定位的。。
 
 **特点：**
 
-- hash值会出现在URL里面，但是不会出现在HTTP请求中，对后端完全没有影响。所以改变hash值，不会重新加载页面。这种模式的浏览器支持度（兼容性）好，低版本的IE浏览器也支持这种模式。hash路由被称为是前端路由，已经成为SPA（单页面应用）的标配。
+- hash值会出现在URL里面，但是不会出现在HTTP请求中。所以改变hash值，不会重新加载页面。
+- 这种模式的浏览器支持度（兼容性）好，支持IE。hash路由被称为是前端路由，已经成为SPA的标配。
 - 所有页面的跳转都是在客户端进行操作。因此，并不算是一次 `http` 请求，所以这种模式不利于 `SEO` 优化。`hash` 只能修改 `#` 后面的部分，所以只能跳转到与当前 `url` 同文档的 `url` 。
 
-**原理：**hash模式的主要原理就是使用`window.location.hash`属性及`window.onhashchange()`事件：
+**原理：**
+
+hash模式的主要原理就是使用`window.location.hash`属性及`window.onhashchange()`事件：
 
 ```javascript
 // 设置 url 的 hash，会在当前url后加上'#aabb'
@@ -53,7 +62,7 @@ window.addEventListener('hashchange',function(){
 })
 ```
 
-使用onhashchange()事件的好处就是，在页面的hash值发生变化时，无需向后端发起请求，window就可以监听事件的改变，并按规则加载相应的代码。除此之外，hash值变化对应的URL都会被浏览器记录下来，这样浏览器就能实现页面的前进和后退。虽然是没有请求后端服务器，但是页面的hash值和对应的URL关联起来了。
+使用`onhashchange()`事件，在页面的hash值发生变化时，无需向后端发起请求，window就可以监听事件的改变，并按规则加载相应的代码。除此之外，hash值变化对应的URL都会被浏览器浏览记录记录下来，这样浏览器就能实现页面的前进和后退。
 
 注意：页面第一次加载完不会触发 hashchange，因而在具体实践中通过监听load事件来获取hash值，再将视图渲染成对应的内容。
 
@@ -87,7 +96,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 `history API` 是 `H5` 提供的新特性，允许开发者**直接更改前端路由**，即更新浏览器 `URL` 地址而**不重新发起请求**。
 
-window.history 属性指向 History 对象，它表示当前窗口的浏览历史。当发生改变时，只会改变页面的路径，不会刷新页面。 History 对象保存了当前窗口访问过的所有页面网址。通过 history.length 可以得出当前窗口一共访问过几个网址。 由于安全原因，浏览器不允许脚本读取这些地址，但是允许在地址之间导航。 浏览器工具栏的“前进”和“后退”按钮，其实就是对 History 对象进行操作。
+`window.history` 属性指向 History 对象，它表示当前窗口的浏览历史。当发生改变时，只会改变页面的路径，不会刷新页面。 History 对象保存了当前窗口访问过的所有页面网址。通过 history.length 可以得出当前窗口一共访问过几个网址。 由于安全原因，浏览器不允许脚本读取这些地址，但是允许在地址之间导航。 浏览器工具栏的“前进”和“后退”按钮，其实就是对 History 对象进行操作。
 
 **API：** history api可以分为两大部分，切换历史状态和修改历史状态：
 
@@ -96,13 +105,15 @@ window.history 属性指向 History 对象，它表示当前窗口的浏览历�
 
 ### 触发情况
 
-仅仅调用pushState()方法或replaceState()方法 ，并不会触发该事件; 只有用户点击浏览器倒退按钮和前进按钮，或者使用 JavaScript 调用History.back()、History.forward()、History.go()方法时才会触发。
+- 仅仅调用`pushState()`方法或`replaceState()`方法 ，并不会触发该事件。只有用户点击浏览器倒退按钮和前进按钮，或者使用 JavaScript 调用history.back()、history.forward()、history.go()方法时才会触发。
 
-实际上的直接进行的router.push操作，是使用pushState()创建历史记录后，直接改变路由内的视图，同时达到对历史纪录的存储而不对服务器进行请求。而后退的时候触发会onpopstate()事件，通过监听此事件改变视图内容。
+  实际上进行的router.push()操作，是使用pushState()创建新历史记录后（路由前进），直接改变路由内的视图，同时达到对历史纪录的存储而不对服务器进行请求。而后退的时候触发会onpopstate()事件，通过监听此事件改变视图内容。
 
-该事件只针对同一个文档，如果浏览历史的切换，导致加载不同的文档，该事件也不会触发。 页面第一次加载的时候，浏览器不会触发popstate事件。 
+- 事件只针对同一个文档，如果加载不同的文档，该事件也不会触发。 
 
-回调函数的参数是一个 event 事件对象，它的 state 属性指向当前的 state 对象。
+- 页面第一次加载的时候，浏览器不会触发popstate事件。 
+
+监听`popstate`的回调函数的参数是一个 event 事件对象，它的 state 属性指向当前的 state 对象。
 
 ```js
 window.addEventListener('popstate', function(e) {
@@ -112,21 +123,42 @@ window.addEventListener('popstate', function(e) {
 
 #### history.pushState 和 history.push 区别
 
-- history.pushState () 不会向服务器发送请求，只会改变浏览器地址栏中的地址，并且把地址记录到历史记录中，所以可以实现客户端路由 另外，IE10 以后才支持
-- history.push () 路径发生变化，需要向服务器发送请求
+- history.pushState () 不会向服务器发送请求，只会改变浏览器地址栏中的地址，并且把地址记录到历史记录中，所以可以实现客户端路由 另外，IE10 以后才支持。
+- history.push () 路径发生变化，需要向服务器发送请求。
 
 ### 缺陷和补救
 
-history 致命的缺点就是当改变页面地址后，强制刷新浏览器时，（如果后端没有做准备的话）会报错，因为刷新是拿当前地址去请求服务器的，如果服务器中没有相应的响应，会出现 404 页面。
+history 致命的缺点就是当改变页面地址后，在服务器没有进行额外配置的情况下，强制刷新浏览器时会报错，因为刷新是拿当前地址去请求服务器的，会出现 404 的情况。
 
-对于 `history` 来说，确实解决了不少 `hash` 存在的问题，但是也带来了新的问题。**具体如下：**
+对于 `hash` 模式来说，  它虽然看着是改变了 `url` ，但不会被包括在 `http` 请求中。所以，**它算是被用来指导浏览器的动作，并不影响服务器端**。因此，改变 `hash` 并没有真正地改变 `url` ，所以页面路径还是之前的路径， `nginx` 也就不会拦截。
 
-- 使用 `history` 模式时，在对当前的页面进行刷新时，此时浏览器会重新发起请求。如果 `nginx` 没有匹配得到当前的 `url` ，就会出现 `404` 的页面。
-- 而对于 `hash` 模式来说，  它虽然看着是改变了 `url` ，但不会被包括在 `http` 请求中。所以，**它算是被用来指导浏览器的动作，并不影响服务器端**。因此，改变 `hash` 并没有真正地改变 `url` ，所以页面路径还是之前的路径， `nginx` 也就不会拦截。
-- 因此，在使用 `history` 模式时，需要**通过服务端来允许地址可访问**，如果没有设置，就很容易导致出现 `404` 的局面。
+对于index.html存在服务器本地的Nginx的常用配置，实际上在VueRouter的官方文档中也提到了, 只需要配置一个<u>location try_files</u>默认指向index.html即可。
 
+```
+location / {
+  add_header Cache-Control 'no-store, no-cache'; // 设置不缓存
+  try_files $uri $uri/ /index.html;
+}
+```
 
+对于index.html存在远程地址，例如上传到了OSS或者CDN上的远程地址，可以使用以下方法配置：
+
+- 基础访问地址[xxxxxx/text/]()
+
+- 真正的index.html位置[xxxxx/oss.b.com/project/index]()
+
+即对真实服务器地址和访问路径分别进行了代理和重写
+
+```
+location ^~ /test/ {
+    add_header Cache-Control 'no-store, no-cache'; // 设置不缓存
+    rewrite ^ /project/index.html break;
+    proxy_pass https://oss.b.com;
+}
+```
 
 > 参考：
 >
 > [hash和hashchange事件](https://blog.csdn.net/qq_36671474/article/details/79975846)
+>
+> [Vue Router 源码浅析]()
