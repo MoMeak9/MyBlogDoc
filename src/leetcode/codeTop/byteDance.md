@@ -1117,20 +1117,20 @@ var lastRemaining = function (n, m) {
 ```js
 var zigzagLevelOrder = function(root) {
     if (!root) {
-        return [];
+        return []; // 空值直接返回
     }
 
     const ans = [];
     const nodeQueue = [root]; // 记录访问的node点
 
-    let isOrderLeft = true; // 顺序标记
+    let isOrderLeft = true; // 顺序flag，从左开始
 
     while (nodeQueue.length) {
         let levelList = []; // 每层答案
-        const size = nodeQueue.length;
+        const size = nodeQueue.length; // 每层的节点个数，用于遍历计数
         for (let i = 0; i < size; ++i) {
             const node = nodeQueue.shift();
-            if (isOrderLeft) {
+            if (isOrderLeft) { // 在程序遍历基础上，按照不同方向注入每行队列即可
                 levelList.push(node.val);
             } else {
                 levelList.unshift(node.val);
@@ -1142,7 +1142,7 @@ var zigzagLevelOrder = function(root) {
                 nodeQueue.push(node.right);
             }
         }            
-        ans.push(levelList);
+        ans.push(levelList); // push每层节点
         isOrderLeft = !isOrderLeft; // 反转
     }
 

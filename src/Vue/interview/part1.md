@@ -14,13 +14,18 @@ category:
 
 ## 一、Vue 基础
 
-### 1. Vue的基本原理
+### 1. Vue的基本原理 :star::star:
 
-当一个Vue实例创建时，Vue会遍历data中的属性，用 Object.defineProperty（vue3.0使用proxy ）将它们转为 getter/setter，并且在内部追踪相关依赖，在属性被访问和修改时通知变化。 <u>每个组件实例都有相应的 watcher 程序实例，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的setter被调用时，会通知watcher重新计算，从而致使它关联的组件得以更新。</u>
+当一个Vue实例创建时，Vue会遍历data中的属性，用 Object.defineProperty（vue3.0使用proxy ）将它们转为 getter/setter，并且在内部追踪相关依赖，在属性被访问和修改时通知变化。
 
-<img src="https://cdn.yihuiblog.top/images/202206271534888.png" alt="vue2.0与3.0响应式原理机制- 久宇诗- 博客园" style="zoom: 33%;" />
+ <u>每个组件实例都有相应的 watcher 程序实例，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的setter被调用时，会通知watcher重新计算，从而致使它关联的组件得以更新。</u>
 
-### 2. 双向数据绑定的原理
+<img src="https://cdn.yihuiblog.top/images/202206271534888.png" alt="vue2.0与3.0响应式原理机制- 久宇诗- 博客园" style="zoom: 80%;" />
+
+### 2. 双向数据绑定的原理 :star::star:
+
+- 数据劫持
+- 发布订阅
 
 Vue.js 是采用**数据劫持**结合**发布者-订阅者模式**的方式，通过Object.defineProperty()来劫持各个属性的setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调。主要分为以下几个步骤：
 
@@ -31,13 +36,13 @@ Vue.js 是采用**数据劫持**结合**发布者-订阅者模式**的方式，�
 
 <img src="https://cdn.yihuiblog.top/images/202206271537053.png" alt="VUE的双向数据绑定原理_一个小开心呀的博客-CSDN博客" style="zoom: 33%;" />
 
-### 3. 使用 Object.defineProperty() 来进行数据劫持有什么缺点？
+### 3. 使用 Object.defineProperty() 来进行数据劫持有什么缺点？:star:
 
 在对一些属性进行操作时，使用这种方法无法拦截，比如通过下标方式修改数组数据或者给对象新增属性，这都不能触发组件的重新渲染，因为 Object.defineProperty 不能拦截到这些操作。更精确的来说，对于数组而言，大部分操作都是拦截不到的，只是 Vue 内部通过重写函数的方式解决了这个问题。
 
 在 Vue3.0 中已经不使用这种方式了，而是通过使用 Proxy 对对象进行代理，从而实现数据劫持。使用Proxy 的好处是它可以完美的监听到任何方式的数据改变，唯一的缺点是兼容性的问题，因为 Proxy 是 ES6 的语法。
 
-### 4. MVVM、MVC、MVP的区别
+### 4. MVVM、MVC、MVP的区别 :star::star:
 
 MVC、MVP 和 MVVM 是三种常见的软件架构设计模式，主要通过分离关注点的方式来组织代码结构，优化开发效率。
 
@@ -45,7 +50,11 @@ MVC、MVP 和 MVVM 是三种常见的软件架构设计模式，主要通过分�
 
 **（1）MVC**
 
-MVC 通过分离 Model、View 和 Controller 的方式来组织代码结构。其中 View 负责页面的显示逻辑，Model 负责存储页面的业务数据，以及对相应数据的操作。并且 View 和 Model 应用了观察者模式，当 Model 层发生改变的时候它会通知有关 View 层更新页面。Controller 层是 View 层和 Model 层的纽带，它主要负责用户与应用的响应操作，当用户与页面产生交互的时候，Controller 中的事件触发器就开始工作了，通过调用 Model 层，来完成对 Model 的修改，然后 Model 层再去通知 View 层更新。
+MVC 通过分离 **Model、View 和 Controller** 的方式来组织代码结构。
+
+其中 View 负责页面的显示逻辑，Model 负责存储页面的业务数据，以及对相应数据的操作。并且 View 和 Model 应用了**观察者模式**，当 Model 层发生改变的时候它会通知有关 View 层更新页面。
+
+**Controller 层是 View 层和 Model 层的纽带**，它主要负责用户与应用的响应操作，当用户与页面产生交互的时候，Controller 中的事件触发器就开始工作了，通过调用 Model 层，来完成对 Model 的修改，然后 Model 层再去通知 View 层更新。
 
 <img src="https://cdn.yihuiblog.top/images/202206272048213.png" alt="MVC - MDN Web Docs Glossary: Definitions of Web-related terms | MDN" style="zoom: 20%;" />
 
@@ -53,39 +62,43 @@ MVC 通过分离 Model、View 和 Controller 的方式来组织代码结构。�
 
 MVVM 分为 Model、View、ViewModel：
 
-- Model代表数据模型，数据和业务逻辑都在Model层中定义；
-- View代表UI视图，负责数据的展示；
-- ViewModel负责监听Model中数据的改变并且控制视图的更新，处理用户交互操作；
+- **Model**代表数据模型，数据和业务逻辑都在Model层中定义；
+- **View**代表UI视图，负责数据的展示；
+- **ViewModel**负责监听Model中数据的改变并且控制视图的更新，处理用户交互操作；
 
-Model和View并无直接关联，而是通过ViewModel来进行联系的，Model和ViewModel之间有着双向数据绑定的联系。因此当Model中的数据改变时会触发View层的刷新，View中由于用户交互操作而改变的数据也会在Model中同步。
+![MVVM VS MVC：透過MVVM 設計模式重構MVC 應用程式減低應用程式的複雜性](https://cdn.yihuiblog.top/images/202208091656855.png)
 
-这种模式实现了 Model和View的数据自动同步，因此开发者只需要专注于数据的维护操作即可，而不需要
+**Model和View并无直接关联，而是通过ViewModel来进行联系的**，Model和ViewModel之间有着双向数据绑定的联系。因此当Model中的数据改变时会触发View层的刷新，View中由于用户交互操作而改变的数据也会在Model中同步。
+
+这种模式实现了 Model和View的数据自动同步，因此开发者只需要专注于数据的维护操作即可，而不需要。
+
+直接特征是双向绑定自动更新，React不具有此特征，实际上React是一种view=fn(state)模型，或者说只是MVC中View层面的库。
 
 **（3）MVP**
 
-MVP 模式与 MVC 唯一不同的在于 Presenter 和 Controller。在 MVC 模式中使用观察者模式，来实现当 Model 层数据发生变化的时候，通知 View 层的更新。这样 View 层和 Model 层耦合在一起，当项目逻辑变得复杂的时候，可能会造成代码的混乱，并且可能会对代码的复用性造成一些问题。MVP 的模式通过使用 Presenter 来实现对 View 层和 Model 层的解耦。MVC 中的Controller 只知道 Model 的接口，因此它没有办法控制 View 层的更新，MVP 模式中，View 层的接口暴露给了 Presenter 因此可以在 Presenter 中将 Model 的变化和 View 的变化绑定在一起，以此来实现 View 和 Model 的同步更新。这样就实现了对 View 和 Model 的解耦，Presenter 还包含了其他的响应逻辑。
+MVP 模式与 MVC 唯一不同的在于 Presenter 和 Controller。在 MVC 模式中使用观察者模式，来实现当 Model 层数据发生变化的时候，通知 View 层的更新。这样 View 层和 Model 层耦合在一起，当项目逻辑变得复杂的时候，可能会造成代码的混乱，并且可能会对代码的复用性造成一些问题。MVP 的模式通过使用 Presenter 来实现对 View 层和 Model 层的解耦。MVC 中的Controller 只知道 Model 的接口，因此它没有办法控制 View 层的更新，MVP 模式中，View 层的接口暴露给了 Presenter 因此可以在 Presenter 中将 Model 的变化和 View 的变化绑定在一起，以此来实现 View 和 Model 的同步更新。这样就实现了对 View 和 Model 的解耦，Presenter 还包含了其他的响应逻辑。![image-20220809170149369](https://cdn.yihuiblog.top/images/202208091701576.png)![img](https://raw.githubusercontent.com/maoqitian/MaoMdPhoto/master/MVP/MVP1.jpg)
 
-### 5. Computed 和 Watch 的区别
+### 5. Computed 和 Watch 的区别 :star: :star:
 
 **对于Computed：**
 
-- 它支持缓存，只有依赖的数据发生了变化，才会重新计算
-- 不支持异步，当Computed中有异步操作时，无法监听数据的变化
+- **它支持缓存**，只有依赖的数据发生了变化，才会重新计算
+- **不支持异步**，当Computed中有异步操作时，无法监听数据的变化
 - computed的值会默认走缓存，计算属性是基于它们的响应式依赖进行缓存的，也就是基于data声明过，或者父组件传递过来的props中的数据进行计算的。
-- 如果一个属性是由其他属性计算而来的，这个属性依赖其他的属性，一般会使用computed
-- 如果computed属性的属性值是函数，那么默认使用get方法，函数的返回值就是属性的属性值；在computed中，属性有一个get方法和一个set方法，当数据发生变化时，会调用set方法。
+- 如果一个**属性是由其他属性计算而来的，这个属性依赖其他的属性**，一般会使用computed
+- 如果computed属性的属性值是函数，那么默认使用get方法，函数的返回值就是属性的属性值；在computed中，属性有一个get方法和一个set方法，当数据发生变化时，会调用set方法。（可以通过设置get、set方法代替默认行为）
 
 **对于Watch：**
 
-- 它不支持缓存，数据变化时，它就会触发相应的操作
-- 支持异步监听
+- 它**不支持缓存**，数据变化时，它就会触发相应的操作
+- 支持**异步**监听
 - 监听的函数接收两个参数，第一个参数是最新的值，第二个是变化之前的值
 - 当一个属性发生变化时，就需要执行相应的操作
 - 监听数据必须是data中声明的或者父组件传递过来的props中的数据，当发生变化时，会触发其他操作，函数有两个的参数：
-  - immediate：组件加载立即触发回调函数
-  - deep：深度监听，发现数据内部的变化，在复杂数据类型中使用，例如数组中的对象发生变化。需要注意的是，deep无法监听到数组和对象内部的变化。
+  - immediate：组件加载后立即触发回调函数
+  - deep：深度监听，发现数据内部的变化，在复杂数据类型中使用，例如数组中的对象发生变化。需要注意的是，**deep无法监听到数组和对象内部的变化（基于指针地址的监听）**。
 
-当想要执行异步或者昂贵的操作以响应不断的变化时，就需要使用watch。
+当想要执行异步或者昂贵的操作（消耗高）以及响应不断的变化时，就需要使用watch。
 
 **总结：**
 
@@ -95,9 +108,9 @@ MVP 模式与 MVC 唯一不同的在于 Presenter 和 Controller。在 MVC 模�
 **运用场景：**
 
 - 当需要进行数值计算,并且依赖于其它数据时，应该使用 computed，因为可以利用 computed 的缓存特性，避免每次获取值时都要重新计算。
-- 当需要在数据变化时执行异步或开销较大的操作时，应该使用 watch，使用 watch 选项允许执行异步操作 ( 访问一个 API )，限制执行该操作的频率，并在得到最终结果前，设置中间状态。这些都是计算属性无法做到的。
+- 当需要在数据变化时执行异步或开销较大的操作时，应该使用 watch，使用 watch 选项允许执行异步操作 ( 例如访问一个 API )，限制执行该操作的频率，并在得到最终结果前，设置中间状态。这些都是计算属性无法做到的。
 
-### 6. Computed 和 Methods 的区别
+### 6. Computed 和 Methods 的区别 :star: :star:
 
 可以将同一函数定义为一个 method 或者一个计算属性。对于最终的结果，两种方式是相同的
 
@@ -106,7 +119,7 @@ MVP 模式与 MVC 唯一不同的在于 Presenter 和 Controller。在 MVC 模�
 - computed: 计算属性是基于它们的依赖进行缓存的，只有在它的相关依赖发生改变时才会重新求值；
 - method 调用总会执行该函数。
 
-### 7. slot是什么？有什么作用？原理是什么？
+### 7. slot是什么？有什么作用？原理是什么？ :star:
 
 slot又名插槽，是Vue的内容分发机制，组件内部的模板引擎使用slot元素作为承载分发内容的出口。插槽slot是子组件的一个模板标签元素，而这一个标签元素是否显示，以及怎么显示是由父组件决定的。slot又分三类，默认插槽，具名插槽和作用域插槽。
 
@@ -139,7 +152,7 @@ slot又名插槽，是Vue的内容分发机制，组件内部的模板引擎使�
   }
 ```
 
-### 9. 如何保存页面的当前的状态
+### 9. 如何保存页面的当前的状态 :star:
 
 既然是要保持页面的状态（其实也就是组件的状态），那么会出现以下两种情况：
 
@@ -181,11 +194,11 @@ slot又名插槽，是Vue的内容分发机制，组件内部的模板引擎使�
 
 - 如果 A 组件可以跳转至多个组件，那么在每一个跳转组件内都要写相同的逻辑。
 
-**组件不会被卸载：**
+**组件不会被卸载的：**
 
 **（1）单页面渲染**
 
-要切换的组件作为子组件全屏渲染，父组件中正常储存页面状态。
+要切换的组件作为子组件全屏渲染，由父组件（不会被卸载的组件）中正常储存页面状态。
 
 **优点：**
 
@@ -198,9 +211,11 @@ slot又名插槽，是Vue的内容分发机制，组件内部的模板引擎使�
 - 需要传入额外的 prop 到 B 组件
 - 无法利用路由定位页面
 
+**（2）keep-alive**
+
 除此之外，在Vue中，还可以是用keep-alive来缓存页面，当组件在keep-alive内被切换时组件的**activated、deactivated**这两个生命周期钩子函数会被执行 被包裹在keep-alive中的组件的状态将会被保留：
 
-```javascript
+```vue
 <keep-alive>
 	<router-view v-if="$route.meta.keepAlive"></router-view>
 </kepp-alive>
@@ -219,7 +234,7 @@ slot又名插槽，是Vue的内容分发机制，组件内部的模板引擎使�
 },
 ```
 
-### 10. 常见的事件修饰符及其作用
+### 10. 常见的<u>事件修饰符</u>及其作用 :star:
 
 - `.stop`：等同于 JavaScript 中的 `event.stopPropagation()` ，防止事件冒泡；
 - `.prevent` ：等同于 JavaScript 中的 `event.preventDefault()` ，防止执行预设的行为（如果事件可取消，则取消该事件，而不停止事件的进一步传播）；
@@ -227,21 +242,23 @@ slot又名插槽，是Vue的内容分发机制，组件内部的模板引擎使�
 - `.self` ：只会触发自己范围内的事件，不包含子元素；
 - `.once` ：只会触发一次。
 
-### 11. v-if、v-show、v-html 的原理
+### 11. v-if、v-show、v-html 的原理 :star:
 
 - v-if会调用addIfCondition方法，生成vnode的时候会忽略对应节点，render的时候就不会渲染；
 - v-show会生成vnode，render的时候也会渲染成真实节点，只是在render过程中会在节点的属性中修改show属性值，也就是常说的display；
 - v-html会先移除节点下的所有节点，调用html方法，通过addProp添加innerHTML属性，归根结底还是设置innerHTML为v-html的值。
 
-### 13. v-if和v-show的区别
+### 13. v-if 和 v-show 的区别 :star:
 
 - **手段**：v-if是动态的向DOM树内添加或者删除DOM元素；v-show是通过设置DOM元素的display样式属性控制显隐；
-- **编译过程**：v-if切换有一个局部编译/卸载的过程，切换过程中合适地销毁和重建内部的事件监听和子组件；v-show只是简单的基于css切换；
+- **编译过程**：v-if 切换有一个局部编译/卸载的过程，切换过程中合适地销毁和重建内部的事件监听和子组件；v-show只是简单的基于css切换；
 - **编译条件**：v-if是惰性的，如果初始条件为假，则什么也不做；只有在条件第一次变为真时才开始局部编译; v-show是在任何条件下，无论首次条件是否为真，都被编译，然后被缓存，而且DOM元素保留；
 - **性能消耗**：v-if有更高的切换消耗；v-show有更高的初始渲染消耗；
 - **使用场景**：v-if适合运营条件不大可能改变；v-show适合频繁切换。
 
 ### 14. v-model 是如何实现的，语法糖实际是什么？
+
+v-bind 和  v-on 的语法糖
 
 **（1）作用在表单元素上** 动态绑定了 input 的 value 指向了 messgae 变量，并且在触发 input 事件的时候去动态把 message设置为目标值：
 
@@ -339,7 +356,9 @@ Vue.component('custom-input', {
 })
 ```
 
-### 16. data为什么是一个函数而不是对象
+### 16. data为什么是一个函数而不是对象 :star::star:
+
+<u>**复用的多个组件需要有自己的状态（数据空间），互不干扰**</u>
 
 JavaScript中的对象是引用类型的数据，当多个实例引用同一个对象时，只要一个实例对这个对象进行操作，其他实例中的数据也会发生变化。
 
@@ -347,11 +366,11 @@ JavaScript中的对象是引用类型的数据，当多个实例引用同一个�
 
 所以组件的数据不能写成对象的形式，而是要写成函数的形式。数据以函数返回值的形式定义，<u>这样当每次复用组件的时候，就会返回一个新的data，也就是说每个组件都有自己的私有数据空间，</u>它们各自维护自己的数据，不会干扰其他组件的正常运行。
 
-### 17. 对keep-alive的理解，它是如何实现的，具体缓存的是什么？
+### 17. 对keep-alive的理解，它是如何实现的，具体缓存的是什么？ :star:
 
 如果需要在组件切换的时候，保存一些组件的状态防止多次渲染，就可以使用 keep-alive 组件包裹需要保存的组件。
 
-**（1）keep-alive**
+**（1）keep-alive 属性和执行流程**
 
 keep-alive有以下三个属性：
 
@@ -563,7 +582,7 @@ LRU 缓存策略∶ 从内存中找出最久未使用的数据并置换新的数
 - 每当缓存命中（即缓存数据被访问），则将数据移到链表头部
 - 链表满的时候，将链表尾部的数据丢弃。
 
-### 18. $nextTick 原理及作用
+### 18. $nextTick 原理及作用 :star:
 
 Vue 的 nextTick 其本质是对 JavaScript 执行原理 EventLoop 的一种应用。
 
@@ -631,9 +650,9 @@ addObjB () (
 }
 ```
 
-$set()方法相当于手动的去把obj.b处理成一个响应式的属性，此时视图也会跟着改变了。
+**<u>$set()方法相当于手动的去把obj.b处理成一个响应式的属性，此时视图也会跟着改变了。</u>**
 
-### 20. Vue中封装的数组方法有哪些，其如何实现页面更新
+### 20. Vue中封装的数组方法有哪些，其如何实现页面更新 :star:
 
 在Vue中，对响应式处理利用的是Object.defineProperty对数据进行拦截，而这个方法并不能监听到数组内部变化，数组长度变化，数组的截取变化等，所以需要对这些操作进行hack，让Vue能监听到其中的变化。
 
@@ -692,7 +711,7 @@ methodsToPatch.forEach(function(method) {
 
 简单来说就是，重写了数组中的那些原生方法，首先获取到这个数组的__ob__，也就是它的Observer对象，如果有新的值，就调用observeArray继续对新的值观察变化（也就是通过`target__proto__ == arrayMethods`来改变了数组实例的型），然后手动调用notify，通知渲染watcher，执行update。
 
-### 21. Vue 单页应用与多页应用的区别
+### 21. Vue 单页应用与多页应用的区别 :star::star:
 
 **概念：**
 
@@ -702,7 +721,7 @@ methodsToPatch.forEach(function(method) {
 
 <img src="https://cdn.yihuiblog.top/images/202206272019059.jpeg" alt="Vue单页面与多页面的区别_xiangyan_3的博客-CSDN博客_vue单页面与多页面区别" style="zoom:67%;" />
 
-### 22. Vue template 到 render 的过程
+### 22. Vue template 到 render 的过程 :star:
 
 vue的模版编译过程主要如下：**template -> ast -> render函数**
 
@@ -741,7 +760,7 @@ const code = generate(ast, options)
 
 generate将ast抽象语法树编译成 render字符串并将静态部分放到 staticRenderFns 中，最后通过 `new Function(`` render``)` 生成render函数。
 
-### 23. Vue data 中某一个属性的值发生改变后，视图会立即同步执行重新渲染吗？
+### 23. Vue data 中某一个属性的值发生改变后，视图会立即同步执行重新渲染吗？ :star:
 
 不会立即同步执行重新渲染。Vue 实现响应式并不是数据发生变化之后 DOM 立即变化，而是按一定的策略进行 DOM 的更新。Vue 在更新 DOM 时是异步执行的。只要侦听到数据变化， Vue 将开启一个队列，并缓冲在同一事件循环中发生的所有数据变更。
 

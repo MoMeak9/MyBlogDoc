@@ -26,7 +26,7 @@ const router = new VueRouter({
 })
 ```
 
-（1）方案一(常用)：使用箭头函数+import动态加载
+（1）方案一(常用)：使用箭头函数+import动态加载（Promise处理）
 
 ```javascript
 const List = () => import('@/components/list.vue')
@@ -37,7 +37,7 @@ const router = new VueRouter({
 })
 ```
 
-（2）方案二：使用箭头函数+require动态加载
+（2）方案二：使用箭头函数+require动态加载（Promise处理）
 
 ```javascript
 const router = new Router({
