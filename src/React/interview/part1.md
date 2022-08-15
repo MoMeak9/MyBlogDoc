@@ -1535,7 +1535,7 @@ static getDerivedStateFromProps(nextProps, prevState) {
 
 ### 4. React 性能优化在哪个生命周期？它优化的原理是什么？
 
-react的父级组件的render函数重新渲染会引起子组件的render方法的重新渲染。但是，有的时候子组件的接受父组件的数据没有变动。子组件render的执行会影响性能，这时就可以使用shouldComponentUpdate来解决这个问题。
+react的父级组件的render函数重新渲染会引起子组件的render方法的重新渲染。但是，有的时候子组件的接受父组件的数据没有变动。子组件render的执行会影响性能，这时就可以使用`shouldComponentUpdate`来解决这个问题。
 
 使用方法如下：
 
@@ -1552,7 +1552,9 @@ shouldComponentUpdate提供了两个参数nextProps和nextState，表示下一�
 
 需要注意，在进行新旧对比的时候，是**浅对比，**也就是说如果比较的数据时引用数据类型，只要数据的引用的地址没变，即使内容变了，也会被判定为true。
 
-面对这个问题，可以使用如下方法进行解决： （1）使用setState改变数据之前，先采用ES6中assgin进行拷贝，但是assgin只深拷贝的数据的第一层，所以说不是最完美的解决办法：
+面对这个问题，可以使用如下方法进行解决： 
+
+（1）使用setState改变数据之前，先采用ES6中assgin进行拷贝，但是assgin只深拷贝的数据的第一层，所以说不是最完美的解决办法：
 
 ```javascript
 const o2 = Object.assign({},this.state.obj)
