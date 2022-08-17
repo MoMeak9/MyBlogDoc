@@ -38,7 +38,11 @@ comment: false
 
 ### 插件机制
 
+
+
 ### 设计模式
+
+
 
 ## 框架
 
@@ -134,3 +138,8 @@ comment: false
 
 dev.to
 medium
+## 计算机基础
+
+- [小林coding](https://xiaolincoding.com/)
+
+逐步完善ing...
