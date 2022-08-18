@@ -105,7 +105,7 @@ HOC的优缺点∶
 
 具有render prop 的组件接受一个返回React元素的函数，将render的渲染逻辑注入到组件内部。在这里，**"render"的命名可以是任何其他有效的标识符。**
 
-```javascript
+```jsx
 // DataProvider组件内部的渲染逻辑如下
 class DataProvider extends React.Components {
      state = {
@@ -440,7 +440,7 @@ class App extends React.Component {
 - 对新旧两棵树进行一个<u>深度优先遍历，这样每一个节点都会一个标记</u>，在到深度遍历的时候，每遍历到一和个节点，就把该节点和新的节点树进行对比，如果有差异就放到一个对象里面
 - 遍历差异对象，根据差异的类型，根据对应对规则更新VNode
 
-React 的处理 render 的基本思维模式是每次一有变动就会去重新渲染整个应用。在 Virtual DOM 没有出现之前，最简单的方法就是直接调用 innerHTML。Virtual DOM厉害的地方并不是说它比直接操作 DOM 快，而是说不管数据怎么变，都会尽量以最小的代价去更新 DOM。React 将 render 函数返回的虚拟 DOM 树与老的进行比较，从而确定 DOM 要不要更新、怎么更新。当 DOM 树很大时，遍历两棵树进行各种比对还是相当耗性能的，<u>特别是在顶层 setState 一个微小的修改，默认会去遍历整棵树。尽管 React 使用高度优化的 Diff 算法，但是这个过程仍然会损耗性能.</u>
+**React 的处理 render 的基本思维模式是每次一有变动就会去重新渲染整个应用。**在 Virtual DOM 没有出现之前，最简单的方法就是直接调用 innerHTML。Virtual DOM厉害的地方并不是说它比直接操作 DOM 快，而是说不管数据怎么变，都会尽量以<u>最小的代价</u>去更新 DOM。React 将 render 函数返回的虚拟 DOM 树与老的进行比较，从而确定 DOM 要不要更新、怎么更新。当 DOM 树很大时，遍历两棵树进行各种比对还是相当耗性能的，<u>特别是在顶层 setState 一个微小的修改，默认会去遍历整棵树。尽管 React 使用高度优化的 Diff 算法，但是这个过程仍然会损耗性能.</u>
 
 ### 12. React如何判断什么时候重新渲染组件？:star:
 
@@ -485,6 +485,8 @@ React **声明组件**的三种方式：
 
 **（1）有状态组件**
 
+> 维护自生状态并有生命周期
+
 **特点：**
 
 - 是类组件
@@ -502,6 +504,8 @@ React **声明组件**的三种方式：
 **总结：** 类组件可以维护自身的状态变量，即组件的 state ，类组件还有不同的生命周期方法，可以让开发者能够在组件的不同阶段（挂载、更新、卸载），对组件做更多的控制。类组件则既可以充当无状态组件，也可以充当有状态组件。当一个类组件不需要管理自身状态时，也可称为无状态组件。
 
 **（2）无状态组件** **特点：**
+
+> 
 
 - 不依赖自身的状态state
 - 可以是类组件或者函数组件。
@@ -862,7 +866,7 @@ React.forwardRef 会创建一个React组件，这个组件能够将其接受的 
 
 ## 二、数据管理
 
-### 1. React setState 调用的原理
+### 1. React setState 调用的原理 :star::star:
 
 ![setState()调用原理](https://cdn.yihuiblog.top/images/202206262150505.png)
 
@@ -928,7 +932,7 @@ function enqueueUpdate(component) {
 
 假如所有setState是同步的，意味着每执行一次setState时（有可能一个同步代码中，多次setState），都重新vnode diff + dom修改，这对性能来说是极为不好的。如果是异步，则可以把一个同步代码中的多个setState合并成一次组件更新。<u>所以默认是异步的，但是在一些情况下是同步的。</u>
 
-setState 并不是单纯同步/异步的，它的表现会因调用场景的不同而不同。在源码中，通过 isBatchingUpdates 来判断setState 是先存进 state 队列还是直接更新，如果值为 true 则执行异步操作，为 false 则直接更新。
+**<u>:star:setState 并不是单纯同步/异步的，它的表现会因调用场景的不同而有不同的表现</u>**。在源码中，通过 `isBatchingUpdates` （是否批量更新）来判断setState 是先存进 state 队列还是直接更新，如果值为 true 则执行异步操作，为 false 则直接更新。
 
 - **异步：** 在 React 可以控制的地方，就为 true，比如在 React 生命周期事件和合成事件中，都会走合并操作，延迟更新的策略。:star:
 - **同步：** 在 React 无法控制的地方，比如原生事件，具体就是在 addEventListener 、setTimeout、setInterval 等事件中，就只能同步更新。:star:
@@ -938,7 +942,7 @@ setState 并不是单纯同步/异步的，它的表现会因调用场景的不�
 - `setState`设计为异步，可以显著的提升性能。如果每次调用 `setState`都进行一次更新，那么意味着`render`函数会被频繁调用，界面重新渲染，这样效率是很低的；最好的办法应该是获取到多个更新，之后进行批量更新；
 - 如果同步更新了`state`，但是还没有执行`render`函数，那么`state`和`props`不能保持同步。`state`和`props`不能保持一致性，会在开发中产生很多的问题；
 
-### 3. React中的setState批量更新的过程是什么？
+### 3. React中的setState批量更新的过程是什么？:star:
 
 调用 `setState` 时，组件的 `state` 并不会立即改变， `setState` 只是把要修改的 `state` 放入一个队列， `React` 会优化真正的执行时机，并出于性能原因，会将 `React` 事件处理程序中的多次`React` 事件处理程序中的多次 `setState` 的状态修改合并成一次状态修改。 最终更新只产生一次组件及其子组件的重新渲染，这对于大型应用程序中的性能提升至关重要。
 
@@ -957,7 +961,7 @@ this.setState({
 
 需要注意的是，只要同步代码还在执行，“攒起来”这个动作就不会停止。（注：这里之所以多次 +1 最终只有一次生效，是因为在同一个方法中多次 setState 的合并动作不是单纯地将更新累加。比如这里对于相同属性的设置，React 只会为其保留最后一次的更新）。
 
-### 4.  React中有使用过getDefaultProps吗？它有什么作用？
+### 4.  React中有使用过getDefaultProps吗？它有什么作用？:star:
 
 通过实现组件的getDefaultProps，对属性设置默认值（ES5的写法）：
 
@@ -1014,7 +1018,7 @@ replaceState(object nextState[, function callback])
 
 this.state通常是用来初始化state的，this.setState是用来修改state值的。如果初始化了state之后再使用this.state，之前的state会被覆盖掉，如果使用this.setState，只会替换掉相应的state值。所以，如果想要修改state的值，就需要使用setState，而不能直接修改state，直接修改state之后页面是不会更新的。
 
-### 8. state 是怎么注入到组件的，从 reducer 到组件经历了什么样的过程
+### 8. state 是怎么注入到组件的，从 reducer 到组件经历了什么样的过程:star::star:
 
 通过connect和mapStateToProps将state注入到组件中：
 
@@ -1103,7 +1107,9 @@ export const connect = (mapStateToProps, mapDispatchToProps) => (WrappedComponen
 }
 ```
 
-### 9. React组件的state和props有什么区别？
+### 9. React组件的state和props有什么区别？:star::star:
+
+> 来源、是否可以修改
 
 **（1）props**
 
@@ -1119,7 +1125,7 @@ state的主要作用是用于组件保存、控制以及修改自己的状态，
 - props 是不可修改的，所有 React 组件都必须像纯函数一样保护它们的 props 不被更改。
 - state 是在组件中创建的，一般在 constructor中初始化 state。state 是多变的、可以修改，每次setState都异步更新的。
 
-### 10. React中的props为什么是只读的？
+### 10. React中的props为什么是只读的？:star:
 
 `this.props`是组件之间沟通的一个接口，原则上来讲，<u>它只能从父组件流向子组件。React具有浓重的函数式编程的思想。</u>
 
@@ -1131,7 +1137,7 @@ state的主要作用是用于组件保存、控制以及修改自己的状态，
 
 `this.props`就是汲取了纯函数的思想。props的不可以变性就保证的相同的输入，页面显示的内容是一样的，并且不会产生副作用
 
-### 11. 在React中组件的props改变时更新组件的有哪些方法？
+### 11. 在React中组件的props改变时更新组件的有哪些方法？:star:
 
 在一个组件传入的props更新时重新渲染该组件常用的方法是在`componentWillReceiveProps`中将新的props更新到组件的state中（这种state被成为派生状态（Derived State）），从而实现重新渲染。React 16.3中还引入了一个新的钩子函数`getDerivedStateFromProps`来专门实现这一需求。
 
@@ -1191,7 +1197,7 @@ Greeting.propTypes = {
 
 React 通常将组件生命周期分为三个阶段：
 
-- **装载阶段（Mount），**组件第一次在DOM树中被渲染的过程；
+- **挂载阶段（Mount），**组件第一次在DOM树中被渲染的过程；
 - **更新过程（Update），**组件状态发生变化，重新更新渲染的过程；
 - **卸载过程（Unmount），**组件从DOM树中被移除的过程；
 
@@ -1511,7 +1517,7 @@ class ScrollingList extends React.Component {
 
 ### 3. React 16.X 中 props 改变后在哪个生命周期中处理
 
-**在getDerivedStateFromProps中进行处理。**
+**在`getDerivedStateFromProps`中进行处理。**
 
 这个生命周期函数是为了替代`componentWillReceiveProps`存在的，所以在需要使用`componentWillReceiveProps`时，就可以考虑使用`getDerivedStateFromProps`来进行替代。
 
@@ -1533,9 +1539,9 @@ static getDerivedStateFromProps(nextProps, prevState) {
 }
 ```
 
-### 4. React 性能优化在哪个生命周期？它优化的原理是什么？
+### 4. React 性能优化在哪个生命周期？它优化的原理是什么？:star:
 
-react的父级组件的render函数重新渲染会引起子组件的render方法的重新渲染。但是，有的时候子组件的接受父组件的数据没有变动。子组件render的执行会影响性能，这时就可以使用shouldComponentUpdate来解决这个问题。
+react的父级组件的render函数重新渲染会引起子组件的render方法的重新渲染。但是，有的时候子组件的接受父组件的数据没有变动。子组件render的执行会影响性能，这时就可以使用`shouldComponentUpdate`来解决这个问题。
 
 使用方法如下：
 
@@ -1552,7 +1558,9 @@ shouldComponentUpdate提供了两个参数nextProps和nextState，表示下一�
 
 需要注意，在进行新旧对比的时候，是**浅对比，**也就是说如果比较的数据时引用数据类型，只要数据的引用的地址没变，即使内容变了，也会被判定为true。
 
-面对这个问题，可以使用如下方法进行解决： （1）使用setState改变数据之前，先采用ES6中assgin进行拷贝，但是assgin只深拷贝的数据的第一层，所以说不是最完美的解决办法：
+面对这个问题，可以使用如下方法进行解决： 
+
+（1）使用setState改变数据之前，先采用ES6中assgin进行拷贝，但是assgin只深拷贝的数据的第一层，所以说不是最完美的解决办法：
 
 ```javascript
 const o2 = Object.assign({},this.state.obj)
@@ -1572,6 +1580,349 @@ const o2 = JSON.parse(JSON.stringify(this.state.obj))
     })
 ```
 
-### 5. state 和 props 触发更新的生命周期分别有什么区别？
+### 5. state 和 props 触发更新的生命周期分别有什么区别？:star:
 
-**state 更新流程：**
+**state 更新流程：** ![img](https://cdn.yihuiblog.top/images/202208161723075.webp) 这个过程当中涉及的函数：
+
+1. shouldComponentUpdate: 当组件的 state 或 props 发生改变时，都会首先触发这个生命周期函数。它会接收两个参数：nextProps, nextState——它们分别代表传入的新 props 和新的 state 值。拿到这两个值之后，我们就可以通过一些对比逻辑来决定是否有 re-render（重渲染）的必要了。如果该函数的返回值为 false，则生命周期终止，反之继续；
+
+> 注意：此方法仅作为**性能优化的方式**而存在。不要企图依靠此方法来“阻止”渲染，因为这可能会产生 bug。应该**考虑使用内置的 PureComponent 组件**，而不是手动编写 `shouldComponentUpdate()`
+
+1. componentWillUpdate：当组件的 state 或 props 发生改变时，会在渲染之前调用 componentWillUpdate。componentWillUpdate **是 React16 废弃的三个生命周期之一**。过去，我们可能希望能在这个阶段去收集一些必要的信息（比如更新前的 DOM 信息等等），现在我们完全可以在 React16 的 getSnapshotBeforeUpdate 中去做这些事；
+2. componentDidUpdate：componentDidUpdate() 会在UI更新后会被立即调用。它接收 prevProps（上一次的 props 值）作为入参，也就是说在此处我们仍然可以进行 props 值对比（再次说明 componentWillUpdate 确实鸡肋哈）。
+
+****
+
+**props 更新流程：** ![img](https://cdn.yihuiblog.top/images/202208161723083.webp) 相对于 state 更新，props 更新后唯一的区别是增加了对 componentWillReceiveProps 的调用。关于 componentWillReceiveProps，需要知道这些事情：
+
+- componentWillReceiveProps：它在Component接受到新的 props 时被触发。componentWillReceiveProps 会接收一个名为 nextProps 的参数（对应新的 props 值）。**该生命周期是 React16 废弃掉的三个生命周期之一**。在它被废弃前，可以用它来比较 this.props 和 nextProps 来重新setState。在 React16 中，用一个类似的新生命周期 getDerivedStateFromProps 来代替它。
+
+### 6. React中发起网络请求应该在哪个生命周期中进行？为什么？:star:
+
+对于异步请求，最好放在componentDidMount中去操作，对于同步的状态改变，可以放在componentWillMount中，一般用的比较少。
+
+如果认为在componentWillMount里发起请求能提早获得结果，这种想法其实是错误的，通常componentWillMount比componentDidMount早不了多少微秒，网络上任何一点延迟，这一点差异都可忽略不计。
+
+**react的生命周期：** constructor() -> componentWillMount() -> render() -> componentDidMount()
+
+上面这些方法的调用是有次序的，由上而下依次调用。
+
+- constructor被调用是在组件准备要挂载的最开始，此时组件尚未挂载到网页上。
+- componentWillMount方法的调用在constructor之后，在render之前，在这方法里的代码调用setState方法不会触发重新render，所以它一般不会用来作加载数据之用。
+- componentDidMount方法中的代码，是在组件已经完全挂载到网页上才会调用被执行，所以可以保证数据的加载。此外，在这方法中调用setState方法，会触发重新渲染。所以，官方设计这个方法就是用来加载外部数据用的，或处理其他的副作用代码。与组件上的数据无关的加载，也可以在constructor里做，但constructor是做组件state初绐化工作，并不是做加载数据这工作的，constructor里也不能setState，还有加载的时间太长或者出错，页面就无法加载出来。所以有副作用的代码都会集中在componentDidMount方法里。
+
+总结：
+
+- 跟服务器端渲染（同构）有关系，如果在componentWillMount里面获取数据，fetch data会执行两次，一次在服务器端一次在客户端。在componentDidMount中可以解决这个问题，componentWillMount同样也会render两次。
+- 在componentWillMount中fetch data，数据一定在render后才能到达，如果忘记了设置初始状态，用户体验不好。
+- react16.0以后，componentWillMount可能会被执行多次。
+
+### 7. React 16中新生命周期有哪些:star:
+
+关于 React16 开始应用的新生命周期： ![img](https://cdn.yihuiblog.top/images/202208161723310.webp) 可以看出，React16 自上而下地对生命周期做了另一种维度的解读：
+
+- **Render 阶段**：用于计算一些必要的状态信息。这个阶段可能会被 React 暂停，这一点和 React16 引入的 Fiber 架构（我们后面会重点讲解）是有关的；
+- **Pre-commit阶段**：所谓“commit”，这里指的是“更新真正的 DOM 节点”这个动作。所谓 Pre-commit，就是说我在这个阶段其实还并没有去更新真实的 DOM，不过 DOM 信息已经是可以读取的了；
+- **Commit 阶段**：在这一步，React 会完成真实 DOM 的更新工作。Commit 阶段，我们可以拿到真实 DOM（包括 refs）。
+
+与此同时，新的生命周期在流程方面，仍然遵循“挂载”、“更新”、“卸载”这三个广义的划分方式。它们分别对应到：
+
+- 挂载过程：
+  - **constructor**
+  - **getDerivedStateFromProps**
+  - **render**
+  - **componentDidMount**
+- 更新过程：
+  - **getDerivedStateFromProps**
+  - **shouldComponentUpdate**
+  - **render**
+  - **getSnapshotBeforeUpdate**
+  - **componentDidUpdate**
+- 卸载过程：
+  - **componentWillUnmount**
+
+## 五、路由
+
+### 1. React-Router的实现原理是什么？:star::star:
+
+客户端路由实现的思想：
+
+- 基于 hash 的路由：通过监听`onhashchange`事件，感知 hash 的变化
+  - 改变 hash 可以直接通过 location.hash=xxx
+- 基于 H5 history 路由：
+  - 改变 url 可以通过 history.pushState 和 resplaceState 等，会将URL压入堆栈，同时能够应用 `history.go()` 等 API
+  - 监听 `onpopSate`
+
+**react-router 实现的思想：**
+
+- 基于 `history` 库来实现上述不同的客户端路由实现思想，并且能够保存历史记录等，磨平浏览器差异，上层无感知
+- 通过维护的列表，在每次 URL 发生变化的回收，通过配置的 路由路径，匹配到对应的 Component，并且 render
+
+### 2. 如何配置 React-Router 实现路由切换
+
+**（1）使用`<Route>` 组件**
+
+路由匹配是通过比较 `<Route>` 的 path 属性和当前地址的 pathname 来实现的。当一个 `<Route>` 匹配成功时，它将渲染其内容，当它不匹配时就会渲染 null。没有路径的 `<Route>` 将始终被匹配。
+
+```jsx
+// when location = { pathname: '/about' }
+<Route path='/about' component={About}/> // renders <About/>
+<Route path='/contact' component={Contact}/> // renders null
+<Route component={Always}/> // renders <Always/>
+```
+
+**（2）结合使用 `<Switch>` 组件和 `<Route>` 组件**
+
+`<Switch>` 用于将 `<Route>` 分组。
+
+```jsx
+<Switch>
+    <Route exact path="/" component={Home} />
+    <Route path="/about" component={About} />
+    <Route path="/contact" component={Contact} />
+</Switch>
+```
+
+`<Switch>` 不是分组 `<Route>` 所必须的，但他通常很有用。 一个 `<Switch>` 会遍历其所有的子 `<Route>`元素，并仅渲染与当前地址匹配的第一个元素。
+
+**（3）使用 `<Link>、 <NavLink>、<Redirect>` 组件**
+
+`<Link>` 组件来在你的应用程序中创建链接。无论你在何处渲染一个`<Link>` ，都会在应用程序的 HTML 中渲染锚（`<a>`）。
+
+```jsx
+<Link to="/">Home</Link>   
+// <a href='/'>Home</a>
+```
+
+ 是一种特殊类型的  当它的 to属性与当前地址匹配时，可以将其定义为"活跃的"。
+
+```jsx
+// location = { pathname: '/react' }
+<NavLink to="/react" activeClassName="hurray">
+    React
+</NavLink>
+// <a href='/react' className='hurray'>React</a>
+
+```
+
+当我们想强制导航时，可以渲染一个`<Redirect>`，当一个`<Redirect>`渲染时，它将使用它的to属性进行定向。
+
+### 3. React-Router怎么设置重定向？
+
+使用`<Redirect>`组件实现路由的重定向：
+
+```jsx
+<Switch>
+  <Redirect from='/users/:id' to='/users/profile/:id'/>
+  <Route path='/users/profile/:id' component={Profile}/>
+</Switch>
+```
+
+当请求 `/users/:id` 被重定向去 `'/users/profile/:id'`：
+
+- 属性 `from: string`：需要匹配的将要被重定向路径。
+- 属性 `to: string`：重定向的 URL 字符串
+- 属性 `to: object`：重定向的 location 对象
+- 属性 `push: bool`：若为真，重定向操作将会把新地址加入到访问历史记录里面，并且无法回退到前面的页面。
+
+### 4. react-router 里的 Link 标签和 a 标签的区别
+
+从最终渲染的 DOM 来看，这两者都是链接，都是 标签，区别是∶ `<Link>`是react-router 里实现路由跳转的链接，一般配合`<Route>` 使用，react-router接管了其默认的链接跳转行为，区别于传统的页面跳转，`<Link>` 的“跳转”行为只会触发相匹配的`<Route>`对应的页面内容更新，而不会刷新整个页面。
+
+`<Link>`做了3件事情:
+
+- 有onclick那就执行onclick
+- click的时候阻止a标签默认事件
+- 根据跳转href(即是to)，用history (web前端路由两种方式之一，history & hash)跳转，此时只是链接变了，并没有刷新页面而`<a>`标签就是普通的超链接了，用于从当前页面跳转到href指向的另一 个页面(非锚点情况)。
+
+a标签默认事件禁掉之后做了什么才实现了跳转?
+
+```javascript
+let domArr = document.getElementsByTagName('a')
+[...domArr].forEach(item=>{
+    item.addEventListener('click',function () {
+        location.href = this.href
+    })
+})
+
+```
+
+### 5. React-Router如何获取URL的参数和历史对象？
+
+**（1）获取URL的参数**
+
+依赖于`props.location`属性获取，动态路由则依赖于`props.match`
+
+- **get传值**
+
+路由配置还是普通的配置，如：`'admin'`，传参方式如：`'admin?id='1111''`。通过`this.props.location.search`获取url获取到一个字符串`'?id='1111'` 可以用url，qs，querystring，浏览器提供的api URLSearchParams对象或者自己封装的方法去解析出id的值。
+
+- **动态路由传值**
+
+路由需要配置成动态路由：如`path='/admin/:id'`，传参方式，如`'admin/111'`。通过`this.props.match.params.id` 取得url中的动态路由id部分的值，除此之外还可以通过`useParams（Hooks）`来获取
+
+- **通过query或state传值**
+
+传参方式如：在Link组件的to属性中可以传递对象`{pathname:'/admin',query:'111',state:'111'};`。通过`this.props.location.state`或`this.props.location.query`来获取即可，传递的参数可以是对象、数组等，但是存在缺点就是只要刷新页面，参数就会丢失。
+
+**（2）获取历史对象**
+
+- **如果React >= 16.8 时可以使用 React Router中提供的Hooks**
+
+```javascript
+import { useHistory } from "react-router-dom";
+let history = useHistory();
+
+```
+
+2.使用this.props.history获取历史对象
+
+```javascript
+let history = this.props.history;
+
+```
+
+### 6. React-Router 4怎样在路由变化时重新渲染同一个组件？:star:
+
+当路由变化时，即组件的props发生了变化，会调用componentWillReceiveProps等生命周期钩子。那需要做的只是： 当路由改变时，根据路由，也去请求数据：
+
+```javascript
+class NewsList extends Component {
+  componentDidMount () {
+     this.fetchData(this.props.location);
+  }
+  
+  fetchData(location) {
+    const type = location.pathname.replace('/', '') || 'top'
+    this.props.dispatch(fetchListData(type))
+  }
+  componentWillReceiveProps(nextProps) {
+     if (nextProps.location.pathname != this.props.location.pathname) {
+         this.fetchData(nextProps.location);
+     } 
+  }
+  render () {
+    ...
+  }
+}
+
+```
+
+利用生命周期componentWillReceiveProps，进行重新render的预处理操作。
+
+### 7. React-Router的路由有几种模式？:star::star:
+
+React-Router 支持使用 hash（对应 HashRouter）和 browser（对应 BrowserRouter） 两种路由规则， react-router-dom 提供了 BrowserRouter 和 HashRouter 两个组件来实现应用的 UI 和 URL 同步：
+
+- BrowserRouter 创建的 URL 格式：[xxx.com/path](https://link.juejin.cn?target=http%3A%2F%2Fxxx.com%2Fpath)
+- HashRouter 创建的 URL 格式：[xxx.com/#/path](https://link.juejin.cn?target=http%3A%2F%2Fxxx.com%2F%23%2Fpath)
+
+**（1）BrowserRouter**
+
+它使用 HTML5 提供的 history API（pushState、replaceState 和 popstate 事件）来保持 UI 和 URL 的同步。由此可以看出，**BrowserRouter 是使用 HTML 5 的 history API 来控制路由跳转的：**
+
+```javascript
+<BrowserRouter
+    basename={string}
+    forceRefresh={bool}
+    getUserConfirmation={func}
+    keyLength={number}
+/>
+
+```
+
+**其中的属性如下：**
+
+- basename 所有路由的基准 URL。basename 的正确格式是前面有一个前导斜杠，但不能有尾部斜杠；
+
+```javascript
+<BrowserRouter basename="/calendar">
+    <Link to="/today" />
+</BrowserRouter>
+
+```
+
+等同于
+
+```javascript
+<a href="/calendar/today" />
+
+```
+
+- forceRefresh 如果为 true，在导航的过程中整个页面将会刷新。一般情况下，只有在不支持 HTML5 history API 的浏览器中使用此功能；
+- getUserConfirmation 用于确认导航的函数，默认使用 window.confirm。例如，当从 /a 导航至 /b 时，会使用默认的 confirm 函数弹出一个提示，用户点击确定后才进行导航，否则不做任何处理；
+
+```javascript
+// 这是默认的确认函数
+const getConfirmation = (message, callback) => {
+  const allowTransition = window.confirm(message);
+  callback(allowTransition);
+}
+<BrowserRouter getUserConfirmation={getConfirmation} />
+
+```
+
+> 需要配合`<Prompt>` 一起使用。
+
+- KeyLength 用来设置 Location.Key 的长度。
+
+**（2）HashRouter**
+
+使用 URL 的 hash 部分（即 window.location.hash）来保持 UI 和 URL 的同步。由此可以看出，**HashRouter 是通过 URL 的 hash 属性来控制路由跳转的：**
+
+```javascript
+<HashRouter
+    basename={string}
+    getUserConfirmation={func}
+    hashType={string}  
+/>
+
+```
+
+**其参数如下**：
+
+- basename, getUserConfirmation 和 `BrowserRouter` 功能一样；
+- hashType window.location.hash 使用的 hash 类型，有如下几种：
+  - slash - 后面跟一个斜杠，例如 #/ 和 #/sunshine/lollipops；
+  - noslash - 后面没有斜杠，例如 # 和 #sunshine/lollipops；
+  - hashbang - Google 风格的 ajax crawlable，例如 #!/ 和 #!/sunshine/lollipops。
+
+### 8. React-Router 4的Switch有什么用？:star:
+
+Switch 通常被用来包裹 Route，用于渲染与路径匹配的第一个子 `<Route>` 或 `<Redirect>`，它里面不能放其他元素。
+
+假如不加 `<Switch>` ：
+
+```javascript
+import { Route } from 'react-router-dom'
+
+<Route path="/" component={Home}></Route>
+<Route path="/login" component={Login}></Route>
+
+```
+
+Route 组件的 path 属性用于匹配路径，因为需要匹配 `/` 到 `Home`，匹配 `/login` 到 `Login`，所以需要两个 Route，但是不能这么写。这样写的话，当 URL 的 path 为 “/login” 时，`<Route path="/" />`和`<Route path="/login" />` 都会被匹配，因此页面会展示 Home 和 Login 两个组件。这时就需要借助 `<Switch>` 来做到只显示一个匹配组件：
+
+```javascript
+import { Switch, Route} from 'react-router-dom'
+    
+<Switch>
+    <Route path="/" component={Home}></Route>
+    <Route path="/login" component={Login}></Route>
+</Switch>
+
+```
+
+此时，再访问 “/login” 路径时，却只显示了 Home 组件。这是就用到了exact属性，它的作用就是精确匹配路径，经常与`<Switch>` 联合使用。只有当 URL 和该 `<Route>` 的 path 属性完全一致的情况下才能匹配上：
+
+```javascript
+import { Switch, Route} from 'react-router-dom'
+   
+<Switch>
+   <Route exact path="/" component={Home}></Route>
+   <Route exact path="/login" component={Login}></Route>
+</Switch>
+
+```
+
+**注：** 由于文章字数限制，剩余内容请见下篇。

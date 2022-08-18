@@ -177,7 +177,7 @@ componentDidMount(){
 }
 ```
 
-**（2）使用redux-saga中间件**
+**（2）使用redux-saga中间件** :star::star: (dva使用的)
 
 **redux-saga**优点:
 
@@ -998,7 +998,7 @@ Vue 的整体 diff 策略与 React 对齐，虽然缺乏时间切片能力，但
 
 ### 1. React组件命名推荐的方式是哪个？
 
-通过引用而不是使用来命名组件displayName。
+通过引用而不是使用`displayName`来命名组件
 
 使用displayName命名组件：
 
@@ -1563,11 +1563,11 @@ function ExampleApplication() {
 - 检测意外的副作用
 - 检测过时的 context API
 
-### 12. 在React中遍历的方法有哪些？
+### 12. 在React中遍历的方法有哪些 ? :star::star:
 
-**（1）遍历数组：map && forEach**
+**（1）遍历数组：map**
 
-```javascript
+```jsx
 import React from 'react';
 
 class App extends React.Component {
@@ -1584,26 +1584,13 @@ class App extends React.Component {
     )
   }
 }
-
-class App extends React.Component {
-  render() {
-    let arr = ['a', 'b', 'c', 'd'];
-    return (
-      <ul>
-        {
-          arr.forEach((item, index) => {
-            return <li key={index}>{item}</li>
-          })
-        }
-      </ul>
-    )
-  }
-}
 ```
 
-**（2）遍历对象：map && for in**
+**（2）遍历对象：Object.entries() 把对象转换成数组后使用map &&直接使用 for in 遍历key**
 
-```javascript
+> object 没有内部可迭器，无法使用for of
+
+```jsx
 class App extends React.Component {
   render() {
     let obj = {
@@ -1655,12 +1642,11 @@ class App extends React.Component {
 
 这个问题就设计到了**数据持久化，** 主要的实现方式有以下几种：
 
-- **Redux：** 将页面的数据存储在redux中，在重新加载页面时，获取Redux中的数据；
 - **data.js：** 使用webpack构建的项目，可以建一个文件，data.js，将数据保存data.js中，跳转页面后获取；
 - **sessionStorge：** 在进入选择地址页面之前，componentWillUnMount的时候，将数据存储到sessionStorage中，每次进入页面判断sessionStorage中有没有存储的那个值，有，则读取渲染数据；没有，则说明数据是初始化的状态。返回或进入除了选择地址以外的页面，清掉存储的sessionStorage，保证下次进入是初始化的数据
 - **history API：** History API 的 `pushState` 函数可以给历史记录关联一个任意的可序列化 `state`，所以可以在路由 `push` 的时候将当前页面的一些信息存到 `state` 中，下次返回到这个页面的时候就能从 `state` 里面取出离开前的数据重新渲染。react-router 直接可以支持。这个方法适合一些需要临时存储的场景。
 
-### 14. 同时引用这三个库react.js、react-dom.js和babel.js它们都有什么作用？
+### 14. 同时引用这三个库react.js、react-dom.js和babel.js它们都有什么作用？:star:
 
 - react：包含react所必须的核心代码
 - react-dom：react渲染在不同平台所需要的核心代码
@@ -1702,17 +1688,17 @@ ReactDOM.render(
 
 ### 16. 为什么使用jsx的组件中没有看到使用react却需要引入react？
 
-本质上来说JSX是`React.createElement(component, props, ...children)`方法的语法糖。在React 17之前，如果使用了JSX，其实就是在使用React， `babel` 会把组件转换为 `CreateElement` 形式。在React 17之后，就不再需要引入，因为 `babel` 已经可以帮我们自动引入react。
+本质上来说JSX是`React.createElement(component, props, ...children)`方法的语法糖。在React 17之前，如果使用了JSX，其实就是在使用React， `babel` 会把组件转换为 `CreateElement` 形式。**在React 17之后，就不再需要引入，因为 `babel` 已经可以帮我们自动引入react。**
 
 ### 17. 在React中怎么使用async/await？
 
 async/await是ES7标准中的新特性。如果是使用React官方的脚手架创建的项目，就可以直接使用。如果是在自己搭建的webpack配置的项目中使用，可能会遇到 **regeneratorRuntime is not defined** 的异常错误。那么我们就需要引入babel，并在babel中配置使用async/await。可以利用babel的 transform-async-to-module-method 插件来转换其成为浏览器支持的语法，虽然没有性能的提升，但对于代码编写体验要更好。
 
-### 18. React.Children.map和js的map有什么区别？
+### 18. React.Children.map和js的map有什么区别？:star:
 
 JavaScript中的map不会对为null或者undefined的数据进行处理，而React.Children.map中的map可以处理React.Children为null或者undefined的情况。
 
-### 19. 对React SSR的理解
+### 19. 对React SSR的理解 :star::star:
 
 服务端渲染是数据与模版组成的html，即 HTML = 数据 ＋ 模版。将组件或页面通过服务器生成html字符串，再发送到浏览器，最后将静态标记"混合"为客户端上完全交互的应用程序。页面没使用服务渲染，当请求页面时，返回的body里为空，之后执行js将html结构注入到body里，结合css显示出来;
 
@@ -1768,4 +1754,104 @@ JavaScript中的map不会对为null或者undefined的数据进行处理，而Rea
 - SSR 服务端渲染
 
 ![img](https://cdn.yihuiblog.top/images/202206302334480.png)
+
+### 20. 为什么 React 要用 JSX？:star::star:
+
+JSX 是一个 JavaScript 的语法扩展，或者说是一个类似于 XML 的 ECMAScript 语法扩展。它本身没有太多的语法定义，也不期望引入更多的标准。
+
+其实 React 本身并不强制使用 JSX。在没有 JSX 的时候，React 实现一个组件依赖于使用 React.createElement 函数。代码如下：
+
+```javascript
+class Hello extends React.Component {
+  render() {
+    return React.createElement(
+        'div',
+        null, 
+        `Hello ${this.props.toWhat}`
+      );
+  }
+}
+ReactDOM.render(
+  React.createElement(Hello, {toWhat: 'World'}, null),
+  document.getElementById('root')
+);
+复制代码
+```
+
+而 JSX 更像是一种语法糖，通过类似 XML 的描述方式，描写函数对象。在采用 JSX 之后，这段代码会这样写：
+
+```javascript
+class Hello extends React.Component {
+  render() {
+    return <div>Hello {this.props.toWhat}</div>;
+  }
+}
+ReactDOM.render(
+  <Hello toWhat="World" />,
+  document.getElementById('root')
+);
+复制代码
+```
+
+通过对比，可以清晰地发现，代码变得更为简洁，而且代码结构层次更为清晰。
+
+因为 React 需要将组件转化为虚拟 DOM 树，所以在编写代码时，实际上是在手写一棵结构树。而**XML 在树结构的描述上天生具有可读性强的优势。**
+
+但这样可读性强的代码仅仅是给写程序的同学看的，实际上在运行的时候，会使用 Babel 插件将 JSX 语法的代码还原为 React.createElement 的代码。
+
+**总结：** JSX 是一个 JavaScript 的语法扩展，结构类似 XML。JSX 主要用于声明 React 元素，但 React 中并不强制使用 JSX。即使使用了 JSX，也会在构建过程中，通过 Babel 插件编译为 React.createElement。所以 JSX 更像是 React.createElement 的一种语法糖。
+
+React 团队并不想引入 JavaScript 本身以外的开发体系。而是希望通过合理的关注点分离保持组件开发的纯粹性。
+
+### 21. HOC相比 mixins 有什么优点？
+
+HOC 和 Vue 中的 mixins 作用是一致的，并且在早期 React 也是使用 mixins 的方式。但是在使用 class 的方式创建组件以后，mixins 的方式就不能使用了，并且其实 mixins 也是存在一些问题的，比如：
+
+- 隐含了一些依赖，比如我在组件中写了某个 `state` 并且在 `mixin` 中使用了，就这存在了一个依赖关系。万一下次别人要移除它，就得去 `mixin` 中查找依赖
+- 多个 `mixin` 中可能存在相同命名的函数，同时代码组件中也不能出现相同命名的函数，否则就是重写了，其实我一直觉得命名真的是一件麻烦事。。
+- 雪球效应，虽然我一个组件还是使用着同一个 `mixin`，但是一个 `mixin` 会被多个组件使用，可能会存在需求使得 `mixin` 修改原本的函数或者新增更多的函数，这样可能就会产生一个维护成本
+
+HOC 解决了这些问题，并且它们达成的效果也是一致的，同时也更加的政治正确（毕竟更加函数式了）。
+
+### 22. React 中的高阶组件运用了什么设计模式？
+
+使用了装饰器模式，高阶组件的运用：
+
+```javascript
+function withWindowWidth(BaseComponent) {
+  class DerivedClass extends React.Component {
+    state = {
+      windowWidth: window.innerWidth,
+    }
+    onResize = () => {
+      this.setState({
+        windowWidth: window.innerWidth,
+      })
+    }
+    componentDidMount() {
+      window.addEventListener('resize', this.onResize)
+    }
+    componentWillUnmount() {
+      window.removeEventListener('resize', this.onResize);
+    }
+    render() {
+      return <BaseComponent {...this.props} {...this.state}/>
+    }
+  }
+  return DerivedClass;
+}
+const MyComponent = (props) => {
+  return <div>Window width is: {props.windowWidth}</div>
+};
+export default withWindowWidth(MyComponent);
+复制代码
+```
+
+装饰模式的特点是不需要改变 被装饰对象 本身，而只是在外面套一个外壳接口。JavaScript 目前已经有了原生装饰器的提案，其用法如下：
+
+```javascript
+@testable
+   class MyTestableClass {
+}
+```
 
