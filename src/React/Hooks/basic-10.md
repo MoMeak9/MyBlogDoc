@@ -121,7 +121,7 @@ const useKeyPress = (domNode = document.body) => {
 ```jsx
 import useKeyPress from './useKeyPress';
 
-function UseKeyPressExample() => {
+function UseKeyPressExample(){
   const key = useKeyPress();
   return (
     <div>

@@ -6,7 +6,7 @@
 
 ### overflow
 
-overflow 是overflow-x 和overflow-y的简写，用来设定当一块级元素（通常设置了height/max-height）的内容太大而超出范围的时候，元素内容如何加载。
+overflow 是overflow-x 和overflow-y的简写，用来设定当一块级元素（设置了height|with/max-height|with）的内容太大而超出范围的时候，元素内容如何加载。
 
 ```css
 overflow：属性值；
@@ -22,15 +22,132 @@ overflow: [overflow-x] [overflow-y];
   > 超出文字隐藏：overflow：hidden;
   > 文字不换行：text-wrap:nowrap;
 
-- overflow: hidden 清除浮动
+- overflow: hidden 清除浮动（触发BFC）
 
 - overflow: hidden 解决外边距折叠问题（触发BFC）
 
 ## 分析实践
 
-性能优化选择：
-
-CSS 类名替换而不是改写style
-
 ### demo 展示
 
+设置容器、列表样式以及选中行的样式：
+
+```css
+.main {
+    background: grey;
+    margin: auto;
+    width: 50vw;
+    height: 400px;
+    overflow: auto;
+}
+
+.list {
+    width: 100vw;
+    height: 100vw;
+}
+
+.active {
+    background: aqua;
+}
+```
+
+```jsx
+// App.jsx
+import React, {useState} from 'react';
+import './App.css';
+import {List} from "antd";
+
+const data = [
+    'Racing car sprays burning fuel into crowd.',
+    'Japanese princess to wed commoner.',
+    'Australian walks 100km after outback crash.',
+    'Man charged over missing wedding girl.',
+    'Los Angeles battles huge wildfires.',
+];
+
+function App() {
+    const [activeIndex, setActiveIndex] = useState(-1)
+    return (
+        <div className={"main"}>
+            <div className={"list"}>
+                <List
+                    size="small"
+                    bordered
+                    dataSource={data}
+                    renderItem={(item, index) => (
+                        <List.Item
+                            className={index === activeIndex ? "active" : ""}
+                            onClick={() => {
+                                setActiveIndex(index)
+                            }}>{item}</List.Item>
+                    )}
+                />
+            </div>
+        </div>
+    );
+}
+
+export default App;
+```
+
+### 显示效果
+
+通过设置外部容器固定宽高，overflow: auto已经生效，生成滚动条
+
+![image-20220818094857915](https://cdn.yihuiblog.top/images/202208180948011.png)
+
+外部内容被隐藏遮住
+
+![image-20220818100627657](https://cdn.yihuiblog.top/images/202208181006727.png)
+
+当点击的时候，改变的是仅受影响的两行的类名
+
+![image-20220818095042385](https://cdn.yihuiblog.top/images/202208180950439.png)
+
+![image-20220818095006325](https://cdn.yihuiblog.top/images/202208180950376.png)
+
+此修改方法通过只修改类名而不是style属性，更有利于后期维护和修改选中的样式，我们只需对`.active`进行修改即可。如果是写成style形式，就很冗余了，也不好扩展。
+
+```jsx
+ style={index === activeIndex ? {backgroundColor: '#f5f5f5'} : {}}
+```
+
+## 思考问题
+
+数据量大了怎么办？目前修改相当于整个App都被重新执行了渲染，行数多了有明显卡顿，甚至没有反应，而且生成的时候这行相当于进行多了次比较：
+
+```js
+className={activeIndex === index ? "active" : ""}
+```
+
+Mark一下，待思考解决办法：
+
+### 只对选中行进行重绘
+
+通过标记之前选中的节点，在下次选中的时候进行重写className
+
+```js
+    let preClickElement = null
+    const handleClick = useCallback((e) => {
+        const target = e.currentTarget
+        target.className = 'ant-list-item active';
+        preClickElement && (preClickElement.className = 'ant-list-item')
+        preClickElement = target;
+    }, [])
+```
+
+demo
+
+```js
+{
+    data.map((item, index) => {
+        return <List.Item
+            key={index}
+            onClick={handleClick}>{item}</List.Item>
+    })
+}
+```
+
+### 如果用虚拟列表的话，如何实现这个效果？
+
+Mark，重写一个虚拟列表demo后尝试
