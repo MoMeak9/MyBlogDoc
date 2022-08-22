@@ -71,11 +71,11 @@ class GetMin<T>{
        return min;
     }
 }
-  var gm1= new  GetMin<number>();
-   gm1.add(5);
-   gm1.add(3);
-   gm1.add(2);
-   gm1.add(9);
+var gm1= new  GetMin<number>();
+gm1.add(5);
+gm1.add(3);
+gm1.add(2);
+gm1.add(9);
 console.log(gm1.min());
  
 var gm2= new  GetMin<string>();
@@ -93,7 +93,7 @@ interface ConfigFn{
     <T>(value:T):T;
 }
  
-var getData:ConfigFn=function<T>(value:T):T{
+const getData:Confign=function<T>(value:T):T{
     return value;
 }
 getData<string>('张三');
