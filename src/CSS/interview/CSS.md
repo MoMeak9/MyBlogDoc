@@ -579,7 +579,7 @@ PostCss 在业务中的使用场景非常多：
 
 在实际使用中，**css-loader 的执行顺序一定要安排在 style-loader 的前面**。因为只有完成了编译过程，才可以对 css 代码进行插入；若提前插入了未编译的代码，那么 webpack 是无法理解这坨东西的，它会无情报错。
 
-### 29. 如何判断元素是否到达可视区域
+### 29. 如何判断元素是否到达可视区域 
 
 以图片显示为例：
 
@@ -590,9 +590,24 @@ PostCss 在业务中的使用场景非常多：
 
 <img src="https://cdn.yihuiblog.top/images/202206252137490.webp" alt="img" style="zoom: 25%;" />
 
+**整个窗口**
+
+```js
+document.body.scrollHeight - window.screen.height(window.innerHeight) - window.scrollY(document.body.scrollTop || document.documentElement.scrollTop) <=
+reactionDistance;
+```
+
+**容器内元素**
+
+```js
+e.target.scrollHeight - e.target.scrollTop - e.target.offsetHeight <= reactionDistance
+```
+
 ### 30. z-index属性在什么情况下会失效
 
-通常 z-index 的使用是在有两个重叠的标签，在一定的情况下控制其中一个在另一个的上方或者下方出现。z-index值越大就越是在上层。z-index元素的position属性需要是relative，absolute或是fixed。
+通常 z-index 的使用是在有两个重叠的标签，在一定的情况下控制其中一个在另一个的上方或者下方出现。z-index值越大就越是在上层。
+
+**z-index元素的position属性需要是relative，absolute或是fixed。**
 
 z-index属性在下列情况下会失效：
 
@@ -602,11 +617,57 @@ z-index属性在下列情况下会失效：
 
 ### 31. CSS3中的transform有哪些属性
 
+> transform: rotate | scale | skew | translate | matrix;
+
+**旋转 rotate**
+
+通过指定的角度参数对原元素指定一个2D 旋转和3D旋转，需先有transform-origin属性的定义。transform-origin定义的是旋转的基点，其中angle是指旋转角度，如果设置的值为正数表示顺时针旋转，如果设置的值为负数，则表示逆时针旋转。
+
+- rotate():2D旋转
+
+- rotateX():沿着X轴3D旋转
+
+- rotateY():沿着Y轴3D旋转
+
+- rotateZ():沿着Z轴3D旋转
+
+- rotate3d(x,y,z,angle): 3D旋转，
+
+**移动 translate**
+
+移动translate我们分为三种情况：translate(x,y)水平方向和垂直方向同时移动（也就是X轴和Y轴同时移动）；translateX(x)仅水平方向移动（X轴移动）；translateY(Y)仅垂直方向移动（Y轴移动），具体使用方法如下：
+
+- translateX(x) ， 沿 X 轴位移
+
+- translateY(y), 沿Y移动
+
+- ranslateZ(z) ， 沿 Z 轴位移，需要配合perspective属性一起使用
+
+- translate(x, y) ， 沿 X Y 轴位移
+
+**缩放 scale**
+
+缩放scale和移动translate是极其相似，他也具有三种情况：scale(x,y)使元素水平方向和垂直方向同时缩放（也就是X轴和Y轴同时缩放）；scaleX(x)元素仅水平方向缩放（X轴缩放）；scaleY(y)元素仅垂直方向缩放（Y轴缩放），但它们具有相同的缩放中心点和基数，其中心点就是元素的中心位置，缩放基数为1，如果其值大于1元素就放大，反之其值小于1，元素缩小。
+
+- scale([, ])：提供执行[sx,sy]缩放矢量的两个参数指定一个[2D scale](https://link.segmentfault.com/?enc=31TpdG8J0cc2B3mU8iC28A%3D%3D.PVTTti%2BysAzkSZPDjAVbN%2F%2F3zgZGdZiJo6f2hE3MwLwBS7swdTlm7xVAKzBGnY8cNfRmRVrIJlgFv7dRDx1KuVTro4dNk61unk9Mi8SF8KoS49vR5aR2D%2FKXkaNSlog%2BZyI7QpObmXEPLMnD%2F2HG6w%3D%3D)（2D缩放）。
+
+- scaleX() ： 使用 [sx,1] 缩放矢量执行缩放操作，sx为所需参数。
+
+- scaleY() ： 使用 [1,sy] 缩放矢量执行缩放操作，sy为所需参数。
+
+**扭曲 skew**
+
+扭曲skew和translate、scale一样同样具有三种情况：skew(x,y)使元素在水平和垂直方向同时扭曲（X轴和Y轴同时按一定的角度值进行扭曲变形）；skewX(x)仅使元素在水平方向扭曲变形（X轴扭曲变形）；skewY(y)仅使元素在垂直方向扭曲变形（Y轴扭曲变形），具体使用如下:
+
+- skewX(angle) - 沿 X 轴的 2D 倾斜
+- skewY(angle) - 沿 Y 轴的 2D 倾斜
+- skew(angle-x, angle-y) - 沿 X Y 轴的 2D 倾斜
+
 ## 二、页面布局
 
 ### 1. 常见的CSS布局单位:star:
 
-常用的布局单位包括像素（`px`），百分比（`%`），`em`，`rem`，`vw/vh`。
+常用的布局单位包括像素（`px`），百分比（`%`），`em`，`rem`，`vw/vh` （uni-app，小程序还有rpx）
 
 **（1）像素**（`px`）是页面布局的基础，一个像素表示终端（电脑、手机、平板等）屏幕所能显示的最小的区域，像素分为两种类型：CSS像素和物理像素：
 
@@ -637,7 +698,7 @@ z-index属性在下列情况下会失效：
 **三者的区别：**
 
 - px是固定的像素，一旦设置了就无法因为适应页面大小而改变。
-- em和rem相对于px更具有灵活性，他们是相对长度单位，其长度不是固定的，更适用于响应式布局。
+- em和rem相对于px更具有灵活性，他们是相对长度单位，其长度不是固定的，更适用于<u>响应式布局</u>。
 - em是相对于其父元素来设置字体大小，这样就会存在一个问题，进行任何元素设置，都有可能需要知道他父元素的大小。而rem是相对于根元素，这样就意味着，只需要在根元素确定一个参考值。
 
 **使用场景：**
@@ -683,7 +744,7 @@ z-index属性在下列情况下会失效：
  }
 ```
 
-- 利用flex布局，将左边元素设置为固定宽度200px，将右边的元素设置为flex:1。
+- <u>**利用flex布局，将左边元素设置为固定宽度200px，将右边的元素设置为flex:1。**</u>
 
 ```css
 .outer {
@@ -776,7 +837,7 @@ z-index属性在下列情况下会失效：
 }
 ```
 
-- 利用flex布局，左右两栏设置固定大小，中间一栏设置为flex:1。
+- **<u>利用flex布局，左右两栏设置固定大小，中间一栏设置为flex:1。</u>**
 
 ```css
 .outer {
@@ -913,7 +974,7 @@ z-index属性在下列情况下会失效：
 
 ### 5. 水平垂直居中的实现:star::star:
 
-- 利用绝对定位，先将元素的左上角通过top:50%和left:50%定位到页面的中心，然后再通过translate来调整元素的中心点到页面的中心。该方法需要**考虑浏览器兼容问题。**
+- 利用**绝对定位**，先将元素的左上角通过top:50%和left:50%定位到页面的中心，然后再通过translate来调整元素的中心点到页面的中心。该方法需要**考虑浏览器兼容问题。**
 
 ```css
 .parent {
@@ -975,7 +1036,7 @@ z-index属性在下列情况下会失效：
 
 移动端适配主要有两个维度：
 
-- **适配不同像素密度，** 针对不同的像素密度，使用 CSS 媒体查询，选择不同精度的图片，以保证图片不会失真；
+- **适配不同像素密度，** 针对不同的像素密度，使用 CSS 媒体查询（或者setSrc），选择不同精度的图片，以保证图片不会失真；
 - **适配不同屏幕大小，** 由于不同的屏幕有着不同的逻辑像素大小，所以如果直接使用 px 作为开发单位，会使得开发的页面在某一款手机上可以准确显示，但是在另一款手机上就会失真。为了适配不同屏幕的大小，应按照比例来还原设计稿的内容。
 
 为了能让页面的尺寸自适应，可以使用 rem，em，vw，vh 等相对单位。
@@ -983,6 +1044,8 @@ z-index属性在下列情况下会失效：
 ### 7. 对Flex布局的理解及其使用场景:star::star:
 
 Flex是FlexibleBox的缩写，意为"弹性布局"，用来为盒状模型提供最大的灵活性。任何一个容器都可以指定为Flex布局。行内元素也可以使用Flex布局。注意，设为Flex布局以后，**子元素的float、clear和vertical-align属性将失效**。采用Flex布局的元素，称为Flex容器（flex container），简称"容器"。它的所有子元素自动成为容器成员，称为Flex项目（flex item），简称"项目"。容器默认存在两根轴：水平的主轴（main axis）和垂直的交叉轴（cross axis），项目默认沿水平主轴排列。
+
+> Flex 是一维排列的布局
 
 以下6个属性设置在**容器上**：
 
@@ -995,12 +1058,12 @@ Flex是FlexibleBox的缩写，意为"弹性布局"，用来为盒状模型提供
 
 以下6个属性设置在**项目上**：
 
-- order属性定义项目的排列顺序。数值越小，排列越靠前，默认为0。
-- flex-grow属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。
-- flex-shrink属性定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。
-- flex-basis属性定义了在分配多余空间之前，项目占据的主轴空间。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。
-- flex属性是flex-grow，flex-shrink和flex-basis的简写，默认值为0 1 auto。
-- align-self属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
+- order 属性定义项目的排列顺序。数值越小，排列越靠前，默认为0。
+- flex-grow 属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。
+- flex-shrink 属性定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。
+- flex-basis 属性定义了在分配多余空间之前，项目占据的主轴空间。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。
+- flex 属性是flex-grow，flex-shrink和flex-basis的简写，默认值为0 1 auto。（大小基）
+- align-self 属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
 
 **简单来说：** flex布局是CSS3新增的一种布局方式，可以通过将一个元素的display属性值设置为flex从而使它成为一个flex容器，它的所有子元素都会成为它的项目。一个容器默认有两条轴：一个是水平的主轴，一个是与主轴垂直的交叉轴。可以使用flex-direction来指定主轴的方向。可以使用justify-content来指定元素在主轴上的排列方式，使用align-items来指定元素在交叉轴上的排列方式。还可以使用flex-wrap来规定当一行排列不下时的换行方式。对于容器中的项目，可以使用order属性来指定项目的排列顺序，还可以使用flex-grow来指定当排列空间有剩余的时候，项目的放大比例，还可以使用flex-shrink来指定当排列空间不足时，项目的缩小比例。
 
@@ -1035,10 +1098,11 @@ Flex是FlexibleBox的缩写，意为"弹性布局"，用来为盒状模型提供
 
 **清除浮动的方式如下：**
 
-- 给父级div定义`height`属性
-- 最后一个浮动元素之后添加一个空的div标签，<u>并添加`clear:both`样式</u>
-- 包含浮动元素的父级标签添加<u>`overflow:hidden`或者`overflow:auto`</u>
-- 使用 `:after` 伪元素。由于IE6-7不支持 :after，使用 zoom:1 触发 hasLayout
+1. 最后一个浮动元素之后添加一个空的div标签，<u>并添加`clear:both`样式</u>
+
+2. 包含浮动元素的父级标签添加<u>`overflow:hidden`或者`overflow:auto`</u>
+
+3. 使用 `:after` 伪元素。由于IE6-7不支持 :after，使用 zoom:1 触发 hasLayout
 
 ```css
 .clearfix:after{
@@ -1083,11 +1147,13 @@ clear属性只有块级元素才有效的，而::after等伪元素默认都是�
 先来看两个相关的概念：
 
 - Box: Box 是 CSS 布局的对象和基本单位，⼀个⻚⾯是由很多个 Box 组成的，这个Box就是我们所说的盒模型。
-- Formatting context：块级上下⽂格式化，它是⻚⾯中的⼀块渲染区域，并且有⼀套渲染规则，它决定了其⼦元素将如何定位，以及和其他元素的关系和相互作⽤。
+- Formatting context：块级上下⽂格式化，它**<u>是⻚⾯中的⼀块渲染区域，并且有⼀套渲染规则，它决定了其⼦元素将如何定位，以及和其他元素的关系和相互作⽤。</u>**
 
 块格式化上下文（Block Formatting Context，BFC）是Web页面的可视化CSS渲染的一部分，是布局过程中生成块级盒子的区域，也是浮动元素与其他元素的交互限定区域。
 
-通俗来讲：BFC是一个独立的布局环境，可以理解为一个容器，在这个容器中按照一定规则进行物品摆放，并且不会影响其它环境中的物品。如果一个元素符合触发BFC的条件，则BFC中的元素布局不受外部影响。
+:star:**通俗来讲：BFC是一个独立的布局环境，可以理解为一个容器，在这个容器中按照一定规则进行物品摆放，并且不会影响其它环境中的物品。如果一个元素符合触发BFC的条件，则BFC中的元素布局不受外部影响。**
+
+
 
 **创建BFC的条件：**
 
@@ -1104,7 +1170,7 @@ clear属性只有块级元素才有效的，而::after等伪元素默认都是�
 - 计算BFC的高度时，需要计算浮动元素的高度
 - BFC区域不会与浮动的容器发生重叠
 - BFC是独立的容器，容器内部元素不会影响外部元素
-- 每个元素的左margin值和容器的左border相接触
+- 每个元素的左margin值和BFC容器的左border相接触
 
 **BFC的作用：**
 
@@ -1133,7 +1199,7 @@ clear属性只有块级元素才有效的，而::after等伪元素默认都是�
 
 ### 4. 什么是margin重叠问题？如何解决？ :star:
 
-**问题描述：** 两个块级元素的上外边距和下外边距可能会合并（折叠）为一个外边距，其大小会取其中外边距值大的那个，这种行为就是外边距折叠。需要注意的是，**浮动的元素和绝对定位**这种脱离文档流的元素的外边距不会折叠。重叠只会出现在**垂直方向**。
+**问题描述：** 两个块级元素的上外边距和下外边距可能会合并（折叠）为一个外边距，其大小会取其中**外边距值大**的那个，这种行为就是外边距折叠。需要注意的是，**浮动的元素和绝对定位**这种脱离文档流的元素的外边距不会折叠。重叠只会出现在**垂直方向**。
 
 **计算原则：** 折叠合并后外边距的计算原则如下：
 
@@ -1168,7 +1234,7 @@ clear属性只有块级元素才有效的，而::after等伪元素默认都是�
 
 （2）负的z-index：当前层叠上下文中，z-index属性值为负的元素。 
 
-（3）块级盒：文档流内非行内级非定位后代元素。 
+**（3）块级盒：文档流内非行内级非定位后代元素。** 
 
 （4）浮动盒：非定位浮动元素。 
 
@@ -1178,7 +1244,7 @@ clear属性只有块级元素才有效的，而::after等伪元素默认都是�
 
 （7）正z-index：z-index属性值为正的定位元素。
 
-**注意:** 当定位元素z-index:auto，生成盒在当前层叠上下文中的层级为 0，不会建立新的层叠上下文，除非是根元素。
+**<u>注意: 当定位元素z-index:auto，生成盒在当前层叠上下文中的层级为 0，不会建立新的层叠上下文，除非是根元素。</u>**
 
 ### 6. position的属性有哪些，区别是什么:star::star:
 
@@ -1191,6 +1257,7 @@ position有以下属性值：
 | fixed    | 生成绝对定位的元素，指定元素相对于屏幕视⼝（viewport）的位置来指定元素位置。元素的位置在屏幕滚动时不会改变，⽐如回到顶部的按钮⼀般都是⽤此定位⽅式。 |
 | static   | 默认值，没有定位，元素出现在正常的文档流中，会忽略 top, bottom, left, right 或者 z-index 声明，块级元素从上往下纵向排布，⾏级元素从左向右排列。 |
 | inherit  | 规定从父元素继承position属性的值                             |
+| sticky   | 元素根据正常文档流进行定位，然后相对它的*最近滚动祖先和 [containing block](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Containing_block) (最近块级祖先 )，基于`top`, `right`, `bottom`, 和 `left`的值进行偏移。偏移值不会影响任何其他元素的位置。 该值总是创建一个新的[层叠上下文（stacking context](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context)）。 |
 
 前面三者的定位方式如下：
 
@@ -1226,6 +1293,8 @@ position有以下属性值：
 - 在有滚动条的页面中，absolute会跟着父元素进行移动，fixed固定在页面的具体位置。
 
 ### 9. 对 sticky 定位的理解
+
+> 可以用作实现吸顶组件
 
 sticky 英文字面意思是粘贴，所以可以把它称之为粘性定位。语法：**position: sticky;** 基于用户的滚动位置来定位。
 
