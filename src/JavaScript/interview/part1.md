@@ -121,11 +121,15 @@ console.log(a.call(null));
 
 - 通过Object.prototype.toString.call()做判断
 
+> Object.prototype.toString.call(obj).slice() -> [object Array]
+
 ```javascript
 Object.prototype.toString.call(obj).slice(8,-1) === 'Array';
 ```
 
 - 通过原型链做判断
+
+> 对象隐式原型等于数组显式原型
 
 ```javascript
 obj.__proto__ === Array.prototype;

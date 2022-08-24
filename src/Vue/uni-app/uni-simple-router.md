@@ -6,7 +6,9 @@ tag:
 - uni-app
 ---
 
-# 编程式路由
+# uni-simple-router 库使用
+
+## 编程式路由
 
 ### `router.push() 等同于` [uni.navigateTo()](https://uniapp.dcloud.io/api/router?id=navigateto)
 
@@ -48,9 +50,9 @@ this.$Router.push({ path: 'router1', query: { plan: 'private' }})
 
 这个方法的参数是一个正整数，意思是在 history 记录中后退多少步，类似 `window.history.go(n)`。
 
-# 路由传参
+## 路由传参
 
-##  非深度对象传递
+### 非深度对象传递
 
 ```js
 this.$Router.push({ path: '/pages/router1/router1', query: { userId: '123' }})
@@ -62,7 +64,7 @@ this.$Route.query.userId;
 //http://xxxx/router1?userId=123
 ```
 
-##  深度对象传递
+###  深度对象传递
 
 ```js
 this.$Router.push({
@@ -83,7 +85,7 @@ this.$Route.query;
 http://xxxx/pages/404/404?query=%7B"status"%3Atrue,"list"%3A%5B%7B"id"%3A1%7D%5D%7D
 ```
 
-## name 普通传参
+### name 普通传参
 
 ```js
 this.$Router.push({ name: 'router1', params: { userId: '123' }})
@@ -102,7 +104,7 @@ H5端默认情况下 `name+params` 传参不会显示在URL上，如果你想将
 
 
 
-##  name 动态传参
+###  name 动态传参
 
 ```js
 // routes
