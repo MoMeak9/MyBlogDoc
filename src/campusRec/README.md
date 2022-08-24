@@ -74,9 +74,9 @@ editLink: false
 
 
 
-### MySQL
+### [MySQL](/DB/MySQL/index.html)
 
-
+- [MySQL从入门到入院](/DB/MySQL.html)
 
 ### MongoDB
 
@@ -112,8 +112,6 @@ editLink: false
 - [三方、两方等 应知应会](/campusRec/need.html)
 - [校招流程]()
 ### 面试经验分享
-> 我的大厂坟墓 :-(
-
 - [阿里]
 - [腾讯]
 - [字节]
@@ -123,4 +121,4 @@ editLink: false
 - [浩鲸科技]
 - [顶点软件]
 
-### [互联网企业名录](/campusRec/company.html) :computer:
+### [企业名录](/campusRec/company.html) :computer:
