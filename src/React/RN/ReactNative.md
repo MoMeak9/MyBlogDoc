@@ -7,8 +7,6 @@ category:
 
 # React Native 基础
 
-##
-
 ## TextInput
 
 ### 受控（Controlled）组件
