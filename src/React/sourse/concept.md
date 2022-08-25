@@ -4,6 +4,15 @@ category:
 - React
 - 源码探究
 ---
+
+>  笔记内容来自于：
+> 
+> [React官网](https://reactjs.org/docs/react-component.html#setstate)
+> 
+> [React技术揭秘](https://react.iamkasong.com/)
+> 
+> 添加了个人笔记注释和观点，希望能帮助大家理解。此外，如果想要完整阅读原文内容，请前往卡颂的网站 [React技术揭秘](https://react.iamkasong.com/)。
+
 # React 理念
 
 > 我们认为，React 是用 JavaScript 构建**快速响应**的大型 Web 应用程序的首选方式。它在 Facebook 和 Instagram 上表现优秀。
