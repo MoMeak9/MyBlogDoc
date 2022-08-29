@@ -1422,13 +1422,13 @@ div{
 
 ### 4. 画一条0.5px的线 :star:
 
-- **采用transform: scale()的方式**，该方法用来定义元素的2D 缩放转换：
+- **采用transform: scale()的缩放方式**，该方法用来定义元素的2D 缩放转换：
 
 ```css
 transform: scale(0.5,0.5);
 ```
 
-- **采用meta viewport的方式**
+- **采用meta viewport的缩放方式**
 
 ```css
 <meta name="viewport" content="width=device-width, initial-scale=0.5, minimum-scale=0.5, maximum-scale=0.5"/>
@@ -1442,9 +1442,9 @@ transform: scale(0.5,0.5);
 
 **解决办法：**
 
-- 使用Webkit的内核的-webkit-text-size-adjust的私有CSS属性来解决，只要加了-webkit-text-size-adjust:none;字体大小就不受限制了。但是chrome更新到27版本之后就不可以用了。所以高版本chrome谷歌浏览器已经不再支持-webkit-text-size-adjust样式，所以要使用时候慎用。
-- 使用css3的transform缩放属性-webkit-transform:scale(0.5); 注意-webkit-transform:scale(0.75);收缩的是整个元素的大小，这时候，如果是内联元素，必须要将内联元素转换成块元素，可以使用display：block/inline-block/...；
-- 使用图片：如果是内容固定不变情况下，使用将小于12px文字内容切出做图片，这样不影响兼容也不影响美观。
+- 使用Webkit的内核的-webkit-text-size-adjust的**私有CSS属性**来解决，只要加了-webkit-text-size-adjust:none;字体大小就不受限制了。但是chrome更新到27版本之后就不可以用了。所以高版本chrome谷歌浏览器已经不再支持-webkit-text-size-adjust样式，所以要使用时候慎用。
+- 使用css3的**transform缩放属**性-webkit-transform:scale(0.5); 注意-webkit-transform:scale(0.75);收缩的是整个元素的大小，这时候，如果是内联元素，必须要将内联元素转换成块元素，可以使用display：block/inline-block/...；
+- **使用图片**：如果是内容固定不变情况下，使用将小于12px文字内容切出做图片，这样不影响兼容也不影响美观。
 
 ### 6. 如何解决 1px 问题？:star::star:
 
