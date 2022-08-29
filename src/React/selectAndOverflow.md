@@ -6,7 +6,7 @@
 
 ### overflow
 
-overflow 是overflow-x 和overflow-y的简写，用来设定当一块级元素（设置了height|with/max-height|with）的内容太大而超出范围的时候，元素内容如何加载。
+overflow 是overflow-x 和overflow-y的简写，用来设定当一块级元素（通常设置了height/max-height）的内容太大而超出范围的时候，元素内容如何加载。
 
 ```css
 overflow：属性值；
@@ -22,13 +22,19 @@ overflow: [overflow-x] [overflow-y];
   > 超出文字隐藏：overflow：hidden;
   > 文字不换行：text-wrap:nowrap;
 
-- overflow: hidden 清除浮动（触发BFC）
+- overflow: hidden 清除浮动
 
 - overflow: hidden 解决外边距折叠问题（触发BFC）
 
 ## 分析实践
 
-### demo 展示
+CSS 类名替换而不是改写style
+
+并不适用于虚拟列表
+
+### demo 演示
+
+
 
 设置容器、列表样式以及选中行的样式：
 
