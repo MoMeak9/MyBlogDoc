@@ -244,16 +244,16 @@ slot又名插槽，是Vue的内容分发机制，组件内部的模板引擎使�
 
 ### 11. v-if、v-show、v-html 的原理 :star:
 
-- v-if会调用addIfCondition方法，生成vnode的时候会忽略对应节点，render的时候就不会渲染；
-- v-show会生成vnode，render的时候也会渲染成真实节点，只是在render过程中会在节点的属性中修改show属性值，也就是常说的display；
-- v-html会先移除节点下的所有节点，调用html方法，通过addProp添加innerHTML属性，归根结底还是设置innerHTML为v-html的值。
+- v-if会调用addIfCondition方法，生成**vnode**的时候会忽略对应节点，**render**的时候就不会渲染；
+- v-show会生成vnode，render的时候也会渲染成真实节点，只是在render过程中会在节点的属性中修改show属性值，也就是常说的**display**；
+- v-html会先移除节点下的所有节点，调用html方法，通过addProp添加innerHTML属性，归根结底还是**设置innerHTML为v-html的值**。
 
 ### 13. v-if 和 v-show 的区别 :star:
 
 - **手段**：v-if是动态的向DOM树内添加或者删除DOM元素；v-show是通过设置DOM元素的display样式属性控制显隐；
 - **编译过程**：v-if 切换有一个局部编译/卸载的过程，切换过程中合适地销毁和重建内部的事件监听和子组件；v-show只是简单的基于css切换；
-- **编译条件**：v-if是惰性的，如果初始条件为假，则什么也不做；只有在条件第一次变为真时才开始局部编译; v-show是在任何条件下，无论首次条件是否为真，都被编译，然后被缓存，而且DOM元素保留；
-- **性能消耗**：v-if有更高的切换消耗；v-show有更高的初始渲染消耗；
+- **编译条件**：v-if是**惰性**的，如果初始条件为假，则什么也不做；只有在条件第一次变为真时才开始局部编译; v-show是在任何条件下，无论首次条件是否为真，都被编译，然后被缓存，而且DOM元素保留；
+- **性能消耗**：v-if有更高的**切换消耗**；v-show有**更高的初始渲染消耗**；
 - **使用场景**：v-if适合运营条件不大可能改变；v-show适合频繁切换。
 
 ### 14. v-model 是如何实现的，语法糖实际是什么？
@@ -315,7 +315,7 @@ methods:{
 
 实际上相当于：
 
-```javascript
+```vue
 <input
   v-bind:value="searchText"
   v-on:input="searchText = $event.target.value"
@@ -324,13 +324,13 @@ methods:{
 
 用在自定义组件上也是同理：
 
-```javascript
+```vue
 <custom-input v-model="searchText">
 ```
 
 相当于：
 
-```javascript
+```vue
 <custom-input
   v-bind:value="searchText"
   v-on:input="searchText = $event"
@@ -344,7 +344,7 @@ methods:{
 
 所以，custom-input 组件的实现应该类似于这样：
 
-```javascript
+```vue
 Vue.component('custom-input', {
   props: ['value'],
   template: `
@@ -368,7 +368,7 @@ JavaScript中的对象是引用类型的数据，当多个实例引用同一个�
 
 ### 17. 对keep-alive的理解，它是如何实现的，具体缓存的是什么？ :star:
 
-如果需要在组件切换的时候，保存一些组件的状态防止多次渲染，就可以使用 keep-alive 组件包裹需要保存的组件。
+如果需要在组件切换的时候，保存一些组件的状态防止多次重新渲染（基于vnode），就可以使用 keep-alive 组件包裹需要保存的组件。
 
 **（1）keep-alive 属性和执行流程**
 
@@ -382,10 +382,11 @@ keep-alive有以下三个属性：
 
 **主要流程**
 
-1. 判断组件 name ，不在 include 或者在 exclude 中，直接返回 vnode，说明该组件不被缓存。
+1. 判断组件 **name** ，不在 include 或者在 exclude 中，直接返回 vnode，说明该组件不被缓存。
 2. 获取组件实例 key ，如果有获取实例的 key，否则重新生成。
 3. key生成规则，cid +"∶∶"+ tag ，仅靠cid是不够的，因为相同的构造函数可以注册为不同的本地组件。
-4. 如果缓存对象内存在，则直接从缓存对象中获取组件实例给 vnode ，不存在则添加到缓存对象中。 5.最大缓存数量，当缓存组件数量超过 max 值时，清除 keys 数组内第一个组件。
+4. 如果缓存对象内存在，**则直接从缓存对象中获取组件实例给 vnode** ，不存在则添加到缓存对象中。 
+5. 最大缓存数量，当缓存组件数量超过 max 值时，清除 keys 数组内第一个组件。
 
 **（2）keep-alive 的实现**
 
@@ -584,11 +585,11 @@ LRU 缓存策略∶ 从内存中找出最久未使用的数据并置换新的数
 
 ### 18. $nextTick 原理及作用 :star:
 
-Vue 的 nextTick 其本质是对 JavaScript 执行原理 EventLoop 的一种应用。
+**Vue 的 nextTick 其本质是对 JavaScript 执行原理 EventLoop 的一种应用。**
 
-nextTick 的核心是利用了如 Promise 、MutationObserver、setImmediate、setTimeout的原生 JavaScript 方法来模拟对应的微/宏任务的实现，本质是为了利用 JavaScript 的这些异步回调任务队列来实现 Vue 框架中自己的异步回调队列。
+nextTick 的核心是利用了如 Promise 、MutationObserver、setImmediate、setTimeout的原生 JavaScript 方法来模拟对应的微/宏任务的实现，**本质是为了利用 JavaScript 的这些异步回调任务队列来实现 Vue 框架中自己的异步回调队列。**
 
-nextTick 不仅是 Vue 内部的异步队列的调用方法，同时也允许开发者在实际项目中使用这个方法来满足实际应用中对 DOM 更新数据时机的后续逻辑处理
+nextTick 不仅是 Vue 内部的异步队列的调用方法，同时也允许开发者在实际项目中使用这个方法来满足实际应用中对 **DOM 更新数据时机的后续逻辑处理**
 
 nextTick 是典型的将底层 JavaScript 执行原理应用到具体案例中的示例，引入异步更新队列机制的原因∶
 
@@ -597,7 +598,7 @@ nextTick 是典型的将底层 JavaScript 执行原理应用到具体案例中�
 
 Vue采用了数据驱动视图的思想，但是在一些情况下，仍然需要操作DOM。有时候，可能遇到这样的情况，DOM1的数据发生了变化，而DOM2需要从DOM1中获取数据，那这时就会发现DOM2的视图并没有更新，这时就需要用到了`nextTick`了。
 
-由于Vue的DOM操作是异步的，所以，在上面的情况中，就要将DOM2获取数据的操作写在`$nextTick`中。
+由于Vue的DOM操作是**异步**的，所以，在上面的情况中，就要将DOM2获取数据的操作写在`$nextTick`中。
 
 ```javascript
 this.$nextTick(() => {    // 获取数据的操作...})
@@ -605,10 +606,11 @@ this.$nextTick(() => {    // 获取数据的操作...})
 
 所以，在以下情况下，会用到nextTick：
 
-- 在数据变化后执行的某个操作，而这个操作需要使用随数据变化而变化的DOM结构的时候，这个操作就需要方法在`nextTick()`的回调函数中。
-- 在vue生命周期中，如果在created()钩子进行DOM操作，也一定要放在`nextTick()`的回调函数中。
+- <u>在数据变化后执行的某个操作，而这个操作需要使用随数据变化而变化的DOM结构的时候，这个操作就需要方法在`nextTick()`的回调函数中。</u>
 
-因为在created()钩子函数中，页面的DOM还未渲染，这时候也没办法操作DOM，所以，此时如果想要操作DOM，必须将操作的代码放在`nextTick()`的回调函数中。
+- 在vue生命周期中，<u>如果在created()钩子进行DOM操作，也一定要放在`nextTick()`的回调函数中。</u>
+
+  因为在created()钩子函数中，页面的DOM还未渲染，这时候也没办法操作DOM，所以，此时如果想要操作DOM，必须将操作的代码放在`nextTick()`的回调函数中。
 
 ### **19. Vue 中给 data 中的对象属性添加一个新的属性时会发生什么？如何解决？**
 
@@ -723,7 +725,7 @@ methodsToPatch.forEach(function(method) {
 
 ### 22. Vue template 到 render 的过程 :star:
 
-vue的模版编译过程主要如下：**template -> ast -> render函数**
+> vue的模版编译过程主要如下：使用compileToFunctions令**template -> AST -> render函数**
 
 vue 在模版编译版本的码中会执行 compileToFunctions 将template转化为render函数：
 
@@ -731,13 +733,15 @@ vue 在模版编译版本的码中会执行 compileToFunctions 将template转化
 // 将模板编译为render函数const { render, staticRenderFns } = compileToFunctions(template,options//省略}, this)
 ```
 
-CompileToFunctions中的主要逻辑如下∶ **（1）调用parse方法将template转化为ast（抽象语法树）**
+CompileToFunctions中的主要逻辑如下∶ 
+
+**（1）调用parse方法将template转化为ast（抽象语法树）**
 
 ```javascript
 constast = parse(template.trim(), options)
 ```
 
-- **parse的目标**：把tamplate转换为AST树，它是一种用 JavaScript对象的形式来描述整个模板。
+- **parse的目标**：把tamplate转换为AST树，它是一种用 **JavaScript对象的形式来描述整个模板**。
 - **解析过程**：利用正则表达式顺序解析模板，当解析到开始标签、闭合标签、文本的时候都会分别执行对应的 回调函数，来达到构造AST树的目的。
 
 AST元素节点总共三种类型：type为1表示普通元素、2为表达式、3为纯文本
@@ -752,13 +756,13 @@ optimize(ast,options)
 
 深度遍历AST，查看每个子树的节点元素是否为静态节点或者静态节点根。如果为静态节点，他们生成的DOM永远不会改变，这对运行时模板更新起到了极大的优化作用。
 
-**（3）生成代码**
+**（3）生成render函数代码**
 
 ```javascript
 const code = generate(ast, options)
 ```
 
-generate将ast抽象语法树编译成 render字符串并将静态部分放到 staticRenderFns 中，最后通过 `new Function(`` render``)` 生成render函数。
+generate将ast抽象语法树编译成 render字符串并将静态部分放到 staticRenderFns 中，最后通过 `new Function(render)` 生成render函数。
 
 ### 23. Vue data 中某一个属性的值发生改变后，视图会立即同步执行重新渲染吗？ :star:
 
@@ -857,13 +861,13 @@ if(!child._base) {    if(child.extends) {        parent = mergeOptions(parent, c
 
 ### 26. 子组件可以直接改变父组件的数据吗？
 
-子组件不可以直接改变父组件的数据。这样做主要是为了维护父子组件的单向数据流。每次父级组件发生更新时，子组件中所有的 prop 都将会刷新为最新的值。如果这样做了，Vue 会在浏览器的控制台中发出警告。
+子组件**不可以直接改变父组件的数据**（单向数据流）。这样做主要是为了维护父子组件的单向数据流。每次父级组件发生更新时，子组件中所有的 prop 都将会刷新为最新的值。如果这样做了，Vue 会在浏览器的控制台中发出警告。
 
 Vue提倡单向数据流，即父级 props 的更新会流向子组件，但是反过来则不行。这是为了防止意外的改变父组件状态，使得应用的数据流变得难以理解，导致数据流混乱。如果破坏了单向数据流，当应用复杂时，debug 的成本会非常高。
 
 **只能通过 \**`$emit`\** 派发一个自定义事件，父组件接收到后，由父组件修改。**
 
-### 27. Vue是如何收集依赖的？
+### 27. Vue是如何自动收集依赖的？
 
 在初始化 Vue 的每个组件时，会对组件的 data 进行初始化，就会将由普通对象变成响应式对象，在这个过程中便会进行依赖收集的相关逻辑，如下所示∶
 
@@ -967,11 +971,11 @@ this.getter.call（vm，vm），这里的 getter 会执行 vm._render() 方法�
 
 **相似之处：**
 
-- 都将注意力集中保持在核心库，而将其他功能如路由和全局状态管理交给相关的库；
-- 都有自己的构建工具，能让你得到一个根据最佳实践设置的项目模板；
-- 都使用了Virtual DOM（虚拟DOM）提高重绘性能；
-- 都有props的概念，允许组件间的数据传递；
-- 都鼓励组件化应用，将应用分拆成一个个功能明确的模块，提高复用性。
+- 都将注意力集中保持在核心库，而将其他功能如**路由和全局状态管理交给相关的库**；
+- 都有**自己的构建工具**，能让你得到一个根据最佳实践设置的项目模板；
+- 都使用了Virtual DOM（**虚拟DOM**）提高**重绘**性能；
+- 都有**props**的概念，允许组件间的数据传递；
+- 都鼓励**组件化**应用，将应用分拆成一个个功能明确的模块，提高复用性。（组合优于继承）
 
 **不同之处 ：**
 
@@ -983,17 +987,19 @@ Vue默认支持数据双向绑定，而React一直提倡单向数据流
 
 Vue2.x开始引入"Virtual DOM"，消除了和React在这方面的差异，但是在具体的细节还是有各自的特点。
 
-- Vue宣称可以更快地计算出Virtual DOM的差异，这是由于它在渲染过程中，会跟踪每一个组件的依赖关系，不需要重新渲染整个组件树。
-- 对于React而言，每当应用的状态被改变时，全部子组件都会重新渲染。当然，这可以通过 PureComponent/shouldComponentUpdate这个生命周期方法来进行控制，但Vue将此视为默认的优化。
+- Vue宣称可以更快地计算出Virtual DOM的差异，这是由于它在渲染过程中，**会跟踪每一个组件的依赖关系**，不需要重新渲染整个组件树。
+- 对于React而言，每当应用的状态被改变时，全部子组件都会重新渲染。当然，这可以通过 PureComponent/shouldComponentUpdate这个生命周期方法来进行控制，但**Vue将此视为默认的优化。**
 
 **3）组件化**
 
-React与Vue最大的不同是模板的编写。
+React与Vue最大的不同是**模板的编写。**
 
 - Vue鼓励写近似常规HTML的模板。写起来很接近标准 HTML元素，只是多了一些属性。
 - React推荐你所有的模板通用JavaScript的语法扩展——JSX书写。
 
-具体来讲：React中render函数是支持闭包特性的，所以import的组件在render中可以直接调用。但是在Vue中，由于模板中使用的数据都必须挂在 this 上进行一次中转，所以 import 一个组件完了之后，还需要在 components 中再声明下。 **4）监听数据变化的实现原理不同**
+**具体来讲：**React中render函数是支持**闭包**特性的，所以import的组件在render中可以直接调用。但是在Vue中，由于模板中使用的数据都必须挂在 this 上进行一次**中转**，所以 import 一个组件完了之后，还需要在 components 中**再声明下**。 
+
+**4）监听数据变化的实现原理不同**
 
 - Vue 通过 getter/setter 以及一些函数的劫持，能精确知道数据变化，不需要特别的优化就能达到很好的性能
 - React 默认是通过比较引用的方式进行的，如果不优化（PureComponent/shouldComponentUpdate）可能导致大量不必要的vDOM的重新渲染。这是因为 Vue 使用的是可变数据，而React更强调数据的不可变。
@@ -1002,7 +1008,7 @@ React与Vue最大的不同是模板的编写。
 
 react可以通过高阶组件（HOC）来扩展，而Vue需要通过mixins来扩展。
 
-高阶组件就是高阶函数，而React的组件本身就是纯粹的函数，所以高阶函数对React来说易如反掌。相反Vue.js使用HTML模板创建视图组件，这时模板无法有效的编译，因此Vue不能采用HOC来实现。
+高阶组件就是高阶函数，而React的组件本身就是纯粹的**函数**，所以高阶函数对React来说易如反掌。相反Vue.js使用HTML模板创建视图组件，这时模板无法有效的编译，因此Vue不能采用HOC来实现。
 
 **6）构建工具**
 
@@ -1014,7 +1020,7 @@ react可以通过高阶组件（HOC）来扩展，而Vue需要通过mixins来扩
 **7）跨平台**
 
 - React ==> React Native
-- Vue ==> Weex
+- Vue ==> Weex，uni-app
 
 ### 29. Vue的优点
 
