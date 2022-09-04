@@ -50,7 +50,7 @@ const router = new Router({
 })
 ```
 
-（3）方案三：使用webpack的require.ensure技术，也可以实现按需加载。 这种情况下，多个路由指定相同的chunkName，会合并打包成一个js文件。
+（3）方案三：使用webpack的require.**ensure技术，也可以实现按需加载**。 这种情况下，多个路由指定相同的chunkName，会合并打包成一个js文件。
 
 ```javascript
 // r就是resolve
@@ -67,7 +67,7 @@ const router = new Router({
 }))
 ```
 
-### 2. 路由的hash和history模式的区别
+### 2. 路由的hash和history模式的区别 :star::star:
 
 Vue-Router有两种模式：**hash模式**和**history模式**。默认的路由模式是hash模式。
 
@@ -88,7 +88,7 @@ window.onhashchange = function(event){
 
 使用onhashchange()事件的好处就是，在页面的hash值发生变化时，无需向后端发起请求，window就可以监听事件的改变，并按规则加载相应的代码。除此之外，hash值变化对应的URL都会被浏览器记录下来，这样浏览器就能实现页面的前进和后退。虽然是没有请求后端服务器，但是页面的hash值和对应的URL关联起来了。
 
-#### 2. history模式
+#### 2. history模式 :star::star:
 
 **简介：** history模式的URL中没有#，它使用的是传统的路由分发模式，即用户在输入一个URL时，服务器会接收这个请求，并解析这个URL，然后做出相应的逻辑处理。 
 
@@ -110,7 +110,7 @@ const router = new VueRouter({
 })
 ```
 
-#### 3. 两种模式对比
+#### 3. 两种模式对比 :star::star:
 
 调用 history.pushState() 相比于直接修改 hash，存在以下优势:
 
@@ -122,7 +122,7 @@ const router = new VueRouter({
 
 hash模式和history模式都有各自的优势和缺陷，还是要根据实际情况选择性的使用。
 
-### 3. 如何获取页面的hash变化
+### 3. 如何获取页面的hash变化 :star:
 
 **（1）监听$route的变化**
 
@@ -141,7 +141,9 @@ watch: {
 
 **（2）window.location.hash读取#值** window.location.hash 的值可读可写，读取来判断状态是否改变，写入时可以在不重载网页的前提下，添加一条历史访问记录。
 
-### 4. `$route 和$router` 的区别
+**（3）history.state or 监听 onpopState**
+
+### 4. `$route 和$router` 的区别 :star:
 
 - $route 是“路由信息对象”，包括 path，params，hash，query，fullPath，matched，name 等路由信息参数
 - $router 是“路由实例”对象包括了路由的跳转方法，钩子函数等。
@@ -378,7 +380,7 @@ beforeRouteEnter(to, from, next) {
 - 使用 `history.pushState( /url )` ，无刷新页面，静态跳转；
 - 引进 router ，然后使用 `router.push( /url )` 来跳转，使用了 `diff` 算法，实现了按需加载，减少了 dom 的消耗。其实使用 router 跳转和使用 `history.pushState()` 没什么差别的，因为vue-router就是用了 `history.pushState()` ，尤其是在history模式下。
 
-### 8. params和query的区别
+### 8. params和query的区别 :star:
 
 **用法**：query要用path来引入，params要用name来引入，接收参数都是类似的，分别是 `this.$route.query.name` 和 `this.$route.params.name` 。
 
@@ -392,7 +394,7 @@ beforeRouteEnter(to, from, next) {
 - 路由独享的守卫：beforeEnter
 - 组件内的守卫：beforeRouteEnter、beforeRouteUpdate、beforeRouteLeave
 
-### 10. 对前端路由的理解
+### 10. 对前端路由的理解 :star::star:
 
 在前端技术早期，一个 url 对应一个页面，如果要从 A 页面切换到 B 页面，那么必然伴随着页面的刷新。这个体验并不好，不过在最初也是无奈之举——用户只有在刷新页面的情况下，才可以重新去请求数据。
 
@@ -419,7 +421,7 @@ SPA极大地提升了用户体验，它允许页面在不刷新的情况下更�
 
 ## 五、Vuex
 
-### 1. Vuex 的原理
+### 1. Vuex 的原理 :star::star:
 
 Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式。每一个 Vuex 应用的核心就是 store（仓库）。“store” 基本上就是一个容器，它包含着你的应用中大部分的状态 ( state )。
 
@@ -445,7 +447,7 @@ Components建立起了一个完整的生态圈，包括开发中的API调用一�
 - `state`∶ 页面状态管理容器对象。集中存储Vuecomponents中data对象的零散数据，全局唯一，以进行统一的状态管理。页面显示所需的数据从该对象中进行读取，利用Vue的细粒度数据响应机制来进行高效的状态更新。
 - `getters`∶ state对象读取方法。图中没有单独列出该模块，应该被包含在了render中，Vue Components通过该方法读取全局state对象。
 
-### 2. Vuex中action和mutation的区别
+### 2. Vuex中action和mutation的区别 :star:
 
 mutation中的操作是一系列的同步函数，用于修改state中的变量的的状态。当使用vuex时需要通过commit来提交需要操作的内容。mutation 非常类似于事件：每个 mutation 都有一个字符串的 事件类型 (type) 和 一个 回调函数 (handler)。这个回调函数就是实际进行状态更改的地方，并且它会接受 state 作为第一个参数：
 

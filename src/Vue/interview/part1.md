@@ -27,11 +27,17 @@ category:
 - 数据劫持
 - 发布订阅
 
+> Compile：订阅数据，绑定函数，并初始化视图
+>
+> Observer：递归遍历，劫持监听所有属性
+>
+> Watcher：桥梁，订阅和更新视图
+
 Vue.js 是采用**数据劫持**结合**发布者-订阅者模式**的方式，通过Object.defineProperty()来劫持各个属性的setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调。主要分为以下几个步骤：
 
-1. 需要observe的数据对象进行递归遍历，包括子属性对象的属性，都加上setter和getter这样的话，给这个对象的某个值赋值，就会触发setter，那么就能监听到了数据变化
-2. compile解析模板指令，将模板中的变量替换成数据，然后初始化渲染页面视图，并将每个指令对应的节点绑定更新函数，添加监听数据的订阅者，一旦数据有变动，收到通知，更新视图
-3. Watcher订阅者是Observer和Compile之间通信的桥梁，主要做的事情是: ①在自身实例化时往属性订阅器(dep)里面添加自己 ②自身必须有一个update()方法 ③待属性变动dep.notice()通知时，能调用自身的update()方法，并触发Compile中绑定的回调，则功成身退。
+1. 需要observe的数据对象进行**递归遍历**，包括子属性对象的属性，都加上setter和getter。这样的话，给这个对象的某个值赋值，就会触发setter，那么就能监听到了数据变化
+2. **compile解析模板指令**，将模板中的变量替换成数据，然后初始化渲染页面视图，并将每个指令对应的节点绑定更新函数，添加监听数据的订阅者，一旦数据有变动，收到通知，更新视图
+3. **Watcher订阅者是Observer和Compile之间通信的桥梁**，主要做的事情是: ①在自身实例化时往属性订阅器(dep)里面添加自己 ②自身必须有一个update()方法 ③待属性变动dep.notice()通知时，能调用自身的update()方法，并触发Compile中绑定的回调，则功成身退。
 4. MVVM作为数据绑定的入口，整合Observer、Compile和Watcher三者，通过Observer来监听自己的model数据变化，通过Compile来解析编译模板指令，最终利用Watcher搭起Observer和Compile之间的通信桥梁，达到数据变化 -> 视图更新；视图交互变化(input) -> 数据model变更的双向绑定效果。
 
 <img src="https://cdn.yihuiblog.top/images/202206271537053.png" alt="VUE的双向数据绑定原理_一个小开心呀的博客-CSDN博客" style="zoom: 33%;" />
@@ -40,7 +46,7 @@ Vue.js 是采用**数据劫持**结合**发布者-订阅者模式**的方式，�
 
 在对一些属性进行操作时，使用这种方法无法拦截，比如通过下标方式修改数组数据或者给对象新增属性，这都不能触发组件的重新渲染，因为 Object.defineProperty 不能拦截到这些操作。更精确的来说，对于数组而言，大部分操作都是拦截不到的，只是 Vue 内部通过重写函数的方式解决了这个问题。
 
-在 Vue3.0 中已经不使用这种方式了，而是通过使用 Proxy 对对象进行代理，从而实现数据劫持。使用Proxy 的好处是它可以完美的监听到任何方式的数据改变，唯一的缺点是兼容性的问题，因为 Proxy 是 ES6 的语法。
+在 Vue3.0 中已经不使用这种方式了，而是通过使用 Proxy 对对象进行代理，从而实现数据劫持。使用Proxy 的好处是它可以完美的监听到任何方式的数据改变，**唯一的缺点是兼容性的问题，因为 Proxy 是 ES6 的语法。**
 
 ### 4. MVVM、MVC、MVP的区别 :star::star:
 
@@ -76,7 +82,7 @@ MVVM 分为 Model、View、ViewModel：
 
 **（3）MVP**
 
-MVP 模式与 MVC 唯一不同的在于 Presenter 和 Controller。在 MVC 模式中使用观察者模式，来实现当 Model 层数据发生变化的时候，通知 View 层的更新。这样 View 层和 Model 层耦合在一起，当项目逻辑变得复杂的时候，可能会造成代码的混乱，并且可能会对代码的复用性造成一些问题。MVP 的模式通过使用 Presenter 来实现对 View 层和 Model 层的解耦。MVC 中的Controller 只知道 Model 的接口，因此它没有办法控制 View 层的更新，MVP 模式中，View 层的接口暴露给了 Presenter 因此可以在 Presenter 中将 Model 的变化和 View 的变化绑定在一起，以此来实现 View 和 Model 的同步更新。这样就实现了对 View 和 Model 的解耦，Presenter 还包含了其他的响应逻辑。![image-20220809170149369](https://cdn.yihuiblog.top/images/202208091701576.png)![img](https://raw.githubusercontent.com/maoqitian/MaoMdPhoto/master/MVP/MVP1.jpg)
+MVP 模式与 MVC 唯一不同的在于 Presenter（主持者） 和 Controller。在 MVC 模式中使用观察者模式，来实现当 Model 层数据发生变化的时候，通知 View 层的更新。这样 View 层和 Model 层耦合在一起，当项目逻辑变得复杂的时候，可能会造成代码的混乱，并且可能会对代码的复用性造成一些问题。MVP 的模式通过使用 Presenter 来实现对 View 层和 Model 层的解耦。MVC 中的Controller 只知道 Model 的接口，因此它没有办法控制 View 层的更新，MVP 模式中，View 层的接口暴露给了 Presenter 因此可以在 Presenter 中将 Model 的变化和 View 的变化绑定在一起，以此来实现 View 和 Model 的同步更新。这样就实现了对 View 和 Model 的解耦，Presenter 还包含了其他的响应逻辑。![image-20220809170149369](https://cdn.yihuiblog.top/images/202208091701576.png)![img](https://raw.githubusercontent.com/maoqitian/MaoMdPhoto/master/MVP/MVP1.jpg)
 
 ### 5. Computed 和 Watch 的区别 :star: :star:
 
@@ -98,9 +104,9 @@ MVP 模式与 MVC 唯一不同的在于 Presenter 和 Controller。在 MVC 模�
   - immediate：组件加载后立即触发回调函数
   - deep：深度监听，发现数据内部的变化，在复杂数据类型中使用，例如数组中的对象发生变化。需要注意的是，**deep无法监听到数组和对象内部的变化（基于指针地址的监听）**。
 
-当想要执行异步或者昂贵的操作（消耗高）以及响应不断的变化时，就需要使用watch。
+<u>当想要执行异步或者昂贵的操作（消耗高）以及响应不断的变化时，就需要使用watch。</u>
 
-**总结：**
+#### **总结：**
 
 - computed 计算属性 : 依赖其它属性值，并且 computed 的值有缓存，只有它依赖的属性值发生改变，下一次获取 computed 的值时才会重新计算 computed 的值。
 - watch 侦听器 : 更多的是**观察**的作用，**无缓存性**，类似于某些数据的监听回调，每当监听的数据变化时都会执行回调进行后续操作。
@@ -368,7 +374,7 @@ JavaScript中的对象是引用类型的数据，当多个实例引用同一个�
 
 ### 17. 对keep-alive的理解，它是如何实现的，具体缓存的是什么？ :star:
 
-如果需要在组件切换的时候，保存一些组件的状态防止多次重新渲染（基于vnode），就可以使用 keep-alive 组件包裹需要保存的组件。
+如果需要在组件切换的时候，保存一些组件的状态防止多次渲染，就可以使用 keep-alive 组件包裹需要保存的组件。
 
 **（1）keep-alive 属性和执行流程**
 
@@ -610,7 +616,7 @@ this.$nextTick(() => {    // 获取数据的操作...})
 
 - 在vue生命周期中，<u>如果在created()钩子进行DOM操作，也一定要放在`nextTick()`的回调函数中。</u>
 
-  因为在created()钩子函数中，页面的DOM还未渲染，这时候也没办法操作DOM，所以，此时如果想要操作DOM，必须将操作的代码放在`nextTick()`的回调函数中。
+因为在created()钩子函数中，页面的DOM还未渲染，这时候也没办法操作DOM，所以，此时如果想要操作DOM，必须将操作的代码放在`nextTick()`的回调函数中。
 
 ### **19. Vue 中给 data 中的对象属性添加一个新的属性时会发生什么？如何解决？**
 
@@ -967,7 +973,7 @@ get 方法中的 pushTarget 实际上就是把 Dep.target 赋值为当前的 wat
 
 this.getter.call（vm，vm），这里的 getter 会执行 vm._render() 方法，在这个过程中便会触发数据对象的 getter。那么每个对象值的 getter 都持有一个 dep，在触发 getter 的时候会调用 dep.depend() 方法，也就会执行 Dep.target.addDep(this)。刚才 Dep.target 已经被赋值为 watcher，于是便会执行 addDep 方法，然后走到 dep.addSub() 方法，便将当前的 watcher 订阅到这个数据持有的 dep 的 subs 中，这个目的是为后续数据变化时候能通知到哪些 subs 做准备。所以在 vm._render() 过程中，会触发所有数据的 getter，这样便已经完成了一个依赖收集的过程。
 
-### 28. 对 React 和 Vue 的理解，它们的异同
+### 28. 对 React 和 Vue 的理解，它们的异同:star::star:
 
 **相似之处：**
 
@@ -1022,7 +1028,7 @@ react可以通过高阶组件（HOC）来扩展，而Vue需要通过mixins来扩
 - React ==> React Native
 - Vue ==> Weex，uni-app
 
-### 29. Vue的优点
+### 29. Vue的优点:star::star:
 
 - 轻量级框架：只关注视图层，是一个构建数据的视图集合，大小只有几十 `kb` ；
 - 简单易学：国人开发，中文文档，不存在语言障碍 ，易于理解和学习；
@@ -1030,7 +1036,7 @@ react可以通过高阶组件（HOC）来扩展，而Vue需要通过mixins来扩
 - 组件化：保留了 `react` 的优点，实现了 `html` 的封装和重用，在构建单页面应用方面有着独特的优势；
 - 视图，数据，结构分离：使数据的更改更为简单，不需要进行逻辑代码的修改，只需要操作数据就能完成相关操作；
 - 虚拟DOM：`dom` 操作是非常耗费性能的，不再使用原生的 `dom` 操作节点，极大解放 `dom` 操作，但具体操作的还是 `dom` 不过是换了另一种方式；
-- 运行速度更快：相比较于 `react` 而言，同样是操作虚拟 `dom`，就性能而言， `vue` 存在很大的优势。
+- 运行速度更快：相比较于 `react` 而言，同样是操作虚拟 `dom`，就性能而言，在开发人员不进行优化的情况下， `vue` 保证了性能下限。
 
 ### 30. assets和static的区别
 
@@ -1045,7 +1051,7 @@ react可以通过高阶组件（HOC）来扩展，而Vue需要通过mixins来扩
 - `delete` 只是被删除的元素变成了 `empty/undefined` 其他的元素的键值还是不变。
 - `Vue.delete` 直接删除了数组 改变了数组的键值。
 
-### 32. vue如何监听对象或者数组某个属性的变化
+### 32. vue如何监听对象或者数组某个属性的变化:star:
 
 当在项目中直接设置数组的某一项的值，或者直接设置对象的某个属性值，这个时候，你会发现页面并没有更新。这是因为Object.defineProperty()限制，监听不到变化。
 
@@ -1076,15 +1082,15 @@ vm.`$set` 的实现原理是：
 - 如果希望在多个组件之间重用一组组件选项，例如生命周期 hook、 方法等，则可以将其编写为 mixin，并在组件中简单的引用它。
 - 然后将 mixin 的内容合并到组件中。如果你要在 mixin 中定义生命周期 hook，那么它在执行时将优化于组件自已的 hook。
 
-### 34. Vue模版编译原理
+### 34. Vue模版编译原理:star:
 
-vue中的模板template无法被浏览器解析并渲染，因为这不属于浏览器的标准，不是正确的HTML语法，所有需要将template转化成一个JavaScript函数，这样浏览器就可以执行这一个函数并渲染出对应的HTML元素，就可以让视图跑起来了，这一个转化的过程，就成为模板编译。模板编译又分三个阶段，解析parse，优化optimize，生成generate，最终生成可执行函数render。
+vue中的模板template无法被浏览器解析并渲染，因为这不属于浏览器的标准，不是正确的HTML语法，所有需要将template转化成一个JavaScript函数，这样浏览器就可以执行这一个函数并渲染出对应的HTML元素，就可以让视图跑起来了，这一个转化的过程，就成为模板编译。模板编译又分三个阶段，**解析parse，优化optimize，生成generate**，最终生成可执行函数render。
 
 - **解析阶段**：使用大量的正则表达式对template字符串进行解析，将标签、指令、属性等转化为抽象语法树AST。
-- **优化阶段**：遍历AST，找到其中的一些静态节点并进行标记，方便在页面重渲染的时候进行diff比较时，直接跳过这一些静态节点，优化runtime的性能。
+- **优化阶段**：遍历AST，找到其中的一些静态节点并进行标记，方便在页面重渲染的时候进行diff比较时，直接跳过这一些**静态**节点，优化runtime的性能。
 - **生成阶段**：将最终的AST转化为render函数字符串。
 
-### 35. 对SSR的理解
+### 35. 对SSR的理解:star:
 
 SSR也就是服务端渲染，也就是将Vue在客户端把标签渲染成HTML的工作放在服务端完成，然后再把html直接返回给客户端
 
@@ -1099,12 +1105,12 @@ SSR的缺点：
 - 当需要一些外部扩展库时需要特殊处理，服务端渲染应用程序也需要处于Node.js的运行环境；
 - 更多的服务端负载。
 
-### 36. Vue的性能优化有哪些
+### 36. Vue的性能优化有哪些 :star:
 
 **（1）编码阶段**
 
 - 尽量减少data中的数据，data中的数据都会增加getter和setter，会收集对应的watcher
-- v-if和v-for不能连用
+- v-if和v-for不能连用，Vue2和3二者优先级不同，性能表现主要体现在2
 - 如果需要使用v-for给每项元素绑定事件时使用事件代理
 - SPA 页面采用keep-alive缓存组件
 - 在更多的情况下，使用v-if替代v-show
@@ -1125,17 +1131,17 @@ SSR的缺点：
 - 压缩代码
 - Tree Shaking/Scope Hoisting
 - 使用cdn加载第三方模块
-- 多线程打包happypack
+- 多线程打包 happypack
 - splitChunks抽离公共文件
-- sourceMap优化
+- sourceMap 优化
 
 **（4）用户体验**
 
 - 骨架屏
-- PWA
+- PWA （渐进式Web应用）
 - 还可以使用缓存(客户端缓存、服务端缓存)优化、服务端开启gzip压缩等。
 
-### 37. 对 SPA 单页面的理解，它的优缺点分别是什么？
+### 37. 对 SPA 单页面的理解，它的优缺点分别是什么？:star:
 
 SPA（ single-page application ）仅在 Web 页面初始化时加载相应的 HTML、JavaScript 和 CSS。一旦页面加载完成，SPA 不会因为用户的操作而进行页面的重新加载或跳转；取而代之的是利用路由机制实现 HTML 内容的变换，UI 与用户的交互，避免页面的重新加载。
 
@@ -1147,15 +1153,15 @@ SPA（ single-page application ）仅在 Web 页面初始化时加载相应的 H
 
 **缺点：**
 
-- 初次加载耗时多：为实现单页 Web 应用功能及显示效果，需要在加载页面的时候将 JavaScript、CSS 统一加载，部分页面按需加载；
-- 前进后退路由管理：由于单页应用在一个页面中显示所有的内容，所以不能使用浏览器的前进后退功能，所有的页面切换需要自己建立堆栈管理；
-- SEO 难度较大：由于所有的内容都在一个页面中动态替换显示，所以在 SEO 上其有着天然的弱势。
+- **初次加载**耗时多：为实现单页 Web 应用功能及显示效果，需要在加载页面的时候将 JavaScript、CSS 统一加载，部分页面按需加载；
+- 前进后退路由管理：由于单页应用在一个页面中显示所有的内容，所以不能使用浏览器的前进后退功能，所有的页面切换需要**自己建立堆栈管理**；
+- **SEO 难度较大**：由于所有的内容都在一个页面中动态替换显示，所以在 SEO 上其有着天然的弱势。
 
 ### 38. template和jsx的有什么分别？
 
 对于 runtime 来说，只需要保证组件存在 render 函数即可，而有了预编译之后，只需要保证构建过程中生成 render 函数就可以。在 webpack 中，使用`vue-loader`编译.vue文件，内部依赖的`vue-template-compiler`模块，在 webpack 构建过程中，将template预编译成 render 函数。与 react 类似，在添加了jsx的语法糖解析器`babel-plugin-transform-vue-jsx`之后，就可以直接手写render函数。
 
-所以，template和jsx的都是render的一种表现形式，不同的是：JSX相对于template而言，具有更高的灵活性，在复杂的组件中，更具有优势，而 template 虽然显得有些呆滞。但是 template 在代码结构上更符合视图与逻辑分离的习惯，更简单、更直观、更好维护。
+所以，**template和jsx的都是render的一种表现形式**，不同的是：JSX相对于template而言，具有更高的灵活性，**在复杂的组件中，更具有优势**，而 template 虽然显得有些呆滞。但是 template 在代码结构上更**符合视图与逻辑分离的习惯，更简单、更直观、更好维护。**
 
 ### 39. vue初始化页面闪动问题
 
@@ -1189,15 +1195,15 @@ Vue.mixin({    beforeCreate() {        // ...逻辑        // 这种方式会影
 
 `mixins` 应该是最常使用的扩展组件的方式了。如果多个组件中有相同的业务逻辑，就可以将这些逻辑剥离出来，通过 `mixins` 混入代码，比如上拉下拉加载数据这种逻辑等等。 另外需要注意的是 `mixins` 混入的钩子函数会先于组件内的钩子函数执行，并且在遇到同名选项的时候也会有选择性的进行合并。
 
-### 42. **MVVM**的优缺点?
+### 42. **MVVM**的优缺点? :star::star:
 
-优点:
+**优点:**
 
 - 分离视图（View）和模型（Model），降低代码耦合，提⾼视图或者逻辑的重⽤性: ⽐如视图（View）可以独⽴于Model变化和修改，⼀个ViewModel可以绑定不同的"View"上，当View变化的时候Model不可以不变，当Model变化的时候View也可以不变。你可以把⼀些视图逻辑放在⼀个ViewModel⾥⾯，让很多view重⽤这段视图逻辑
 - 提⾼可测试性: ViewModel的存在可以帮助开发者更好地编写测试代码
 - ⾃动更新dom: 利⽤双向绑定,数据更新后视图⾃动更新,让开发者从繁琐的⼿动dom中解放
 
-缺点:
+**缺点:**
 
 - Bug很难被调试: 因为使⽤双向绑定的模式，当你看到界⾯异常了，有可能是你View的代码有Bug，也可能是Model的代码有问题。数据绑定使得⼀个位置的Bug被快速传递到别的位置，要定位原始出问题的地⽅就变得不那么容易了。另外，数据绑定的声明是指令式地写在View的模版当中的，这些内容是没办法去打断点debug的
 - ⼀个⼤的模块中model也会很⼤，虽然使⽤⽅便了也很容易保证了数据的⼀致性，当时⻓期持有，不释放内存就造成了花费更多的内存
@@ -1205,7 +1211,7 @@ Vue.mixin({    beforeCreate() {        // ...逻辑        // 这种方式会影
 
 ## 二、生命周期
 
-### 1. 说一下Vue的生命周期
+### 1. 说一下Vue的生命周期:star::star:
 
 Vue 实例有⼀个完整的⽣命周期，也就是从开始创建、初始化数据、编译模版、挂载Dom -> 渲染、更新 -> 渲染、卸载 等⼀系列过程，称这是Vue的⽣命周期。
 
@@ -1218,50 +1224,52 @@ Vue 实例有⼀个完整的⽣命周期，也就是从开始创建、初始化�
 7. **beforeDestroy（销毁前）**：实例销毁之前调用。这一步，实例仍然完全可用，`this` 仍能获取到实例。
 8. **destroyed（销毁后）**：实例销毁后调用，调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。该钩子在服务端渲染期间不被调用。
 
-另外还有 `keep-alive` 独有的生命周期，分别为 `activated` 和 `deactivated` 。用 `keep-alive` 包裹的组件在切换时不会进行销毁，而是缓存到内存中并执行 `deactivated` 钩子函数，命中缓存渲染后会执行 `activated` 钩子函数。
+另外还有 `keep-alive` 独有的生命周期，分别为 `activated` 和 `deactivated` 。用 `keep-alive` 包裹的组件在切换时**不会进行销毁**，而是**缓存到内存**中并执行 `deactivated` 钩子函数，命中缓存渲染后会执行 `activated` 钩子函数。
 
-### 2. Vue 子组件和父组件执行顺序
+### 2. Vue 子组件和父组件执行顺序 :star:
+
+> 依照树型顺序，父子子父，准备阶段的周期向下传递，完成自叶子向上完成
 
 **加载渲染过程：**
 
-1. 父组件 beforeCreate
-2. 父组件 created
-3. 父组件 beforeMount
+1. **父组件 beforeCreate**
+2. **父组件 created**
+3. **父组件 beforeMount**
 4. 子组件 beforeCreate
 5. 子组件 created
 6. 子组件 beforeMount
-7. 子组件 mounted
+7. **子组件 mounted**
 8. 父组件 mounted
 
 **更新过程：**
 
-1. 父组件 beforeUpdate
+1. **父组件 beforeUpdate**
 2. 子组件 beforeUpdate
-3. 子组件 updated
+3. **子组件 updated**
 4. 父组件 updated
 
 **销毁过程：**
 
-1. 父组件 beforeDestroy
+1. **父组件 beforeDestroy**
 2. 子组件 beforeDestroy
-3. 子组件 destroyed
+3. **子组件 destroyed**
 4. 父组件 destoryed
 
-### 3. created和mounted的区别
+### 3. created和mounted的区别:star::star:
 
 - created:在模板渲染成html前调用，即通常初始化某些属性值，然后再渲染成视图。
 - mounted:在模板渲染成html后调用，通常是初始化页面完成后，再对html的dom节点进行一些需要的操作。
 
-### 4. 一般在哪个生命周期请求异步数据
+### 4. 一般在哪个生命周期请求异步数据:star::star:
 
 我们可以在钩子函数 created、beforeMount、mounted 中进行调用，因为在这三个钩子函数中，data 已经创建，可以将服务端端返回的数据进行赋值。 
 
-推荐在 created 钩子函数中调用异步请求，因为在 created 钩子函数中调用异步请求有以下优点：
+推荐在 created 钩子函数中**调用异步请求**，因为在 created 钩子函数中调用异步请求有以下优点：
 
 - 能更快获取到服务端数据，减少页面加载时间，用户体验更好；
-- SSR不支持 beforeMount 、mounted 钩子函数，放在 created 中有助于一致性。
+- **SSR不支持 beforeMount 、mounted 钩子函数**，放在 created 中有助于一致性。
 
-### 5. keep-alive 中的生命周期哪些
+### 5. keep-alive 中的生命周期哪些:star::star:
 
 keep-alive是 Vue 提供的一个内置组件，用来对组件进行缓存——在组件切换过程中将状态保留在内存中，防止重复渲染DOM。
 
@@ -1269,7 +1277,7 @@ keep-alive是 Vue 提供的一个内置组件，用来对组件进行缓存—�
 
 当组件被换掉时，会被缓存到内存中、触发 deactivated 生命周期；当组件被切回来时，再去缓存里找这个组件、触发 activated钩子函数。
 
-## 三、组件通信
+## 三、组件通信 :star::star:
 
 组件通信的方式如下：
 
