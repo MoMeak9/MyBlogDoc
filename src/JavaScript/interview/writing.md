@@ -97,6 +97,16 @@ objectFactory(构造函数, 初始化参数);
 
 - 返回新对象
 
+```js
+function newObj() {
+    const obj = {};
+    const Constructor = Array.prototype.shift.call(arguments);
+    obj.__proto__ = Constructor.prototype;
+    Constructor.apply(obj, arguments);
+    return obj;
+}
+```
+
 
 
 ### 4. 手写 Promise:star:

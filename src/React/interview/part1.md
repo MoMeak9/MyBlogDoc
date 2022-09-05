@@ -14,7 +14,7 @@ category:
 
 ### 1. React 事件机制 :star::star:
 
-```javascript
+```vue
 <div onClick={this.handleClick.bind(this)}>点我</div>
 ```
 
