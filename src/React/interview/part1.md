@@ -1193,7 +1193,7 @@ Greeting.propTypes = {
 
 ## 三、生命周期
 
-### 1. React的生命周期有哪些？:star::star:
+### 1. <u>React的生命周期有哪些</u>？:star::star:
 
 React 通常将组件生命周期分为三个阶段：
 
