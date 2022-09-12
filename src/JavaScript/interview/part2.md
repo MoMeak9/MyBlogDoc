@@ -132,6 +132,12 @@ JavaScript中的异步机制可以分为以下几种：
 - **generator** 的方式，它可以在函数的执行过程中，将函数的执行权转移出去，在函数外部还可以将执行权转移回来。当遇到异步函数执行的时候，将函数执行权转移出去，当异步函数执行完毕时再将执行权给转移回来。因此在 generator 内部对于异步操作的方式，可以以同步的顺序来书写。使用这种方式需要考虑的问题是何时将函数的控制权转移回来，因此需要有一个自动执行 generator 的机制，比如说 co 模块等方式来实现 generator 的自动执行。
 - **async await** 的方式，async 函数是 <u>generator 和 promise 实现的一个自动执行的语法糖，它内部自带执行器</u>，当函数内部执行到一个 await 语句的时候，如果语句返回一个 promise 对象，那么函数将会等待 promise 对象的状态变为 resolve 后再继续向下执行。因此可以将异步逻辑，转化为同步的顺序来书写，并且这个函数可以自动执行。
 
+**微任务和宏任务有哪些？**
+
+宏任务：script、setTimeOut、setInterval、setImmediate
+微任务:promise.then,process.nextTick、Object.observe、MutationObserver
+注意：Promise的构造函数是同步任务
+
 ### 2. setTimeout、Promise、Async/Await 的区别 :star:
 
 #### （1）setTimeout
