@@ -884,6 +884,18 @@ useEffect(()=>{
 | componentDidCatch        | 无                        |
 | getDerivedStateFromError | 无                        |
 
+### 8. useCallback :star:
+
+
+
+### 9. useMemo :star:
+
+
+
+### 10. memo :star:
+
+
+
 ## 八、虚拟DOM
 
 ### 1. 对虚拟 DOM 的理解？虚拟 DOM 主要做了什么？虚拟 DOM 本身是什么？ :star::star:

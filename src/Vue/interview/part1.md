@@ -1,6 +1,5 @@
 ---
 date: 2022-06-27
-star: true
 category:
 - Vue
 - 面试题

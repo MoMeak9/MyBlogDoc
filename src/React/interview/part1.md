@@ -1,6 +1,5 @@
 ---
 date: 2022-06-26
-star: true
 category:
 - React
 - 面试题
@@ -856,13 +855,70 @@ React.forwardRef 会创建一个React组件，这个组件能够将其接受的 
 
 **不同点：**
 
-- 它们在开发时的心智模型上却存在巨大的差异。类组件是基于面向对象编程的，它主打的是继承、生命周期等核心概念；而函数组件内核是函数式编程，主打的是 immutable、没有副作用、引用透明等特点。
+- 它们在开发时的心智模型上却存在巨大的差异。类组件是基于面向对象编程的，它主打的是继承、生命周期等核心概念；而函数组件内核是函数式编程，主打的是 immutable、有没有副作用、引用透明等特点。
 - 之前，在使用场景上，如果存在需要使用生命周期的组件，那么主推类组件；设计模式上，如果需要使用继承，那么主推类组件。但现在由于 React Hooks 的推出，生命周期概念的淡出，函数组件可以完全取代类组件。其次继承并不是组件最佳的设计模式，官方更推崇“组合优于继承”的设计概念，所以类组件在这方面的优势也在淡出。
 - 性能优化上，类组件主要依靠 shouldComponentUpdate 阻断渲染来提升性能，而函数组件依靠 React.memo 缓存渲染结果来提升性能。
 - 从上手程度而言，类组件更容易上手（？？），从未来趋势上看，由于React Hooks 的推出，函数组件成了社区未来主推的方案。
 - 类组件在未来时间切片与并发模式中，由于生命周期带来的复杂度，并不易于优化。而函数组件本身轻量简单，且在 Hooks 的基础上提供了比原先更细粒度的逻辑组织与复用，更能适应 React 的未来发展。
 
-****
+### 29. React 组件类型分类
+
+**按照定义分类：**
+
+- 类组件，使用 ES6 的 class 定义，维护 state，有生命周期
+- 函数组件，使用普通函数定义，可以通过 hooks 维护状态和副作用
+
+**按状态分：**
+
+- 有状态组件，组件返回结果，受时间、空间或上下文影响
+- 无状态组件，通常是纯展示 UI 组件，容易复用
+
+**按功能定位分：**
+
+- 展示型组件，接收 props，负责 UI 展示
+- 容器组件，管理 states，负责数据获取和组件间通信，多用于状态提升
+
+**按照表单应用分类：**
+
+- 受控组件
+- 非受控组件
+
+**按照React内置分类：**
+
+- 有状态组件
+  - ClassComponent，由 class 创建
+  - ContextProvider，由 createContext 创建
+- 无状态组件
+  - IndeterminateComponent，FunctionCompoent 挂载前的初始类型
+  - FunctionComponent，即函数组件
+  - ForwardRef，由 React.forwardRef 创建，接收 ref 并转发给子组件
+  - MemoComponent，由 React.memo 创建，条件渲染子组件
+  - SimpleMemoCompoent，由 React.memo 创建且不指定条件
+- FiberNode
+  - HostRoot，由 ReactDOM.render 创建
+  - HostPortal，由 React.createPortal 创建，多用于模态框
+  - HostComponent，对应元素节点
+  - HostText，对应文本节点
+- 内置类型
+  - Fragment，分组子列表，无需向 DOM 添加额外节点，可用短语法 <>
+  - Profiler，测量 React 应用多久渲染一次以及渲染一次的“代价”
+  - StrictMode，严格模式，用来突出显示应用程序中潜在问题的工具
+  - Suspense，等待目标代码加载，并且可以指定一个加载界面，在用户等待时显示
+  - PureCompoent，浅层对比 prop 和 state 实现了 shouldComponentUpdate
+
+### 30. 展示组件和容器组件的区别
+
+**展示组件：**
+
+- 关心页面 UI，有自己的 HTML 标签和样式
+- 如果有状态，仅与 UI 相关。与其他组件、context、store 无关
+- 不关心数据源，通过 props 获取数据，并执行回调
+
+**容器组件：**
+
+- 关心功能实现，无自己的 HTML 标签和样式
+- 有状态。包含请求数据源等副作用。状态提升时，维护多个子组件的状态
+- 可以由第三方库生成，如 React Redux 的 connect() 和 Relay 的createFragmentContainer
 
 ## 二、数据管理
 
@@ -1193,7 +1249,7 @@ Greeting.propTypes = {
 
 ## 三、生命周期
 
-### 1. React的生命周期有哪些？:star::star:
+### 1. <u>React的生命周期有哪些</u>？:star::star:
 
 React 通常将组件生命周期分为三个阶段：
 

@@ -26,6 +26,11 @@ const reactSidebar: HopeThemeSidebarArrayConfig = [
         ]
     },
     {
+        text: 'React 源码探究',
+        prefix: 'source',
+        children: 'structure',
+    },
+    {
         text: 'React面试题',
         prefix: 'interview',
         children: 'structure',
