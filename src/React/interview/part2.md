@@ -886,15 +886,55 @@ useEffect(()=>{
 
 ### 8. useCallback :star:
 
+返回一个 [memoized](https://en.wikipedia.org/wiki/Memoization) 回调函数。
 
+把内联回调函数及依赖项数组作为参数传入 `useCallback`，它将返回该回调函数的 memoized 版本，该回调函数仅在某个依赖项改变时才会更新。当你把回调函数传递给经过优化的并使用引用相等性去避免非必要渲染（例如 `shouldComponentUpdate`）的子组件时，它将非常有用。
+
+`useCallback(fn, deps)` 相当于 `useMemo(() => fn, deps)`。
 
 ### 9. useMemo :star:
 
+```js
+const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+```
 
+返回一个 memoized 值，类似于Vue的计算属性，具有缓存（记忆）
+
+它仅会在某个依赖项改变时才重新计算 memoized 值。这种优化有助于避免在每次渲染时都进行高开销的计算。
+
+传入 `useMemo` 的函数会在渲染期间执行（尚未交付）。请不要在这个函数内部执行不应该在渲染期间内执行的操作，诸如副作用这类的操作属于 `useEffect` 的适用范畴，而不是 `useMemo`。
 
 ### 10. memo :star:
 
+```js
+import {memo} from "react"
 
+const MyComponent = memo(function MyComponent(props) {
+  /* 使用 props 渲染 */
+});
+```
+
+`React.memo` 是高阶组件HOC。
+
+如果你的组件在相同 props 的情况下渲染相同的结果，那么你可以通过将其包装在 `React.memo` 中调用，以此通过记忆组件渲染结果的方式来提高组件的性能表现。这意味着在这种情况下，<u>React 将跳过渲染组件的操作并直接复用最近一次渲染的结果。</u>
+
+如果其实现中还拥有 `useState`，`useReducer` 或 `useContext` 的 Hook，当 state 或 context 发生变化时，它仍会重新渲染。
+
+默认情况下其只会对复杂对象做浅层对比，自定义比较依赖第二个参数
+
+```js
+function MyComponent(props) {
+  /* 使用 props 渲染 */
+}
+function areEqual(prevProps, nextProps) {
+  /*
+  如果把 nextProps 传入 render 方法的返回结果与
+  将 prevProps 传入 render 方法的返回结果一致则返回 true，
+  否则返回 false
+  */
+}
+export default React.memo(MyComponent, areEqual);
+```
 
 ## 八、虚拟DOM
 

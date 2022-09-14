@@ -9,3 +9,4 @@ src/.vuepress/dist/
 /test.html
 .idea
 /dist/
+/test.**

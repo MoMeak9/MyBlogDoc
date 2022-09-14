@@ -11,6 +11,8 @@
 ├── scripts         # 各种工具链的脚本，比如git、jest、eslint等
 ```
 
+^5cfbe9
+
 这里我们关注**packages**目录
 
 ## packages目录

@@ -15,7 +15,7 @@ export default navbar([
     },
     {
         text: "知识大纲",
-        link: "/campusRec",
+        link: "/campusRec/needToKnown",
     },
     {
         text: "必读文章",
