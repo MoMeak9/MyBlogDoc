@@ -243,7 +243,7 @@ fiberRootNode.current = rootFiber;
 
 <img src="https://cdn.yihuiblog.top/images/202209011730264.png" alt="workInProgressFiberFinish" style="zoom:50%;" />
 
-## [#](https://react.iamkasong.com/process/doubleBuffer.html#update时)update时
+## update时
 
 1. 接下来我们点击`p节点`触发状态改变，这会开启一次新的`render阶段`并构建一棵新的`workInProgress Fiber 树`。
 
@@ -256,4 +256,3 @@ fiberRootNode.current = rootFiber;
 1. `workInProgress Fiber 树`在`render阶段`完成构建后进入`commit阶段`渲染到页面上。渲染完毕后，`workInProgress Fiber 树`变为`current Fiber 树`。
 
 <img src="https://cdn.yihuiblog.top/images/202209011730270.png" alt="currentTreeUpdate" style="zoom:50%;" />
-

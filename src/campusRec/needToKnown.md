@@ -5,8 +5,8 @@ editLink: false
 
 ## HTML CSS JS 打基础
 
-- [HTML面试传送门](/HTML/HTML.html)
-- [CSS面试传送门](/CSS/interview/CSS.html)
+- [HTML面试传送门](/HTML/HTML)
+- [CSS面试传送门](/CSS/interview/CSS)
 - [JS输出题](/JavaScript/interview/output.html)
 - [JS高频手撕](/JavaScript/interview/writing.html)
 - [JS面试传送门](/JavaScript/interview/)
