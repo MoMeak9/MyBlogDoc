@@ -7,6 +7,12 @@ category:
 ---
 
 >  [参照 「2021」高频前端面试题汇总之React篇（下）](https://juejin.cn/post/6940942549305524238)
+>
+>  https://juejin.cn/post/7066951709678895141
+>
+>  https://juejin.cn/post/6944863057000529933
+>
+>  https://juejin.cn/post/7119102104337121316
 
 # React 面试题（二）
 
@@ -935,6 +941,10 @@ function areEqual(prevProps, nextProps) {
 }
 export default React.memo(MyComponent, areEqual);
 ```
+
+### 11. [执行和清除副作用的时机](../effect)？ :star::star:
+
+
 
 ## 八、虚拟DOM
 
