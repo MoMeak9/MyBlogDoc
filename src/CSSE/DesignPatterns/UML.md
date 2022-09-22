@@ -4,13 +4,13 @@ category:
 - 设计模式
 ---
 
-**在 Java 或其它[面向对象设计模式](https://www.zhihu.com/search?q=面向对象设计模式&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"article"%2C"sourceId"%3A24576502})中，类与类之间主要有 6 种关系，他们分别为：依赖，关联，聚合，组合，继承，实现。他们的耦合度依次增强。**
+**在 Java 或其它面向对象设计模式中，类与类之间主要有 6 种关系，他们分别为：依赖，关联，聚合，组合，继承，实现。他们的耦合度依次增强。**
 
 # UML图关系详解
 
 ## 1. 依赖 (Dependency)
 
-[依赖关系](https://www.zhihu.com/search?q=依赖关系&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"article"%2C"sourceId"%3A24576502})的定义为：对于两个相对独立的对象，当一个对象负责构造另一个对象的实例，或者依赖另一个对象的服务时，这两个对象之间主要体现为依赖关系。
+依赖关系的定义为：对于两个相对独立的对象，当一个对象负责构造另一个对象的实例，或者依赖另一个对象的服务时，这两个对象之间主要体现为依赖关系。
 
 可以简单的理解为：类 A 使用到了类 B，而这种使用关系具有偶然性，临时性，非常弱的，但是 B 类中的变化会影响到类 A，比如某个学生要用笔写字，学生与笔的关系就是一种依赖关系，如果笔没水了，那学生就不能写字了(B 类的变化会影响类 A) 或者换另一只笔继续写字(临时性体现)。
 
@@ -58,7 +58,7 @@ class Driver {
 
 ## 2. 关联 (Association)
 
-[关联关系](https://www.zhihu.com/search?q=关联关系&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"article"%2C"sourceId"%3A24576502})的定义为：对于两个相对独立的对象，当一个对象的实例与另一个对象的一些特定实例存在固定的对应关系时，这两个对象之间为关联关系。
+关联关系的定义为：对于两个相对独立的对象，当一个对象的实例与另一个对象的一些特定实例存在固定的对应关系时，这两个对象之间为关联关系。
 
 它体现的两个类中一种强依赖关系，比如我和我的朋友，这种关系比依赖更强，不存在依赖关系中的偶然性，关系也不是临时的，一般是长期性的。
 
@@ -103,7 +103,7 @@ class Car {
 
 ## 3.聚合 (Aggregation)
 
-[聚合关系](https://www.zhihu.com/search?q=聚合关系&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"article"%2C"sourceId"%3A24576502})是关联关系的一种，耦合度强于关联，他们的代码表现是相同的，仅仅是在语义上有所区别：关联关系的对象间是相互独立的，而聚合关系的对象之间存在着包容关系，他们之间是“整体-个体”的相互关系。
+聚合关系是关联关系的一种，耦合度强于关联，他们的代码表现是相同的，仅仅是在语义上有所区别：关联关系的对象间是相互独立的，而聚合关系的对象之间存在着包容关系，他们之间是“整体-个体”的相互关系。
 
 聚合关系中作为成员变量的类一般使用 set 方法赋值。
 
@@ -130,7 +130,7 @@ class Car {
 
 ## 4. 组合 (Composition)
 
-相比于聚合，组合是一种耦合度更强的关联关系。存在[组合关系](https://www.zhihu.com/search?q=组合关系&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"article"%2C"sourceId"%3A24576502})的类表示“整体-部分”的关联关系，“整体”负责“部分”的[生命周期](https://www.zhihu.com/search?q=生命周期&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"article"%2C"sourceId"%3A24576502})，他们之间是共生共死的；并且“部分”单独存在时没有任何意义。
+相比于聚合，组合是一种耦合度更强的关联关系。存在组合关系]的类表示“整体-部分”的关联关系，“整体”负责“部分”的生命周期，他们之间是共生共死的；并且“部分”单独存在时没有任何意义。
 
 对比与聚合关系，我们可以将前面的例子变为下面的场景：
 
@@ -175,7 +175,7 @@ class Car {
 
 ## 5. 继承 (Generalization)
 
-继承表示类与类 (或者接口与接口) 之间的父子关系。在 Java 中，用关键字 extends 表示[继承关系](https://www.zhihu.com/search?q=继承关系&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"article"%2C"sourceId"%3A24576502})。
+继承表示类与类 (或者接口与接口) 之间的父子关系。在 Java 中，用关键字 extends 表示继承关系。
 
 思考下面的场景：
 

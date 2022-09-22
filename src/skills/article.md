@@ -11,6 +11,13 @@ comment: false
 > **来源：**
 >
 > [写给初中级前端的高级进阶指南](https://juejin.cn/post/6844904103504527374)
+> 
+> 之后会归类更多的文章到此
+
+## 牛人博客
+
+- [Kent C. Dodds](https://kentcdodds.com/)
+- 
 
 ## JavaScript
 
@@ -34,15 +41,15 @@ comment: false
 
 ### 异常处理
 
-
+- [Callback Promise Generator Async-Await 和异常处理的演进](https://juejin.cn/post/6844903462002491399)
 
 ### 插件机制
 
-
+- [Koa 的洋葱中间件，Redux 的中间件，Axios 的拦截器让你迷惑吗？实现一个精简版的就彻底搞懂了。](https://juejin.cn/post/6844904039608500237)
 
 ### 设计模式
 
-
+- [我自己的设计模式汇总](/category/设计模式/)
 
 ## 框架
 
@@ -94,14 +101,16 @@ comment: false
 - [Umi Hooks - 助力拥抱 React Hooks](https://zhuanlan.zhihu.com/p/103150605?utm_source=wechat_session)
 - [React Hooks 的体系设计之一 - 分层](https://zhuanlan.zhihu.com/p/106665408)
 
-#### 性能优化
+#### React 性能优化
 
 - [optimize-react-re-renders](https://kentcdodds.com/blog/optimize-react-re-renders)
 - [如何对 React 函数式组件进行优化](https://juejin.im/post/5dd337985188252a1873730f)
 
-#### 单元测试
+#### React 单元测试
 
-
+- [how-to-test-custom-react-hooks](https://kentcdodds.com/blog/how-to-test-custom-react-hooks)
+- [Introducing The React Testing Library](https://kentcdodds.com/blog/introducing-the-react-testing-library)
+- [Testing Implementation Details](https://kentcdodds.com/blog/testing-implementation-details)
 
 #### React 和 TypeScript 结合使用
 
