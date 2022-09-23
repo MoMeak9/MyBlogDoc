@@ -1,3 +1,9 @@
+---
+date: 2022-06-27
+category:
+- JavaScript
+---
+
 # ES5、6 指导规范
 
 ## ES6 常用规范
@@ -453,6 +459,37 @@ function foo() {
 - 构造函数类成员中不允许出现重复名称。
 
 ## 10. 模块
+
+-  总是使用模组 (import/export) 而不是其他非标准模块系统。
+-  不要使用通配符导入。
+-  不要从 import 中直接 export。
+-  确保import和export命名匹配。
+-  模块导入顺序优先级注意。并且import优先级一定高于require。模块导入按照以下顺序：
+  - node模块(fs等)
+  - 外部模块(lodash等)
+  - 全局模块
+  - 父目录模块
+  - 当前目录模块
+-  如果一个模块仅有一个导出，请加上export default。同样的，一个模块内只能出现一个默认导出export default。
+-  禁止使用default作为导入变量名，因为会与export default冲突发生错误。
+-  禁止使用绝对路径导入
+-  不使用AMD
+-  禁止在 import 和 export 和解构赋值时将引用重命名为相同的名字。
+
+## 11. 迭代器和生成器
+
+- 不要使用 iterators。使用高阶函数例如 `map()` 和 `reduce()` 替代 `for-of`。
+
+  > 这加强了我们不变的规则。处理纯函数的回调值更易读，这比它带来的副作用更重要。使用`map()`/`every()`/`filter()`/`find()`/`findIndex()`/`reduce()`/`some()`/`...`遍历数组， 和使用`Object.keys()`/`Object.values()`/`Object.entries()`迭代你的对象生成数组。
+
+## 12. 属性
+
+- 使用 `.` 来访问对象的属性。
+- 当通过变量访问属性时使用中括号 `[]`。
+- 规定声明对象的属性时只能一行声明所有的属性或者每行声明一个属性。
+- 禁止使用`__proto__`属性，`__proto__`属性已从**ECMAScript 3.1开始弃用**，不应在代码中使用，改用`getPrototypeOf`方法。
+
+## 13. 变量
 
 
 

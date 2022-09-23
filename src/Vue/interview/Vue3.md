@@ -1,3 +1,10 @@
+---
+date: 2022-06-27
+category:
+- Vue
+- 面试题
+---
+
 # Vue 3 面试题集合（系统整理升级变动）
 
 > [web前端面试 - 面试官系列](https://vue3js.cn/interview/)
