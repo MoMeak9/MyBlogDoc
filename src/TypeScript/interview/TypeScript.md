@@ -1,5 +1,4 @@
 ---
-icon: edit
 date: 2022-03-19
 category:
 - 面试题
@@ -12,7 +11,6 @@ category:
 > 来源：
 >
 > https://juejin.cn/post/6999985372440559624
->
 > 
 
 **1. 什么是TypeScript？**

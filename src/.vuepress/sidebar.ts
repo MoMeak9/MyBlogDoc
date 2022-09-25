@@ -31,7 +31,7 @@ export default sidebar({
     "/JavaScript/": [
         {
             text: "JavaScript知识体系",
-            prefix:"",
+            prefix: "",
             children: "structure"
         }
     ],
@@ -44,9 +44,10 @@ export default sidebar({
         },
         {
             text: "CSS知识体系",
-            prefix:"",
+            prefix: "",
             children: "structure"
         }
     ],
     "/HTML/": "structure",
+    "/TypeScript/": "structure"
 });
