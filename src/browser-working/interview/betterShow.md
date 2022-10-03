@@ -454,10 +454,10 @@ module.exports = {
 比如希望打包两个文件：
 
 ```javascript
-// test.js
+// test.java
 export const a = 1
 // index.js
-import { a } from './test.js'
+import { a } from './test.java'
 ```
 
 对于这种情况，打包出来的代码会类似这样：
@@ -501,11 +501,11 @@ module.exports = {
 **Tree Shaking 可以实现删除项目中未被引用的代码**，比如：
 
 ```
-// test.js
+// test.java
 export const a = 1
 export const b = 2
 // index.js
-import { a } from './test.js'
+import { a } from './test.java'
 ```
 
 对于以上情况，`test` 文件中的变量 `b` 如果没有在项目中使用到的话，就不会被打包到文件中。
