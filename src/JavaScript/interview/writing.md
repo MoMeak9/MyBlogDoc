@@ -19,7 +19,7 @@ category:
 ```javascript
 function create(obj) {
   function F() {}
-  F.prototype = obj
+  F.prototype = obj	
   return new F()
 }
 ```
@@ -350,7 +350,31 @@ Promise.race = function (args) {
 
 > 补充手写Promise.any
 
+### 手写 Promise.any
 
+```js
+MyPromise.any = function(promises){
+  return new Promise((resolve,reject)=>{
+    promises = Array.isArray(promises) ? promises : []
+    let len = promises.length
+    // 用于收集所有 reject 
+    let errs = []
+    // 如果传入的是一个空数组，那么就直接返回 AggregateError
+    if(len === 0) return reject(new AggregateError('All promises were rejected'))
+    promises.forEach((promise)=>{
+      promise.then(value=>{
+        resolve(value)
+      },err=>{
+        len--
+        errs.push(err)
+        if(len === 0){
+          reject(new AggregateError(errs))
+        }
+      })
+    })
+  })
+}
+```
 
 ### 8. <u>手写防抖函数:star:</u>:star:
 
@@ -372,10 +396,53 @@ function debounce(fn, wait) {
     }
 
     // 设置定时器，使事件间隔指定事件后执行
-    timer = setTimeout(() => {
+    timer = setTimeout(function () {
       fn.apply(context, args);
     }, wait);
   };
+}
+
+// or
+
+// 函数防抖的实现
+function debounce(fn, wait) {
+    let timer = null;
+
+    return function () {
+        let context = this, // 保存当前函数执行上下文
+            args = arguments;
+
+        // 如果此时存在定时器的话，则取消之前的定时器重新记时
+        if (timer) {
+            clearTimeout(timer);
+            timer = null;
+        }
+
+        // 设置定时器，使事件间隔指定事件后执行
+        timer = setTimeout(function () {
+            fn.apply(context, args);
+        }, wait);
+    };
+}
+
+// 函数防抖的实现
+function debounce2(fn, wait) {
+    let timer = null;
+
+    return function () {
+        let args = arguments;
+
+        // 如果此时存在定时器的话，则取消之前的定时器重新记时
+        if (timer) {
+            clearTimeout(timer);
+            timer = null;
+        }
+
+        // 设置定时器，使事件间隔指定事件后执行
+        timer = setTimeout(() => {
+            fn.apply(this, args);
+        }, wait);
+    };
 }
 ```
 
@@ -410,7 +477,7 @@ function throttle(fn, delay) {
 
 ```javascript
 function getType(value) {
-  // 判断数据是 null 的情况
+  // 判断数据是 null/undefined 的情况
   if (value == null) {
     return value + "";
   }
@@ -508,22 +575,19 @@ bind 函数的实现步骤：
 
 ```javascript
 // bind 函数实现
-Function.prototype.myBind = function(context) {
-  // 判断调用对象是否为函数
-  if (typeof this !== "function") {
-    throw new TypeError("Error");
-  }
-  // 获取参数
-  var args = [...arguments].slice(1),
-      fn = this;
-  return function Fn() {
-    // 根据调用方式，传入不同绑定值
-    return fn.apply(
-      this instanceof Fn ? this : context,
-      args.concat(...arguments)
-    );
-  };
-};
+Function.prototype.myBind = function (context) {
+    if (typeof this !== "function") {
+        throw new TypeError("Error");
+    }
+    const args = [...arguments].slice(1)
+    return function Fn() {
+        // 根据调用方式，传入不同绑定值，判断函数作为构造函数的情况
+        return this.apply(
+            this instanceof Fn ? this : context,
+            args.concat(...arguments)
+        )
+    }
+}
 ```
 
 ### 14. 函数柯里化的实现:star:
@@ -906,7 +970,7 @@ console.log(add(arr)) // 21
 
 
 
-### 5. <u>实现数组的扁平化</u> :star::star:
+### 5. <u>实现数组的扁平化</u> :star::star::star:
 
 **（1）递归实现**
 
@@ -929,17 +993,17 @@ function flatten(arr) {
 flatten(arr);  //  [1, 2, 3, 4，5]
 ```
 
-（2）**<u>reduce 函数迭代</u>**
+（2）**<u>reduce 函数迭代</u>**:star:
 
 从上面普通的递归函数中可以看出，其实就是对数组的每一项进行处理，那么其实也可以用reduce 来实现数组的拼接，从而简化第一种方法的代码，改造后的代码如下所示：
 
 ```javascript
 let arr = [1, [2, [3, 4]]];
+
 function flatten(arr) {
-    return arr.reduce(function(prev, next){
-        return prev.concat(Array.isArray(next) ? flatten(next) : next)
-    }, [])
+    return arr.reduce((prev, cur) => prev.concat(Array.isArray(cur) ? flatten(cur) : cur), [])
 }
+
 console.log(flatten(arr));//  [1, 2, 3, 4，5]
 ```
 
@@ -1646,13 +1710,13 @@ childNum(30, 3)
 ### 4. 用Promise实现图片的异步加载
 
 ```javascript
-let imageAsync=(url)=>{
+const imageAsync=(url)=>{
             return new Promise((resolve,reject)=>{
                 let img = new Image();
                 img.src = url;
                 img.οnlοad=()=>{
                     console.log(`图片请求成功，此处进行通用操作`);
-                    resolve(image);
+                    resolve(img);
                 }
                 img.οnerrοr=(err)=>{
                     console.log(`失败，此处进行失败的通用操作`);
