@@ -1,3 +1,8 @@
+---
+date: 2022-06-27
+category:
+- JavaScript
+---
 # axios、XHR、XML、AJAX和Fetch分不清怎么办？
 
 由面试引出的问题：
