@@ -76,19 +76,19 @@ category:
 
 - SEO优化（TDK）
 
-  - 设置网站的 title 标题标签，如：
+  - 设置网站的 **title** 标题标签，如：
 
     ```html
     <title>小滴课堂</title>
     ```
 
-  - 设置网站的 description 描述标签，如：
+  - 设置网站的 **description** 描述标签，如：
 
     ```html
     <meta name="Description" content="小滴课堂是IT技能学习平台,提供了丰富的java开发、web前端" />
     ```
 
-  - 设置网站的 keywords 关键词标签，如：
+  - 设置网站的 **keywords** 关键词标签，如：
 
     ```html
     <meta name="keywords" content="小滴课堂 小D课堂,xdclass,java,vue教程,html教程,js教程,w3c教程,css,webpack">
@@ -210,5 +210,4 @@ category:
     ```js
     window.history.go(1)
     ```
-
 
