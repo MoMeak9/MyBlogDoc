@@ -1,3 +1,9 @@
+---
+date: 2022-08-12
+category:
+- Network
+---
+
 # RESTful 下请求方法的幂等性
 
 ## 概念阐述

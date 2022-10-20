@@ -7,8 +7,7 @@ category:
 
 # 事件循环是如何影响页面渲染的？
 
-- [
-  渲染任务的时机](https://harttle.land/2019/01/16/how-eventloop-affects-rendering.html#header-3)
+- [渲染任务的时机](https://harttle.land/2019/01/16/how-eventloop-affects-rendering.html#header-3)
 - [所以 setImmediate 是啥](https://harttle.land/2019/01/16/how-eventloop-affects-rendering.html#header-4)
 
 JavaScript 是单线程的，但提供了很多异步调用方式比如 `setTimeout`，`setInterval`，`setImmediate`，`Promise.prototype.then`，`postMessage`，`requestAnimationFrame`， I/O，DOM 事件等。 这些异步调用的实现都是[事件循环](https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model)，但根据插入的队列不同和取任务的时机不同他们的表现也不同。 尤其在涉及与页面渲染的关系时。

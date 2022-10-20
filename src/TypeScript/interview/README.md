@@ -73,7 +73,7 @@ TypeScript 使用鸭子类型，也即结构化类型系统进行类型兼容性
 
 ## 场景题题问：
 
-https://vue3js.cn/interview/typescript/typescript_javascript.html#%E4%BA%8C%E3%80%81%E7%89%B9%E6%80%A7
+[参考场景题](https://vue3js.cn/interview/typescript/typescript_javascript.html#%E4%BA%8C%E3%80%81%E7%89%B9%E6%80%A7)
 
 ### Typescript 的数据类型有哪些？
 
@@ -91,33 +91,97 @@ https://vue3js.cn/interview/typescript/typescript_javascript.html#%E4%BA%8C%E3%8
 - never 类型
 - object 对象类型
 
-### 对 TypeScript 中枚举类型（enum）的理解？应用场景？
-
-
-
-### 说说你对 TypeScript 中接口（interface）的理解？应用场景？
-
-
-
-### 对 TypeScript 中类的理解？应用场景？
-
-
-
 ### TypeScript 中函数的理解？与 JavaScript 函数的区别？
 
+函数是`JavaScript` 应用程序的基础，帮助我们实现抽象层、模拟类、信息隐藏和模块
 
-
-
+在`TypeScript` 里，虽然已经支持类、命名空间和模块，但函数仍然是主要定义行为的方式，`TypeScript` 为 `JavaScript` 函数添加了额外的功能，丰富了更多的应用场景
 
 ### 对 TypeScript 中泛型的理解？应用场景？
 
+泛型程序设计（generic programming）是程序设计语言的一种风格或范式
 
+泛型允许我们在强类型程序设计语言中编写代码时使用一些以后才指定的类型，在实例化时作为参数指明这些类型。
 
-### 你对 TypeScript 中高级类型的理解？有哪些？
+在`typescript`中，定义函数，接口或者类的时候，不预先定义好具体的类型，而在使用的时候在指定类型的一种特性。
 
+### 对 TypeScript 中高级类型的理解？有哪些？
 
+除了`string`、`number`、`boolean` 这种基础类型外，在 `typescript` 类型声明中还存在一些高级的类型应用
 
+这些高级类型，是`typescript`为了保证语言的灵活性，所使用的一些语言特性。这些特性有助于我们应对复杂多变的开发场景
 
+### 有哪些？
+
+- 交叉类型
+
+  ```ts
+  T & U
+  ```
+
+- 联合类型
+
+  ```ts
+  T | U
+  ```
+
+- 类型别名
+
+  type：类型别名会给一个类型起个新名字，类型别名有时和接口很像，但是可以作用于原始值、联合类型、元组以及其它任何你需要手写的类型
+
+  可以使用类型别名来在属性里引用自己（也可以是泛型）：
+
+  ```ts
+  type Tree<T> = {
+      value: T;
+      left: Tree<T>;
+      right: Tree<T>;
+  }
+  ```
+
+- 类型索引
+
+  `keyof` 类似于 `Object.keys` ，用于获取一个接口中 Key 结果作为联合类型返回。
+
+- 类型约束
+
+  通过关键字 `extend` 进行约束，不同于在 `class` 后使用 `extends` 的继承作用，泛型内使用的主要作用是对泛型加以约束（表示该泛型是xxx的子类）
+
+- 映射类型
+
+  通过 `in` 关键字做类型的映射，遍历已有接口的 `key` 或者是遍历联合类型，如下例子：
+
+  ```ts
+  type Readonly<T> = {
+      readonly [P in keyof T]: T[P];
+  };
+  
+  interface Obj {
+    a: string
+    b: string
+  }
+  
+  type ReadOnlyObj = Readonly<Obj>
+  ```
+
+  最终`ReadOnlyObj`的接口为下述：
+
+  ```ts
+  interface ReadOnlyObj {
+      readonly a: string;
+      readonly b: string;
+  }
+  ```
+
+- 条件类型
+
+  条件类型的语法规则和三元表达式一致，经常用于一些类型不确定的情况。
+
+  ```ts
+  T extends U ? X : Y
+  ```
+
+  上面的意思就是，如果 T 是 U 的子集，就是类型 X，否则为类型 Y
 
 ### 对 TypeScript 装饰器@的理解？应用场景？
 

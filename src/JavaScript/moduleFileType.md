@@ -62,6 +62,6 @@ SystemJs 是一个通用的模块**加载器**，支持 CJS，AMD 和 ESM 模块
 
 此代码可以在浏览器中运行，也是较为常见的Javascript SDK 引入方式
 
-> **参照转译：**
+> **参照整理：**
 >
 > [What Are CJS, AMD, UMD, ESM, System, and IIFE?](https://betterprogramming.pub/what-are-cjs-amd-umd-esm-system-and-iife-3633a112db62)

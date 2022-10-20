@@ -1,3 +1,8 @@
+---
+date: 2022-06-27
+category:
+- JavaScript
+---
 # call/apply/bind 深入解析
 
 ## call/apply/bind的核心理念：借用方法

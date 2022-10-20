@@ -25,7 +25,7 @@ CDN一般会用来托管Web资源（包括文本、图片和脚本等），可�
 - 用户收到的内容来自最近的数据中心，延迟更低，内容加载更快
 - 部分资源请求分配给了CDN，减少了服务器的负载
 
-（2）在安全方面，CDN有助于防御DDoS、MITM等网络攻击：
+（2）在安全方面，CDN有助于防御DDoS、MITM（中间人攻击）等网络攻击：
 
 - 针对DDoS：通过监控分析异常流量，限制其请求频率
 - 针对MITM：从源服务器到 CDN 节点到 ISP（Internet Service Provider），全链路 HTTPS 通信
@@ -34,14 +34,26 @@ CDN一般会用来托管Web资源（包括文本、图片和脚本等），可�
 
 ### 3. CDN的原理:star::star:
 
-CDN和DNS有着密不可分的联系，先来看一下DNS的解析域名过程，在浏览器输入 [www.test.com](https://link.juejin.cn?target=http%3A%2F%2Fwww.test.com) 的解析过程如下： （1） 检查浏览器缓存 （2）检查操作系统缓存，常见的如hosts文件 （3）检查路由器缓存 （4）如果前几步都没没找到，会向ISP(网络服务提供商)的LDNS服务器查询 （5）如果LDNS服务器没找到，会向根域名服务器(Root Server)请求解析，分为以下几步：
+CDN和DNS有着密不可分的联系，先来看一下DNS的解析域名过程，在浏览器输入 [www.test.com](https://link.juejin.cn?target=http%3A%2F%2Fwww.test.com) 的解析过程如下： 
+
+（1） 检查浏览器缓存 
+
+（2）检查操作系统缓存，常见的如hosts文件 
+
+（3）检查路由器缓存 
+
+（4）如果前几步都没没找到，会向ISP(网络服务提供商)的LDNS服务器查询 
+
+（5）如果LDNS服务器没找到，会向根域名服务器(Root Server)请求解析，分为以下几步：
 
 - 根服务器返回顶级域名(TLD)服务器如`.com`，`.cn`，`.org`等的地址，该例子中会返回`.com`的地址
 - 接着向顶级域名服务器发送请求，然后会返回次级域名(SLD)服务器的地址，本例子会返回`.test`的地址
 - 接着向次级域名服务器发送请求，然后会返回通过域名查询到的目标IP，本例子会返回`www.test.com`的地址
 - Local DNS Server会缓存结果，并返回给用户，缓存在系统中
 
-**CDN的工作原理：** （1）用户未使用CDN缓存资源的过程：
+**CDN的工作原理：** 
+
+（1）用户未使用CDN缓存资源的过程：
 
 1. 浏览器通过DNS对域名进行解析（就是上面的DNS解析过程），依次得到此域名对应的IP地址
 2. 浏览器根据得到的IP地址，向域名的服务主机发送数据请求
@@ -100,6 +112,8 @@ CDN和DNS有着密不可分的联系，先来看一下DNS的解析域名过程�
 （3）`imgs.offsetTop` 是元素顶部距离文档顶部的高度（包括滚动条的距离）
 
 （4）图片加载条件：`img.offsetTop < window.innerHeight + document.body.scrollTop;`
+
+> 图片距离顶部高度小于窗口和文档滚过高度的距离之和
 
 **图示：** ![img](https://cdn.yihuiblog.top/images/202207011138065.webp) **代码实现：**
 
@@ -454,10 +468,10 @@ module.exports = {
 比如希望打包两个文件：
 
 ```javascript
-// test.js
+// test.java
 export const a = 1
 // index.js
-import { a } from './test.js'
+import { a } from './test.java'
 ```
 
 对于这种情况，打包出来的代码会类似这样：
@@ -501,11 +515,11 @@ module.exports = {
 **Tree Shaking 可以实现删除项目中未被引用的代码**，比如：
 
 ```
-// test.js
+// test.java
 export const a = 1
 export const b = 2
 // index.js
-import { a } from './test.js'
+import { a } from './test.java'
 ```
 
 对于以上情况，`test` 文件中的变量 `b` 如果没有在项目中使用到的话，就不会被打包到文件中。
@@ -519,13 +533,13 @@ import { a } from './test.js'
 - **压缩代码**：删除多余的代码、注释、简化代码的写法等等⽅式。可以利⽤webpack的 UglifyJsPlugin 和 ParallelUglifyPlugin 来压缩JS⽂件， 利⽤ cssnano （css-loader?minimize）来压缩css
 - **利⽤CDN加速**: 在构建过程中，将引⽤的静态资源路径修改为CDN上对应的路径。可以利⽤webpack对于 output 参数和各loader的 publicPath 参数来修改资源路径
 - **Tree Shaking**: 将代码中永远不会⾛到的⽚段删除掉。可以通过在启动webpack时追加参数 --optimize-minimize 来实现
-- **Code Splitting:** 将代码按路由维度或者组件分块(chunk),这样做到按需加载,同时可以充分利⽤浏览器缓存
+- **Code Splitting:** 将代码按**路由维度**或者组件分块(chunk),这样做到按需加载,同时可以充分利⽤浏览器缓存
 - **提取公共第三⽅库**: SplitChunksPlugin插件来进⾏公共模块抽取,利⽤浏览器缓存可以⻓期缓存这些⽆需频繁变动的公共代码
 
 ### 4. 如何提⾼**webpack**的构建速度？
 
-1. 多⼊⼝情况下，使⽤ CommonsChunkPlugin 来提取公共代码
-2. 通过 externals 配置来提取常⽤库
+1. 多⼊⼝情况下，使⽤ **CommonsChunkPlugin 来提取公共代码**
+2. 通过 **externals 配置来提取常⽤库**
 3. 利⽤ DllPlugin 和 DllReferencePlugin 预编译资源模块 通过 DllPlugin 来对那些我们引⽤但是绝对不会修改的npm包来进⾏预编译，再通过 DllReferencePlugin 将预编译的模块加载进来。
 4. 使⽤ Happypack 实现多线程加速编译
 5. 使⽤ webpack-uglify-parallel 来提升 uglifyPlugin 的压缩速度。 原理上 webpack-uglify-parallel 采⽤了多核并⾏压缩来提升压缩速度

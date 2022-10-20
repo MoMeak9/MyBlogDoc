@@ -1,7 +1,9 @@
 ---
 date: 2022-07-18
 tag:
-- 计算机网络
+- Network
+tags:
+- HTTP
 ---
 
 # HTTP 代理和缓存

@@ -1,3 +1,9 @@
+---
+date: 2022-10-03
+category:
+- React
+---
+
 # 执行和清除Effect的时机
 
 React 何时清除 effect？ React 会在组件卸载的时候执行清除操作。众所周知，effect 在每次渲染的时候都会执行，而这就是为什么 React 会在执行当前 effect 之前对上一个 effect 进行清除，因为这有助于避免Bug，这是React的默认行为。

@@ -842,7 +842,7 @@ React 会立即退出第一次渲染并用更新后的 state 重新运行组件�
 const Button = React.memo((props) => {  // 具体的组件});
 ```
 
-注意：`**React.memo 等效于 **``**PureComponent**`，它只浅比较 props。这里也可以使用 `useMemo` 优化每一个节点。
+注意：`**React.memo 等效于**` `**PureComponent**`，它只浅比较 props。这里也可以使用 `useMemo` 优化每一个节点。
 
 - `render`：这是函数组件体本身。
 - `componentDidMount`, `componentDidUpdate`： `useLayoutEffect` 与它们两的调用阶段是一样的。但是，我们推荐你**一开始先用 useEffect**，只有当它出问题的时候再尝试使用 `useLayoutEffect`。`useEffect` 可以表达所有这些的组合。

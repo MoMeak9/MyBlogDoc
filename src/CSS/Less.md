@@ -112,7 +112,7 @@ body {
   background: url("../img/dog.png");
 }
 
-复制代码
+
 ```
 
 **声明变量**
@@ -146,7 +146,7 @@ body {
   height: 200px;
   border: solid 1px red;
 }
-复制代码
+
 ```
 
 **变量运算**
@@ -247,7 +247,7 @@ body {
 #header_content{//没有嵌套！
     margin:20px;
 }
-复制代码
+
 ```
 
 **媒体查询**
@@ -263,7 +263,7 @@ body {
     width:100px;
   }
 }
-复制代码
+
 ```
 
 Less 提供了一个十分便捷的方式
@@ -293,7 +293,7 @@ Less 提供了一个十分便捷的方式
     width:2000px;
   }
 }
-复制代码
+
 ```
 
 唯一的缺点就是 每一个元素都会编译出自己 `@media` 声明，并不会合并。
@@ -313,10 +313,10 @@ Less 提供了一个十分便捷的方式
 .show{
   display:none;
 }
-复制代码
+
 const main = document.getElementById("main");
 main.classList.add("show");
-复制代码
+
 ```
 
 结果：
@@ -352,7 +352,7 @@ main.classList.add("show");
      -webkit-box-shadow: 0 1px 2px rgba(151, 151, 151, .58);
      box-shadow: 0 1px 2px rgba(151, 151, 151, .58);
    }
-   复制代码
+   
    ```
 
    其中 `.card` 与 `.card()` 是等价的。 个人建议，为了避免 代码混淆，应写成 :
@@ -364,7 +364,7 @@ main.classList.add("show");
    #wrap{
      .card();
    }
-   复制代码
+   
    ```
 
    要点：
@@ -408,7 +408,7 @@ main.classList.add("show");
        box-shadow: 10px 50px 30px #000;
    }
    
-   复制代码
+   
    ```
 
 2. **方法的匹配模式**
@@ -443,7 +443,7 @@ main.classList.add("show");
      border-style: solid;
      border-width: 50px;
    }
-   复制代码
+   
    ```
 
    要点
@@ -491,7 +491,7 @@ main.classList.add("show");
      width:20px;
    }
    
-   复制代码
+   
    ```
 
    要点
@@ -535,7 +535,7 @@ main.classList.add("show");
      background:#111;
      font-size:40px;
    }
-   复制代码
+   
    ```
 
    要点
@@ -566,7 +566,7 @@ main.classList.add("show");
      box-shadow: 1px 4px 30px red;
      text-shadow: 1px 4px 30px red;
    }
-   复制代码
+   
    ```
 
 6. **方法使用important！**
@@ -587,7 +587,7 @@ main.classList.add("show");
        border: solid 1px red !important;
        margin: 50px !important;
    }
-   复制代码
+   
    ```
 
 7. **循环方法**
@@ -617,7 +617,7 @@ main.classList.add("show");
    .column-4 {
      width: 100%;
    }
-   复制代码
+   
    ```
 
 8. **属性拼接方法**
@@ -639,7 +639,7 @@ main.classList.add("show");
    .main {
      box-shadow: inset 0 0 10px #555, 0 0 20px black;
    }
-   复制代码
+   
    ```
 
    - 空格
@@ -658,7 +658,7 @@ main.classList.add("show");
    .main {
      transform: scale(2) rotate(15deg);
    }
-   复制代码
+   
    ```
 
 9. **实战技巧**
@@ -680,7 +680,7 @@ main.classList.add("show");
    div {
      padding: 33px;
    }
-   复制代码
+   
    ```
 
 可以说 Less 是一门优雅编程语言。
@@ -713,7 +713,7 @@ extend 是 Less 的一个伪类。它可继承 所匹配声明中的全部样式
    .animation .hide , #con{
        transform:scale(0);
    }
-   复制代码
+   
    ```
 
 2. **all 全局搜索替换**
@@ -739,7 +739,7 @@ extend 是 Less 的一个伪类。它可继承 所匹配声明中的全部样式
    #main:after, #wrap:after {
        content: "Less is good!";
    }
-   复制代码
+   
    ```
 
 3. **减少代码的重复性**
@@ -777,7 +777,7 @@ extend 是 Less 的一个伪类。它可继承 所匹配声明中的全部样式
      }  
    }
    
-   复制代码
+   
    ```
 
 4. **要点**
@@ -797,7 +797,7 @@ extend 是 Less 的一个伪类。它可继承 所匹配声明中的全部样式
    import "main"; 
    //等价于
    import "main.less";
-   复制代码
+   
    ```
 
    1. `@import` 的位置可随意放置
@@ -807,7 +807,7 @@ extend 是 Less 的一个伪类。它可继承 所匹配声明中的全部样式
      font-size:15px;
    }
    @import "style";
-   复制代码
+   
    ```
 
 5. **reference**
@@ -819,7 +819,7 @@ extend 是 Less 的一个伪类。它可继承 所匹配声明中的全部样式
    @import (reference) "bootstrap.less"; 
    
    #wrap:extend(.navbar all){}
-   复制代码
+   
    ```
 
    翻译官网：
@@ -833,7 +833,7 @@ extend 是 Less 的一个伪类。它可继承 所匹配声明中的全部样式
    ```
    @import (once) "foo.less";
    @import (once) "foo.less"; // this statement will be ignored
-   复制代码
+   
    ```
 
 7. **multiple**
@@ -877,7 +877,7 @@ isnumber(56px);     // true
 isnumber(7.8%);     // true
 isnumber(keyword);  // false
 isnumber(url(...)); // false
-复制代码
+
 ```
 
 - iscolor
@@ -959,7 +959,7 @@ isnumber(url(...)); // false
    #main{
      width:calc(300px-30px);
    }
-   复制代码
+   
    ```
 
    结构： `~' 值 '`
@@ -988,7 +988,7 @@ isnumber(url(...)); // false
      }
      .loopAnimation(@i + 1);
    }
-   复制代码
+   
    ```
 
    结构： `~"字符@{变量}字符"`;
@@ -1024,7 +1024,7 @@ isnumber(url(...)); // false
    #wrap::after{
      content:"AAA";
    }
-   复制代码
+   
    ```
 
   前几个月 ， 有个 `CSS in JS` 的概念非常火，现在 看来 `JS in CSS` 也未曾不可。 我觉得完全可以根据 Less 这个特性来造个轮子，JS来控制 CSS ，形成 动态属性，如果成功 很可能会改变 现在前端的打开姿势。
@@ -1063,7 +1063,6 @@ scss-作用域
 $color: #00c; /* 蓝色 */
 
 #header {
-
   $color: #c00; /* red */
   border: 1px solid $color; /* 红色边框 */
 }
@@ -1095,7 +1094,7 @@ nested：嵌套缩进的css代码
 expanded：展开的多行css代码
 compact：简洁格式的css代码
 compressed：压缩后的css代码
-复制代码
+
 ```
 
 `Less`没有输出设置
@@ -1120,7 +1119,7 @@ compressed：压缩后的css代码
     border: #{$i}px solid blue;
   }
 }
-复制代码
+
 ```
 
 `Less`不支持。
@@ -1146,7 +1145,7 @@ h2 {
 h3 {
   font-size: 17px;
 }
-复制代码
+
 ```
 
 `Less`引用外部文件和css中的@import没什么差异。
