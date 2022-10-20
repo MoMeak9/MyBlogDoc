@@ -1,6 +1,7 @@
 ---
 date: 2022-08-06
-icon: page
+category:
+- Node
 ---
 
 # 横向对比 CJS 和 ES Module
