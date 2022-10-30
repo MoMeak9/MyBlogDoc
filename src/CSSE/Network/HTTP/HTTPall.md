@@ -1,6 +1,6 @@
 ---
 date: 2022-09-18
-tags:
+tag:
 - Network
 ---
 

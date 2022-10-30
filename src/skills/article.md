@@ -1,7 +1,7 @@
 ---
 category:
 - 前端
-tags:
+tag:
 - 小目标
 comment: false
 ---
