@@ -1,23 +1,17 @@
 ---
 category:
 - 前端
-tags:
+tag:
 - 小目标
 comment: false
 ---
 
 # 精选文章列表
 
-> **来源：**
->
-> [写给初中级前端的高级进阶指南](https://juejin.cn/post/6844904103504527374)
-> 
-> 之后会归类更多的文章到此
-
 ## 牛人博客
 
 - [Kent C. Dodds](https://kentcdodds.com/)
-- 
+- [fi3ework](https://github.com/fi3ework/blog)
 
 ## JavaScript
 
@@ -122,7 +116,8 @@ comment: false
 
 ## TypeScript
 
-
+- 类型体操练习
+- 深入理解TypeScript
 
 ## 构建工具
 
@@ -139,16 +134,18 @@ comment: false
 - [详谈层合成（composite）](https://juejin.im/entry/59dc9aedf265da43200232f9)
 - [让你的网页更丝滑](https://zhuanlan.zhihu.com/p/66398148)
 
-[Why remove time slicing from vue3?](https://github.com/vuejs/rfcs/issues/89)
+- [Why remove time slicing from vue3?](https://github.com/vuejs/rfcs/issues/89)
+- [前端性能优化之浏览器渲染优化 —— 打造60FPS页面](https://github.com/fi3ework/blog/issues/9)
 
+## DevOps
 
+- [CI/CD是什么？如何理解持续集成、持续交付和持续部署](https://www.redhat.com/zh/topics/devops/what-is-ci-cd)
 
-## 网站推荐
-
-dev.to
-medium
 ## 计算机基础
 
 - [小林coding](https://xiaolincoding.com/)
 
-逐步完善ing...
+
+
+> 逐步完善ing...
+
