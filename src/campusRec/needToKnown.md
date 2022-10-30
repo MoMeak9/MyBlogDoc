@@ -84,10 +84,6 @@ editLink: false
 - [性能优化](/Webpack/better)
 - [配置](/Webpack/config)
 
-## 开发调试
-
-
-
 ## 数据库
 
 - [Redis 学习笔记](/DB/Redis.html)
@@ -126,15 +122,5 @@ editLink: false
 
 ## 面试干货 :school:
 - [三方、两方等 应知应会](/campusRec/need.html)
-
-### 面试经验分享
-- [阿里]
-- [腾讯]
-- [字节]
-- [拼多多]
-- [美团]
-- [锐捷网络]
-- [浩鲸科技]
-- [顶点软件]
 
 ### [企业名录](/campusRec/company.html) :computer:
