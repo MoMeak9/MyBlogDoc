@@ -1,3 +1,8 @@
+---
+date: 2022-10-31
+category:
+- JavaScript
+---
 # 页面生命周期：DOMContentLoaded, load, beforeunload, unload
 
 HTML页面的生命周期有以下三个重要事件：
