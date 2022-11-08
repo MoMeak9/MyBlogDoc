@@ -18,7 +18,10 @@ export default defineUserConfig({
             var s = document.getElementsByTagName("script")[0]; 
             s.parentNode.insertBefore(hm, s);
             })();`
-        ]
+        ],
+        [
+            'meta',{name: 'google-site-verification', content: '9vkxYqOlDYYQz21WsvuXk9ztRIK5L0_MuzL1WvFmBuY'}
+        ],
     ],
 
     locales: {

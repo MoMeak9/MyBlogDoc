@@ -2,6 +2,7 @@
 date: 2022-07-15
 category:
 - 前端
+- JavaScript
 ---
 
 # JS垃圾回收机制
