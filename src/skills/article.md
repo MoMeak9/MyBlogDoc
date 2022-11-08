@@ -85,6 +85,7 @@ comment: false
 - [understanding-reacts-key-prop](https://kentcdodds.com/blog/understanding-reacts-key-prop)
 - [react 中为何推荐设置 key](https://zhuanlan.zhihu.com/p/112917118)
 - [you-probably-dont-need-derived-state 派生状态](https://zh-hans.reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html)
+- [理解 Next.js 中的 CSR、SSR、SSG、ISR 以及 Streaming](https://juejin.cn/post/7162775935828115469)
 
 #### React Hook
 
@@ -136,6 +137,10 @@ comment: false
 
 - [Why remove time slicing from vue3?](https://github.com/vuejs/rfcs/issues/89)
 - [前端性能优化之浏览器渲染优化 —— 打造60FPS页面](https://github.com/fi3ework/blog/issues/9)
+
+## 场景应用
+
+- [前端主题切换方案](https://juejin.cn/post/7134594122391748615)
 
 ## DevOps
 

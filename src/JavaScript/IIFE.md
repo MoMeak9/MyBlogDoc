@@ -1,3 +1,9 @@
+---
+date: 2022-08-27
+category:
+- JavaScript
+---
+
 # IIFE 立即执行函数表达式
 
 `IIFE`全称为`Immediately Invoked Function Express`-立即执行函数（表达式），顾名思义，是在定义之后立即执行的函数。`IIFE`主要以保护变量范围著称，时候也会被称为“自执行的匿名函数”（self-executing anonymous function）。
