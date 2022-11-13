@@ -1,6 +1,6 @@
 # Tone.js 框架食用指南
 
-Tone.js 是一个Web Audio框架，用于在浏览器中创建交互式音乐。js的体系结构旨在使音乐家和基于web的音频应用程序的音频程序员都熟悉。在高层，Tone提供了常见的DAW(数字音频工作站)功能，如用于同步和调度事件的全局传输以及预构建的合成和效果。此外，Tone提供高性能的构建块，以创建您自己的合成器，效果和复杂的控制信号。
+Tone.js 是一个Web Audio框架，用于在浏览器中创建交互式音乐。Tone.js旨在使音乐家和基于web的音频应用程序的音频程序员都能熟悉应用。在高层，Tone.js 提供了常见的DAW(数字音频工作站)功能，如用于同步和调度事件的全局传输以及预构建的合成和效果。此外，Tone.js 提供高性能的构建模块，以创建您自己的合成器、效果和复杂的控制信号。
 
 ## 安装
 
@@ -96,5 +96,68 @@ document.querySelector('button')?.addEventListener('click', async () => {
 })
 ```
 
-## Scheduling
+## Scheduling 调度
 
+### Transport
+
+`Tone.Transport`是主要的计时工具。与AudioContext时钟不同的是，它可以启动、停止、循环和动态调整。你可以把它想象成数字音频工作站中的排列视图或跟踪器中的通道。
+
+多个事件和部分可以沿着传输安排和同步。`Tone.Loop`是一种创建循环回调的简单方法，可以计划启动和停止。
+
+```js
+// create two monophonic synths
+const synthA = new Tone.FMSynth().toDestination();
+const synthB = new Tone.AMSynth().toDestination();
+//play a note every quarter-note
+const loopA = new Tone.Loop(time => {
+	synthA.triggerAttackRelease("C2", "8n", time);
+}, "4n").start(0);
+//play another note every off quarter-note, by starting it "8n"
+const loopB = new Tone.Loop(time => {
+	synthB.triggerAttackRelease("C4", "8n", time);
+}, "4n").start("8n");
+// the loops start when the Transport is started
+Tone.Transport.start()
+// ramp up to 800 bpm over 10 seconds
+Tone.Transport.bpm.rampTo(800, 10);
+```
+
+由于Javascript回调的时间不精确，事件的采样精确时间被传递到回调函数中。使用此时间值调度事件。
+
+### Instruments 乐器
+
+这里有许多合成器可供选择，包括 Tone.FMSynth, Tone.AMSynth and Tone.NoiseSynth.
+
+所有这些乐器都是单声道(单声道)，这意味着它们一次只能演奏一个音符。
+
+要创建一个复音合成器，请使用Tone.PolySynth，它接受单音合成器作为它的第一个参数，并自动处理音符分配，以便您可以传入多个音符。该API类似于单音合成，只是必须给triggerRelease一个音符或音符数组。
+
+```js
+const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+const now = Tone.now()
+synth.triggerAttack("D4", now);
+synth.triggerAttack("F4", now + 0.5);
+synth.triggerAttack("A4", now + 1);
+synth.triggerAttack("C5", now + 1.5);
+synth.triggerAttack("E5", now + 2);
+synth.triggerRelease(["D4", "F4", "A4", "C5", "E5"], now + 4);
+```
+
+# Samples
+
+Sound generation is not limited to synthesized sounds. You can also load a sample and play that back in a number of ways. [Tone.Player](https://tonejs.github.io/docs/Player) is one way to load and play back an audio file.
+
+```js
+const player = new Tone.Player("https://tonejs.github.io/audio/berklee/gong_1.mp3").toDestination();
+Tone.loaded().then(() => {
+	player.start();
+});
+```
+
+Tone.loaded()返回一个promise，该promise在所有音频文件加载后解析。这是一种很有帮助的简写，而不是等待每个音频缓冲区的onload事件来解决。
+
+### Tone.Sampler
+
+多个采样器也可以组合成一个仪器。如果你的音频文件是按音符组织的，音调。采样器将音调转移的样本填补音符之间的空白。举个例子，如果你只有一架钢琴上每3个音符的样本，你可以把它变成一架完整的钢琴样本。
+
+不像其他合成器，托尼。采样器是复调的，所以不需要传递到音调。PolySynth
