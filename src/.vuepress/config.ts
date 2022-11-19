@@ -1,9 +1,9 @@
 import {defineUserConfig} from "vuepress";
+import {searchProPlugin} from "vuepress-plugin-search-pro";
 import theme from "./theme";
 
-const {searchPlugin} = require("@vuepress/plugin-search");
-
 export default defineUserConfig({
+    theme: theme,
     base: "/",
 
     dest: "./dist",
@@ -20,7 +20,7 @@ export default defineUserConfig({
             })();`
         ],
         [
-            'meta',{name: 'google-site-verification', content: '9vkxYqOlDYYQz21WsvuXk9ztRIK5L0_MuzL1WvFmBuY'}
+            'meta', {name: 'google-site-verification', content: '9vkxYqOlDYYQz21WsvuXk9ztRIK5L0_MuzL1WvFmBuY'}
         ],
     ],
 
@@ -32,9 +32,37 @@ export default defineUserConfig({
         },
     },
     plugins: [
-        searchPlugin({
-            // 你的选项
-        }),
+        searchProPlugin({
+            // 索引全部内容
+            indexContent: false,
+            locales: {
+                "/": {
+                    placeholder: "搜索",
+                }
+            },
+            // 自定义搜索项目 https://vuepress-theme-hope.github.io/v2/search-pro/zh/config.html#customfields
+            customFields: [
+                {
+                    name: "category",
+                    // @ts-ignore
+                    getter: (page) => page.frontmatter.category,
+                    formatter: {
+                        "/": "分类: $content",
+                    },
+                },
+                {
+                    name: "tag",
+                    // @ts-ignore
+                    getter: (page) => page.frontmatter.tag,
+                    formatter: {
+                        "/": "标签: $content",
+                    },
+                },
+            ],
+            hotKeys: [{
+                key: "h",
+                ctrl: true,
+            }],
+        })
     ],
-    theme,
 });

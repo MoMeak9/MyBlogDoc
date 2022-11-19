@@ -1,3 +1,4 @@
+
 # LocalStorage/sessionStorage 封装 - 基于TypeScript
 
 实际上社区已经有非常成熟的库了，可以轻量化引入并使用[store2](https://www.npmjs.com/package/store2)，当然，我们这篇文章分享日常简单or局部使用时的简单封装。

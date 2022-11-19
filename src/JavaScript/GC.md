@@ -4,6 +4,7 @@ category:
 - 前端
 - JavaScript
 ---
+
 # JS垃圾回收机制
 
 ## GC是什么
