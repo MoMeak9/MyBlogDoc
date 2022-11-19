@@ -1,9 +1,9 @@
 import {defineUserConfig} from "vuepress";
+import {searchProPlugin} from "vuepress-plugin-search-pro";
 import theme from "./theme";
 
-const {searchPlugin} = require("@vuepress/plugin-search");
-
 export default defineUserConfig({
+    theme: theme,
     base: "/",
 
     dest: "./dist",
@@ -20,7 +20,7 @@ export default defineUserConfig({
             })();`
         ],
         [
-            'meta',{name: 'google-site-verification', content: '9vkxYqOlDYYQz21WsvuXk9ztRIK5L0_MuzL1WvFmBuY'}
+            'meta', {name: 'google-site-verification', content: '9vkxYqOlDYYQz21WsvuXk9ztRIK5L0_MuzL1WvFmBuY'}
         ],
     ],
 
@@ -32,9 +32,9 @@ export default defineUserConfig({
         },
     },
     plugins: [
-        searchPlugin({
-            // 你的选项
-        }),
+        searchProPlugin({
+            // 索引全部内容
+            indexContent: true,
+        })
     ],
-    theme,
 });
