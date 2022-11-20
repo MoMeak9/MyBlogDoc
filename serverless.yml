@@ -1,0 +1,19 @@
+component: website
+name: website-4qFm7_dVlx
+org: '1259409954'
+app: yihui-blog
+stage: prod
+inputs:
+  src:
+    src: ./dist
+    dist: ./dist
+    hook: npm run docs:build
+    index: index.html
+    error: index.html
+    exclude:
+      - .env
+  region: ap-shanghai
+  bucketName: my-bucket-ash8g5j
+  protocol: https
+  isAutoCiDeploy: false
+  replace: true
