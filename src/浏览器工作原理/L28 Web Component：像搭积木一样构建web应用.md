@@ -1,9 +1,5 @@
----
-sidebarDepth: 1
-pageClass: custom-code-highlight
----
 
-# webComponent：像搭积木一样构建web应用
+# Web Component：像搭积木一样构建web应用
 
 什么是组件化呢？
 

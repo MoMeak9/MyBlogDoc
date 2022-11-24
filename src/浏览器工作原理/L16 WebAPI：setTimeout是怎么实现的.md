@@ -1,11 +1,10 @@
 ---
-icon: edit
 date: 2022-04-14
 category:
 - 浏览器原理
 ---
 
-# Webapi：setTimeout是怎么实现的
+# WebAPI：setTimeout是怎么实现的
 
 那在接下来的两篇文章中，我会通过setTimeout和XMLHttpRequest这两个 WebAPI 来介绍事件循环的应用。这两个 WebAPI 是两种不同类型的应用，比较典型，并且在 JavaScript 中的使用频率非常高。你可能觉得它们太简单、太基础，但有时候恰恰是基础简单的东西才最重要，了解它们是如何工作的会有助于你写出更加高效的前端代码。
 

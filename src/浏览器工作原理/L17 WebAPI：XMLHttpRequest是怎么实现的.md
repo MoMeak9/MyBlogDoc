@@ -1,9 +1,5 @@
----
-sidebarDepth: 1
-pageClass: custom-code-highlight
----
 
-# Webapi：XMLHttpRequest是怎么实现的
+# WebAPI：XMLHttpRequest是怎么实现的
 
 在上一篇文章中我们介绍了 setTimeout 是如何结合渲染进程的循环系统工作的，那本篇文章我们就继续介绍另外一种类型的 WebAPI——XMLHttpRequest。
 

@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "计算机科学/设计模式/UML图关系详解.md",
+                "file": "计算机科学/计算机网络/HTTP/HTTPall.md",
                 "mode": "source",
                 "source": true
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "计算机科学/设计模式/UML图关系详解.md",
+                "file": "计算机科学/计算机网络/HTTP/HTTPall.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "计算机科学/设计模式/UML图关系详解.md",
+                "file": "计算机科学/计算机网络/HTTP/HTTPall.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "计算机科学/设计模式/UML图关系详解.md"
+                "file": "计算机科学/计算机网络/HTTP/HTTPall.md"
               }
             }
           }
@@ -139,15 +139,15 @@
   },
   "active": "0e2f9061654310c9",
   "lastOpenFiles": [
-    "计算机科学/设计模式/结构型模式.md",
-    "计算机科学/设计模式/牛客设计模式问题总结.md",
     "计算机科学/设计模式/创建型模式 Creation Pattern.md",
-    "计算机科学/设计模式/Behavior Pattern 行为模式.md",
-    "CSS/Vue scoped属性的用途和工作原理.md",
-    "CSS/伪类与伪元素的区别.md",
-    "CSS/Less 知识点汇总.md",
-    "CSS/Grid 布局.md",
-    "CSS/Flex 布局.md",
-    "CSS/CSS 自定义属性.md"
+    "计算机科学/设计模式/结构型模式.md",
+    "浏览器工作原理/L28 Web Component：像搭积木一样构建web应用.md",
+    "浏览器工作原理/L23 渲染流水线：CSS如何影响首次加载时的白屏时间？.md",
+    "浏览器工作原理/L22 DOM树：JavaScript是如何影响DOM树构建的.md",
+    "浏览器工作原理/L24 分层和合成机制：为什么css动画比JavaScript高效.md",
+    "浏览器工作原理/L25 页面性能：如何系统优化页面.md",
+    "浏览器工作原理/L26 虚拟DOM：虚拟DOM和实际DOM有何不同.md",
+    "浏览器工作原理/L27 PWA：解决了web应用哪些问题.md",
+    "浏览器工作原理/L29 HTTP1：HTTP性能优化.md"
   ]
 }

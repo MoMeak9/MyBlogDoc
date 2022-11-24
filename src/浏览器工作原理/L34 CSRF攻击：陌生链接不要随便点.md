@@ -1,7 +1,3 @@
----
-sidebarDepth: 3
-pageClass: custom-code-highlight
----
 
 # CSRF攻击：陌生链接不要随便点
 

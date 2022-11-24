@@ -1,7 +1,3 @@
----
-sidebarDepth: 2
-pageClass: custom-code-highlight
----
 
 # 渲染流水线：CSS如何影响首次加载时的白屏时间？
 
