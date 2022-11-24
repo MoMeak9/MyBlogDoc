@@ -5,7 +5,7 @@ category:
 - 浏览器原理
 ---
 
-# 块级作用域：var缺陷以及为什么要引入let和const
+# L9 块级作用域：var缺陷以及为什么要引入let和const
 
 在前面《07 | 变量提升：JavaScript代码是按顺序执行的吗？》这篇文章中，我们已经讲解了JavaScript中变量提升的相关内容，正是由于JavaScript存在变量提升这种特性，从而导致了很多与直觉不符的代码，这也是JavaScript的一个重要设计缺陷
 

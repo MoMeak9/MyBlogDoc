@@ -5,7 +5,7 @@ category:
 - 浏览器原理
 ---
 
-# 编译器和解析器：V8如何执行一段JavaScript代码的
+# L14 编译器和解析器：V8如何执行一段JavaScript代码的
 
 前面我们已经花了很多篇幅来介绍 JavaScript 是如何工作的，了解这些内容能帮助你从底层理解 JavaScript 的工作机制，从而能帮助你更好地理解和应用 JavaScript。
 

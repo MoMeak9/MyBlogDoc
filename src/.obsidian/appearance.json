@@ -1,4 +1,5 @@
 {
-  "theme": "obsidian",
-  "translucency": true
+  "theme": "moonstone",
+  "translucency": true,
+  "accentColor": ""
 }

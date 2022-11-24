@@ -6,7 +6,7 @@ category:
 ---
 
 
-# this：从JavaScript执行上下文视角讲this
+# L11 this：从JavaScript执行上下文视角讲this
 
 在上篇文章中，我们讲了词法作用域、作用域链以及闭包，并在最后思考题中留了下面这样一段代码
 
