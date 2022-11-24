@@ -35,6 +35,34 @@ export default defineUserConfig({
         searchProPlugin({
             // 索引全部内容
             indexContent: true,
+            locales: {
+                "/": {
+                    placeholder: "搜索",
+                }
+            },
+            // 自定义搜索项目 https://vuepress-theme-hope.github.io/v2/search-pro/zh/config.html#customfields
+            customFields: [
+                {
+                    name: "category",
+                    // @ts-ignore
+                    getter: (page) => page.frontmatter.category,
+                    formatter: {
+                        "/": "分类: $content",
+                    },
+                },
+                {
+                    name: "tag",
+                    // @ts-ignore
+                    getter: (page) => page.frontmatter.tag,
+                    formatter: {
+                        "/": "标签: $content",
+                    },
+                },
+            ],
+            hotKeys: [{
+                key: "h",
+                ctrl: true,
+            }],
         })
     ],
 });
