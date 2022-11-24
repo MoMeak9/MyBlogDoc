@@ -4,9 +4,9 @@ import reactSidebar from "./react";
 import webpackSidebar from "./webpack";
 
 export default {
-    "/Node/": nodeSidebar,
-    "/Vue/": vueSidebar,
-    "/React/": reactSidebar,
-    "/Webpack/": webpackSidebar,
+    ...nodeSidebar,
+    ...vueSidebar,
+    ...reactSidebar,
+    ...webpackSidebar,
 };
 

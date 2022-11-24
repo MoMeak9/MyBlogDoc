@@ -7,7 +7,7 @@
         "id": "0e2f9061654310c9",
         "type": "leaf",
         "state": {
-          "type": "empty",
+          "type": "graph",
           "state": {}
         }
       }
@@ -123,6 +123,7 @@
   },
   "active": "0e2f9061654310c9",
   "lastOpenFiles": [
+    "CSS/scopedCss.md",
     "React/interview/interview.md",
     "React/source/framework.md",
     "React/source/JXS.md",
@@ -131,7 +132,6 @@
     "React/effect.md",
     "React/source/file.md",
     "campusRec/needToKnown.md",
-    "React/Mobx.md",
-    "HTML/ButtonAndDiv.md"
+    "React/Mobx.md"
   ]
 }
