@@ -8,7 +8,7 @@
     "docs:clean-dev": "vuepress dev src --clean-cache",
     "docs:dev": "vuepress dev src",
     "docs:deploy": "serverless deploy",
-    "git:commit": "git fetch && git add -A && git-cz && git push",
+    "git:commit": "git fetch && git add -A && git-cz && git pull && git push",
     "doc:commitAndDeploy": "npm run git:commit && npm run docs:deploy"
   },
   "config": {

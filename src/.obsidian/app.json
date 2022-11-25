@@ -12,5 +12,6 @@
   "showLineNumber": false,
   "livePreview": false,
   "spellcheck": true,
-  "alwaysUpdateLinks": true
+  "alwaysUpdateLinks": true,
+  "newLinkFormat": "relative"
 }
