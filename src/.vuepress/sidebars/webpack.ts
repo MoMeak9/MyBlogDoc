@@ -4,13 +4,8 @@ export default sidebar({
     "/Webpack/": [
         {
             text: 'Webpack基础',
-            children: [
-                "better",
-                "config",
-                "plugin",
-                "loader",
-                "work",
-            ],
+            prefix: '',
+            children: "structure",
         },
         {
             text: 'Webpack面试',

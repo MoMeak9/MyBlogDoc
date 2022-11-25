@@ -5,7 +5,7 @@ category:
 - HTTP
 ---
 
-# HTTPS与SSL\TLS
+# HTTPS与SSL/TLS
 
 问什么会有HTTP，因为HTTP不安全，是明文，可伪造。
 
