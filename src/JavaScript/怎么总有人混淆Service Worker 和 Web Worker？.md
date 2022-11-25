@@ -5,7 +5,7 @@ category:
 - JavaScript
 ---
 
-# 怎么总有人混淆Service Worker 和 Web Worker?
+# 怎么总有人混淆Service Worker 和 Web Worker？
 
 Web技术日新月异，我们可以发现21世纪初和现在的网页之间的巨大差异。随着我们对性能提升的体验越好，浏览器或应用程序所需处理的多线程任务就越多。
 

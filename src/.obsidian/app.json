@@ -11,5 +11,6 @@
   "foldIndent": false,
   "showLineNumber": false,
   "livePreview": false,
-  "spellcheck": true
+  "spellcheck": true,
+  "alwaysUpdateLinks": true
 }
