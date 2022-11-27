@@ -10,7 +10,7 @@
   "showFrontmatter": true,
   "foldIndent": false,
   "showLineNumber": false,
-  "livePreview": false,
+  "livePreview": true,
   "spellcheck": true,
   "alwaysUpdateLinks": true
 }
