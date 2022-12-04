@@ -6,5 +6,12 @@
     "downscalePercent": 100
   },
   "strictLineBreaks": true,
-  "foldHeading": false
+  "foldHeading": false,
+  "showFrontmatter": true,
+  "foldIndent": false,
+  "showLineNumber": false,
+  "livePreview": true,
+  "spellcheck": true,
+  "alwaysUpdateLinks": true,
+  "newLinkFormat": "relative"
 }

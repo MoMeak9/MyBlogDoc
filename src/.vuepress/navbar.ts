@@ -7,7 +7,7 @@ export default navbar([
     },
     {
         text: "关于",
-        link: "/intro",
+        link: "/个人简介",
     },
     {
         text: "收藏",
@@ -15,11 +15,11 @@ export default navbar([
     },
     {
         text: "知识大纲",
-        link: "/campusRec/needToKnown",
+        link: "/校招/知识大纲",
     },
     {
         text: "必读文章",
-        link: "/skills/article",
+        link: "/软技能/精选文章列表",
     },
     {
         text: "友链",

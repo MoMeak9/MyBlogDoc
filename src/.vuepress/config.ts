@@ -34,7 +34,7 @@ export default defineUserConfig({
     plugins: [
         searchProPlugin({
             // 索引全部内容
-            indexContent: false,
+            indexContent: true,
             locales: {
                 "/": {
                     placeholder: "搜索",

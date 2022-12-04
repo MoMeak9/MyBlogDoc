@@ -123,15 +123,15 @@
   },
   "active": "0e2f9061654310c9",
   "lastOpenFiles": [
+    "面经/面经Q&A/美团面经.md",
+    "面经/bilibili.md",
+    "面经/面经Q&A/快手面经.md",
+    "面经/面经Q&A/阿里巴巴面经.md",
+    "面经/ks.md",
+    "CSS/scopedCss.md",
     "React/interview/interview.md",
     "React/source/framework.md",
     "React/source/JXS.md",
-    "React/source/concept.md",
-    "React/source/Fiber.md",
-    "React/effect.md",
-    "React/source/file.md",
-    "campusRec/needToKnown.md",
-    "React/Mobx.md",
-    "HTML/ButtonAndDiv.md"
+    "React/source/concept.md"
   ]
 }

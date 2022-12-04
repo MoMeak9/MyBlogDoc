@@ -11,9 +11,7 @@ export default hopeTheme({
         url: "https://yihuiBlog.top",
     },
 
-    sidebarDepth: 4,
-
-    displayAllHeaders: true,
+    headerDepth: 4,
 
     iconPrefix: "iconfont icon-",
 
@@ -44,7 +42,7 @@ export default hopeTheme({
             // https://vuepress-theme-hope.github.io/v2/zh/config/theme/feature.html#blog-medias
             Email: "mailto:shi_yihui@qq.com",
             GitHub: "https://github.com/MoMeak9",
-            BiliBili: "https://space.bilibili.com/1000000000",
+            BiliBili: "https://space.bilibili.com/298768693",
         },
     },
 
@@ -55,7 +53,7 @@ export default hopeTheme({
 
         // 你也可以使用 Waline
         comment: {
-            type: "giscus",
+            provider: "Giscus",
             repo: "MoMeak9/giscus_discuess",
             repoId: "R_kgDOHAxnrQ",
             category: "General",

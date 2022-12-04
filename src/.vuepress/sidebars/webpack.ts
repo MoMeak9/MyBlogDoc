@@ -1,21 +1,16 @@
-import {HopeThemeSidebarArrayConfig} from "vuepress-theme-hope/src/shared/sidebar";
+import {sidebar} from "vuepress-theme-hope";
 
-const webpackSidebar: HopeThemeSidebarArrayConfig = [
-    {
-        text: 'Webpack基础',
-        children: [
-            "better",
-            "config",
-            "plugin",
-            "loader",
-            "work",
-        ],
-    },
-    {
-        text: 'Webpack面试',
-        prefix: 'interview',
-        children: 'structure',
-    }
-]
-
-export default webpackSidebar;
+export default sidebar({
+    "/Webpack/": [
+        {
+            text: 'Webpack基础',
+            prefix: '',
+            children: "structure",
+        },
+        {
+            text: 'Webpack面试',
+            prefix: 'interview',
+            children: 'structure',
+        }
+    ],
+});

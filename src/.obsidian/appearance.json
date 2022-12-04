@@ -1,4 +1,6 @@
 {
-  "theme": "obsidian",
-  "translucency": true
+  "theme": "moonstone",
+  "translucency": true,
+  "accentColor": "",
+  "baseFontSize": 14
 }

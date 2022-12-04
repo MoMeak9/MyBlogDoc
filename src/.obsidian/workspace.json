@@ -1,0 +1,153 @@
+{
+  "main": {
+    "id": "14cdaad5fb3d2f64",
+    "type": "split",
+    "children": [
+      {
+        "id": "b69de1f72e26df69",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0e2f9061654310c9",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "计算机科学/计算机网络/WebSocket.md",
+                "mode": "source",
+                "source": true
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "d7f671e9012a7c22",
+    "type": "split",
+    "children": [
+      {
+        "id": "02be43b04fe4cafd",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d9358aaefe987d4a",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "75a8233d53c3d575",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "fe544467294da4cb",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "5f54eadd2c8f4841",
+    "type": "split",
+    "children": [
+      {
+        "id": "ebdfa81429e775ed",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "cf735663ba1d6ad5",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "计算机科学/计算机网络/WebSocket.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "b0dfb50b2417f32d",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "计算机科学/计算机网络/WebSocket.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "8e9d62f62e10ed41",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "83bca87e412546bd",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "计算机科学/计算机网络/WebSocket.md"
+              }
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "0e2f9061654310c9",
+  "lastOpenFiles": [
+    "计算机科学/计算机网络/WAF 网络应用防火墙.md",
+    "计算机科学/计算机网络/RESTful 下请求方法的幂等性.md",
+    "计算机科学/计算机网络/OpenResty：更灵活的Web服务器.md",
+    "计算机科学/计算机网络/Nginx：高性能的Web服务器.md",
+    "计算机科学/计算机网络/前端存储方案一览.md",
+    "计算机科学/计算机网络/CDN 内容分发网络.md",
+    "计算机科学/计算机网络/浏览器缓存机制-缓存位置.md",
+    "计算机科学/计算机网络/浏览器缓存机制-请求头.md",
+    "计算机科学/计算机网络/面试题/UDP应知应会.md",
+    "计算机科学/计算机网络/面试题/TCP应知应会（下）.md"
+  ]
+}

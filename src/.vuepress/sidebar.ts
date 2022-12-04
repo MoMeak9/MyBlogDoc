@@ -3,31 +3,10 @@ import sidebars from "./sidebars";
 
 export default sidebar({
     ...sidebars,
-    "/Network/": [
-        {
-            text: "HTTP",
-            prefix: "HTTP",
-            children: [
-                "HTTPS",
-                "HTTPS",
-                "TLS",
-            ]
-        },
-        {
-            text: "网络基础笔记",
-            children: [
-                "CDN",
-                "Nginx",
-                "HTTPProxy",
-                "OpenResty",
-                "WAF",
-                "WebSocket",
-            ]
-        },
-    ],
-    "/browser-working/": "structure",
+    "/计算机网络/": "structure",
+    "/浏览器工作原理/": "structure",
     "/leetcode/": "structure",
-    "/interview/": "structure",
+    "/面试通用/": "structure",
     "/JavaScript/": [
         {
             text: "JavaScript知识体系",
@@ -35,7 +14,7 @@ export default sidebar({
             children: "structure"
         }
     ],
-    "/nowcoder/": "structure",
+    "/牛客/": "structure",
     "/CSS/": [
         {
             text: "CSS面试题",
