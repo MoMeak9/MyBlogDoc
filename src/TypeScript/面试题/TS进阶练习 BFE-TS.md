@@ -254,7 +254,18 @@ category:
     type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never;
     ```
 
-11. **实现 ConstructorParameters**
+11. **实现 ConstructorParameters\<T>**
+
+    Parameters处理的是function type。 与之类似，`ConstructorParameters<T>`针对的是class，返回constructor function T的其参数type组成的tuple type。
+
+    ```ts
+    class Foo {
+      constructor (a: string, b: number, c: boolean) {}
+    }
+    
+    type C = MyConstructorParameters<typeof Foo> 
+    // [a: string, b: number, c: boolean]
+    ```
 
     **答案：**
 
@@ -262,7 +273,15 @@ category:
     type ConstructorParameters<T extends new (...args: any) => any> = T extends new (...args: infer P) => any ? P : never;
     ```
 
-12. **实现ReturnType**
+12. **实现ReturnType\<T>**
+
+    `Parameters<T>`处理的是参数， `ReturnType<T>`，正如起名所述，处理的是function type T的返回值type
+
+    ```ts
+    type Foo = () => {a: string}
+    
+    type A = MyReturnType<Foo> // {a: string}
+    ```
 
     通过 infer 推断函数返回值
 
@@ -272,7 +291,15 @@ category:
     type ReturnType<T extends (...args: any) => any> = T extends (...args: any) => infer R ? R : any;
     ```
 
-13. **实现InstanceType**
+13. **实现InstanceType\<T>**
+
+    对于constructor function type T，`InstanceType<T>` 返回其instance type。
+
+    ```ts
+    class Foo {}
+    type A = MyInstanceType<typeof Foo> // Foo
+    type B = MyInstanceType<() => string> // Error
+    ```
 
     通过 infer 推断 new 后返回的类型
 
@@ -282,7 +309,17 @@ category:
     type InstanceType<T extends new (...args: any) => any> = T extends new (...args: any) => infer R ? R : any;
     ```
 
-14. **实现ThisParameterType**
+14. **实现ThisParameterType\<T>**
+
+    对于function type T，`ThisParameterType<T>`返回`this` type。 如果没有指定，则使用`unknown`。
+
+    ```ts
+    function Foo(this: {a: string}) {}
+    function Bar() {}
+    
+    type A = MyThisParameterType<typeof Foo> // {a: string}
+    type B = MyThisParameterType<typeof Bar> // unknown
+    ```
 
     通过 infer 推断函数的 this 类型
 
@@ -292,7 +329,21 @@ category:
     type ThisParameterType<T> = T extends (this: infer U, ...args: any[]) => any ? U : unknown;
     ```
 
-15. **实现OmitThisParameter**
+15. **实现OmitThisParameter\<T>**
+
+    `Function.prototype.bind()`返回一个`this`已经bind过后的function。 对于这种情况，可以用`OmitThisParameter<T>`来增加type信息。
+
+    ```ts
+    function foo(this: {a: string}) {}
+    foo() // Error
+    
+    const bar = foo.bind({a: 'BFE.dev'})
+    bar() // OK
+    
+    
+    type Foo = (this: {a: string}) => string
+    type Bar = MyOmitThisParameter<Foo> // () => string
+    ```
 
     因推断时自动忽略函数的 this 类型，因此直接通过推断后的参数类型和返回值类型包装成个函数返回即可
 
@@ -322,7 +373,7 @@ category:
 
 17. **实现LastChar\<T>**
 
-    实现`LastChar<T>`类型：
+    类似于`FirstChar<T>`，实现`LastChar<T>`。
 
     ```ts
     type A = LastChar<'BFE'> // 'E'
@@ -331,9 +382,9 @@ category:
     ```
 
     **答案：**
-    
+
     同样使用`infer`推断字符串中的类型。
-    
+
     ```ts
     type LastChar<T extends string> = T extends `${infer F}${infer R}`
       ? R extends ''
@@ -341,8 +392,10 @@ category:
         : LastChar<R>
       : never
     ```
-    
-18. **implement TupleToUnion\<T>**
+
+18. **实现 TupleToUnion\<T>**
+
+    给定一个元组类型，实现 `TupleToUnion<T> `以从中获取联合类型。
 
     ```ts
     type Foo = [string, number, boolean]
@@ -358,17 +411,22 @@ category:
     type TupleToUnion<T extends any[]> = T[number]
     ```
 
-19. **implement FirstItem\<T>**
+19. **实现 FirstItem\<T>**
 
     和 `FirstChar<T>`类似，请实现`FirstItem<T>`来返回tuple type的第一个type。
-    
+
+    ```ts
+    type A = FirstItem<[string, number, boolean]> // string
+    type B = FirstItem<['B', 'F', 'E']> // 'B'
+    ```
+
     **答案：**
-    
+
     ```typescript
     type FirstItem<T extends any[]> = T extends [infer P, ...infer R] ? P : never
     ```
 
-20. **implement IsNever\<T>**
+20. **实现 IsNever\<T>**
 
     请实现`IsNever<T>`用以判断T是否是never。
 
@@ -526,9 +584,9 @@ category:
     TypeScript
     容易
 
-21. **implement LastItem<T>**
-TypeScript
-容易
+44. **implement LastItem<T>**
+    TypeScript
+    容易
 
 ## 45-60 Few challengers
 
