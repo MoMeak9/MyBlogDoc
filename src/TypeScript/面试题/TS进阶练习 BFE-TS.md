@@ -6,15 +6,50 @@ category:
 - TypeScript
 ---
 
-# TS进阶练习 [BFE-TS](https://bigfrontend.dev/zh/typescript)
+# TS进阶练习 BFE-TS
 
-所有题目来自[BFE](https://bigfrontend.dev/zh/typescript)
+题目来自[TypeScript题目 | BFE.dev - 前端刷题，准备前端面试拿到心仪的Offer。](https://bigfrontend.dev/zh/typescript)，总共60题，带你完爆类型体操！
 
 ## 1-44 Easy
 
 ### 1-15 Utility types 内置工具类型实现
 
 1. **实现Partial**
+
+   `Partial<T>`返回一个包含所有`T`的子集的type。
+
+   ```ts
+   type Foo = {
+     a: string
+     b: number
+     c: boolean
+   }
+   
+   // below are all valid
+   
+   const a: MyPartial<Foo> = {}
+   
+   const b: MyPartial<Foo> = {
+     a: 'BFE.dev'
+   }
+   
+   const c: MyPartial<Foo> = {
+     b: 123
+   }
+   
+   const d: MyPartial<Foo> = {
+     b: 123,
+     c: true
+   }
+   
+   const e: MyPartial<Foo> = {
+     a: 'BFE.dev',
+     b: 123,
+     c: true
+   }
+   ```
+
+   **答案：**
 
    ```ts
    type Partial<T> = {
@@ -24,15 +59,55 @@ category:
 
 2. **实现Required**
 
+   和`Partial<T>`正好相反， `Required<T>`会将所有的属性设为required。
+
+   ```ts
+   // all properties are optional
+   type Foo = {
+     a?: string
+     b?: number
+     c?: boolean
+   }
+   
+   
+   const a: MyRequired<Foo> = {}
+   // Error
+   
+   const b: MyRequired<Foo> = {
+     a: 'BFE.dev'
+   }
+   // Error
+   
+   const c: MyRequired<Foo> = {
+     b: 123
+   }
+   // Error
+   
+   const d: MyRequired<Foo> = {
+     b: 123,
+     c: true
+   }
+   // Error
+   
+   const e: MyRequired<Foo> = {
+     a: 'BFE.dev',
+     b: 123,
+     c: true
+   }
+   // valid
+   ```
+
+   **答案：**
+
    ```ts
    type Required<T> = {
        [P in keyof T]-?: T[P];
    };
    ```
 
-   
-
 3. **实现Readonly**
+
+   **答案：**
 
    ```ts
    type Readonly<T> = {
@@ -42,6 +117,25 @@ category:
 
 4. **实现Record**
 
+   `Record<K, V>`返回一个key是K值是V的object type。
+
+   ```ts
+   type Key = 'a' | 'b' | 'c'
+   
+   const a: Record<Key, string> = {
+     a: 'BFE.dev',
+     b: 'BFE.dev',
+     c: 'BFE.dev'
+   }
+   a.a = 'bigfrontend.dev' // OK
+   a.b = 123 // Error
+   a.d = 'BFE.dev' // Error
+   
+   type Foo = MyRecord<{a: string}, string> // Error
+   ```
+
+   **答案：**
+
    ```ts
    type Record<K extends keyof any, T> = {
        [P in K]: T;
@@ -49,6 +143,22 @@ category:
    ```
 
 5. **实现Pick**
+
+   `Pick<T, K>`，正如其名所示，将从T中抽选出K中含有的属性然后返回一个新的type。
+
+   ```ts
+   type Foo = {
+     a: string
+     b: number
+     c: boolean
+   }
+   
+   type A = MyPick<Foo, 'a' | 'b'> // {a: string, b: number}
+   type B = MyPick<Foo, 'c'> // {c: boolean}
+   type C = MyPick<Foo, 'd'> // Error
+   ```
+
+   **答案：**
 
    ```ts
    type Pick<T, K extends keyof T> = {
@@ -58,17 +168,59 @@ category:
 
 6. **实现Omit**
 
+   `Omit<T, K>`返回一个从T的属性中剔除掉K过后的type。
+
+   ```ts
+   type Foo = {
+     a: string
+     b: number
+     c: boolean
+   }
+   
+   type A = MyOmit<Foo, 'a' | 'b'> // {c: boolean}
+   type B = MyOmit<Foo, 'c'> // {a: string, b: number}
+   type C = MyOmit<Foo, 'c' | 'd'> // {a: string, b: number}
+   ```
+
+   **答案：**
+
    ```ts
    type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
    ```
 
 7. **实现Exclude**
 
+   `Exclude<T, K>`返回一个从T中去掉能代入K的成员后的type。
+
+   ```ts
+   type Foo = 'a' | 'b' | 'c'
+   
+   type A = MyExclude<Foo, 'a'> // 'b' | 'c'
+   type B = MyExclude<Foo, 'c'> // 'a' | 'b
+   type C = MyExclude<Foo, 'c' | 'd'>  // 'a' | 'b'
+   type D = MyExclude<Foo, 'a' | 'b' | 'c'>  // never
+   ```
+
+   **答案：**
+
    ```ts
    type Exclude<T, U> = T extends U ? never : T;
    ```
 
 8. **实现Extract**
+
+   和Exclude正好相反， `Extract<T, U>`返回T中可以代入到U的成员所组成的type。
+
+   ```ts
+   type Foo = 'a' | 'b' | 'c'
+   
+   type A = MyExtract<Foo, 'a'> // 'a'
+   type B = MyExtract<Foo, 'a' | 'b'> // 'a' | 'b'
+   type C = MyExtract<Foo, 'b' | 'c' | 'd' | 'e'>  // 'b' | 'c'
+   type D = MyExtract<Foo, never>  // never
+   ```
+
+   **答案：**
 
    ```ts
    type Extract<T, U> = T extends U ? T : never;
@@ -78,17 +230,33 @@ category:
 
    剔除 null | undefined 类型，表明非空
 
+   **答案：**
+
    ```ts
    type NonNullable<T> = T extends null | undefined ? never : T;
    ```
 
 10. **实现Parameters**
 
+    对于function type T， `Parameters<T>` 返回一个由其参数type组成的tuple type。
+
+    ```ts
+    type Foo = (a: string, b: number, c: boolean) => string
+    
+    type A = MyParameters<Foo> // [a:string, b: number, c:boolean]
+    type B = A[0] // string
+    type C = MyParameters<{a: string}> // Error
+    ```
+
+    **答案：**
+
     ```ts
     type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never;
     ```
-    
-11. **实现ConstructorParameters**
+
+11. **实现 ConstructorParameters**
+
+    **答案：**
 
     ```ts
     type ConstructorParameters<T extends new (...args: any) => any> = T extends new (...args: infer P) => any ? P : never;
@@ -98,6 +266,8 @@ category:
 
     通过 infer 推断函数返回值
 
+    **答案：**
+
     ```ts
     type ReturnType<T extends (...args: any) => any> = T extends (...args: any) => infer R ? R : any;
     ```
@@ -105,6 +275,8 @@ category:
 13. **实现InstanceType**
 
     通过 infer 推断 new 后返回的类型
+
+    **答案：**
 
     ```ts
     type InstanceType<T extends new (...args: any) => any> = T extends new (...args: any) => infer R ? R : any;
@@ -114,6 +286,8 @@ category:
 
     通过 infer 推断函数的 this 类型
 
+    **答案：**
+
     ```ts
     type ThisParameterType<T> = T extends (this: infer U, ...args: any[]) => any ? U : unknown;
     ```
@@ -121,6 +295,8 @@ category:
 15. **实现OmitThisParameter**
 
     因推断时自动忽略函数的 this 类型，因此直接通过推断后的参数类型和返回值类型包装成个函数返回即可
+
+    **答案：**
 
     ```ts
     type OmitThisParameter<T> = unknown extends ThisParameterType<T> ? T : T extends (...args: infer A) => infer R ? (...args: A) => R : T;
@@ -135,6 +311,8 @@ category:
     type B = FirstChar<'dev'> // 'd'
     type C = FirstChar<''> // never
     ```
+
+    **答案：**
 
     `TS`支持字符串使用`infer`推断，语法和模板字符串相似，因此使用`infer`即可完成。
 
@@ -154,13 +332,7 @@ category:
 
     **答案：**
     
-    同样使用`infer`推断字符串中的类型，模板字符串中的推断必须保证前面的`${any}`匹配一个，身下的都丢给最后的`${any}`匹配。
-    
-    举个栗子：
-    
-    用`${infer A}${infer B}${infer C}`匹配`'ab'`，`A`在前面匹配了`'a'`，`B`也在前面因此匹配一个`'b'`，剩下的都丢给`C`，因为没有剩余的了，所以`C`匹配到了`''`。
-    
-    晓得如何匹配了，那么再加上递归即可做出来
+    同样使用`infer`推断字符串中的类型。
     
     ```ts
     type LastChar<T extends string> = T extends `${infer F}${infer R}`
@@ -178,19 +350,185 @@ category:
     type Bar = TupleToUnion<Foo> // string | number | boolean
     ```
 
-    **答案**
+    **答案：**
 
-    这题考察的是索引访问类型`Indexed Access Types`，我们可以使用索引访问类型来查找另一种类型上的特定属性，`keyof`可以获得某类型的**所有**可访问的索引类型。
+    这题考察的是索引访问类型`Indexed Access Types`
 
     ```ts
     type TupleToUnion<T extends any[]> = T[number]
     ```
 
-    数组类型有个特殊的索引类型`number`，可以通过`arr[number]`获取一个数组中元素的类型。
-
 19. **implement FirstItem\<T>**
 
+    和 `FirstChar<T>`类似，请实现`FirstItem<T>`来返回tuple type的第一个type。
     
+    **答案：**
+    
+    ```typescript
+    type FirstItem<T extends any[]> = T extends [infer P, ...infer R] ? P : never
+    ```
+
+20. **implement IsNever\<T>**
+
+    请实现`IsNever<T>`用以判断T是否是never。
+
+    ```ts
+    type A = IsNever<never> // true
+    type B = IsNever<string> // false
+    type C = IsNever<undefined> // false
+    ```
+
+    **答案：**
+
+    ```typescript
+    type IsNever<T> = [T] extends [never] ? true : false;
+    ```
+
+21. **implement ReplaceAll<S, F, T>**
+
+    正如`String.prototype.replaceAll()`，请实现`ReplaceAll<S, F, T>`。
+
+    ```ts
+    type A = ReplaceAll<'aba', 'b', ''> // 'aa'
+    type B = ReplaceAll<'ababbab', 'b', ''> // 'aaa'
+    ```
+
+    **答案：**
+
+    1、前、中、后分别取一下infer。
+
+    2、 判断F不为空
+
+    ```ts
+    type ReplaceAll<
+      S extends string,
+      F extends string,
+      T extends string
+      > = F extends '' ? S : (S extends `${F}${infer R}` ? `${T}${ReplaceAll<R, F, T>}` :
+        (S extends `${infer A}${F}${infer B}` ? `${A}${T}${ReplaceAll<B, F, T>}` :
+          S extends `${infer A}${F}` ? `${ReplaceAll<A, F, T>}${T}` : S
+        ));
+    ```
+
+22. **implement Trim\<T>**
+    正如`String.prototype.trim()`，请实现`Trim<T>`。
+
+    ```ts
+    type A = Trim<'    BFE.dev'> // 'BFE'
+    type B = Trim<' BFE. dev  '> // 'BFE. dev'
+    type C = Trim<'  BFE .   dev  '> // 'BFE .   dev'
+    ```
+
+    **答案：**
+
+    ```typescript
+    type Trim<T extends string> = T extends ` ${infer R}` 
+      ? Trim<R> 
+      : T extends `${infer L} `
+        ? Trim<L>
+        : T
+    ```
+
+23. **implement Equal<A, B>**
+    检测俩类型是完全相同的
+
+    ```ts
+    Equal<any, any> // true
+    Equal<any, 1> // false
+    Equal<never, never> // true
+    Equal<'BFE', 'BFE'> // true
+    Equal<'BFE', string> // false
+    Equal<1 | 2, 2 | 1> // true
+    Equal<{a : number}, {a: number}> // true
+    ```
+
+    **答案：**
+
+    
+
+24. **implement FindIndex<T, E>**
+    TypeScript
+    容易
+
+25. **implement UnionToIntersection<T>**
+    TypeScript
+    容易
+
+26. **implement ToNumber<T>**
+    TypeScript
+    容易
+
+27. **implement Add<A, B>**
+    TypeScript
+    容易
+
+28. **implement SmallerThan<A, B>**
+    TypeScript
+    容易
+
+29. **implement LargerThan<A, B>**
+    TypeScript
+    容易
+
+30. **implement Filter<T, A>**
+    TypeScript
+    容易
+
+31. **implement Repeat<T, C>**
+    TypeScript
+    容易
+
+32. **implement TupleToString<T>**
+    TypeScript
+    容易
+
+33. **implement RepeatString<T, C>**
+    TypeScript
+    容易
+
+34. **implement Push<T, I>**
+    TypeScript
+    容易
+
+35. **implement IsAny<T>**
+    TypeScript
+    容易
+
+36. **implement Shift<T>**
+    TypeScript
+    容易
+
+37. **implement IsEmptyType<T>**
+    TypeScript
+    容易
+
+38. **implement Flat<T>**
+    TypeScript
+    容易
+
+39. **实现ReverseTuple<T>**
+    TypeScript
+    容易
+
+40. **implement UnwrapPromise<T>**
+    TypeScript
+    容易
+
+41. **implement LengthOfString<T>**
+    TypeScript
+    容易
+
+42. **implement LengthOfTuple<T>**
+    TypeScript
+    容易
+
+43. **implement StringToTuple<T>**
+    TypeScript
+    容易
+
+21. **implement LastItem<T>**
+TypeScript
+容易
 
 ## 45-60 Few challengers
 

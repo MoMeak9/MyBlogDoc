@@ -476,7 +476,7 @@ The prototype pattern is a creative design pattern that allows you to copy exist
 -  你可以更方便地生成复杂对象。
 -  你可以用继承以外的方式来处理复杂对象的不同配置。
 
-Dis
+**Disadvantage**
 
 -  克隆包含循环引用的复杂对象可能会非常麻烦。
 
@@ -556,7 +556,7 @@ The singleton pattern is a creative design pattern that allows you to ensure tha
 -  你获得了一个指向该实例的全局访问节点。
 -  仅在首次请求单例对象时对其进行初始化。
 
-Disadvantage
+**Disadvantage**
 
 - 违反了单一职责原则。 该模式同时解决了两个问题。
 -  单例模式可能掩盖不良设计， 比如程序各组件之间相互了解过多等。

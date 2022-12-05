@@ -5,13 +5,15 @@ category:
 ---
 # Behavior Pattern 行为模式
 
+> 文章内容整理自：https://refactoringguru.cn/
+
 ## Visitor 访问者
 
 **访问者模式**是一种行为设计模式， 它能将算法与其所作用的对象隔离开来。
 
 The visitor pattern is a behavior design pattern that **isolates** an algorithm from the object it works on.
 
-<img src="https://refactoringguru.cn/images/patterns/diagrams/visitor/structure-zh-indexed.png" alt="访问者设计模式的结构" style="zoom:80%;" />
+<img src="https://cdn.yihuiblog.top/images/202211301147913.png" alt="访问者设计模式的结构" style="zoom:80%;" />
 
 1. **访问者** （Visitor） 接口声明了一系列以对象结构的具体元素为参数的访问者方法。 如果编程语言支持重载， 这些方法的名称可以是相同的， 但是其参数一定是不同的。
 2. **具体访问者** （Concrete Visitor） 会为不同的具体元素类实现相同行为的几个不同版本。
@@ -27,6 +29,8 @@ The visitor pattern is a behavior design pattern that **isolates** an algorithm 
 
 ### 优缺点
 
+**优点：**
+
 - ***开闭原则***。 你可以引入在不同类对象上执行的新行为， 且无需对这些类做出修改。
 -  ***单一职责原则***。 可将同一行为的不同版本移到同一个类中。
 - 访问者对象可以在与各种对象交互时收集一些有用的信息。 当你想要遍历一些复杂的对象结构 （例如对象树）， 并在结构中的每个对象上应用访问者时， 这些信息可能会有所帮助。
@@ -37,13 +41,13 @@ The visitor pattern is a behavior design pattern that **isolates** an algorithm 
 - 你可以使用[访问者](https://refactoringguru.cn/design-patterns/visitor)对整个[组合模式](https://refactoringguru.cn/design-patterns/composite)树执行操作。
 - 可以同时使用[访问者](https://refactoringguru.cn/design-patterns/visitor)和[迭代器模式](https://refactoringguru.cn/design-patterns/iterator)来遍历复杂数据结构， 并对其中的元素执行所需操作， 即使这些元素所属的类完全不同。
 
-## Command 命令模式 :star:
+## Command 命令模式 
 
 **命令模式**是一种行为设计模式， 它可将请求转换为一个包含与请求相关的所有信息的独立对象。 该转换让你能根据不同的请求将方法参数化、 延迟请求执行或将其放入队列中， 且能实现可撤销操作。
 
 **Command pattern** is a behavior design pattern that transforms a request into a single object that contains all the information associated with the request. This transformation allows you to parameterize methods, delay request execution, or queue them based on different requests, and implement undoable operations.
 
-<img src="https://refactoringguru.cn/images/patterns/diagrams/command/structure-indexed.png" alt="命令设计模式的结构" style="zoom: 80%;" />
+<img src="https://cdn.yihuiblog.top/images/202211301147254.png" alt="命令设计模式的结构" style="zoom: 80%;" />
 
 1. **发送者** （Sender）——亦称 “触发者 （Invoker）”——类负责对请求进行初始化， 其中必须包含一个成员变量来存储对于命令对象的引用。 发送者触发命令， 而不向接收者直接发送请求。 注意， 发送者并不负责创建命令对象： 它通常会通过构造函数从客户端处获得预先生成的命令。
 
@@ -65,13 +69,15 @@ The visitor pattern is a behavior design pattern that **isolates** an algorithm 
 
 ### 优缺点
 
+**优点：**
+
 -  *单一职责原则*。 你可以解耦触发和执行操作的类。
 -  *开闭原则*。 你可以在不修改已有客户端代码的情况下在程序中创建新的命令。
 -  你可以实现撤销和恢复功能。
 -  你可以实现操作的延迟执行。
 -  你可以将一组简单命令组合成一个复杂命令。
 
-D:
+**缺点：**
 
 - 代码可能会变得更加复杂， 因为你在发送者和接收者之间增加了一个全新的层次。
 
@@ -183,7 +189,7 @@ if __name__ == "__main__":
 
 **迭代器模式**是一种行为设计模式， 让你能在不暴露集合底层表现形式 （列表、 栈和树等） 的情况下遍历集合中所有的元素。The iterator pattern is a behavioral design pattern that lets you iterate through all the elements of a collection **without exposing the underlying representation of the collection** (lists, stacks, trees, etc.).
 
-<img src="https://refactoringguru.cn/images/patterns/diagrams/iterator/structure-indexed.png" alt="迭代器设计模式的结构" style="zoom:80%;" />
+<img src="https://cdn.yihuiblog.top/images/202211301147306.png" alt="迭代器设计模式的结构" style="zoom:80%;" />
 
 1. **迭代器** （Iterator） 接口声明了遍历集合所需的操作： 获取下一个元素、 获取当前位置和重新开始迭代等。
 
@@ -205,12 +211,14 @@ if __name__ == "__main__":
 
 ### 优缺点
 
+**优点：**
+
 - 单一职责原则 Single responsibility principle。 通过将体积庞大的遍历算法代码抽取为独立的类， 你可对客户端代码和集合进行整理。
 - 开闭原则 The open closed principle。 你可实现新型的集合和迭代器并将其传递给现有代码， 无需修改现有代码。
 -  你可以并行遍历同一集合， 因为每个迭代器对象都包含其自身的遍历状态。
 -  相似的， 你可以暂停遍历并在需要时继续。
 
-D:
+**缺点：**
 
 - 如果你的程序只与简单的集合进行交互， 应用该模式可能会矫枉过正。
 - 对于某些特殊集合， 使用迭代器可能比直接遍历的效率低。
@@ -221,7 +229,7 @@ D:
 
 The Mediator pattern is a behavior design pattern that allows you to reduce chaotic dependencies between objects. This pattern restricts direct interaction between objects, forcing them to collaborate through a mediator object.
 
-<img src="https://refactoringguru.cn/images/patterns/diagrams/mediator/structure-indexed.png" alt="中介者设计模式的结构" style="zoom:80%;" />
+<img src="https://cdn.yihuiblog.top/images/202211301147026.png" alt="中介者设计模式的结构" style="zoom:80%;" />
 
 1. **组件** （Component） 是各种包含业务逻辑的类。 每个组件都有一个指向中介者的引用， 该引用被声明为中介者接口类型。 组件不知道中介者实际所属的类， 因此你可通过将其连接到不同的中介者以使其能在其他程序中复用。
 
@@ -241,12 +249,14 @@ The Mediator pattern is a behavior design pattern that allows you to reduce chao
 
 ### 优缺点
 
+**优点：**
+
 - *单一职责原则*。 你可以将多个组件间的交流抽取到同一位置， 使其更易于理解和维护。
 -  *开闭原则*。 你无需修改实际组件就能增加新的中介者。
 -  你可以减轻应用中多个组件间的耦合情况。
 -  你可以更方便地复用各个组件。
 
-D:
+**缺点：**
 
 - 一段时间后， 中介者可能会演化成为[上帝对象](https://refactoringguru.cn/antipatterns/god-object)。
 
@@ -264,7 +274,7 @@ D:
 
 The strategy pattern is a behavior design pattern that allows you to define a series of algorithms and place each algorithm in a separate class so that the objects of the algorithm are interchangeable.
 
-<img src="https://refactoringguru.cn/images/patterns/diagrams/strategy/structure-indexed.png" alt="策略设计模式的结构" style="zoom:80%;" />
+<img src="https://cdn.yihuiblog.top/images/202211301147310.png" alt="策略设计模式的结构" style="zoom:80%;" />
 
 1. **上下文** （Context） 维护指向具体策略的引用， 且仅通过策略接口与该对象进行交流。
 2. **策略** （Strategy） 接口是所有具体策略的通用接口， 它声明了一个上下文用于执行策略的方法。
@@ -280,12 +290,14 @@ The strategy pattern is a behavior design pattern that allows you to define a se
 
 ### 优缺点
 
+**优点：**
+
 - 你可以在运行时切换对象内的算法。
 -  你可以将算法的实现和使用算法的代码隔离开来。
 -  你可以使用组合来代替继承。
 -  *开闭原则*。 你无需对上下文进行修改就能够引入新的策略。
 
-D:
+**缺点：**
 
 - 如果你的算法极少发生改变， 那么没有任何理由引入新的类和接口。 使用该模式只会让程序过于复杂。
 -  客户端必须知晓策略间的不同——它需要选择合适的策略。
@@ -303,7 +315,7 @@ D:
 
 The **template method pattern** is a behavior design pattern that defines the framework of an algorithm in a superclass, allowing subclasses to override specific steps of the algorithm without modifying the structure.
 
-<img src="https://refactoringguru.cn/images/patterns/diagrams/template-method/structure-indexed.png" alt="模板方法设计模式的结构" style="zoom:80%;" />
+<img src="https://cdn.yihuiblog.top/images/202211301147375.png" alt="模板方法设计模式的结构" style="zoom:80%;" />
 
 1. **抽象类** （Abstract­Class） 会声明作为算法步骤的方法， 以及依次调用它们的实际模板方法。 算法步骤可以被声明为 `抽象`类型， 也可以提供一些默认实现。
 2. **具体类** （Concrete­Class） 可以重写所有步骤， 但不能重写模板方法自身。
@@ -315,10 +327,12 @@ The **template method pattern** is a behavior design pattern that defines the fr
 
 ### 优缺点
 
+**优点：**
+
 - 你可仅允许客户端重写一个大型算法中的特定部分， 使得算法其他部分修改对其所造成的影响减小。
 -  你可将重复代码提取到一个超类中。
 
-D:
+**缺点：**
 
 - 部分客户端可能会受到算法框架的限制。
 -  模板方法中的步骤越多， 其维护工作就可能会越困难。
@@ -327,7 +341,7 @@ D:
 
 - [工厂方法模式](https://refactoringguru.cn/design-patterns/factory-method)是[模板方法模式](https://refactoringguru.cn/design-patterns/template-method)的一种特殊形式。 同时， *工厂方法*可以作为一个大型*模板方法*中的一个步骤。
 
-### Code:star:
+### Code
 
 ```python
 from abc import ABC, abstractmethod
@@ -383,7 +397,7 @@ if __name__ == "__main__":
 
 The chain of responsibility pattern is a behavior design pattern that allows you to send requests down a chain of handlers. Upon receipt of the request, each handler can either process it or pass it on to the next handler on the chain.
 
-<img src="https://refactoringguru.cn/images/patterns/diagrams/chain-of-responsibility/structure-indexed.png" alt="责任链设计模式的结构" style="zoom:80%;" />
+<img src="https://cdn.yihuiblog.top/images/202211301147233.png" alt="责任链设计模式的结构" style="zoom:80%;" />
 
 1. **处理者** （Handler） 声明了所有具体处理者的通用接口。 该接口通常仅包含单个方法用于请求处理， 但有时其还会包含一个设置链上下个处理者的方法。
 
@@ -405,11 +419,13 @@ The chain of responsibility pattern is a behavior design pattern that allows you
 
 ### 优缺点
 
+**优点：**
+
 - 你可以控制请求处理的顺序。
 -  *单一职责原则*。 你可对发起操作和执行操作的类进行解耦。
 -  *开闭原则*。 你可以在不更改现有代码的情况下在程序中新增处理者。
 
-D：
+**缺点：**
 
 - 部分请求可能未被处理
 
@@ -431,7 +447,7 @@ D：
 
 如果你不想让其他类有任何机会通过备忘录来访问原发器的状态， 那么还有另一种可用的实现方式。
 
-![封装更加严格的备忘录](https://refactoringguru.cn/images/patterns/diagrams/memento/structure3-indexed.png)
+![封装更加严格的备忘录](https://cdn.yihuiblog.top/images/202211301147886.png)
 
 1. 这种实现方式允许存在多种不同类型的原发器和备忘录。 每种原发器都和其相应的备忘录类进行交互。 原发器和备忘录都不会将其状态暴露给其他类。
 2. 负责人此时被明确禁止修改存储在备忘录中的状态。 但负责人类将独立于原发器， 因为此时恢复方法被定义在了备忘录类中。
@@ -444,12 +460,12 @@ D：
 
 ### 优缺点
 
-A:
+**优点：**
 
 -  你可以在不破坏对象封装情况的前提下创建对象状态快照。
 - 你可以通过让负责人维护原发器状态历史记录来简化原发器代码。
 
-D:
+**缺点：**
 
 - 如果客户端过于频繁地创建备忘录， 程序将消耗大量内存。
 - 负责人必须完整跟踪原发器的生命周期， 这样才能销毁弃用的备忘录。
@@ -461,7 +477,7 @@ D:
 - 你可以同时使用[备忘录](https://refactoringguru.cn/design-patterns/memento)和[迭代器模式](https://refactoringguru.cn/design-patterns/iterator)来获取当前迭代器的状态， 并且在需要的时候进行回滚。
 - 有时候[原型模式](https://refactoringguru.cn/design-patterns/prototype)可以作为[备忘录](https://refactoringguru.cn/design-patterns/memento)的一个简化版本， 其条件是你需要在历史记录中存储的对象的状态比较简单， 不需要链接其他外部资源， 或者链接可以方便地重建。
 
-### Code:star:
+### Code
 
 ```python
 import math
@@ -571,7 +587,7 @@ if __name__ == "__main__":
 
 **状态模式**是一种行为设计模式， 让你能在一个对象的内部状态变化时改变其行为， 使其看上去就像改变了自身所属的类一样。
 
-![状态设计模式的结构](https://refactoringguru.cn/images/patterns/diagrams/state/structure-zh-indexed.png)
+![状态设计模式的结构](https://cdn.yihuiblog.top/images/202211301148317.png)
 
 1. **上下文** （Context） 保存了对于一个具体状态对象的引用， 并会将所有与该状态相关的工作委派给它。 上下文通过状态接口与状态对象交互， 且会提供一个设置器用于传递新的状态对象。
 
@@ -591,13 +607,13 @@ if __name__ == "__main__":
 
 ### 优缺点
 
-A:
+**优点：**
 
 - *单一职责原则*。 将与特定状态相关的代码放在单独的类中。
 - *开闭原则*。 无需修改已有状态类和上下文就能引入新状态。
 -  通过消除臃肿的状态机条件语句简化上下文代码。
 
-D:
+**缺点：**
 
 - 如果状态机只有很少的几个状态， 或者很少发生改变， 那么应用该模式可能会显得小题大作。
 
@@ -612,7 +628,7 @@ D:
 
 The Observer pattern is a behavior design pattern that allows you to define a subscription mechanism that notifies multiple other objects that "observe" an object when an event occurs.
 
-<img src="https://refactoringguru.cn/images/patterns/diagrams/observer/structure-indexed.png" alt="观察者设计模式的结构" style="zoom:80%;" />
+<img src="https://cdn.yihuiblog.top/images/202211301148739.png" alt="观察者设计模式的结构" style="zoom:80%;" />
 
 1. **发布者** （Publisher） 会向其他对象发送值得关注的事件。 事件会在发布者自身状态改变或执行特定行为后发生。 发布者中包含一个允许新订阅者加入和当前订阅者离开列表的订阅构架。
 2. 当新事件发生时， 发送者会遍历订阅列表并调用每个订阅者对象的通知方法。 该方法是在订阅者接口中声明的。
@@ -628,10 +644,12 @@ The Observer pattern is a behavior design pattern that allows you to define a su
 
 ### 优缺点
 
+**优点：**
+
 - *开闭原则*。 你无需修改发布者代码就能引入新的订阅者类 （如果是发布者接口则可轻松引入发布者类）。
 - 你可以在运行时建立对象之间的联系。
 
-D:
+**缺点：**
 
 - 订阅者的通知顺序是随机的。
 
