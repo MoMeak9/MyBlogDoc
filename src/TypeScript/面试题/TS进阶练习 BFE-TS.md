@@ -442,7 +442,7 @@ category:
     type IsNever<T> = [T] extends [never] ? true : false;
     ```
 
-21. **implement ReplaceAll<S, F, T>**
+21. **实现 ReplaceAll<S, F, T>**
 
     正如`String.prototype.replaceAll()`，请实现`ReplaceAll<S, F, T>`。
 
@@ -468,7 +468,7 @@ category:
         ));
     ```
 
-22. **implement Trim\<T>**
+22. **实现 Trim\<T>**
     正如`String.prototype.trim()`，请实现`Trim<T>`。
 
     ```ts
@@ -487,7 +487,7 @@ category:
         : T
     ```
 
-23. **implement Equal<A, B>**
+23. **实现 Equal<A, B>**
     检测俩类型是完全相同的
 
     ```ts
@@ -502,75 +502,344 @@ category:
 
     **答案：**
 
+    ```typescript
+    type Equal<T, K> = [T] extends [K] ? [K] extends [T] ? (keyof T extends keyof K ? keyof K extends keyof T ? true : false : false) : false : false;
     
+    // or
+    
+    type Equals<X, Y> =
+      (<T>() => T extends X ? 1 : 2) extends
+      (<T>() => T extends Y ? 1 : 2) ? true : false;
+    ```
 
-24. **implement FindIndex<T, E>**
-    TypeScript
-    容易
+24. **实现 FindIndex<T, E>**
+    正如`Array.prototype.findIndex()`， 请实现`FindIndex<T, E>`。
 
-25. **implement UnionToIntersection<T>**
-    TypeScript
-    容易
+    ```ts
+    type A = [any, never, 1, '2', true]
+    type B = FindIndex<A, 1> // 2
+    type C = FindIndex<A, 3> // never
+    ```
 
-26. **implement ToNumber<T>**
-    TypeScript
-    容易
+    **答案：**
 
-27. **implement Add<A, B>**
-    TypeScript
-    容易
+    ```typescript
+    type Equals<X, Y> =
+      (<T>() => T extends X ? 1 : 2) extends
+      (<T>() => T extends Y ? 1 : 2) ? true : false;
+    
+    type FindIndex<T extends any[], E> =
+      T extends [...infer Rest, infer EE]
+      ? Equals<EE, E> extends true
+        ? FindIndex<Rest, E> extends never
+          ? Rest["length"]
+          : FindIndex<Rest, E>
+        : FindIndex<Rest, E>
+      : never;
+    ```
 
-28. **implement SmallerThan<A, B>**
-    TypeScript
-    容易
+25. **实现 UnionToIntersection\<T>**
+    请实现`UnionToIntersection<T>`用以从Union（或）得到Intersection（与/交）。
 
-29. **implement LargerThan<A, B>**
-    TypeScript
-    容易
+    ```ts
+    type A = UnionToIntersection<{a: string} | {b: string} | {c: string}> 
+    // {a: string} & {b: string} & {c: string}
+    ```
 
-30. **implement Filter<T, A>**
-    TypeScript
-    容易
+    **答案：**
 
-31. **implement Repeat<T, C>**
-    TypeScript
-    容易
+    ```typescript
+    type UnionToIntersection<U> = 
+      (
+        U extends any 
+          ? (x: U) => void 
+          : never
+      ) extends ((x: infer I) => void) 
+          ? I 
+          : never
+    ```
 
-32. **implement TupleToString<T>**
-    TypeScript
-    容易
+    关于这是如何工作的可以参见[typescript - Transform union type to intersection type - Stack Overflow](https://stackoverflow.com/questions/50374908/transform-union-type-to-intersection-type)
 
-33. **implement RepeatString<T, C>**
-    TypeScript
-    容易
+26. **实现 ToNumber\<T>**
+    请实现`ToNumber<T>`用来转换字符串为整数。
 
-34. **implement Push<T, I>**
-    TypeScript
-    容易
+    ```ts
+    type A = ToNumber<'1'> // 1
+    type B = ToNumber<'40'> // 40
+    type C = ToNumber<'0'> // 0
+    ```
 
-35. **implement IsAny<T>**
-    TypeScript
-    容易
+    **答案：**
 
-36. **implement Shift<T>**
-    TypeScript
-    容易
+    ```typescript
+    type ToNumber<T extends string, U extends number[] = []> =
+      `${U['length']}` extends T
+        ? U['length']
+        : ToNumber<T, [...U, 1]>
+    ```
 
-37. **implement IsEmptyType<T>**
-    TypeScript
-    容易
+27. **实现 Add<A, B>**
+    实现`Add<A, B>`计算正整数之和。
 
-38. **implement Flat<T>**
-    TypeScript
-    容易
+    ```ts
+    type A = Add<1, 2> // 3
+    type B = Add<0, 0> // 0
+    ```
 
-39. **实现ReverseTuple<T>**
-    TypeScript
-    容易
+    **答案：**
 
-40. **implement UnwrapPromise<T>**
-    TypeScript
-    容易
+    ```typescript
+    type Tuple<T extends number, U extends any[] = []> = U['length'] extends T ? U : Tuple<T, [...U, any]>
+    
+    type Add<A extends number, B extends number> = [...Tuple<A>, ...Tuple<B>]['length']
+    ```
+
+28. **实现 SmallerThan<A, B>**
+
+    ```ts
+    type A = SmallerThan<0, 1> // true
+    type B = SmallerThan<1, 0> // false
+    type C = SmallerThan<10, 9> // false
+    ```
+
+    **答案：**
+
+    ```typescript
+    type SmallerThan<
+      A extends number,
+      B extends number,
+      S extends number[] = []
+    > = S['length'] extends B
+      ? false
+      : S['length'] extends A
+      ? true
+      : SmallerThan<A, B, [A, ...S]>
+    ```
+
+29. **实现 LargerThan<A, B>**
+
+    ```ts
+    type A = LargerThan<0, 1> // false
+    type B = LargerThan<1, 0> // true
+    type C = LargerThan<10, 9> // true
+    ```
+
+    **答案：**
+
+    ```typescript
+    type LargerThan<A extends number, B extends number, S extends any[] = []> =
+      S['length'] extends A
+      ? false
+      : S['length'] extends B
+      ? true
+      : LargerThan<A, B, [...S, any]>
+    ```
+
+    继续推进数组，直到它到达其中一个数字，到达的第一个数字就是较小的
+
+30. **实现 Filter<T, A>**
+    实现`Filter<T, A>`，返回T中能够assign给A的type所组成的新tuple。
+
+    ```ts
+    type A = Filter<[1,'BFE', 2, true, 'dev'], number> // [1, 2]
+    type B = Filter<[1,'BFE', 2, true, 'dev'], string> // ['BFE', 'dev']
+    type C = Filter<[1,'BFE', 2, any, 'dev'], string> // ['BFE', any, 'dev']
+    ```
+
+    **答案：**
+
+    ```typescript
+    type Filter<T extends any[], A, R extends A[] = []> = 
+      T extends [infer F, ...infer O] 
+        ? [F] extends [A]
+          ? Filter<O, A, [...R, F]>
+          : Filter<O, A, R>
+        : R
+    ```
+
+31. **实现 Repeat<T, C>**
+    返回一个进行重复复制操作的元组
+
+    ```ts
+    type A = Repeat<number, 3> // [number, number, number]
+    type B = Repeat<string, 2> // [string, string]
+    type C = Repeat<1, 1> // [1, 1]
+    type D = Repeat<0, 0> // []
+    ```
+
+    **答案：**
+
+    思路与RepeatString<T, C>差不多
+
+    ```typescript
+    type Repeat<T, C extends number, R extends any[] = []> = R['length'] extends C ? R : Repeat<T, C ,[...R, T]>
+    ```
+
+32. **实现 TupleToString\<T>**
+
+    通过将所有字符串连接成为新的字符串类型
+
+    ```ts
+    type A = TupleToString<['a']> // 'a'
+    type B = TupleToString<['B', 'F', 'E']> // 'BFE'
+    type C = TupleToString<[]> // ''
+    ```
+
+    **答案：**
+
+    ```typescript
+    type TupleToString<T extends unknown[]> = T extends [infer F, ...infer R] ? F extends string ? `${F}${TupleToString<R>}` : never : "";
+    ```
+
+33. **实现 RepeatString<T, C>**
+    类似于`String.prototype.repeat()`，即对字符串的重复复制，注意C为0的情况
+
+    ```ts
+    type A = RepeatString<'a', 3> // 'aaa'
+    type B = RepeatString<'a', 0> // ''
+    ```
+
+    **答案：**
+
+    即递归直至A（作为最终字符串的长度达到C的数值）
+
+    ```typescript
+    type RepeatString<T extends string, C extends number, A extends string[] = []> = A['length'] extends C
+        ? ''
+        : `${T}${RepeatString<T, C, [T, ...A]>}`;
+    ```
+
+34. **实现 Push<T, I>**
+    类似数组Push操作，入栈
+
+    ```ts
+    type A = Push<[1,2,3], 4> // [1,2,3,4]
+    type B = Push<[1], 2> // [1, 2]
+    type C = Push<[], string> // [string]
+    ```
+
+    **答案：**
+
+    ```typescript
+    type Push<T extends any[], I> = [...T, I]
+    ```
+
+35. **实现 IsAny\<T>**
+
+    ```ts
+    type A = IsAny<string> // false
+    type B = IsAny<any> // true
+    type C = IsAny<unknown> // false
+    type D = IsAny<never> // false
+    ```
+
+    **答案：**
+
+    按照any作为顶级类型理解，就是说any是任何类型的父类，`any` 类型可以赋值给除了 `never `之外的任意其他类型，但反过来不能把 `unknown` 赋值给除了 `any` 之外的任何其他类型，但其他类型都可以赋值给 `unknown`。
+
+    ```typescript
+    type IsAny<T> = [unknown] extends [T] ? ([T] extends [string | number | symbol | boolean] ? true : false) : false
+    ```
+
+    > **any与unknown的区别**
+    > unknow类型只是一个Top Type，而any既是一个Top Type也是一个Bottom Type。正因为如此编辑器才不会对any进行类型检查。
+    >
+    > 总的来说：使用unknow还能保持类型安全，使用any就默认放弃类型检查。所以any是一个危险的类型，它可以自由转换为其他类型，其他类型也可以自由转换为any类型，编译器不对该类型的实例进行类型检查。所以开发者有义务确保不会发生错误解释类型的情况。
+
+    一行解决方法：
+
+    ```typescript
+    type IsAny<T> = 0 extends 1&T ? true:false;
+    ```
+
+36. **实现 Shift\<T>**
+    类似数组Shift操作，去除元组第一个元素
+
+    ```ts
+    type A = Shift<[1,2,3]> // [2,3]
+    type B = Shift<[1]> // []
+    type C = Shift<[]> // []
+    ```
+
+    **答案：**
+
+    ```typescript
+    type Shift<T extends any[]> = T extends [infer P, ...infer M] ? M : []
+    ```
+
+37. **实现 IsEmptyType\<T>**
+    检查T是否为空对象，注意any视为非空
+
+    ```ts
+    type A = IsEmptyType<string> // false
+    type B = IsEmptyType<{a: 3}> // false
+    type C = IsEmptyType<{}> // true
+    type D = IsEmptyType<any> // false
+    type E = IsEmptyType<object> // false
+    type F = IsEmptyType<Object> // false
+    ```
+
+    **答案：**
+
+    ```typescript
+    type IsEmptyType<T> = T extends Record<string,string> ? [keyof T] extends [never] ? true: false: false
+    ```
+
+    抑或是分别检测是否为简单非空对象和Any类型
+
+    ```typescript
+    type simpleObject = { [key: string]: string }
+    type IsAny<T> = false extends (true & T) ? true : false; 
+    type IsEmptyType<T> = IsAny<T> extends true ? false : {} extends T ? T extends simpleObject ? true : false :false 
+    ```
+
+38. **实现 Flat\<T>**
+    即实现元组类型扁平化
+
+    ```ts
+    type A = Flat<[1,2,3]> // [1,2,3]
+    type B = Flat<[1,[2,3], [4,[5,[6]]]]> // [1,2,3,4,5,6]
+    type C = Flat<[]> // []
+    ```
+
+    **答案：**
+
+    ```typescript
+    type Flat<T extends any[]> = T extends [infer K, ...infer R] ? (K extends any[] ? [...Flat<K>,...Flat<R>] : [K,...Flat<R>]) : T
+    ```
+
+39. **实现 ReverseTuple\<T>**
+    即实现对元组类型的翻转
+
+    ```ts
+    type A = ReverseTuple<[string, number, boolean]> // [boolean, number, string]
+    type B = ReverseTuple<[1,2,3]> // [3,2,1]
+    type C = ReverseTuple<[]> // []
+    ```
+
+    **答案：**
+
+    ```typescript
+    type ReverseTuple<T extends any[]> = 
+      T extends [...infer L, infer R] ? [R, ...ReverseTuple<L>]: []
+    ```
+
+40. **实现 UnwrapPromise\<T>**
+
+    即展开Promise，返回resolved后的类型
+
+    ```ts
+    type A = UnwrapPromise<Promise<string>> // string
+    type B = UnwrapPromise<Promise<null>> // null
+    type C = UnwrapPromise<null> // Error
+    ```
+
+    **答案：**
+
+    ```typescript
+    type UnwrapPromise<T extends Promise<any>> = T extends Promise<infer P> ? P :never
+    ```
 
 41. **implement LengthOfString<T>**
     TypeScript
@@ -719,4 +988,3 @@ category:
     > = RemoveStart<RemoveEnd<A, E>, S>;
     ```
 
-    
