@@ -866,33 +866,147 @@ category:
 
 47. **实现Diff<A, B>**
 
-57. **实现ObjectPaths\<O>**
+48. **实现ObjectPaths\<O>**
+
+49. **实现Abs\<N>**
+
+50. **实现StringToNumber\<S>**
+
+51. **实现CamelCase\<S>**
+
+    
+
+52. **实现SnakeCase\<S>**
+
+    
 
 
-56. **实现Abs\<N>**
+53. **实现Split<S, D>**
+
+    
 
 
-55. **实现StringToNumber\<S>**
+54. **实现Capitalize\<T>**
+
+    实现字符串首字母大写，实际上TS已经内置了该工具类型，尝试自己实现
+
+    **答案：**
+
+    
 
 
-54. **实现CamelCase\<S>**
+55. **实现Sort\<T>**
 
+    升序排序。如果能够比较 `LargerThan<A,B>` 和 `SmallerThan<A,B>` 中的两个非负整数，那么你应该能够实现升序排序。
 
-53. **实现SnakeCase\<S>**
+    ```ts
+    type A = Sort<[100, 9, 20, 0, 0 55]>
+    // [0, 0, 9, 55, 100]
+    ```
 
+    **答案：**
 
-52. **实现Split<S, D>**
+    ```typescript
+    type LessThan<A,B,T extends any[]=[]> = T["length"] extends B ? false : T["length"] extends A ? true :  LessThan<A,B,[...T,any]>;
+    
+    type Smallest<T extends any[],S extends any = T[0]> = T extends [infer A,...infer R] ?(
+    LessThan<A,S> extends true ? Smallest<R,A> : Smallest<R,S>
+    ) : S;
+    
+    type RemoveFirstOccurence<T extends any [] , N extends any, R extends any[]=[]> = T extends [infer A,...infer Rest] ? 
+    (A extends N ? [...R,...Rest] : RemoveFirstOccurence<Rest,N,[...R,A]>) 
+    : R;
+    
+    type Sort<T extends any[],Sorted extends any[]=[]> = T extends [infer A,...infer B] ? 
+    (
+      Sort<RemoveFirstOccurence<T,Smallest<[A,...B]>>,[...Sorted,Smallest<[A,...B]>]>
+    ): Sorted ;
+    ```
 
+56. **asserts never**
 
-51. **实现Capitalize\<T>**
+    在`switch`，我们很容易犯一些错误，比如，
 
+    ```ts
+    type Value = 'a' | 'b' | 'c';
+    declare let value: Value
+    
+    switch (value) {
+      case 'a':
+        break;
+      case 'b':
+        break;
+      default:
+        break;
+    }
+    ```
 
-50. **实现Sort\<T>**
+    我们遗忘了case `c`，但是编辑器没有给予提示
 
-49. **asserts never**
+    所以，请实现函数`assertsNever()`去检查以保证没有遗漏的case
 
+    ```ts
+    type Value = 'a' | 'b' | 'c';
+    declare let value: Value
+    
+    switch (value) {
+      case 'a':
+        break;
+      case 'b':
+        break;
+      default:
+        assertsNever(value)
+        break;
+    }
+    ```
 
-48. **实现Divide<A, B>**
+    此时TypeScript会警告你缺失了case `c`
+
+    **答案：**
+
+    可以通过的答案，但可能不太合适？
+
+    ```typescript
+    function assertsNever (arg:never) {
+      throw new TypeError(`Missing case ${arg}`)
+    };
+    ```
+
+57. **实现Divide<A, B>**
+
+    即计算A/B，保留整数结果
+
+    ```ts
+    type A = Divide<1, 0> // never
+    type B = Divide<4, 2> // 2
+    type C = Divide<10, 3> // 3
+    ```
+
+    **答案：**
+
+    可以理解为模拟计算，例如10/3，逐个减去3，计算可以减掉多少个3，直到剩下1，无法在被3减去，输出之前所减去的3的个数
+
+    ```typescript
+    type Tuple<T extends number, U extends any[] = []> =
+      U['length'] extends T ? U : Tuple<T, [...U, any]>
+    
+    type Subtract<
+      A extends number,
+      B extends number
+      > = Tuple<A> extends [...Tuple<B>, ...infer R] ? R['length'] : never
+    
+    type SmallerThan<
+      A extends number,
+      B extends number,
+      S extends number[] = []
+    > = S['length'] extends B
+      ? false
+      : S['length'] extends A
+      ? true
+      : SmallerThan<A, B, [A, ...S]>
+    type Divide<A extends number, B extends number, S extends number[] = []> = 
+    B extends 0 ? never : SmallerThan<A,B> extends true ? S['length'] : Divide<Subtract<A, B>, B, [...S, any]>;
+    ```
 
 
 58. **实现Multiply<A, B>**
