@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "TypeScript/面试题/TS进阶练习 BFE-TS.md",
+                "file": "软技能/精选文章列表.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "TypeScript/面试题/TS进阶练习 BFE-TS.md",
+                "file": "软技能/精选文章列表.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "TypeScript/面试题/TS进阶练习 BFE-TS.md",
+                "file": "软技能/精选文章列表.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "TypeScript/面试题/TS进阶练习 BFE-TS.md"
+                "file": "软技能/精选文章列表.md"
               }
             }
           }
@@ -139,6 +139,7 @@
   },
   "active": "fce4ece2b9625507",
   "lastOpenFiles": [
+    "TypeScript/面试题/TS进阶练习 BFE-TS.md",
     "TypeScript/TS 装饰器使用一览.md",
     "TypeScript/TS中的内置条件类型：ReturnType.md",
     "Node/CORS 跨域及其 Nodejs 服务端配置实践.md",
@@ -147,7 +148,6 @@
     "JavaScript/JS垃圾回收机制.md",
     "JavaScript/js中==与===的区别.md",
     "计算机科学/设计模式/UML图关系详解.md",
-    "面试通用/计算机网络面试题.md",
-    "计算机科学/设计模式/结构型模式 Structural Patterns.md"
+    "面试通用/计算机网络面试题.md"
   ]
 }
