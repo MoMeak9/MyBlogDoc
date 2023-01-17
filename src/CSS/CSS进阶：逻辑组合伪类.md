@@ -1,0 +1,167 @@
+---
+date: 2022-12-24
+category:
+- CSS
+---
+
+# CSS进阶：逻辑组合伪类 :not() :is() :where() :has() 
+
+本文将介绍4个逻辑组合伪类，分别是`:not()` `:is()` `:where()` `:has()` ，这四个伪类的自身优先级为0，这与其他伪类相同，但处理时是将其和括号里的参数作为一个整体计算优先级，这就导致了实际表现出的优先级由参数决定（除了`:where()` 的优先级总是为 0）。
+
+目前这四位目前都得到了大多数浏览器的支持，同时非常实用，务必掌握哦~
+
+## 否定伪类 :not()
+
+`:not()` 伪类用于否定选择器，可以接受一个或多个选择器作为参数，如果元素不匹配参数中的任何一个选择器，则匹配该伪类，它也被称为反选伪类（negation pseudo-class）。
+
+1. `:not()` 伪类优先级是0，即本身没有任何优先级，其优先级由括号内表达式决定
+
+   ```css
+   :not(li) {}
+   ```
+
+   其优先级就是 `li` 选择器的优先级。
+
+2. `:not()` 伪类可以不断级联
+
+   ```css
+   body :not(div):not(span) {
+     font-weight: bold;
+   }
+   ```
+
+   表示既不是` <div>` 也不是` <span>` 的元素
+
+3. `:not()` 伪类目前已支持多个表达式
+
+   ```css
+   body :not(div, .fancy) {
+     text-decoration: overline underline;
+   }
+   ```
+
+   表示不是`<div> `或 `.fancy` 的元素
+
+### 告别重置
+
+`:not`伪类最大的作用就是可以优化我们过去重置CSS样式的策略，使我们代码更加简介，易于理解，例如：
+
+```css
+.panel{
+    display: none;
+}
+
+.panel .active{
+    display: block;
+}
+```
+
+实际上我们可以简写成
+
+```css
+.panel :not(.active){
+    display: block;
+}
+```
+
+类似的，希望大家能够培养这种意识，对于遇到需要重置CSS样式的场景，第一反应就是使用`:not`伪类。
+
+## 任意匹配伪类 :is()
+
+### :is()伪类与:matches()伪类及:any()伪类之间的关系
+
+2018 年 10 月底，`:matches ()`伪类改名为`:is()`伪类 ([[selectors-4] Rename :matches() to :is() · Issue #3258 · w3c/csswg-drafts](https://github.com/w3c/csswg-drafts/issues/3258))，因为`:is()`的名称更简短，且其语义正好和`:not() `相反。
+
+也就是说，`:matches ()`伪类是`:is ()`伪类的前身。然后很有趣的是`:matches ()`还有一个被舍弃的前身，那就是`:any()`伪类，被舍弃的原因是选择器的优先级不准确，`:any()`伪类会忽略括号里面选择器的优先级，而永远是普通伪类的优先级。
+
+`:any()`伪类名义上虽然被舍弃了，但是除了 IE/Edge 以外的浏览器都支持，而且很早就支持，现在也都支持，不过都需要添加私有前缀，如`-webkit-any()`以及`-moz-any()`。
+
+### 用法
+
+`:is()` 将选择器列表作为参数，并选择该列表中任意一个选择器可以选择的元素。这对于以更紧凑的形式编写大型选择器非常有用。
+
+```css
+/* 选择 header、main、footer 里的任意一个悬浮状态的段落 */
+:is(header, main, footer) p:hover {
+  color: red;
+  cursor: pointer;
+}
+
+/* 以上内容相当于以下内容 */
+header p:hover,
+main p:hover,
+footer p:hover {
+  color: red;
+  cursor: pointer;
+}
+```
+
+### :is() 和 :where() 的区别
+
+两者的区别在于 `:is()` 计入整体选择器的优先级（它接受优先级最高参数的优先级），而 `:where()` 的优先级为 0。
+
+综上，`is()`是一个有用但不被迫切需要的伪类，但是还是很实用的
+
+## 任意匹配伪类 :where()
+
+`:where()`伪类是和`:is()`伪类一同出现的，它们的含义、语法、作用一模一样。唯一的区别就是优先级不一样，`:where()` 伪类的优先级永远是 0。例如:
+
+```css
+:where(.article, section) p {}
+```
+
+的优先级等同于 `p` 选择器，参数里的选择器的优先级被完全忽略。
+
+又如:
+```css
+:where(#article, #section) .content {}
+```
+
+的优先级等同于`.content` 选择器
+
+### 可容错选择器解析
+
+规范将 `:is()` 和 `:where()` 定义为接受一个[可容错选择器列表](https://drafts.csswg.org/selectors-4/#typedef-forgiving-selector-list)
+
+在 CSS 中使用选择器列表时，如果任何选择器无效，则整个列表被视为无效，即如果某个选择器无法解析，则被视为无效，不正确或不受支持的选择器将被忽略，其他选择器将被使用。
+
+```css
+:is(:valid, :unsupported) {
+  /* … */
+}
+```
+
+即使在不支持 `:unsupported` 的浏览器中，仍将正确解析 `:valid`，而这种写法：
+
+```css
+:valid,
+:unsupported {
+  /* … */
+}
+```
+
+在不支持 `:unsupported` 浏览器中即使它们支持 `:valid`，仍将忽略。
+
+## 关联伪类 :has()
+
+`:has()`伪类是一个规范制定得很早但浏览器却迟迟没有支持的伪类。如果浏览器能够支持，其功能会非常强大，因为它可以实现类似“父选择器”和“前面兄弟选择器”的功能（提供了一种针对引用元素选择父元素或者先前的兄弟元素的方法），对CSS 的开发会有颠覆性的影响。
+
+例如：
+
+```css
+a:has(> svg) [}
+```
+
+表示匹配包含有`<svg>`元素的`<a>`元素，实现的就是“父选择器”的效果，即根据子元素选择父元素。
+
+又如：
+
+```css
+h1:has(+ p) {}
+```
+
+表示匹配后面跟随`<p>`元素的`<h1>`元素，实现的就是“前面兄弟选择器”的效果，即根据后面的兄弟元素选择前面的元素。
+
+早前这并没有被浏览器所支持，最近查看MDN发现很多浏览器已经支持了~（[:has() - CSS（层叠样式表） | MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:has)）
+
+![image-20230117165405737](https://cdn.yihuiblog.top/images/202301171654814.png)
