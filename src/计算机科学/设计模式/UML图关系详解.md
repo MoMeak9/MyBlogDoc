@@ -18,8 +18,7 @@ category:
 
 你是一名出租车司机，每天开着公司给你分配的车去载客，而每天出租车可能不同，我只是个司机，公司给我什么车我就开什么车，我使用这个车。
 
-**具体 UML 类图表现为：
-**
+**具体 UML 类图表现为：**
 
 <img src="https://pic2.zhimg.com/80/v2-dce9c2eb387354bb7de9a3a47d5f3ed5_720w.png" alt="img" style="zoom:67%;" />
 
@@ -36,7 +35,7 @@ class Car {
 } 
 ```
 
-依赖关系不一定表现为[形参](https://www.zhihu.com/search?q=形参&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"article"%2C"sourceId"%3A24576502})，一共可以有三种表现形式:
+依赖关系不一定表现为形参，一共可以有三种表现形式:
 
 ```java
 class Driver {
@@ -62,7 +61,7 @@ class Driver {
 
 它体现的两个类中一种强依赖关系，比如我和我的朋友，这种关系比依赖更强，不存在依赖关系中的偶然性，关系也不是临时的，一般是长期性的。
 
-关联关系分为[单向关联](https://www.zhihu.com/search?q=单向关联&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"article"%2C"sourceId"%3A24576502})和双向关联：
+关联关系分为单向关联和双向关联：
 
 1. 在 Java 中，单向关联表现为：类 A 当中使用了 类 B，其中类 B 是作为类 A 的成员变量。
 2. 双向关联表现为: 类 A 当中使用类 B 作为成员变量，同时类 B 中也使用了类 A 作为成员变量。

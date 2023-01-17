@@ -33,5 +33,3 @@
 ## UCD：User Centered Design 以用户为中心的设计
 
 UCD是一种设计模式，思维。强调在产品设计过程中，从用户角度出发来进行设计，用户优先。产品设计有个BTU三圈图（Business, Technique, User），即一个好的产品，应该兼顾商业盈利，技术实现和用户需求。无论是B、T还是U为优先进入产品设计，都可以设计出好的产品。UCD只是强调用户优先。
-
-![img](https://cdn.yihuiblog.top/images/202211131943900.jpeg)

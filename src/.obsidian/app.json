@@ -1,17 +1,19 @@
 {
   "pdfExportSettings": {
+    "includeName": false,
     "pageSize": "A4",
     "landscape": false,
     "margin": "0",
     "downscalePercent": 100
   },
   "strictLineBreaks": true,
-  "foldHeading": false,
+  "foldHeading": true,
   "showFrontmatter": true,
   "foldIndent": false,
-  "showLineNumber": false,
+  "showLineNumber": true,
   "livePreview": true,
   "spellcheck": true,
   "alwaysUpdateLinks": true,
-  "newLinkFormat": "relative"
+  "newLinkFormat": "absolute",
+  "useMarkdownLinks": true
 }

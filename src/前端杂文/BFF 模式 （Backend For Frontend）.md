@@ -10,9 +10,7 @@
 
 > 参考：
 >
-> https://perspectives.mobilelive.ca/
->
-> https://www.infoq.cn/article/4hjplbxo1xktefxzpqz8
+> [BFF模式：微服务前端数据加载的最佳实践？_前端_Viduni Wickramarachchi_InfoQ精选文章](https://www.infoq.cn/article/4hjplbxo1xktefxzpqz8)
 
 设想一个场景，你需要使用微服务构建电子商务应用程序。你可以为客户、订单、产品、购物车等提供微服务，微服务暴露 API 给前端使用。
 

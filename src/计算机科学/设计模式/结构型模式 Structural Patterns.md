@@ -3,7 +3,11 @@ date: 2021-12-03
 category:
 - 设计模式
 ---
-# 结构型模式
+# 结构型模式 Structural Patterns
+
+> 文章内容整理自：[refactoringguru.cn/](https://refactoringguru.cn/)
+> 
+> 附带常见模式代码实现
 
 ## Adapter 适配器
 
@@ -11,9 +15,7 @@ category:
 
 The adapter pattern is a structural design pattern that enables objects with incompatible interfaces to cooperate.
 
-
-
-<img src="https://refactoringguru.cn/images/patterns/diagrams/adapter/structure-object-adapter-indexed.png" alt="适配器设计模式的结构（对象适配器）" style="zoom:67%;" />
+<img src="https://cdn.yihuiblog.top/images/202212021734263.png" alt="适配器设计模式的结构（对象适配器）" style="zoom:67%;" />
 
 1. **客户端** （Client） 是包含当前程序业务逻辑的类。
 2. **客户端接口** （Client Interface） 描述了其他类与客户端代码合作时必须遵循的协议。
@@ -21,7 +23,7 @@ The adapter pattern is a structural design pattern that enables objects with inc
 4. **适配器** （Adapter） 是一个可以同时与客户端和服务交互的类： 它在实现客户端接口的同时封装了服务对象。 适配器接受客户端通过适配器接口发起的调用， 并将其转换为适用于被封装服务对象的调用。
 5. 客户端代码只需通过接口与适配器交互即可， 无需与具体的适配器类耦合。 因此， 你可以向程序中添加新类型的适配器而无需修改已有代码。 这在服务类的接口被更改或替换时很有用： 你无需修改客户端代码就可以创建新的适配器类。
 
-<img src="https://refactoringguru.cn/images/patterns/diagrams/adapter/structure-class-adapter-indexed.png" alt="适配器设计模式（类适配器）" style="zoom:67%;" />
+<img src="https://cdn.yihuiblog.top/images/202212021734642.png" alt="适配器设计模式（类适配器）" style="zoom:67%;" />
 
 ### 场景
 
@@ -30,10 +32,12 @@ The adapter pattern is a structural design pattern that enables objects with inc
 
 ### 优缺点
 
+**Advantages:**
+
 - _单一职责原则_你可以将接口或数据转换代码从程序主要业务逻辑中分离。
 - *开闭原则*。 只要客户端代码通过客户端接口与适配器进行交互， 你就能在不修改现有客户端代码的情况下在程序中添加新类型的适配器。
 
-Dis
+**Disadvantages:**
 
 - 代码整体复杂度增加， 因为你需要新增一系列接口和类。 有时直接更改服务类使其与其他代码兼容会更简单。
 
@@ -108,7 +112,7 @@ if __name__ == "__main__":
 
 The bridging pattern is a structural design pattern that splits a large class or series of closely related classes into two separate hierarchies of abstraction and implementation that can be used separately at development time.
 
-<img src="https://refactoringguru.cn/images/patterns/diagrams/bridge/structure-zh-indexed.png" alt="桥接设计模式" style="zoom:67%;" />
+<img src="https://cdn.yihuiblog.top/images/202212021735089.png" alt="桥接设计模式" style="zoom:67%;" />
 
 1. **抽象部分** （Abstraction） 提供高层控制逻辑， 依赖于完成底层实际工作的实现对象。
 
@@ -122,7 +126,7 @@ The bridging pattern is a structural design pattern that splits a large class or
 
 5. 通常情况下， **客户端** （Client） 仅关心如何与抽象部分合作。 但是， 客户端需要将抽象对象与一个实现对象连接起来。
 
-<img src="https://refactoringguru.cn/images/patterns/diagrams/bridge/example-zh.png" alt="桥接模式示例的结构" style="zoom:67%;" />
+<img src="https://cdn.yihuiblog.top/images/202212021735562.png" alt="桥接模式示例的结构" style="zoom:67%;" />
 
 ### 场景
 
@@ -137,7 +141,7 @@ The bridging pattern is a structural design pattern that splits a large class or
 -  *开闭原则*。 你可以新增抽象部分和实现部分， 且它们之间不会相互影响。
 -  *单一职责原则*。 抽象部分专注于处理高层逻辑， 实现部分处理平台细节。
 
-D：
+**Disadvantages:**
 
 对高内聚的类使用该模式可能会让代码更加复杂。
 
@@ -214,7 +218,7 @@ if __name__ == "__main__":
 
 Decorator is a structural design pattern that allows you to bind new behavior to an object by putting it into a special wrapper that contains behavior.
 
-<img src="https://refactoringguru.cn/images/patterns/diagrams/decorator/structure-indexed.png" alt="装饰设计模式的结构" style="zoom:67%;" />
+<img src="https://cdn.yihuiblog.top/images/202212021735422.png" alt="装饰设计模式的结构" style="zoom:67%;" />
 
 1. **部件** （Component） 声明封装器和被封装对象的公用接口。
 2. **具体部件** （Concrete Component） 类是被封装对象所属的类。 它定义了基础行为， 但装饰类可以改变这些行为。
@@ -229,14 +233,14 @@ Decorator is a structural design pattern that allows you to bind new behavior to
 
 ### 优缺点
 
-A：
+**Advantages:**
 
 -  你无需创建新子类即可扩展对象的行为。
 -  你可以在运行时添加或删除对象的功能。
 -  你可以用多个装饰封装对象来组合几种行为。
 -  *单一职责原则*。 你可以将实现了许多不同行为的一个大类拆分为多个较小的类。
 
-D：
+**Disadvantages:**
 
 - 在封装器栈中删除特定封装器比较困难。
 -  实现行为不受装饰栈顺序影响的装饰比较困难。
@@ -314,7 +318,7 @@ if __name__ == "__main__":
 
 The facade pattern is a structural design pattern that provides a simple interface to libraries, frameworks, or other complex classes.
 
-<img src="https://refactoringguru.cn/images/patterns/diagrams/facade/structure-indexed.png" alt="外观设计模式的结构" style="zoom:67%;" />
+<img src="https://cdn.yihuiblog.top/images/202212021735646.png" alt="外观设计模式的结构" style="zoom:67%;" />
 
 1. **外观** （Facade） 提供了一种访问特定子系统功能的便捷方式， 其了解如何重定向客户端请求， 知晓如何操作一切活动部件。
 
@@ -333,7 +337,11 @@ The facade pattern is a structural design pattern that provides a simple interfa
 
 ### 优缺点
 
+**Advantages:**
+
 - 你可以让自己的代码独立于复杂子系统。
+
+**Disadvantages:**
 
 -  外观可能成为与程序中所有类都耦合的[上帝对象](https://refactoringguru.cn/antipatterns/god-object)。God object
 
@@ -441,7 +449,7 @@ if __name__ == "__main__":
 
 Proxy pattern is a structural design pattern that allows you to provide substitutes for objects or placeholders for them. The proxy controls access to the original object and allows some processing before and after the request is submitted to the object.
 
-<img src="https://refactoringguru.cn/images/patterns/diagrams/proxy/structure-indexed.png" alt="代理设计模式的结构" style="zoom:67%;" />
+<img src="https://cdn.yihuiblog.top/images/202212021735199.png" alt="代理设计模式的结构" style="zoom:67%;" />
 
 1. **服务接口** （Service Interface） 声明了服务接口。 代理必须遵循该接口才能伪装成服务对象。
 2. **服务** （Service） 类提供了一些实用的业务逻辑。
@@ -457,14 +465,14 @@ Proxy pattern is a structural design pattern that allows you to provide substitu
 
 ### 优缺点
 
-A：
+**Advantages:**
 
 - 你可以在客户端毫无察觉的情况下控制服务对象。
 -  如果客户端对服务对象的生命周期没有特殊要求， 你可以对生命周期进行管理。
 -  即使服务对象还未准备好或不存在， 代理也可以正常工作。
 -  *开闭原则*。 你可以在不对服务或客户端做出修改的情况下创建新代理。
 
-D：
+**Disadvantages:**
 
 - 代码可能会变得复杂， 因为需要新建许多类。
 -  服务响应可能会延迟。
@@ -481,7 +489,7 @@ D：
 
 Flyweight is a structural design pattern that eliminates the need to store all data in each object and allows you to load more objects into limited memory by sharing the same state shared by multiple objects.
 
-<img src="https://refactoringguru.cn/images/patterns/diagrams/flyweight/structure-indexed.png" alt="享元设计模式的结构" style="zoom:67%;" />
+<img src="https://cdn.yihuiblog.top/images/202212021735675.png" alt="享元设计模式的结构" style="zoom:67%;" />
 
 1. 享元模式只是一种优化。 在应用该模式之前， 你要确定程序中存在与大量类似对象同时占用内存相关的内存消耗问题， 并且确保该问题无法使用其他更好的方式来解决。
 2. **享元** （Flyweight） 类包含原始对象中部分能在多个对象中共享的状态。 同一享元对象可在许多不同情景中使用。 享元中存储的状态被称为 “内在状态”。 传递给享元方法的状态被称为 “外在状态”。
@@ -496,9 +504,11 @@ Flyweight is a structural design pattern that eliminates the need to store all d
 
 ### 优缺点
 
-A：如果程序中有很多相似对象， 那么你将可以节省大量内存。
+**Advantages:**
 
-D：
+- 如果程序中有很多相似对象， 那么你将可以节省大量内存。
+
+**Disadvantages:**
 
 -  你可能需要牺牲执行速度来换取内存， 因为他人每次调用享元方法时都需要重新计算部分情景数据。
 -  代码会变得更加复杂。 
@@ -573,7 +583,7 @@ if __name__ == '__main__':
 
 The composite pattern is a structural design pattern that allows you to combine objects into a tree structure and use them as if they were individual objects.
 
-<img src="https://refactoringguru.cn/images/patterns/diagrams/composite/structure-zh-indexed.png" alt="组合设计模式的结构" style="zoom:67%;" />
+<img src="https://cdn.yihuiblog.top/images/202212021735184.png" alt="组合设计模式的结构" style="zoom:67%;" />
 
 1. **组件** （Component） 接口描述了树中简单项目和复杂项目所共有的操作。
 
@@ -594,10 +604,12 @@ The composite pattern is a structural design pattern that allows you to combine 
 
 ### 优缺点
 
+**Advantages:**
+
 - 你可以利用多态和递归机制更方便地使用复杂树结构。
 -  *开闭原则*。 无需更改现有代码， 你就可以在应用中添加新元素， 使其成为对象树的一部分。
 
-D：
+**Disadvantages:**
 
 -  对于功能差异较大的类， 提供公共接口或许会有困难。 在特定情况下， 你需要过度一般化组件接口， 使其变得令人难以理解。
 
