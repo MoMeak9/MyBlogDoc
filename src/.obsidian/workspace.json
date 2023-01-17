@@ -18,8 +18,19 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "e5eb54eb20989e9a",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.1.9"
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -137,8 +148,20 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "fce4ece2b9625507",
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false
+    }
+  },
+  "active": "e5eb54eb20989e9a",
   "lastOpenFiles": [
+    "Astro/Astro 中启用服务器端渲染.md",
+    "软技能/精选文章列表.md",
     "TypeScript/面试题/TS进阶练习 BFE-TS.md",
     "TypeScript/TS 装饰器使用一览.md",
     "TypeScript/TS中的内置条件类型：ReturnType.md",
@@ -146,8 +169,6 @@
     "Node/Node 笔记（2）模块化.md",
     "Node/Node 笔记（1）内核引擎.md",
     "JavaScript/JS垃圾回收机制.md",
-    "JavaScript/js中==与===的区别.md",
-    "计算机科学/设计模式/UML图关系详解.md",
-    "面试通用/计算机网络面试题.md"
+    "JavaScript/js中==与===的区别.md"
   ]
 }
