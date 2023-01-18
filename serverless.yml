@@ -7,7 +7,6 @@ inputs:
   src:
     src: ./dist
     dist: ./dist
-    hook: npm run docs:build
     index: index.html
     error: index.html
     exclude:
