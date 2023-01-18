@@ -15,7 +15,7 @@ export default hopeTheme({
 
     iconPrefix: "iconfont icon-",
 
-    logo: "https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/ココアシガレット_91951407.png.png",
+    logo: "https://cdn.yihuiblog.top/images/logo-for-blog.jpg",
 
     repo: "https://github.com/MoMeak9/MyBlogDoc",
 
