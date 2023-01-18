@@ -28,8 +28,10 @@ jobs:
          env:
            NODE_OPTIONS: --max_old_space_size=4096
          run: pnpm run docs:build
+       - name: install serverless
+         run: npm install -g serverless
        - name: deploy serverless
-         uses: serverless/github-action@v3.1
+         run: sls deploy --force
          env: # 环境变量
            STAGE: prod #您的部署环境
            SERVERLESS_PLATFORM_VENDOR: tencent #serverless 境外默认为 aws，配置为腾讯
