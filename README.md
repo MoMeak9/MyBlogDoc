@@ -48,8 +48,6 @@
 
 **部署：**
 
-- Github Action 自动构建并部署 Github Page （见deploy分支），国内源已挂载CDN，请放心访问。
-
 ### Git 提交
 
 commitizen+git-cz 实现的有趣而规范的commits信息
