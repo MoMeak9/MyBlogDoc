@@ -5,7 +5,7 @@ app: yihui-blog
 stage: prod
 inputs:
   src:
-    src: ./
+    src: ./src
     dist: ./dist
     hook: npm run docs:build
     index: index.html
