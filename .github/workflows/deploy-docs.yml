@@ -1,48 +1,27 @@
-
-name: 部署文档
-
-on:
-  push:
-    branches:
-      # 确保这是你正在使用的分支名称
-      - main
-
+# 当代码推动到 dev 分支时，执行当前工作流程
+# 更多配置信息: https://docs.github.com/cn/actions/getting-started-with-github-actions
+name: deploy serverless
+on: #监听的事件和分支配置
+   push:
+     branches:
+       - main
 jobs:
-  deploy-gh-pages:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          # 如果你文档需要 Git 子模块，取消注释下一行
-          # submodules: true
-
-
-      - name: 安装 pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 6
-
-
-      - name: 设置 Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: pnpm
-
-      - name: 安装依赖
-        run: pnpm install --frozen-lockfile
-
-      - name: 构建文档
-        env:
-          NODE_OPTIONS: --max_old_space_size=4096
-        run: pnpm run docs:build
-
-      - name: 部署文档
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          # 这是文档部署到的分支名称
-          branch: deploy
-          folder: dist
-
+   deploy:
+     name: deploy serverless
+     runs-on: ubuntu-latest
+     steps:
+       - name: clone local repository
+         uses: actions/checkout@v2
+       - name: install serverless
+         run: npm install -g serverless-cloud-framework
+       - name: install dependency
+         run: npm install
+       - name: build
+         run: npm run docs:build
+       - name: deploy serverless
+         run: scf deploy --debug
+         env: # 环境变量
+           STAGE: prod #您的部署环境
+           SERVERLESS_PLATFORM_VENDOR: tencent #serverless 境外默认为 aws，配置为腾讯
+           TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }} #您的腾讯云账号 sercret ID
+           TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }} #您的腾讯云账号 sercret key
