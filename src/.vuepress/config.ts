@@ -5,9 +5,9 @@ import theme from "./theme";
 export default defineUserConfig({
     theme: theme,
     base: "/",
-
     dest: "./dist",
-
+    title: "Yihui's Blog",
+    description: "前端小白的技术博客",
     head: [
         [
             'script', {}, `
@@ -22,6 +22,9 @@ export default defineUserConfig({
         [
             'meta', {name: 'google-site-verification', content: '9vkxYqOlDYYQz21WsvuXk9ztRIK5L0_MuzL1WvFmBuY'}
         ],
+        [
+            'meta', {name: 'keywords', content: '前端博客 vuepress Vue React JavaScript'}
+        ]
     ],
 
     locales: {
