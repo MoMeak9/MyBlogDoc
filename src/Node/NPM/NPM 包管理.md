@@ -35,7 +35,7 @@ ynpm publish
 
 第二种就是使用 `.npmignore` 配置文件，他类似于 `.gitignore` 文件，其实如果没有 `.npmignore`，会使用`.gitignore`来取代他的功能。在包的根目录下，`.npmignore`不会覆盖 `files` 字段，但在子目录中会覆盖。
 
-有些文件不能无法通过配置排除或者包含：
+有些文件无法通过配置排除或者包含：
 
 - package.json
 - README

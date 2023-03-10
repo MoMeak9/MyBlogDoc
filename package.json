@@ -4,12 +4,11 @@
   "description": "A project of vuepress-theme-hope",
   "license": "MIT",
   "scripts": {
-    "docs:build": "vuepress build src",
-    "docs:clean-dev": "vuepress dev src --clean-cache",
-    "docs:dev": "vuepress dev src",
-    "docs:deploy": "serverless deploy",
-    "git:commit": "git fetch && git add -A && git-cz && git pull && git push",
-    "doc:commitAndDeploy": "npm run git:commit && npm run docs:deploy"
+    "build": "vuepress build src",
+    "clean-dev": "vuepress dev src --clean-cache",
+    "dev": "vuepress dev src",
+    "deploy": "serverless deploy",
+    "commit": "git add . && git-cz && git push"
   },
   "config": {
     "commitizen": {

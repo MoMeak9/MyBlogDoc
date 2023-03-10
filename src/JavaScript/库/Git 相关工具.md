@@ -1,0 +1,3 @@
+commitlint
+commitizen
+Standard Version

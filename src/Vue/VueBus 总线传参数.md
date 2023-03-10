@@ -201,24 +201,3 @@ this.$bus.$on('nameOfEvent',($event) => {
 > [Vue事件总线（EventBus）使用详细介绍](https://zhuanlan.zhihu.com/p/72777951)
 >
 > [vue -- 事件总线 EventBus](https://segmentfault.com/a/1190000021707081)
-
-
-
-
-
-{
-  "title": "RG-RAP1200(FE)产品说明书",
-  "type: "images",
-  "tabs": [
-    { "name": "产品信息", "key": "xinxi"， index‘：“1’ },
-    { "name": "产品安装", "key": "anzhuang" },
-    { "name": "接口及组网方式", "key": "wangkoulianjie" },
-    { "name": "网络配置", "key": "peizhi" },
-    { "name": "指示灯说明", "key": "zhishideng" },
-    { "name": "售后服务", "key": "shouhou" }
-  ],
-  "contents":{
-      “ xinxi”: [  " sadasda","aasdasdasdasd"],"anzhuang":[]
-
-   }
-}

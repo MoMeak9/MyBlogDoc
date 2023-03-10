@@ -320,7 +320,7 @@ module.exports = {
 
 [Easy-Monitor](https://github.com/hyj1991/easy-monitor)
 
-#### 如何优化？
+## 如何优化Node.js 脚本？
 
 - 使用最新版本Node.js
 
@@ -328,7 +328,7 @@ module.exports = {
 
   在`Node`中，很多对象都实现了流，对于一个大文件可以通过流的形式发送，不需要将其完全读入内存
 
-  ```js
+```js
   const http = require('http');
   const fs = require('fs');
   
@@ -344,13 +344,13 @@ module.exports = {
       const stream = fs.createReadStream(__dirname + '/data.txt');
       stream.pipe(res);
   });
-  ```
+```
 
 - 代码层面优化
 
   合并查询，将多次查询合并一次，减少数据库的查询次数
 
-  ```js
+```js
   // bad
   for user_id in userIds 
        let account = user_account.findOne(user_id)
@@ -362,7 +362,7 @@ module.exports = {
   }
   for user_id in userIds 
       var account = user_account_map[user_id]
-  ```
+```
 
 - 内存管理优化
 

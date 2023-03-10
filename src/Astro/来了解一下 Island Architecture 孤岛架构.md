@@ -80,8 +80,7 @@ Marko相对于Astro的另一个关键优势是，Marko可以决定岛上有什�
 
 另一方面，Qwik将其带到组件级别，分解了注水的方式，以便仅在需要时进行注水。这是通过积极地将网站的JavaScript分解为多个块，设置全局事件侦听器并将兴趣点直接序列化为HTML来实现的。对于每个不同的用户交互，Qwik 拥有仅加载执行操作所需的代码所需的一切，仅此而已。
 
-
-<p align=center><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/100b174b5edd41be94d7b2df8eed7d91~tplv-k3u1fbpfcp-watermark.image?" alt="image.png"  /></p>
+![Image](https://pbs.twimg.com/media/FQpm6TcVsAIHN8h?format=jpg&name=medium)
 
 作为回报，这将导致代码块更小，从而能够更快地加载、解析和加载用户需要的内容。这就是所谓的渐进式注水，这超出了本文的讨论范围，希望我能很快就此进行讨论。
 

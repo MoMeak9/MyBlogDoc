@@ -8,24 +8,86 @@
         "type": "tabs",
         "children": [
           {
-            "id": "fce4ece2b9625507",
+            "id": "b79a5ca0dddc03de",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "软技能/精选文章列表.md",
+                "file": "JavaScript/WebAudio/Web Audio 滤波器Filter.md",
                 "mode": "source",
                 "source": false
               }
             }
           },
           {
-            "id": "e5eb54eb20989e9a",
+            "id": "f72f078c86fd72d1",
             "type": "leaf",
             "state": {
-              "type": "release-notes",
+              "type": "markdown",
               "state": {
-                "currentVersion": "1.1.9"
+                "file": "计算机网络/CDN 内容分发网络.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "484ee67fc3efc3b3",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "JavaScript/库/husky.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "0188dc0659343c26",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "JavaScript/库/ESLint.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "d150cc3676a703e2",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "JavaScript/库/ESLint.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "ffaa1febbecb1b5b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "JavaScript/库/Git 相关工具.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "795f47fe2c72c707",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "浏览器工作原理/面试题/浏览器原理面试题汇总.md",
+                "mode": "source",
+                "source": false
               }
             }
           }
@@ -59,7 +121,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "tag:#id",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -96,7 +158,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "软技能/精选文章列表.md",
+                "file": "计算机网络/CDN 内容分发网络.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -113,7 +175,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "软技能/精选文章列表.md",
+                "file": "计算机网络/CDN 内容分发网络.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -136,7 +198,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "软技能/精选文章列表.md"
+                "file": "计算机网络/CDN 内容分发网络.md"
               }
             }
           }
@@ -150,25 +212,46 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "canvas:新建白板": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
-      "canvas:Create new canvas": false,
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false
     }
   },
-  "active": "e5eb54eb20989e9a",
+  "active": "f72f078c86fd72d1",
   "lastOpenFiles": [
-    "Astro/Astro 中启用服务器端渲染.md",
-    "软技能/精选文章列表.md",
-    "TypeScript/面试题/TS进阶练习 BFE-TS.md",
-    "TypeScript/TS 装饰器使用一览.md",
-    "TypeScript/TS中的内置条件类型：ReturnType.md",
-    "Node/CORS 跨域及其 Nodejs 服务端配置实践.md",
-    "Node/Node 笔记（2）模块化.md",
-    "Node/Node 笔记（1）内核引擎.md",
+    "Node/Node.js 文件系统指南.md",
+    "Node/Node.js 子进程管理和进程通信.md",
+    "Vite/Vite SSR 方案.md",
+    "Node/横向对比 CJS 和 ES Module.md",
+    "Vite/Vite 可用项目模版.md",
+    "Vite/Vite 基础使用.md",
+    "Vite",
+    "Node/NPM/NPM 源设置和管理方法.md",
+    "Node/NPM/NPM 包管理.md",
+    "Node/NPM/版本语义化.md",
+    "Node/Nest/Nest.js 部署方案.md",
+    "Node/面试题/Node.js 面试题大集合.md",
+    "JavaScript/Set，Map 和 Array的区别.md",
+    "JavaScript/Property原型链与原型链.md",
+    "JavaScript/PromiseA 集合.md",
+    "JavaScript/LocalStorage、sessionStorage 封装 - 基于TypeScript.md",
+    "JavaScript/js中==与===的区别.md",
     "JavaScript/JS垃圾回收机制.md",
-    "JavaScript/js中==与===的区别.md"
+    "JavaScript/JavaScript优雅写法及骚操作.md",
+    "JavaScript/JavaScript 如何跳出（终止）forEach 循环.md",
+    "JavaScript/JavaScript 获取用户操作系统信息及浏览器信息.md",
+    "JavaScript/JavaScript 错误处理指南.md",
+    "JavaScript/IIFE 立即执行函数表达式.md",
+    "JavaScript/ES5、6 指导规范.md",
+    "JavaScript/ES 12 新特性.md",
+    "JavaScript/axios、XHR、XML、AJAX和Fetch分不清怎么办？.md",
+    "JavaScript/正则表达式卷起来！.md",
+    "未命名 1.canvas",
+    "未命名.canvas",
+    "Vue/Vue3",
+    "JavaScript/库"
   ]
 }

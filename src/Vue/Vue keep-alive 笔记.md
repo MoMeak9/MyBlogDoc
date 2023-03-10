@@ -39,7 +39,6 @@ created-> mounted-> activated`，
 <keep-alive>
     <component><component />
 </keep-alive>
-复制代码
 ```
 
 被`keepalive`包含的组件不会被再次初始化，也就意味着**不会重走生命周期函数**
@@ -90,7 +89,6 @@ created-> mounted-> activated`，
 <keep-alive exclude="c" max="5"> 
   <component></component>
 </keep-alive>
-复制代码
 ```
 
 ## 遇见 `vue-router` 结合`router`使用，缓存部分页面
@@ -103,7 +101,6 @@ created-> mounted-> activated`，
         <!-- 所有路径匹配到的视图组件都会被缓存！ -->
     </router-view>
 </keep-alive>
-复制代码
 ```
 
 ### **如果只想要`router-view`里面的某个组件被缓存，怎么办？**
@@ -121,7 +118,6 @@ created-> mounted-> activated`，
         <!-- 只有路径匹配到的 include 为 a 组件会被缓存 -->
     </router-view>
 </keep-alive>
-复制代码
 ```
 
 2、使用 meta 属性
@@ -135,7 +131,6 @@ created-> mounted-> activated`，
     <router-view v-if="$route.meta.keepAlive"></router-view>
 </keep-alive>
 <router-view v-if="!$route.meta.keepAlive"></router-view>
-复制代码
 ```
 
 需要在`router`中设置router的元信息meta：
@@ -162,7 +157,6 @@ export default new Router({
     }
   ]
 })
-复制代码
 ```
 
 ### 【加盐】使用 router.meta 拓展
@@ -185,7 +179,6 @@ export default new Router({
             keepAlive: true // 需要被缓存
         }
 }
-复制代码
 ```
 
 - 在 B 组件里面设置 beforeRouteLeave：
@@ -202,7 +195,6 @@ export default {
             next();
         }
 };
-复制代码
 ```
 
 - 在 C 组件里面设置 beforeRouteLeave：
@@ -219,7 +211,6 @@ export default {
             next();
         }
 };
-复制代码
 ```
 
 这样便能实现 B 回到 A，A 不刷新；而 C 回到 A 则刷新。

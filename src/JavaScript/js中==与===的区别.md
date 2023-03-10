@@ -230,7 +230,7 @@ console.log(null == undefined);         //true
    - ±0 **不相等**
    - NaN 和 NaN **相等**
 
-4. 以 **===**、**Array.prototype.indexOf** 为代表的`===`
+4. 以 **`===`**、**Array.prototype.indexOf** 为代表的`===`
    - ±0 **相等**
    - NaN 和 NaN **不相等**
 
