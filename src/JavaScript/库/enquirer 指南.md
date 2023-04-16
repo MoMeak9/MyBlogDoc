@@ -2,11 +2,15 @@
 
 [npm](https://www.npmjs.com/) 安装:
 
+```shell
 $ npm install enquirer --save
+```
 
 [yarn](https://yarnpkg.com/en/) 安装:
 
+```shell
 $ yarn add enquirer
+```
 
 ## 使用
 

@@ -79,4 +79,4 @@ display: inline-block;
 
 <img src="https://cdn.yihuiblog.top/images/202208181443387.png" alt="image-20220818144322293" style="zoom:50%;" />
 
-然后关于[with:auto](https://www.zhangxinxu.com/wordpress/2018/07/css-width-auto/)这篇文章非常不错
+然后关于[width:auto](https://www.zhangxinxu.com/wordpress/2018/07/css-width-auto/)这篇文章非常不错，建议阅读~

@@ -154,7 +154,7 @@ EventBus.$off('i-got-clicked', clickHandler);
 
 全局事件总线只不过是一个简单的 vue 组件。
 
-```
+```js
 var EventBus = new Vue();
 
 Object.defineProperties(Vue.prototype, {
@@ -171,7 +171,7 @@ Object.defineProperties(Vue.prototype, {
 
 在这个特定的总线中使用两个方法。一个用于创建发出的事件，它就是`$emit`；另一个用于订阅`$on`：
 
-```vue
+```js
 this.$bus.$emit('nameOfEvent',{ ... pass some event data ...});
 
 this.$bus.$on('nameOfEvent',($event) => {
