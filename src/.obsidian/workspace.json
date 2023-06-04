@@ -4,95 +4,22 @@
     "type": "split",
     "children": [
       {
-        "id": "dc3f740c43f96e22",
+        "id": "48f9101ddc544dc1",
         "type": "tabs",
         "children": [
           {
-            "id": "22251992b0108db0",
+            "id": "01bfde92201fc7f4",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "JavaScript/库/enquirer 指南.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "e225eb71ed6fa126",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "JavaScript/库/yargs 使用指南.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "fb6aa4e2dc19cf2c",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "JavaScript/库/inquirer 使用指南.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "bb5aaab3f197223d",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "JavaScript/库/husky.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "765f7c110eb8a3f5",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "JavaScript/库/Prettier.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "18a5b0684eb91df3",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "JavaScript/库/yargs 使用指南.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "b40e3042d8b347f9",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Node/PM2 使用指南~.md",
+                "file": "Vue/SSR/Nuxt3：新渲染模式-边缘渲染与swr.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ],
-        "currentTab": 5
+        ]
       }
     ],
     "direction": "vertical"
@@ -137,6 +64,14 @@
               "type": "starred",
               "state": {}
             }
+          },
+          {
+            "id": "448616cc63d8db75",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
           }
         ]
       }
@@ -158,7 +93,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "JavaScript/库/yargs 使用指南.md",
+                "file": "Vue/SSR/Nuxt3：新渲染模式-边缘渲染与swr.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -175,7 +110,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "JavaScript/库/yargs 使用指南.md",
+                "file": "Vue/SSR/Nuxt3：新渲染模式-边缘渲染与swr.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -198,7 +133,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "JavaScript/库/yargs 使用指南.md"
+                "file": "Vue/SSR/Nuxt3：新渲染模式-边缘渲染与swr.md"
               }
             }
           }
@@ -220,34 +155,36 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "18a5b0684eb91df3",
+  "active": "01bfde92201fc7f4",
   "lastOpenFiles": [
-    "JavaScript/面试题/小滴课堂JS题目汇总.md",
-    "JavaScript/面试题/JavaScript 高频手撕.md",
-    "JavaScript/面试题/JavaScript 输出判断.md",
-    "JavaScript/面试题/JavaScript高频手撕.md",
-    "JavaScript/面试题/JavaScript 数组去重.md",
-    "CSS/CSS 父元素没有被子元素撑开问题.md",
-    "CSS/伪类与伪元素的区别.md",
-    "CSS/逻辑组合伪类.md",
-    "Astro/来了解一下 Island Architecture 孤岛架构.md",
-    "Astro/Astro 中启用服务器端渲染.md",
-    "Astro/Vue集成.md",
-    "杂文/UED、UCD、UE、UI、交互设计.md",
-    "杂文/Serverless 笔记.md",
-    "数据库/MySQL从入门到入院.md",
-    "数据库/Redis 学习笔记.md",
+    "校招/2023年中总结.md",
     "校招/2022年中总结.md",
     "校招/2022年终总结.md",
-    "源码学习/Axios 源码探秘.md",
-    "杂文/写作技巧和经验.md",
-    "杂文/Git 常用语句与命令行.md",
-    "源码学习/使用TS封装给大家用的Axios.md",
-    "校招/校招日志 校招经验总结.md",
-    "校招/知识大纲.md",
-    "校招/offer，三方，两方，毁约 这些你需要知道的事.md",
-    "JavaScript/JS垃圾回收机制.md",
+    "Vue/uni-app/uni-simple-router 库使用.md",
+    "Vue/SSR/编写跨平台友好的代码.md",
+    "Vue/SSR/SSR 异步数据获取.md",
+    "Vue/SSR/Nuxt3：新渲染模式-边缘渲染与swr.md",
+    "leetcode/codeTop/字节跳动CodeTop（三）.md",
+    "leetcode/codeTop/字节跳动CodeTop（一）.md",
+    "JavaScript/Property原型链与原型链.md",
+    "JavaScript/PromiseA 集合.md",
     "JavaScript/LocalStorage、sessionStorage 封装 - 基于TypeScript.md",
+    "JavaScript/Set，Map 和 Array的区别.md",
+    "JavaScript/Atomics API.md",
+    "JavaScript/Web Woker 常见使用问题和解决方案.md",
+    "JavaScript/Web Woker 与主线程通信场景下对postMessage的简洁封装.md",
+    "Node/lib/nodemailer：让Node.js 脚本帮你收发邮件.md",
+    "JavaScript/JSDoc 初探：代码内的文档标记.md",
+    "Node/lib",
+    "JavaScript/库/enquirer 指南.md",
+    "Node/事件循环/（六）.md",
+    "Node/事件循环/（七）.md",
+    "Node/事件循环/（五）在 Node.js 事件循环中可视化 IO 轮询.md",
+    "Node/图片格式转换：将上传图片转为webp.md",
+    "Node/咱们来整一个Node.js脚本，使用ffmpeg将视频转换为GIF文件.md",
+    "Node/笔记/Node 笔记（3）Node常用内置模块.md",
+    "Node/笔记/Node 笔记（2）模块化.md",
+    "Node/笔记",
     "Node/事件循环",
     "Vue/SSR",
     "Vite",

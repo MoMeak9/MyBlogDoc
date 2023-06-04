@@ -3,9 +3,9 @@ date: 2022-06-27
 category:
 - JavaScript
 ---
-# call/apply/bind 深入解析
+# call\/apply\/bind 深入解析
 
-## call/apply/bind的核心理念：借用方法
+## call\/apply\/bind的核心理念：借用方法
 
 看到一个非常棒的例子：
 
@@ -76,7 +76,7 @@ call、apply和bind是挂在Function对象上的三个方法,只有函数才有�
 - `apply`是第2个参数，这个参数是一个数组：传给`fun`参数都写在数组中。
 - `call`从第2~n的参数都是传给`fun`的。
 
-#### call/apply与bind的区别
+#### call\/apply与bind的区别
 
 **执行**：
 

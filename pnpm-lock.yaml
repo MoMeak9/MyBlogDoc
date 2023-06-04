@@ -7,6 +7,7 @@ specifiers:
   cz-conventional-changelog: ^3.3.0
   git-cz: ^4.9.0
   husky: ^8.0.1
+  nodemailer: ^6.9.1
   vue: ^3.2.45
   vuepress: ^2.0.0-beta.53
   vuepress-plugin-search-pro: 2.0.0-beta.124
@@ -19,6 +20,7 @@ devDependencies:
   cz-conventional-changelog: 3.3.0
   git-cz: 4.9.0
   husky: 8.0.1
+  nodemailer: registry.npmmirror.com/nodemailer/6.9.1
   vue: registry.npmmirror.com/vue/3.2.45
   vuepress: registry.npmmirror.com/vuepress/2.0.0-beta.53_54nmke4n2vj3tdp5cd33kvtiom
   vuepress-plugin-search-pro: registry.npmmirror.com/vuepress-plugin-search-pro/2.0.0-beta.124
@@ -6781,6 +6783,13 @@ packages:
     resolution: {integrity: sha512-PiVXnNuFm5+iYkLBNeq5211hvO38y63T0i2KKh2KnUs3RpzJ+JtODFjkD8yjLwnDkTYF1eKXheUwdssR+NRZdg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/node-releases/-/node-releases-2.0.6.tgz}
     name: node-releases
     version: 2.0.6
+    dev: true
+
+  registry.npmmirror.com/nodemailer/6.9.1:
+    resolution: {integrity: sha512-qHw7dOiU5UKNnQpXktdgQ1d3OFgRAekuvbJLcdG5dnEo/GtcTHRYM7+UfJARdOFU9WUQO8OiIamgWPmiSFHYAA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/nodemailer/-/nodemailer-6.9.1.tgz}
+    name: nodemailer
+    version: 6.9.1
+    engines: {node: '>=6.0.0'}
     dev: true
 
   registry.npmmirror.com/non-layered-tidy-tree-layout/2.0.2:

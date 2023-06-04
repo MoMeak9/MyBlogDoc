@@ -48,7 +48,7 @@ WebSocket 用的也是二进制帧，有之前 HTTP/2、HTTP/3 的经验，相�
 
 下图就是 WebSocket 的帧结构定义，长度不固定，最少 2 个字节，最多 14 字节，看着好像很复杂，实际非常简单。
 
-<img src="https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202205142225337.png" alt="img" style="zoom: 25%;" />
+<img src="https://fs.lwmc.net/uploads/2023/04/1681970948247-202304201409164.webp" alt="img" style="zoom: 25%;" />
 
 其实 WebSocket 的帧头就四个部分：<u>“结束标志位 + 操作码 + 帧长度 + 掩码”</u>
 
@@ -68,7 +68,7 @@ WebSocket 用的也是二进制帧，有之前 HTTP/2、HTTP/3 的经验，相�
 - Sec-WebSocket-Key：一个 Base64 编码的 16 字节随机数，作为简单的认证密钥；Sec-
 - WebSocket-Version：协议的版本号，当前必须是 13。
 
-<img src="https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202205142231594.png" alt="img" style="zoom: 25%;" />
+<img src="https://fs.lwmc.net/uploads/2023/04/1681970866206-202304201407844.webp" alt="img" style="zoom: 25%;" />
 
 服务器收到 HTTP 请求报文，看到上面的四个字段，就知道这不是一个普通的 GET 请求，而是 WebSocket 的升级请求，于是就不走普通的 HTTP 处理流程，而是构造一个特殊的“101 Switching Protocols”响应报文，通知客户端，接下来就不用 HTTP 了，全改用 WebSocket 协议通信。（有点像 TLS 的“Change Cipher Spec”）
 
@@ -86,7 +86,7 @@ encode_base64(
 
 握手完成，后续传输的数据就不再是 HTTP 报文，而是 WebSocket 格式的二进制帧了。
 
-![img](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202205142233889.png)
+![img](https://fs.lwmc.net/uploads/2023/04/1681970963889-202304201409520.webp)
 
 ## 总结
 

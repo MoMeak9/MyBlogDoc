@@ -17,7 +17,7 @@ tag:
 
 引入 HTTP 代理后，原来简单的双方通信就变复杂了一些，加入了一个或者多个中间人，但整体上来看，还是一个有顺序关系的链条，而且链条里相邻的两个角色仍然是简单的一对一通信，不会出现越级的情况。
 
-![img](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202205142254118.png)
+![img](https://fs.lwmc.net/uploads/2023/04/1681971074217-202304201411101.webp)
 
 链条的起点还是客户端（也就是浏览器），中间的角色被称为代理服务器（proxy server），链条的终点被称为源服务器（origin server），意思是数据的“源头”“起源”。
 
@@ -39,7 +39,7 @@ tag:
 
 代理最基本的一个功能是代理最基本的一个功能是**负载均衡**。因为在面向客户端时屏蔽了源服务器，客户端看到的只是代理服务器，源服务器究竟有多少台、是哪些 IP 地址都不知道。于是代理服务器就可以掌握请求分发的“大权”，决定由后面的哪台服务器来响应请求。。因为在面向客户端时屏蔽了源服务器，客户端看到的只是代理服务器，源服务器究竟有多少台、是哪些 IP 地址都不知道。于是代理服务器就可以掌握请求分发的“大权”，决定由后面的哪台服务器来响应请求。
 
-<img src="https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202205151129096.png" alt="img" style="zoom:50%;" />
+<img src="https://fs.lwmc.net/uploads/2023/04/1681971082370-202304201411269.webp" alt="img" style="zoom:50%;" />
 
 在负载均衡的同时，代理服务还可以执行更多的功能，比如：
 
@@ -55,7 +55,7 @@ tag:
 
 例如下图中有两个代理：proxy1 和 proxy2，客户端发送请求会经过这两个代理，依次添加就是“Via: proxy1, proxy2”，等到服务器返回响应报文的时候就要反过来走，头字段就是“Via: proxy2, proxy1”。
 
-![img](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202205151133322.png)
+![img](https://fs.lwmc.net/uploads/2023/04/1681971089808-202304201411720.webp)
 
 Via 字段只解决了客户端和源服务器判断是否存在代理的问题，还不能知道对方的真实信息。
 
@@ -121,7 +121,7 @@ HTTP 传输链路上，不只是客户端有缓存，服务器上的缓存也是
 
 ### 缓存代理服务
 
-![img](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202205151153805.png)
+![img](https://fs.lwmc.net/uploads/2023/04/1681971099699-202304201411620.webp)
 
 代理服务收到源服务器发来的响应数据后需要做两件事。第一个当然是把报文转发给客户端，而第二个就是把报文存入自己的 Cache 里。
 
@@ -137,13 +137,13 @@ HTTP 传输链路上，不只是客户端有缓存，服务器上的缓存也是
 
 还有一个代理专用的属性“no-transform”。代理有时候会对缓存下来的数据做一些优化，比如把图片生成 png、webp 等几种格式，方便今后的请求处理，而“no-transform”就会禁止这样做，不许“偷偷摸摸搞小动作”。
 
-![img](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202205151157961.png)
+![img](https://fs.lwmc.net/uploads/2023/04/1681971107865-202304201411784.webp)
 
 ### 客户端的缓存控制
 
 客户端在 HTTP 缓存体系里要面对的是代理和源服务器，也必须区别对待。
 
-![img](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202205151158297.png)
+![img](https://fs.lwmc.net/uploads/2023/04/1681971116937-202304201411854.webp)
 
 关于缓存的生存时间，多了两个新属性“max-stale”和“min-fresh”
 

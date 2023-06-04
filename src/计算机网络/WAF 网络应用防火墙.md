@@ -12,7 +12,7 @@ WAF 也是一种“防火墙”，但它工作在七层，看到的不仅是 IP 
 
 说白了，WAF 就是一种**“HTTP 入侵检测和防御系统”。**
 
-![img](https://mc-web-1259409954.cos.ap-guangzhou.myqcloud.com/MyImages/202205142116416.png)
+![img](https://fs.lwmc.net/uploads/2023/04/1681977143156-202304201552584.webp)
 
 通常一款产品能够称为 WAF，要具备下面的一些功能：
 
