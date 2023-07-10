@@ -48,7 +48,7 @@ export default hopeTheme({
 
     plugins: {
         blog: {
-            autoExcerpt: true,
+
         },
 
         // 你也可以使用 Waline
@@ -61,17 +61,15 @@ export default hopeTheme({
         },
 
         mdEnhance: {
-            presentation: {
-                plugins: ["highlight", "math", "search", "notes", "zoom"],
-            },
+            presentation: ["highlight", "math", "search", "notes", "zoom"],
         },
-        copyright: {
-            hostname: "https://yihuiblog.top",
-            author: 'YihuiBlog',
-            license: 'CC-BY 4.0',
-            global: true,
-            triggerWords: 20,
-        },
+        // copyright: {
+        //     hostname: "https://yihuiblog.top",
+        //     author: 'YihuiBlog',
+        //     license: 'CC-BY 4.0',
+        //     global: true,
+        //     triggerWords: 20,
+        // },
         copyCode: {},
     },
     fullscreen: false,

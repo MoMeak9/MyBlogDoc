@@ -1,5 +1,6 @@
 import {defineUserConfig} from "vuepress";
 import {searchProPlugin} from "vuepress-plugin-search-pro";
+import { cut } from "nodejs-jieba";
 import theme from "./theme";
 
 export default defineUserConfig({
@@ -42,6 +43,11 @@ export default defineUserConfig({
                 "/": {
                     placeholder: "搜索",
                 }
+            },
+            indexOptions: {
+                // 使用 nodejs-jieba 进行分词
+                tokenize: (text, fieldName) =>
+                    fieldName === "id" ? [text] : cut(text, true),
             },
             // 自定义搜索项目 https://vuepress-theme-hope.github.io/v2/search-pro/zh/config.html#customfields
             customFields: [
