@@ -7,7 +7,7 @@
     "build": "vuepress build src",
     "clean-dev": "vuepress dev src --clean-cache",
     "dev": "vuepress dev src",
-    "deploy": "serverless deploy",
+    "deploy": "scf deploy",
     "commit": "git add . && git-cz && git push"
   },
   "config": {

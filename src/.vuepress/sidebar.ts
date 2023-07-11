@@ -28,5 +28,6 @@ export default sidebar({
         }
     ],
     "/HTML/": "structure",
-    "/TypeScript/": "structure"
+    "/TypeScript/": "structure",
+    "/八股文/": "structure"
 });
