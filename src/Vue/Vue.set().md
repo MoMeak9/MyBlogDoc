@@ -4,7 +4,7 @@ category:
 - Vue
 ---
 
-# Vue.set()和this.$set()
+# `Vue.set()`和`this.$set()`
 
 > 用以解决Vue2.x的响应式缺陷
 

@@ -1,4 +1,4 @@
-## Eslint
+# Eslint
 
 Eslint 是国外的前端大牛`Nicholas C. Zakas`在 2013 年发起的一个开源项目，有一本书被誉为前端界的"圣经"，叫《JavaScript 高级程序设计》(即红宝书)，他正是这本书的作者。
 

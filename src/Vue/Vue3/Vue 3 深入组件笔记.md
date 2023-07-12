@@ -1,3 +1,5 @@
+# Vue3 深入组件笔记
+
 [组件注册 | Vue.js](https://cn.vuejs.org/guide/components/registration.html)
 [组件基础 | Vue.js](https://cn.vuejs.org/guide/essentials/component-basics.html#dom-template-parsing-caveats)
 
@@ -367,9 +369,7 @@ export default {
 
 有时在一个组件中包含多个插槽出口是很有用的。举例来说，在一个 `<BaseLayout>` 组件中，有如下模板：
 
-template
-
-```
+```template
 <div class="container">
   <header>
     <!-- 标题内容放这里 -->
@@ -385,9 +385,7 @@ template
 
 对于这种场景，`<slot>` 元素可以有一个特殊的 attribute `name`，用来给各个插槽分配唯一的 ID，以确定每一处要渲染的内容：
 
-template
-
-```
+```template
 <div class="container">
   <header>
     <slot name="header"></slot>
@@ -407,9 +405,7 @@ template
 
 要为具名插槽传入内容，我们需要使用一个含 `v-slot` 指令的 `<template>` 元素，并将目标插槽的名字传给该指令：
 
-template
-
-```
+```template
 <BaseLayout>
   <template v-slot:header>
     <!-- header 插槽的内容放这里 -->
@@ -423,9 +419,7 @@ template
 
 下面我们给出完整的、向 `<BaseLayout>` 传递插槽内容的代码，指令均使用的是缩写形式：
 
-template
-
-```
+```template
 <BaseLayout>
   <template #header>
     <h1>Here might be a page title</h1>
@@ -444,9 +438,7 @@ template
 
 当一个组件同时接收默认插槽和具名插槽时，所有位于顶级的非 `<template>` 节点都被隐式地视为默认插槽的内容。所以上面也可以写成：
 
-template
-
-```
+```template
 <BaseLayout>
   <template #header>
     <h1>Here might be a page title</h1>
@@ -464,9 +456,7 @@ template
 
 现在 `<template>` 元素中的所有内容都将被传递到相应的插槽。最终渲染出的 HTML 如下：
 
-html
-
-```
+```html
 <div class="container">
   <header>
     <h1>Here might be a page title</h1>

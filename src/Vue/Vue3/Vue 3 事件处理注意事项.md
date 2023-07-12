@@ -1,3 +1,5 @@
+# Vue 3 事件处理注意事项
+
 我们可以通过 [`defineEmits`](https://cn.vuejs.org/api/sfc-script-setup.html#defineprops-defineemits) 宏来声明需要抛出的事件：
 
 ```vue

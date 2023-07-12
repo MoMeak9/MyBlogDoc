@@ -4,7 +4,8 @@ star: true
 category:
 - Vue
 ---
-# `$nextTick`深入探究
+
+# nextTick深入探究
 
 ## Vue.$nextTick()
 

@@ -1,3 +1,5 @@
+# Nuxt3：新渲染模式-边缘渲染与swr
+
 [Rendering Modes · Nuxt Concepts](https://nuxt.com/docs/guide/concepts/rendering)
 
 浏览器和服务器都可以解析 JavaScript 代码以将 Vue.js 组件呈现为 HTML 元素。此步骤称为**渲染**。Nuxt 同时支持**客户端**和**同构**渲染。这两种方法各有利弊，我们将在本节中介绍。

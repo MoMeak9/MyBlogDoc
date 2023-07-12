@@ -1,4 +1,6 @@
-比较常用的 Rollup 插件库:
+# Rollup 笔记
+
+### 比较常用的 Rollup 插件库:
 
 - [@rollup/plugin-json](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Frollup%2Fplugins%2Ftree%2Fmaster%2Fpackages%2Fjson "https://github.com/rollup/plugins/tree/master/packages/json")： 支持`.json`的加载，并配合`rollup`的`Tree Shaking`机制去掉未使用的部分，进行按需打包。
 - [@rollup/plugin-babel](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Frollup%2Fplugins%2Ftree%2Fmaster%2Fpackages%2Fbabel "https://github.com/rollup/plugins/tree/master/packages/babel")：在 Rollup 中使用 Babel 进行 JS 代码的语法转译。
@@ -67,7 +69,7 @@
 
 ### Output 阶段工作流
 
-![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5dc4935d712d451fb6978fad46dd7b74~tplv-k3u1fbpfcp-zoom-in-crop-mark:3326:0:0:0.awebp)
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5dc4935d712d451fb6978fad46dd7b74~tplv-k3u1fbpfcp-zoom-in-crop-mark:3326:0:0:0.awebp" style="zoom: 67%;" />
 
 ![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/12142ea189be4a8f918cf247f408487e~tplv-k3u1fbpfcp-zoom-in-crop-mark:3326:0:0:0.awebp)
 
@@ -78,5 +80,4 @@ load
 transform
 renderChunk
 gengerateBundle
-
 
