@@ -1,8 +1,8 @@
 import {sidebar} from "vuepress-theme-hope";
-import sidebars from "./sidebars";
+// import sidebars from "./sidebars";
 
 export default sidebar({
-    ...sidebars,
+    // ...sidebars,
     "/计算机网络/": "structure",
     "/浏览器工作原理/": "structure",
     "/leetcode/": "structure",
