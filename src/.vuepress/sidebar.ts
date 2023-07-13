@@ -4,7 +4,7 @@ import {sidebar} from "vuepress-theme-hope";
 export default sidebar({
     // ...sidebars,
     "/计算机网络/": "structure",
-    "/浏览器工作原理/": "structure",
+    "/浏览器原理/": "structure",
     "/leetcode/": "structure",
     "/面试通用/": "structure",
     "/JavaScript/": [

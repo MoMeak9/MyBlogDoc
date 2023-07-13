@@ -46,7 +46,7 @@ export default defineUserConfig({
     plugins: [
         searchProPlugin({
             // 索引全部内容
-            indexContent: true,
+            indexContent: false,
             // 索引标题
             indexTitle: true,
             // 索引描述
