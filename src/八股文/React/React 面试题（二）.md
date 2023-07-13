@@ -942,7 +942,7 @@ function areEqual(prevProps, nextProps) {
 export default React.memo(MyComponent, areEqual);
 ```
 
-### 11. [执行和清除副作用的时机](执行和清除Effect的时机.md)？ :star::star:
+### 11. 执行和清除副作用的时机？ :star::star:
 
 
 

@@ -10,7 +10,7 @@ tag:
 
 ## 编程式路由
 
-### `router.push() 等同于` [uni.navigateTo()](https://uniapp.dcloud.io/api/router?id=navigateto)
+### `router.push()` 等同于 [uni.navigateTo()](https://uniapp.dcloud.io/api/router?id=navigateto)
 
 **注意：在 Vue 实例内部，你可以通过 $Router 访问路由实例。因此你可以调用 this.$Router.push。**
 
@@ -101,8 +101,6 @@ this.$Route.query.userId;
 ```
 
 H5端默认情况下 `name+params` 传参不会显示在URL上，如果你想将 `name+params` 传参显示在URL上，请配置 `paramsToQuery:true`。[详细请查看配置](https://hhyang.cn/v2/api/routerInsatll.html#h5)，注意：**如果配置了paramsToQuery:true，那么将不支持动态路由传参**
-
-
 
 ###  name 动态传参
 

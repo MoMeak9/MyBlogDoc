@@ -14,12 +14,12 @@ export default navbar([
         link: "/star",
     },
     {
-        text: "知识大纲",
-        link: "/校招/知识大纲",
+        text: "知识图谱",
+        link: "/软文/知识大纲",
     },
     {
-        text: "必读文章",
-        link: "/软技能/精选文章列表",
+        text: "最近更新",
+        link: "/timeline/",
     },
     {
         text: "友链",
