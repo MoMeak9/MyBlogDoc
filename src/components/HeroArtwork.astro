@@ -1,0 +1,76 @@
+---
+import {
+  createHeroGeometry,
+  createHeroParticles,
+  projectVertex,
+  rotateVertex,
+} from "../lib/hero-geometry";
+const { vertices, edges } = createHeroGeometry();
+const points = vertices.map((vertex) =>
+  projectVertex(
+    rotateVertex(
+      vertex.map((value) => value * 1.2) as [number, number, number],
+      0.24,
+      0.36,
+    ),
+    1000,
+    700,
+  ),
+);
+const wire = edges
+  .map(
+    ([start, end]) =>
+      `M${points[start].x.toFixed(2)},${points[start].y.toFixed(2)}L${points[end].x.toFixed(2)},${points[end].y.toFixed(2)}`,
+  )
+  .join("");
+const particles = createHeroParticles()
+  .map((vertex) => projectVertex(vertex, 1000, 700))
+  .filter(
+    (point) =>
+      point.depth > 0.4 &&
+      point.x >= 0 &&
+      point.x <= 1000 &&
+      point.y >= 0 &&
+      point.y <= 700,
+  );
+---
+
+<div class="hero-artwork" aria-hidden="true">
+  <svg
+    class="hero-art-fallback"
+    viewBox="0 0 1000 700"
+    fill="none"
+    focusable="false"
+    preserveAspectRatio="xMidYMid slice"
+  >
+    <g class="hero-particles">
+      {particles.map((point) => (
+        <circle cx={point.x} cy={point.y} r="1.1" />
+      ))}
+    </g>
+    <path class="hero-wireframe" d={wire} />
+  </svg>
+  <canvas id="hero-canvas" class="hero-canvas" role="presentation"></canvas>
+</div>
+<script>
+  import { initHeroCanvas } from "../scripts/hero-canvas";
+  let dispose: (() => void) | undefined;
+  const mount = () => {
+    dispose?.();
+    const canvas = document.querySelector<HTMLCanvasElement>("#hero-canvas");
+    dispose = canvas ? initHeroCanvas(canvas) : undefined;
+  };
+  mount();
+  document.addEventListener("astro:before-swap", () => {
+    dispose?.();
+    dispose = undefined;
+  });
+  document.addEventListener("astro:page-load", mount);
+  window.addEventListener("pagehide", () => {
+    dispose?.();
+    dispose = undefined;
+  });
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) mount();
+  });
+</script>

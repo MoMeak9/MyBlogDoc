@@ -1,0 +1,74 @@
+---
+import Icon from "./Icon.astro";
+import { ui, dateLabel, type Locale } from "../i18n";
+import { postPath, normalizeBase } from "../lib/paths.mjs";
+import type { Post } from "../lib/content";
+import { plainText } from "../lib/markdown.mjs";
+interface Props {
+  post: Post;
+  locale?: Locale;
+  large?: boolean;
+  index?: number;
+  searchable?: boolean;
+  stagger?: boolean;
+}
+const {
+  post,
+  locale = "zh",
+  large = false,
+  index = 0,
+  searchable = false,
+  stagger = false,
+} = Astro.props;
+const t = ui(locale);
+const base = normalizeBase(import.meta.env.BASE_URL);
+const images = [
+  "editorial-writing.jpg",
+  "editorial-design.jpg",
+  "editorial-engineering.jpg",
+];
+---
+
+<article
+  class:list={["post-card", { large }]}
+  data-stagger-item={stagger || undefined}
+  data-post={searchable || undefined}
+  data-title={searchable ? post.title.toLocaleLowerCase() : undefined}
+  data-categories={searchable ? JSON.stringify(post.categories) : undefined}
+  data-search={
+    searchable
+      ? `${post.title} ${post.tags.join(" ")} ${plainText(post.body)}`.toLocaleLowerCase()
+      : undefined
+  }
+>
+  <a href={postPath(post.id, locale, base)}>
+    <figure>
+      <img
+        class="post-art"
+        src={`${base}images/${images[index % images.length]}`}
+        alt=""
+        width={large ? 800 : 600}
+        height="450"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+    <div class="post-meta">
+      <span class="category">{post.categories[0]}</span>
+      <span aria-hidden="true">·</span>
+      <time datetime={post.date.toISOString()}>
+        {dateLabel(post.date, locale)}
+      </time>
+      <span aria-hidden="true">·</span>
+      <span>
+        {post.readMinutes} {t.minuteRead}
+      </span>
+    </div>
+    <h3>{post.title}</h3>
+    <p class="post-description">{post.description || t.empty}</p>
+    <span class="text-link">
+      {t.readArticle}
+      <Icon size={14} />
+    </span>
+  </a>
+</article>

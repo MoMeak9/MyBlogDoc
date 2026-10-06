@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SocialLinks from "./SocialLinks.astro";
+import { ui, type Locale } from "../i18n";
+import { getAbout, renderDocument } from "../lib/content";
+interface Props {
+  locale?: Locale;
+}
+const { locale = "zh" } = Astro.props;
+const t = ui(locale);
+const about = await getAbout();
+const content = about ? await renderDocument(about, locale) : { html: "" };
+---
+
+<BaseLayout locale={locale} title={t.about} path="about">
+  <section class="page-heading">
+    <div class="container narrow">
+      <p class="section-label">{t.aboutLabel}</p>
+      <h1>{t.aboutTitle}</h1>
+      <p>{t.aboutDescription}</p>
+      <SocialLinks locale={locale} variant="text" class="about-socials" />
+    </div>
+  </section>
+  <div class="container narrow about-body">
+    <article class="prose" lang="zh-CN" set:html={content.html} />
+    <p class="content-notice">{t.contentNotice}</p>
+  </div>
+</BaseLayout>

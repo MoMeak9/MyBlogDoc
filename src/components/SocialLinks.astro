@@ -1,0 +1,91 @@
+---
+import Icon from "./Icon.astro";
+import { site } from "../config/site";
+import { ui, type Locale } from "../i18n";
+
+interface Props {
+  locale?: Locale;
+  variant?: "icons" | "text";
+  class?: string;
+}
+const { locale = "zh", variant = "icons", class: className } = Astro.props;
+const t = ui(locale);
+---
+
+<div
+  class:list={["social-links", `social-links--${variant}`, className]}
+  role="group"
+  aria-label={t.socialLinks}
+>
+  {Object.values(site.socials).map((social) => (
+    <a
+      class="social-link"
+      href={social.href}
+      target={social.external ? "_blank" : undefined}
+      rel={social.external ? "noopener noreferrer" : undefined}
+      aria-label={t[social.ariaKey]}
+      title={t[social.ariaKey]}
+    >
+      <Icon name={social.icon} size={18} />
+      {variant === "text" && <span>{t[social.labelKey]}</span>}
+    </a>
+  ))}
+</div>
+
+<style>
+  .social-links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    transition:
+      color 180ms ease,
+      border-color 180ms ease,
+      background-color 180ms ease;
+  }
+  .social-link:hover {
+    color: var(--text);
+    border-color: var(--muted);
+    background-color: var(--surface);
+  }
+  .social-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+  .social-links--icons .social-link {
+    width: 40px;
+    height: 40px;
+  }
+  .social-links--text {
+    gap: 10px;
+  }
+  .social-links--text .social-link {
+    min-height: 42px;
+    padding: 10px 13px;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .footer-socials {
+    margin-top: 22px;
+  }
+  .about-socials {
+    margin-top: 27px;
+  }
+  .hero-socials {
+    margin-top: 24px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .social-link {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,135 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "./PostCard.astro";
+import Icon from "./Icon.astro";
+import { ui, dateLabel, type Locale } from "../i18n";
+import { getPosts, renderPost, type Post } from "../lib/content";
+import { localePath, normalizeBase } from "../lib/paths.mjs";
+interface Props {
+  post: Post;
+  locale?: Locale;
+}
+const { post, locale = "zh" } = Astro.props;
+const t = ui(locale);
+const base = normalizeBase(import.meta.env.BASE_URL);
+const { html, headings } = await renderPost(post, locale);
+const toc = headings.filter((heading) => heading.depth <= 3);
+const allPosts = (await getPosts()).filter((p) => !p.empty && p.id !== post.id);
+const related = [
+  ...allPosts.filter((p) =>
+    p.categories.some((c) => post.categories.includes(c)),
+  ),
+  ...allPosts.filter(
+    (p) => !p.categories.some((c) => post.categories.includes(c)),
+  ),
+].slice(0, 3);
+const editUrl = `https://github.com/MoMeak9/MyBlogDoc/edit/main/src/${post.id.split("/").map(encodeURIComponent).join("/")}.md`;
+---
+
+<BaseLayout
+  locale={locale}
+  title={post.title}
+  description={post.description}
+  path={`posts/${post.id.split("/").map(encodeURIComponent).join("/")}`}
+  article
+>
+  <header class="article-heading">
+    <div class="container narrow">
+      <a class="text-link" href={localePath("blog", locale, base)}>
+        <Icon size={14} />
+        {t.back}
+      </a>
+      <h1>{post.title}</h1>
+      <div class="post-meta">
+        <span class="category">{post.categories.join(" / ")}</span>
+        <span aria-hidden="true">·</span>
+        <time datetime={post.date.toISOString()}>
+          {dateLabel(post.date, locale)}
+        </time>
+        <span aria-hidden="true">·</span>
+        <span>
+          {post.readMinutes} {t.minuteRead}
+        </span>
+        <span aria-hidden="true">·</span>
+        <span>Yihui</span>
+      </div>
+    </div>
+  </header>
+  <div class="container article-grid">
+    <div>
+      <article class="prose" lang="zh-CN">
+        {post.empty ? <p>{t.empty}</p> : <Fragment set:html={html} />}
+      </article>
+      <div class="article-bottom">
+        <span>{t.author} · Yihui</span>
+        <a
+          class="text-link"
+          href={editUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t.edit}
+          <Icon size={14} />
+        </a>
+      </div>
+    </div>
+    {toc.length > 0 && (
+      <aside class="toc">
+        <h2 class="section-label">{t.toc}</h2>
+        <nav aria-label={t.toc}>
+          {toc.map((heading) => (
+            <a class={`depth-${heading.depth}`} href={`#${heading.slug}`}>
+              {heading.text}
+            </a>
+          ))}
+        </nav>
+      </aside>
+    )}
+  </div>
+  {related.length > 0 && (
+    <section class="section collections-section">
+      <div class="container">
+        <div class="section-heading">
+          <h2>{t.related}</h2>
+          <a class="text-link accent" href={localePath("blog", locale, base)}>
+            {t.allPosts}
+            <Icon size={16} />
+          </a>
+        </div>
+        <div class="journal-grid">
+          {related.map((item, index) => (
+            <PostCard post={item} locale={locale} index={index} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+<script
+  define:vars={{
+    copyLabel: t.copy,
+    copiedLabel: t.copied,
+    failureLabel: t.copyFailed,
+  }}
+>
+  document.querySelectorAll(".prose pre").forEach((pre) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "copy-button";
+    button.textContent = copyLabel;
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(
+          pre.querySelector("code")?.textContent || "",
+        );
+        button.textContent = copiedLabel;
+      } catch {
+        button.textContent = failureLabel;
+      }
+      setTimeout(() => {
+        button.textContent = copyLabel;
+      }, 2000);
+    });
+    pre.prepend(button);
+  });
+</script>

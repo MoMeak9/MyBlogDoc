@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { ui } from "../i18n";
+import { localePath } from "../lib/paths.mjs";
+const t = ui("zh");
+---
+
+<BaseLayout title="404" path="404">
+  <section class="not-found">
+    <div class="container">
+      <p class="section-label">404 / {t.pageNotFound}</p>
+      <h1>{t.notFound}</h1>
+      <p>{t.notFoundDescription}</p>
+      <a
+        class="button"
+        href={localePath("blog", "zh", import.meta.env.BASE_URL)}
+      >
+        {t.readJournal}
+      </a>
+    </div>
+  </section>
+</BaseLayout>

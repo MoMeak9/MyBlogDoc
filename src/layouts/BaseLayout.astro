@@ -1,0 +1,290 @@
+---
+import "../styles/global.css";
+import Icon from "../components/Icon.astro";
+import SocialLinks from "../components/SocialLinks.astro";
+import { site } from "../config/site";
+import { ui, type Locale } from "../i18n";
+import { localePath, normalizeBase } from "../lib/paths.mjs";
+interface Props {
+  locale?: Locale;
+  title?: string;
+  description?: string;
+  path?: string;
+  article?: boolean;
+}
+const {
+  locale = "zh",
+  title = "Yihui’s Blog",
+  description,
+  path = "",
+  article = false,
+} = Astro.props;
+const t = ui(locale);
+const base = normalizeBase(import.meta.env.BASE_URL);
+const href = (path = "") => localePath(path, locale, base);
+const localizedUrl = (lang: Locale) =>
+  path === "404" && lang === "zh"
+    ? `${base}404.html`
+    : localePath(path, lang, base);
+const canonical = new URL(localizedUrl(locale), Astro.site);
+const alternate = localizedUrl(locale === "zh" ? "en" : "zh");
+const nav = [
+  { key: "home", path: "" },
+  { key: "blog", path: "blog" },
+  { key: "about", path: "about" },
+  { key: "contact", path: "contact" },
+] as const;
+---
+
+<!doctype html>
+<html lang={locale === "zh" ? "zh-CN" : "en"}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description || t.heroDescription} />
+    <meta name="author" content={site.author.name} />
+    <meta name="color-scheme" content="light dark" />
+    {path === "404" && <meta name="robots" content="noindex, follow" />}
+    <title>{title === "Yihui’s Blog" ? title : `${title} · Yihui’s Blog`}</title>
+    <link rel="canonical" href={canonical} />
+    <link
+      rel="alternate"
+      hreflang="zh-CN"
+      href={new URL(localizedUrl("zh"), Astro.site)}
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href={new URL(localizedUrl("en"), Astro.site)}
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={new URL(localizedUrl("zh"), Astro.site)}
+    />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="sitemap" href={`${base}sitemap-index.xml`} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Yihui’s Blog"
+      href={`${base}rss.xml`}
+    />
+    <meta property="og:title" content={title} />
+    <meta
+      property="og:description"
+      content={description || t.heroDescription}
+    />
+    <meta property="og:type" content={article ? "article" : "website"} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={locale === "zh" ? "zh_CN" : "en_US"} />
+    <meta name="twitter:card" content="summary" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>
+      try {
+        document.documentElement.classList.toggle(
+          "dark",
+          localStorage.getItem("yihui-theme") === "dark",
+        );
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">
+      {t.skip}
+    </a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href={href()} aria-label={`Yihui’s Blog · ${t.home}`}>
+          <span class="brand-mark">Y</span>
+          <span>Yihui’s Blog</span>
+        </a>
+        <nav class="desktop-nav" aria-label={t.navigation}>
+          {nav.map((item) => (
+            <a
+              href={href(item.path)}
+              aria-current={
+                path === item.path ||
+                (item.path === "blog" && path.startsWith("posts/"))
+                  ? "page"
+                  : undefined
+              }
+            >
+              {t[item.key]}
+            </a>
+          ))}
+        </nav>
+        <div class="header-actions">
+          <a
+            class="language-toggle"
+            href={alternate}
+            hreflang={locale === "zh" ? "en" : "zh-CN"}
+            aria-label={t.language}
+          >
+            {locale === "zh" ? "EN" : "中文"}
+          </a>
+          <button
+            class="theme-toggle icon-button"
+            type="button"
+            aria-label={t.theme}
+            aria-pressed="false"
+          >
+            <span class="light-icon">
+              <Icon name="moon" size={17} />
+            </span>
+            <span class="dark-icon">
+              <Icon name="sun" size={17} />
+            </span>
+          </button>
+          <button
+            class="menu-toggle icon-button"
+            type="button"
+            aria-label={t.menu}
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+          >
+            <Icon name="menu" />
+          </button>
+        </div>
+      </div>
+    </header>
+    <dialog id="mobile-menu" class="mobile-menu" aria-label={t.navigation}>
+      <div class="mobile-menu-head">
+        <span class="brand">Yihui’s Blog</span>
+        <button
+          type="button"
+          class="menu-close icon-button"
+          aria-label={t.closeMenu}
+        >
+          <Icon name="close" />
+        </button>
+      </div>
+      <nav>
+        {nav.map((item) => (
+          <a href={href(item.path)}>{t[item.key]}</a>
+        ))}
+      </nav>
+      <div class="mobile-menu-bottom">
+        <span class="section-label">{t.contact}</span>
+        <SocialLinks locale={locale} variant="text" />
+      </div>
+    </dialog>
+    <main id="main-content">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <a class="brand" href={href()}>
+              <span class="brand-mark">Y</span>
+              <span>Yihui’s Blog</span>
+            </a>
+            <p class="footer-description">{t.footerDescription}</p>
+            <SocialLinks locale={locale} class="footer-socials" />
+          </div>
+          <div>
+            <h2 class="section-label">{t.navigation}</h2>
+            <nav>
+              {nav.map((item) => (
+                <a href={href(item.path)}>{t[item.key]}</a>
+              ))}
+            </nav>
+          </div>
+          <div>
+            <h2 class="section-label">{t.elsewhere}</h2>
+            <nav>
+              <a
+                href={site.repositoryUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t.source}
+              </a>
+              <a href={site.socials.email.href}>{t.email}</a>
+              <a href={`${base}rss.xml`}>RSS</a>
+              <a
+                href="https://creativecommons.org/licenses/by/4.0/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t.license}
+              </a>
+            </nav>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© {new Date().getUTCFullYear()} Yihui.</p>
+          <p>
+            {t.builtWith} <span aria-hidden="true">·</span>{" "}
+            <a
+              href="https://chronicle-83v.pages.dev/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.designCredit}
+            </a>
+          </p>
+        </div>
+      </div>
+    </footer>
+    <script>
+      const themeButtons =
+        document.querySelectorAll<HTMLButtonElement>(".theme-toggle");
+      const syncTheme = () =>
+        themeButtons.forEach((button) =>
+          button.setAttribute(
+            "aria-pressed",
+            String(document.documentElement.classList.contains("dark")),
+          ),
+        );
+      syncTheme();
+      themeButtons.forEach((button) =>
+        button.addEventListener("click", () => {
+          const dark = document.documentElement.classList.toggle("dark");
+          try {
+            localStorage.setItem("yihui-theme", dark ? "dark" : "light");
+          } catch {}
+          syncTheme();
+        }),
+      );
+      const menu = document.querySelector<HTMLDialogElement>("#mobile-menu");
+      const toggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
+      toggle?.addEventListener("click", () => {
+        menu?.showModal();
+        toggle.setAttribute("aria-expanded", "true");
+        document.body.classList.add("menu-open");
+      });
+      const closeMenu = () => {
+        menu?.close();
+        toggle?.setAttribute("aria-expanded", "false");
+        document.body.classList.remove("menu-open");
+      };
+      document
+        .querySelector(".menu-close")
+        ?.addEventListener("click", closeMenu);
+      menu?.addEventListener("close", closeMenu);
+      menu?.addEventListener("cancel", () => {
+        toggle?.setAttribute("aria-expanded", "false");
+        document.body.classList.remove("menu-open");
+      });
+      menu
+        ?.querySelectorAll("a")
+        .forEach((a) => a.addEventListener("click", closeMenu));
+      document
+        .querySelectorAll<HTMLAnchorElement>(".language-toggle")
+        .forEach((link) => {
+          link.href += location.search + location.hash;
+        });
+    </script>
+    <script>
+      import { initMotion } from "../scripts/motion";
+      initMotion();
+    </script>
+  </body>
+</html>

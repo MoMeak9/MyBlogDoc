@@ -1,62 +1,87 @@
-# [MyBlogDoc](https://yihuiblog.top/)
+# MyBlogDoc
 
-### 这是什么？
+[中文](README.md) · [Personal blog](https://yihuiblog.top/) · [Chronicle design reference](https://chronicle-83v.pages.dev/)
 
-这个是我的[个人博客](https://yihuiblog.top/)，使用了社区比较新的技术实现，并且重新整理了过去在社区和文档库的文章放到这里。有别于旧版本文档库，旧的文档库已经不进行更新了，现在主要维护这个仓库。
+A personal frontend knowledge base and blog, statically generated with Astro from the original Markdown articles. The interface follows Chronicle's editorial layout, with article lists, category filters, search, and reading pages. Chinese and English interface translations share the same article content; switching languages does not translate the articles.
 
-因为最近大部分时间都在准备秋招，所以工作相关的多一点，你可以访问[这里](https://yihuiblog.top/campusRec/needToKnown.html) 快速浏览我准备的知识大纲。
+## Local development
 
-如果对你有帮助，期待您的:star:！
+Use Node.js 22.12 or newer. CI runs Node.js 22.22.3; `package.json` pins pnpm 10.34.6.
 
-### 为什么要写？| 为什么要开源？
+```sh
+corepack enable
+pnpm install
+pnpm dev
+```
 
-我觉得个人的记忆能力还是有限的，而前端的知识点又杂而广，并且社区有很多优秀的实践和观点都可以吸纳总结，所以我通过将这个站点作为我的第二大脑，搜罗总结各种知识点和最佳实践。
+If Corepack is unavailable, install pnpm with `npm install --global pnpm@10.34.6`.
 
-同时，将笔记（文章）开源，则是希望能帮助比如你这样素不相识的“路人”，同时能够接收到你们的指正和建议。
+| Command | Purpose |
+| --- | --- |
+| `pnpm dev` | Start the development server |
+| `pnpm check` | Check Astro and TypeScript |
+| `pnpm test` | Check Markdown metadata, article links, and deployment paths |
+| `pnpm build` | Generate the static website in `dist/` |
+| `pnpm preview` | Preview the generated website |
+| `pnpm commit` | Commit staged changes with the existing git-cz configuration |
 
+## Writing articles
 
-### 写了点啥？
+Continue editing `.md` files in their original locations under `src/`. New articles also belong under `src/`; Chinese filenames and nested directories are supported. Hidden folders such as `.vuepress` and `.obsidian` are excluded from article discovery.
 
-- 个人心得，总结和思考
-- 前端知识大仓库
+YAML frontmatter is optional. Existing `date`, `category`, `tag`, and `star` fields are supported, as are `categories` and `tags`. Titles come from `title`, the first H1, or the filename. Dates use `date` first, followed by the file's latest Git commit date; new uncommitted files use their filesystem date. Set `star: true` to feature an article.
 
-- 我的大厂面经
-- 一堆八股文（bushi）
-- codeTop刷题记录
-- [优秀社区文章集合](https://yihuiblog.top/skills/article.html)
+```md
+---
+title: My new article
+date: 2026-10-06
+category:
+  - Frontend
+tag:
+  - Astro
+description: A short introduction to the article.
+star: true
+---
 
-### 功能支持
+# My new article
 
-- SEO
+Write your article here.
+```
 
-- 评论
+Standard Markdown, tables, syntax highlighting, native HTML, images, and videos are preserved. Legacy Vue code fences use HTML highlighting. Relative `.md` and `.html` article links resolve to the new article routes; legacy VuePress article `.html` URLs have compatibility entry points. Existing article bodies do not need a bulk rewrite. VuePress-specific Vue components are not executed as Astro components.
 
-- MD 语法增强
+The default Chinese interface is at `/`; the English interface is at `/en/`. Both use the same articles.
 
-- 博客主题
+## Social profiles and motion
 
-- 站点地图
+Edit `src/config/site.ts` to configure the author and GitHub, Bilibili, and email profiles. The same links appear on the homepage, About page, footer, and mobile menu. Interface translations live in `src/i18n.ts`.
 
-- 监控埋点
+Lenis and GSAP reproduce the reference's scroll inertia, reversible entrances, staggered cards, expanding rules, and counters. A Canvas renders the rotating wireframe icosahedron and particles, with a static SVG fallback. Drawing is capped at 30 FPS and pauses offscreen or in hidden tabs. The system's reduced motion preference restores native scrolling and static values.
 
-  ......
+## Deploying to GitHub Pages
 
-### 建设和部署
+1. Open **Settings → Pages → Build and deployment → Source** and select **GitHub Actions**.
+2. Push changes to `main` or `master`. The workflow installs locked dependencies, runs checks and tests, builds the website, and deploys it with the official GitHub Pages Actions.
+3. You can also choose **Actions → Build and deploy Astro to GitHub Pages → Run workflow**. Only `main` and `master` deploy; Pull Requests run checks and builds.
 
-- VuePress 2 + Vite  + TS （VitePress）
-- [vuepress-theme-hope 主题](https://vuepress-theme-hope.github.io/v2/zh/)
+The workflow reads the origin and base path from `actions/configure-pages`, supporting project sites, user sites, and configured custom domains. A normal `MyBlogDoc` project repository uses `/MyBlogDoc/`. Pull Request builds derive the path from `GITHUB_REPOSITORY`. Full Git history is checked out so article date fallbacks remain consistent. No PAT or manually maintained `gh-pages` branch is required.
 
-**部署：**
+To override deployment settings, add repository variables under **Settings → Secrets and variables → Actions → Variables**:
 
-- Github Action 自动构建并部署 Github Page （见deploy分支），国内源已挂载CDN，请放心访问。
+| Variable | Example | Meaning |
+| --- | --- | --- |
+| `SITE_URL` | `https://momeak9.github.io` | Website origin without the project subpath |
+| `BASE_PATH` | `/MyBlogDoc/` | Project subpath; use `/` for root-domain deployment |
 
-### Git 提交
+Local development defaults to `/`. To verify the same project path used in CI:
 
-commitizen+git-cz 实现的有趣而规范的commits信息
+```sh
+SITE_URL=https://momeak9.github.io BASE_PATH=/MyBlogDoc/ pnpm build
+BASE_PATH=/MyBlogDoc/ pnpm preview
+```
 
-### ❓ 问题与交流 | Issue
+`.idea/`, `node_modules/`, `.astro/`, `dist/`, `.DS_Store`, and local environment files are ignored. Previously tracked `.idea` files have been removed from Git tracking while remaining available locally.
 
-- 如果您想参与贡献，非常抱歉目前这是我的个人笔记库，可能暂时没法儿接受其他人的笔记合入。
-- 如果您有相关问题，或希望我加速填坑，请直接在文章下方留言或提 issues。我看到会尽快回复。
+## Contact
 
-**欢迎提 issues 或者 联系 [shi_yihui@qq.com](mailto:shi_yihui@qq.com)**
+This repository primarily contains personal notes. Report article or website problems in an [Issue](https://github.com/MoMeak9/MyBlogDoc/issues), or contact [shi_yihui@qq.com](mailto:shi_yihui@qq.com).
