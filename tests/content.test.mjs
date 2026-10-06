@@ -147,6 +147,41 @@ test("Markdown adaptations remove one page title while preserving later H1 secti
   );
 });
 
+test("responsive profile pictures keep every source mounted without changing external or data URLs", () => {
+  const picture =
+    '<picture><source media="(prefers-color-scheme: dark)" srcset="/content-assets/profile-dark.svg 1x, /content-assets/profile-dark@2x.svg 2x"><img src="/content-assets/profile-light.svg" srcset="https://example.com/profile.svg 1x, /content-assets/profile-light@2x.svg 2x"></picture>';
+  const inline = '<img srcset="data:image/svg+xml,%3Csvg%3E 1x">';
+  for (const base of ["/", "/MyBlogDoc/"]) {
+    const tree = {
+      type: "root",
+      children: [
+        { type: "html", value: picture },
+        { type: "html", value: inline },
+      ],
+    };
+    remarkLegacyMarkdown({ base })(tree, {
+      path: "/workspace/src/个人简介.md",
+    });
+    const html = tree.children[0].value;
+    assert.ok(
+      html.includes(
+        `srcset="${base}content-assets/profile-dark.svg 1x, ${base}content-assets/profile-dark@2x.svg 2x"`,
+      ),
+    );
+    assert.ok(html.includes(`src="${base}content-assets/profile-light.svg"`));
+    assert.ok(
+      html.includes(
+        `srcset="https://example.com/profile.svg 1x, ${base}content-assets/profile-light@2x.svg 2x"`,
+      ),
+    );
+    assert.ok(
+      tree.children[1].value.includes(
+        'srcset="data:image/svg+xml,%3Csvg%3E 1x"',
+      ),
+    );
+  }
+});
+
 test("media adaptations preserve author choices and include playback controls", () => {
   const tree = {
     children: [

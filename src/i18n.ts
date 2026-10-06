@@ -99,9 +99,10 @@ const zh = {
   related: "继续阅读",
   empty: "这篇笔记还在整理中。",
   aboutLabel: "关于作者",
-  aboutTitle: "你好，我是 Yihui。",
+  aboutTitle: "你好，我是 MoMeak9。",
   aboutDescription:
-    "前端开发者，开源爱好者。用文字记录探索，在实践中持续学习。",
+    "AI Native Engineer，专注前端、全栈工程与 AI 应用。把模型能力融入产品，构建清晰、可靠的交互与工具。",
+  aboutSource: "查看 GitHub 个人主页原文",
   contactLabel: "保持联系",
   contactTitle: "让我们聊聊。",
   contactDescription: "关于文章的疑问、建议，或值得分享的想法，欢迎联系我。",
@@ -223,9 +224,10 @@ const en: typeof zh = {
   related: "Keep reading",
   empty: "This note is still taking shape.",
   aboutLabel: "About the author",
-  aboutTitle: "Hello, I’m Yihui.",
+  aboutTitle: "Hello, I’m MoMeak9.",
   aboutDescription:
-    "Frontend developer and open source enthusiast. Learning through practice, and writing along the way.",
+    "AI Native Engineer with a frontend foundation and a full-stack toolkit. Building thoughtful interfaces, developer tools, and AI applications.",
+  aboutSource: "View the original GitHub profile",
   contactLabel: "Get in touch",
   contactTitle: "Let’s start a conversation.",
   contactDescription:

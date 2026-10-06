@@ -255,6 +255,18 @@ export function remarkLegacyMarkdown({ base = "/" } = {}) {
       }
       if (node.type === "html") {
         node.value = node.value.replace(
+          /(<(?:img|source)\b[^>]*\bsrcset\s*=\s*)(["'])([^"']*)\2/gi,
+          (match, prefix, quote, srcset) => {
+            if (/(?:^|,\s*)data:/i.test(srcset)) return match;
+            const mounted = srcset.replace(
+              /(^|,\s*)([^\s,]+)/g,
+              (_, separator, href) =>
+                `${separator}${rewriteLegacyHref(href, { sourceId, base })}`,
+            );
+            return `${prefix}${quote}${mounted}${quote}`;
+          },
+        );
+        node.value = node.value.replace(
           /(<(?:img|video|source)\b[^>]*\bsrc=)(["'])([^"']*)\2/gi,
           (_, prefix, quote, href) =>
             `${prefix}${quote}${rewriteLegacyHref(href, { sourceId, base })}${quote}`,

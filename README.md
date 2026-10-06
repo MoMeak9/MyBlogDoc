@@ -56,6 +56,8 @@ star: true
 
 在 `src/config/site.ts` 修改作者信息和 GitHub、Bilibili、邮箱入口；这些入口统一用于首页、关于页、页脚和手机菜单。界面翻译位于 `src/i18n.ts`。
 
+关于页正文位于 `src/个人简介.md`，迁自 [GitHub 个人主页 README](https://github.com/MoMeak9/MoMeak9/blob/91250d88177a33aa6da667942a7e4f7c448c0580/README.md)。保留原始英文内容，frontmatter 记录来源和版本；配套 SVG 位于 `public/content-assets/github-profile/`，跟随站点浅色/深色主题。更新个人资料时，同时更新正文、SVG 和 `src/config/site.ts` 中的联系方式。
+
 页面使用浏览器原生滚动。GSAP 观察滚动位置，驱动淡入与反向播放、卡片错峰、线条展开和数字计数。首屏使用 Canvas 绘制旋转线框二十面体及粒子，提供静态 SVG 后备；帧率最多 30 FPS，离屏或标签页隐藏时暂停。系统开启“减少动画”后，页面保留静态内容和数字。
 
 ## 部署到 GitHub Pages

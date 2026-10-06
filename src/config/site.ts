@@ -1,4 +1,4 @@
-/** Public author profiles carried over from the original blog configuration. */
+/** Public author identity and contact details. */
 export const site = {
   author: {
     name: "Yihui",
@@ -24,8 +24,8 @@ export const site = {
     },
     email: {
       icon: "email",
-      href: "mailto:shi_yihui@qq.com",
-      account: "shi_yihui@qq.com",
+      href: "mailto:minntaki@foxmail.com",
+      account: "minntaki@foxmail.com",
       labelKey: "socialEmail",
       ariaKey: "socialEmailLabel",
       external: false,

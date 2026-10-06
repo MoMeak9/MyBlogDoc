@@ -56,6 +56,8 @@ The default Chinese interface is at `/`; the English interface is at `/en/`. Bot
 
 Edit `src/config/site.ts` to configure the author and GitHub, Bilibili, and email profiles. The same links appear on the homepage, About page, footer, and mobile menu. Interface translations live in `src/i18n.ts`.
 
+The About page uses `src/个人简介.md`, migrated from the [GitHub profile README](https://github.com/MoMeak9/MoMeak9/blob/91250d88177a33aa6da667942a7e4f7c448c0580/README.md). Its English content is preserved, with the source and revision recorded in frontmatter. Local SVG assets in `public/content-assets/github-profile/` follow the site's light/dark theme. Update the Markdown, SVG files, and contact details in `src/config/site.ts` together when refreshing the profile.
+
 Pages use native browser scrolling. GSAP observes scroll position to animate reversible entrances, staggered cards, expanding rules, and counters. A Canvas renders the rotating wireframe icosahedron and particles, with a static SVG fallback. Drawing is capped at 30 FPS and pauses offscreen or in hidden tabs. The system's reduced motion preference keeps content and values static.
 
 ## Deploying to GitHub Pages
