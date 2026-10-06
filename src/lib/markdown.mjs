@@ -114,6 +114,45 @@ export function estimateReadMinutes(body = "") {
   return Math.max(1, Math.ceil(chineseCharacters / 350 + otherWords / 220));
 }
 
+const summarySegmenter =
+  typeof Intl.Segmenter === "function"
+    ? new Intl.Segmenter(undefined, { granularity: "grapheme" })
+    : undefined;
+
+function summarySegments(value) {
+  if (summarySegmenter) {
+    return (function* () {
+      for (const { segment } of summarySegmenter.segment(value)) yield segment;
+    })();
+  }
+  // Code-point fallback keeps joined emoji, modifiers, marks and flag pairs intact.
+  const groups = [];
+  for (const point of value) {
+    const previous = groups.at(-1);
+    const joinsPrevious =
+      previous &&
+      (point === "\u200d" ||
+        previous.endsWith("\u200d") ||
+        /^[\p{M}\p{Emoji_Modifier}]$/u.test(point) ||
+        (/^\p{Regional_Indicator}$/u.test(point) &&
+          /^\p{Regional_Indicator}$/u.test(previous)));
+    if (joinsPrevious) groups[groups.length - 1] += point;
+    else groups.push(point);
+  }
+  return groups;
+}
+
+function truncateSummary(value) {
+  const summary = value.toWellFormed();
+  if (summary.length <= 160) return summary;
+  let description = "";
+  for (const segment of summarySegments(summary)) {
+    if (description.length + segment.length > 157) break;
+    description += segment;
+  }
+  return `${description}…`;
+}
+
 /** Normalize metadata without requiring edits to the existing Markdown files. */
 export function extractPostMetadata({
   id,
@@ -165,7 +204,7 @@ export function extractPostMetadata({
     )?.[1];
   return {
     title,
-    description: summary.length > 160 ? `${summary.slice(0, 157)}…` : summary,
+    description: truncateSummary(summary),
     date: explicitDate ?? parseDate(fallbackDate) ?? new Date(0),
     dateSource: explicitDate ? "frontmatter" : fallbackDateSource,
     categories: categories.length

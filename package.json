@@ -11,11 +11,11 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/build-search.mjs",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "node --test tests/content.test.mjs tests/paths.test.mjs tests/seo.test.mjs",
-    "test:build": "node --test tests/build.test.mjs",
+    "test": "node --test tests/content.test.mjs tests/paths.test.mjs tests/seo.test.mjs tests/search-query.test.mjs tests/offline-search.test.mjs tests/search-dictionary.test.mjs",
+    "test:build": "node --test tests/build.test.mjs tests/search-build.test.mjs",
     "commit": "git-cz"
   },
   "config": {
@@ -28,8 +28,10 @@
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
     "@types/node": "^22.20.5",
+    "cbor-x": "1.6.6",
     "commitizen": "^4.2.4",
     "git-cz": "^4.9.0",
+    "pagefind": "1.5.2",
     "typescript": "~6.0.3"
   },
   "dependencies": {

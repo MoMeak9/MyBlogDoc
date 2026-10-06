@@ -58,6 +58,69 @@ test("explicit title and description win, with metadata aliases and duplicate cl
   assert.deepEqual(normalizeList([null, 4, "CSS", "CSS", " "]), ["CSS"]);
 });
 
+test("long summaries never cut an emoji surrogate pair at the old slice boundary", () => {
+  const prefix = "中".repeat(156);
+  const metadata = extractPostMetadata({
+    id: "emoji-boundary",
+    body: `${prefix}🌸${"后续".repeat(8)}`,
+  });
+  assert.equal(metadata.description, `${prefix}…`);
+  assert.equal(metadata.description.isWellFormed(), true);
+  assert.ok(metadata.description.length <= 160);
+  const exactLimit = "中".repeat(160);
+  assert.equal(
+    extractPostMetadata({ id: "exact-limit", body: exactLimit }).description,
+    exactLimit,
+  );
+});
+
+test("summary truncation preserves whole emoji ZWJ clusters when they fit and omits them otherwise", () => {
+  const emoji = "👩🏽‍💻";
+  const fittingPrefix = "文".repeat(150);
+  const fitting = extractPostMetadata({
+    id: "emoji-zwj-fit",
+    data: { description: `${fittingPrefix}${emoji}${"更多".repeat(10)}` },
+  }).description;
+  assert.ok(fitting.startsWith(`${fittingPrefix}${emoji}`));
+  assert.equal(fitting.isWellFormed(), true);
+  assert.ok(fitting.length <= 160);
+  const tightPrefix = "文".repeat(154);
+  const omitted = extractPostMetadata({
+    id: "emoji-zwj-boundary",
+    body: `${tightPrefix}${emoji}${"更多".repeat(10)}`,
+  }).description;
+  assert.equal(omitted, `${tightPrefix}…`);
+  assert.equal(omitted.isWellFormed(), true);
+});
+
+test("explicit summaries repair invalid Unicode before JSON serialization", () => {
+  const description = extractPostMetadata({
+    id: "invalid-unicode",
+    data: { description: "说明\ud83c结尾" },
+  }).description;
+  assert.equal(description, "说明\ufffd结尾");
+  assert.equal(description.isWellFormed(), true);
+});
+
+test("summary fallback without Intl.Segmenter keeps emoji clusters and flags intact", async () => {
+  const original = Intl.Segmenter;
+  try {
+    Intl.Segmenter = undefined;
+    const fallback = await import("../src/lib/markdown.mjs?summary-fallback");
+    for (const emoji of ["👩🏽‍💻", "🇨🇳"]) {
+      const prefix = "文".repeat(157 - emoji.length);
+      const description = fallback.extractPostMetadata({
+        id: "fallback-emoji",
+        body: `${prefix}${emoji}${"更多".repeat(10)}`,
+      }).description;
+      assert.equal(description, `${prefix}${emoji}…`);
+      assert.equal(description.isWellFormed(), true);
+    }
+  } finally {
+    Intl.Segmenter = original;
+  }
+});
+
 test("frontmatter dates win over Git dates and missing dates expose their fallback source", () => {
   const fallbackDate = new Date("2023-07-14T00:44:34+08:00");
   const explicit = extractPostMetadata({

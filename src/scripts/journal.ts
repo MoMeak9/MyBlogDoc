@@ -1,5 +1,12 @@
 import { ui, dateLabel, type Locale } from "../i18n";
 import { localePath, normalizeBase, postPath } from "../lib/paths.mjs";
+import {
+  prepareSearchQuery,
+  createSearchVocabulary,
+  queryHasMatches,
+  type SearchVocabulary,
+} from "../lib/search-query";
+import { createOfflineSearch, type OfflineSearchState } from "./offline-search";
 
 type Article = {
   id: string;
@@ -15,7 +22,21 @@ type JournalSession = { root: HTMLElement; dispose: () => void };
 
 let currentSession: JournalSession | undefined;
 let articleRequest: Promise<Article[]> | undefined;
-let searchRequest: Promise<Map<string, string>> | undefined;
+type SearchData = { meta: { record: string; id: string }; excerpt: string };
+type SearchHit = { data: () => Promise<SearchData> };
+type SearchAPI = {
+  vocabulary: SearchVocabulary;
+  options: (options: Record<string, unknown>) => Promise<void>;
+  init: () => Promise<void>;
+  search: (
+    query: string,
+    options: { filters: Record<string, string> },
+  ) => Promise<{ results: SearchHit[] }>;
+  destroy: () => Promise<void>;
+};
+let searchRequest: Promise<SearchAPI> | undefined;
+let searchAttempt = 0;
+let loadedSearchVersion: string | undefined;
 const pageSize = 12;
 const images = [
   "editorial-writing.jpg",
@@ -37,23 +58,7 @@ function loadArticles(base: string) {
       .then((value) => {
         const records = (value as { articles?: unknown[] })?.articles;
         if (!Array.isArray(records)) throw new Error("Invalid article index");
-        return records.filter((record): record is Article => {
-          if (!record || typeof record !== "object") return false;
-          const article = record as Article;
-          return (
-            typeof article.id === "string" &&
-            !!article.id &&
-            !article.id
-              .split("/")
-              .some((part) => part === "." || part === "..") &&
-            typeof article.title === "string" &&
-            typeof article.description === "string" &&
-            Array.isArray(article.categories) &&
-            article.categories.every((item) => typeof item === "string") &&
-            Array.isArray(article.tags) &&
-            article.tags.every((item) => typeof item === "string")
-          );
-        });
+        return records.filter(isArticle);
       })
       .catch((error) => {
         articleRequest = undefined;
@@ -65,28 +70,103 @@ function loadArticles(base: string) {
 
 function loadSearch(base: string) {
   if (!searchRequest) {
-    searchRequest = fetchJson(`${base}search-index.json`)
-      .then((value) => {
-        const records = (value as { articles?: unknown[] })?.articles;
-        if (!Array.isArray(records)) throw new Error("Invalid search index");
-        const index = new Map<string, string>();
-        for (const record of records) {
-          if (!record || typeof record !== "object") continue;
-          const article = record as { id?: unknown; text?: unknown };
-          if (
-            typeof article.id === "string" &&
-            typeof article.text === "string"
-          )
-            index.set(article.id, article.text.toLocaleLowerCase());
+    const attempt = ++searchAttempt;
+    searchRequest = fetchJson(`${base}search-version.json`)
+      .then(async (value) => {
+        const version = (value as { version?: unknown })?.version;
+        if (typeof version !== "string" || !/^[a-f0-9]{8,64}$/.test(version))
+          throw new Error("Invalid search version");
+        if (attempt === searchAttempt) loadedSearchVersion = version;
+        const [module, dictionary] = await Promise.all([
+          import(
+            /* @vite-ignore */ `${base}pagefind/pagefind.js?v=${version}&attempt=${attempt}`
+          ),
+          fetchJson(`${base}search-dictionary.json`),
+        ]);
+        const words = (dictionary as { words?: unknown })?.words;
+        if (
+          !Array.isArray(words) ||
+          !words.every((word) => typeof word === "string")
+        )
+          throw new Error("Invalid search dictionary");
+        const api = {
+          ...module,
+          vocabulary: createSearchVocabulary(words),
+        } as SearchAPI;
+        await api.options({
+          basePath: `${base}pagefind/`,
+          baseUrl: "/",
+          excerptLength: 36,
+          metaCacheTag: version,
+        });
+        // Capture the API's non-segmenting mode synchronously. Restore the document
+        // language before any rendering or asynchronous work; UI semantics stay intact.
+        const html = document.documentElement;
+        const original = html.lang;
+        let initializing: Promise<void>;
+        try {
+          html.lang = "en";
+          initializing = api.init();
+        } finally {
+          html.lang = original;
         }
-        return index;
+        await initializing;
+        return api;
       })
       .catch((error) => {
-        searchRequest = undefined;
+        if (attempt === searchAttempt) {
+          searchRequest = undefined;
+          loadedSearchVersion = undefined;
+        }
         throw error;
       });
   }
   return searchRequest;
+}
+
+function resetSearch() {
+  const previous = searchRequest;
+  searchAttempt++;
+  searchRequest = undefined;
+  loadedSearchVersion = undefined;
+  void previous?.then((api) => api.destroy()).catch(() => {});
+}
+
+function isArticle(record: unknown): record is Article {
+  if (!record || typeof record !== "object") return false;
+  const article = record as Article;
+  return (
+    typeof article.id === "string" &&
+    !!article.id &&
+    !article.id.split("/").some((part) => part === "." || part === "..") &&
+    typeof article.title === "string" &&
+    typeof article.description === "string" &&
+    Array.isArray(article.categories) &&
+    article.categories.every((item) => typeof item === "string") &&
+    Array.isArray(article.tags) &&
+    article.tags.every((item) => typeof item === "string")
+  );
+}
+
+/** Copy only text and marks from Pagefind's excerpt into the live document. */
+function appendExcerpt(target: HTMLElement, excerpt: string) {
+  const template = document.createElement("template");
+  template.innerHTML = excerpt;
+  const copy = (source: Node, destination: Node) => {
+    if (source.nodeType === Node.TEXT_NODE) {
+      destination.appendChild(
+        document.createTextNode(source.textContent ?? ""),
+      );
+    } else if (source instanceof HTMLElement) {
+      if (["SCRIPT", "STYLE"].includes(source.tagName)) return;
+      if (source.tagName === "MARK") {
+        const mark = document.createElement("mark");
+        for (const child of source.childNodes) copy(child, mark);
+        destination.appendChild(mark);
+      } else for (const child of source.childNodes) copy(child, destination);
+    }
+  };
+  for (const child of template.content.childNodes) copy(child, target);
 }
 
 function element<K extends keyof HTMLElementTagNameMap>(
@@ -105,6 +185,7 @@ function renderCard(
   index: number,
   locale: Locale,
   base: string,
+  excerpt?: string,
 ) {
   const t = ui(locale);
   const card = element("article", "post-card");
@@ -163,11 +244,14 @@ function renderCard(
   path.setAttribute("d", "M5 12h14m-6-6 6 6-6 6");
   arrow.append(path);
   read.append(arrow);
+  const description = element("p", "post-description");
+  if (excerpt) appendExcerpt(description, excerpt);
+  else description.textContent = article.description || t.empty;
   link.append(
     figure,
     meta,
     element("h3", undefined, article.title),
-    element("p", "post-description", article.description || t.empty),
+    description,
     read,
   );
   card.append(link);
@@ -214,6 +298,79 @@ export function initJournal() {
   let inputTimer: ReturnType<typeof setTimeout> | undefined;
   let disposed = false;
   let composing = false;
+  const offlineBar = root.querySelector<HTMLElement>(".offline-search-bar");
+  if (offlineBar) offlineBar.hidden = false;
+  const offlineButton =
+    root.querySelector<HTMLButtonElement>("#download-search");
+  const removeOffline = root.querySelector<HTMLButtonElement>("#remove-search");
+  const offlineStatus = root.querySelector<HTMLElement>(
+    "#offline-search-status",
+  );
+  const offlineProgress = root.querySelector<HTMLProgressElement>(
+    "#offline-search-progress",
+  );
+  const offline = createOfflineSearch(base, (state: OfflineSearchState) => {
+    if (disposed) return;
+    const downloading = state.phase === "downloading";
+    const ready = state.phase === "ready";
+    const hasDownload = ready || Boolean(state.hasDownload);
+    if (ready && loadedSearchVersion && state.version !== loadedSearchVersion) {
+      resetSearch();
+      articleRequest = undefined;
+      if (active()) void update();
+    }
+    if (offlineButton) {
+      offlineButton.hidden = ready || state.phase === "unsupported";
+      offlineButton.disabled = downloading || state.phase === "checking";
+      const label =
+        state.phase === "error"
+          ? t.retryDownload
+          : hasDownload
+            ? t.updateSearchDownload
+            : t.downloadSearch;
+      if (offlineButton.textContent !== label)
+        offlineButton.textContent = label;
+    }
+    if (removeOffline) {
+      removeOffline.hidden = !hasDownload;
+      removeOffline.disabled = downloading;
+    }
+    if (offlineProgress) {
+      offlineProgress.hidden = !downloading;
+      offlineProgress.max = state.total || 1;
+      offlineProgress.value = state.completed || 0;
+    }
+    if (offlineStatus) {
+      offlineStatus.dataset.phase = state.phase;
+      const percent = Math.round(
+        ((state.completed || 0) / (state.total || 1)) * 100,
+      );
+      const text = ready
+        ? t.offlineReady
+        : downloading
+          ? `${t.downloadingSearch} ${percent}%`
+          : state.phase === "error"
+            ? t.offlineDownloadError
+            : state.phase === "unsupported"
+              ? t.offlineUnsupported
+              : `${t.offlineSearchHint}${state.totalBytes ? ` ${t.offlineDataSize.replace("{size}", (state.totalBytes / 1024 / 1024).toFixed(1))}` : ""}`;
+      if (offlineStatus.textContent !== text) offlineStatus.textContent = text;
+    }
+  });
+  offlineButton?.addEventListener(
+    "click",
+    () => {
+      void offline.download().catch(() => {});
+    },
+    { signal: events.signal },
+  );
+  removeOffline?.addEventListener(
+    "click",
+    () => {
+      void offline.remove().catch(() => {});
+    },
+    { signal: events.signal },
+  );
   const active = () => Boolean(category || input.value.trim());
   const archivePath = (number: number) =>
     localePath(number === 1 ? "blog" : `blog/${number}`, locale, base);
@@ -320,40 +477,66 @@ export function initJournal() {
       return;
     }
     const selectedCategory = category;
-    const words = input.value
-      .trim()
-      .toLocaleLowerCase()
-      .split(/\s+/)
-      .filter(Boolean);
+    const query = prepareSearchQuery(input.value);
     setFeedback("loading");
     try {
-      const [articles, text] = await Promise.all([
-        loadArticles(base),
-        words.length
-          ? loadSearch(base)
-          : Promise.resolve(new Map<string, string>()),
-      ]);
-      if (disposed || version !== requestVersion) return;
-      const filtered = articles.filter((article) => {
-        if (selectedCategory && !article.categories.includes(selectedCategory))
-          return false;
-        if (!words.length) return true;
-        const haystack =
-          `${article.title} ${article.description} ${article.tags.join(" ")} ${text.get(article.id) ?? ""}`.toLocaleLowerCase();
-        return words.every((word) => haystack.includes(word));
-      });
-      const pages = Math.max(1, Math.ceil(filtered.length / pageSize));
+      let total = 0;
+      let cards: { article: Article; excerpt?: string }[];
+      if (query) {
+        const api = await loadSearch(base);
+        if (disposed || version !== requestVersion) return;
+        const prepared = prepareSearchQuery(input.value, api.vocabulary);
+        const found = queryHasMatches(prepared, api.vocabulary)
+          ? await api.search(prepared, {
+              filters: selectedCategory ? { category: selectedCategory } : {},
+            })
+          : { results: [] };
+        if (disposed || version !== requestVersion) return;
+        total = found.results.length;
+        page = Math.min(page, Math.max(1, Math.ceil(total / pageSize)));
+        const start = (page - 1) * pageSize;
+        const data = await Promise.all(
+          found.results.slice(start, start + pageSize).map((hit) => hit.data()),
+        );
+        if (disposed || version !== requestVersion) return;
+        cards = data.map((result) => {
+          const encoded = result.meta.record
+            .replace(/-/g, "+")
+            .replace(/_/g, "/");
+          const bytes = Uint8Array.from(atob(encoded), (character) =>
+            character.charCodeAt(0),
+          );
+          const article: unknown = JSON.parse(new TextDecoder().decode(bytes));
+          if (
+            !isArticle(article) ||
+            article.id !== decodeURIComponent(result.meta.id)
+          )
+            throw new Error("Invalid search result");
+          return { article, excerpt: result.excerpt };
+        });
+      } else {
+        const articles = await loadArticles(base);
+        if (disposed || version !== requestVersion) return;
+        const filtered = articles.filter(
+          (article) =>
+            !selectedCategory || article.categories.includes(selectedCategory),
+        );
+        total = filtered.length;
+        page = Math.min(page, Math.max(1, Math.ceil(total / pageSize)));
+        cards = filtered
+          .slice((page - 1) * pageSize, page * pageSize)
+          .map((article) => ({ article }));
+      }
+      const pages = Math.max(1, Math.ceil(total / pageSize));
       page = Math.min(page, pages);
       const start = (page - 1) * pageSize;
       grid.replaceChildren(
-        ...filtered
-          .slice(start, start + pageSize)
-          .map((article, index) =>
-            renderCard(article, start + index, locale, base),
-          ),
+        ...cards.map(({ article, excerpt }, index) =>
+          renderCard(article, start + index, locale, base, excerpt),
+        ),
       );
-      if (count) count.textContent = String(filtered.length);
-      if (empty) empty.hidden = filtered.length !== 0;
+      if (count) count.textContent = String(total);
+      if (empty) empty.hidden = total !== 0;
       updatePagination(page, pages, true);
       updateQuery();
       setFeedback();
@@ -363,7 +546,10 @@ export function initJournal() {
           behavior: "auto",
         });
     } catch {
-      if (!disposed && version === requestVersion) setFeedback("error");
+      if (!disposed && version === requestVersion) {
+        if (query) resetSearch();
+        setFeedback("error");
+      }
     }
   };
   const cancelInput = () => {
@@ -375,6 +561,7 @@ export function initJournal() {
     page = 1;
     cancelInput();
     if (composing) return;
+    setFeedback("loading");
     inputTimer = setTimeout(() => {
       void update();
     }, 180);
@@ -485,6 +672,7 @@ export function initJournal() {
       disposed = true;
       requestVersion++;
       cancelInput();
+      offline.dispose();
       events.abort();
     },
   };

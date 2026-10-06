@@ -58,7 +58,13 @@ const editUrl = `https://github.com/MoMeak9/MyBlogDoc/edit/main/src/${post.id.sp
           </li>
         </ol>
       </nav>
-      <h1>{post.title}</h1>
+      <h1
+        data-pagefind-body={post.indexable || undefined}
+        data-pagefind-meta="title"
+        data-pagefind-weight="8"
+      >
+        {post.title}
+      </h1>
       <div class="post-meta">
         <span class="category">{post.categories.join(" / ")}</span>
         <span aria-hidden="true">·</span>
@@ -114,7 +120,13 @@ const editUrl = `https://github.com/MoMeak9/MyBlogDoc/edit/main/src/${post.id.sp
   </header>
   <div class="container article-grid">
     <div class="article-content">
-      <article class="prose" lang={post.language}>
+      <article
+        class="prose"
+        lang={post.language}
+        data-pagefind-body={post.indexable || undefined}
+        data-pagefind-id={encodeURIComponent(post.id)}
+        data-pagefind-meta="id[data-pagefind-id]"
+      >
         {post.empty ? <p>{t.empty}</p> : <Fragment set:html={html} />}
       </article>
       <div class="article-bottom">

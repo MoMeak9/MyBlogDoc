@@ -90,6 +90,12 @@ BASE_PATH=/MyBlogDoc/ pnpm preview
 
 归档每页静态生成 12 篇文章，搜索索引在使用筛选或搜索时加载；手机提供横滑分类、折叠目录、44px 触控目标和安全区留白。Mermaid 图示按需绘制，原始源码可展开阅读，无法绘制时保留代码内容。
 
+## 本地全文与离线搜索
+
+使用 [Pagefind](https://pagefind.app/) 在构建后为公开文章生成静态中文分片索引，检索、相关性排序和摘要高亮在浏览器本地完成。中英文界面共享原文索引，结果保留当前界面的链接；关键词搜索按需加载索引及当前页摘要，分类单独筛选仍使用轻量元数据。不需要搜索服务器、API Key 或外部搜索服务。
+
+文章归档页提供“下载离线搜索”入口，手动下载完整索引、搜索页面及所需静态资源。下载完成后，可以断网搜索新关键词、筛选和分页；已访问的文章可离线阅读。下载未完成不会标记就绪，版本更新时可重新下载，旧的完整下载会保留到新包成功。支持清除下载，缓存只属于当前博客路径。[方案比较、构建与验收说明](docs/offline-search.md)。
+
 ## SEO 与 GEO
 
 站点输出 Blog、Person、BlogPosting 和可见面包屑对应的 JSON-LD，补齐 OG/Twitter 分享图、可信发布时间与更新时间、原文作者与来源信息，以及 sitemap 的 lastmod。未知的发布时间不会用构建时间补造。英文界面共享原文，因此文章语言标注遵循正文语言。
@@ -100,4 +106,4 @@ GitHub 项目 Pages 的 `/MyBlogDoc/robots.txt` 不能控制整个主机，爬�
 
 ## 交流
 
-这个仓库主要维护个人笔记。发现文章或网站问题，欢迎提交 [Issue](https://github.com/MoMeak9/MyBlogDoc/issues)，也可以联系 [shi_yihui@qq.com](mailto:shi_yihui@qq.com)。
+这个仓库主要维护个人笔记。发现文章或网站问题，欢迎提交 [Issue](https://github.com/MoMeak9/MyBlogDoc/issues)，也可以联系 [minntaki@foxmail.com](mailto:minntaki@foxmail.com)。

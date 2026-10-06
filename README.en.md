@@ -90,6 +90,12 @@ BASE_PATH=/MyBlogDoc/ pnpm preview
 
 Archives statically render 12 articles per page, with search indexes loaded on demand. Phone layouts include horizontal category filters, a collapsible contents panel, 44px controls, and safe-area spacing. Mermaid diagrams load near the reader, keeping their original source available as a fallback.
 
+## Local full-text and offline search
+
+[Pagefind](https://pagefind.app/) builds a static, segmented Chinese index for public articles after the Astro build. Queries, relevance ranking, and highlighted excerpts run locally. Both interface languages share the original corpus and preserve their own article links. Keyword searches load only the required index chunks and visible excerpts; category-only filtering uses metadata. No search server, API key, or external search service is required.
+
+Use **Download offline search** in the journal to save the complete index, search pages, and required local assets. Once finished, new queries, category filters, and result pagination work without a connection. Previously visited articles can be read offline. Incomplete downloads never report ready; complete downloads remain available while a new version downloads. Downloads can be cleared, and caches stay within this blog's path. See the [implementation and validation notes](docs/offline-search.md).
+
 ## SEO and GEO
 
 The site provides Blog, Person, BlogPosting, and visible breadcrumb JSON-LD, OG/Twitter sharing images, trustworthy publication/modification dates, explicit attribution, and sitemap lastmod. Unknown publication dates are never replaced with build timestamps. Article language follows the original content even when the interface is English.
@@ -100,4 +106,4 @@ A project Pages file at `/MyBlogDoc/robots.txt` does not control the entire host
 
 ## Contact
 
-This repository primarily contains personal notes. Report article or website problems in an [Issue](https://github.com/MoMeak9/MyBlogDoc/issues), or contact [shi_yihui@qq.com](mailto:shi_yihui@qq.com).
+This repository primarily contains personal notes. Report article or website problems in an [Issue](https://github.com/MoMeak9/MyBlogDoc/issues), or contact [minntaki@foxmail.com](mailto:minntaki@foxmail.com).
