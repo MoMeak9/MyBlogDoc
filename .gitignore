@@ -1,10 +1,13 @@
 
 node_modules/
+.node_modules-vuepress-backup/
+.astro/
+dist/
 src/.vuepress/.cache/
 src/.vuepress/.temp/
 src/.vuepress/dist/
-/.env
-# 可以在这里添加测试文件
-.idea
-/dist/
-/test.**
+.idea/
+.DS_Store
+.env
+.env.*
+!.env.example

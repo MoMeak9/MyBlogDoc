@@ -1,62 +1,111 @@
-# [MyBlogDoc](https://yihuiblog.top/)
+# MyBlogDoc
 
-### 这是什么？
+[中文](README.md) · [Personal blog](https://yihuiblog.top/) · [Chronicle design reference](https://chronicle-83v.pages.dev/)
 
-这个是我的[个人博客](https://yihuiblog.top/)，使用了社区比较新的技术实现，并且重新整理了过去在社区和文档库的文章放到这里。有别于旧版本文档库，旧的文档库已经不进行更新了，现在主要维护这个仓库。
+A personal frontend knowledge base and blog, statically generated with Astro from the original Markdown articles. The interface follows Chronicle's editorial layout, with article lists, category filters, search, and reading pages. Chinese and English interface translations share the same article content; switching languages does not translate the articles.
 
-因为最近大部分时间都在准备秋招，所以工作相关的多一点，你可以访问[这里](https://yihuiblog.top/campusRec/needToKnown.html) 快速浏览我准备的知识大纲。
+## Local development
 
-如果对你有帮助，期待您的:star:！
+Use Node.js 22.18 or newer. CI runs Node.js 22.22.3; `package.json` pins pnpm 10.34.6.
 
-### 为什么要写？| 为什么要开源？
+```sh
+corepack enable
+pnpm install
+pnpm dev
+```
 
-我觉得个人的记忆能力还是有限的，而前端的知识点又杂而广，并且社区有很多优秀的实践和观点都可以吸纳总结，所以我通过将这个站点作为我的第二大脑，搜罗总结各种知识点和最佳实践。
+If Corepack is unavailable, install pnpm with `npm install --global pnpm@10.34.6`.
 
-同时，将笔记（文章）开源，则是希望能帮助比如你这样素不相识的“路人”，同时能够接收到你们的指正和建议。
+| Command | Purpose |
+| --- | --- |
+| `pnpm dev` | Start the development server |
+| `pnpm check` | Check Astro and TypeScript |
+| `pnpm test` | Check Markdown metadata, article links, and deployment paths |
+| `pnpm build` | Generate the static website in `dist/` |
+| `pnpm preview` | Preview the generated website |
+| `pnpm commit` | Commit staged changes with the existing git-cz configuration |
 
+## Writing articles
 
-### 写了点啥？
+Continue editing `.md` files in their original locations under `src/`. New articles also belong under `src/`; Chinese filenames and nested directories are supported. Hidden folders such as `.vuepress` and `.obsidian` are excluded from article discovery.
 
-- 个人心得，总结和思考
-- 前端知识大仓库
+YAML frontmatter is optional. Existing `date`, `category`, `tag`, and `star` fields are supported, as are `categories` and `tags`. Titles come from `title`, the first H1, or the filename. Dates use `date` first, followed by the file's latest Git commit date; new uncommitted files use their filesystem date. Set `star: true` to feature an article.
 
-- 我的大厂面经
-- 一堆八股文（bushi）
-- codeTop刷题记录
-- [优秀社区文章集合](https://yihuiblog.top/skills/article.html)
+```md
+---
+title: My new article
+date: 2026-10-06
+category:
+  - Frontend
+tag:
+  - Astro
+description: A short introduction to the article.
+star: true
+---
 
-### 功能支持
+# My new article
 
-- SEO
+Write your article here.
+```
 
-- 评论
+Standard Markdown, tables, syntax highlighting, native HTML, images, and videos are preserved. Legacy Vue code fences use HTML highlighting. Relative `.md` and `.html` article links resolve to the new article routes; legacy VuePress article `.html` URLs have compatibility entry points. Existing article bodies do not need a bulk rewrite. VuePress-specific Vue components are not executed as Astro components.
 
-- MD 语法增强
+The default Chinese interface is at `/`; the English interface is at `/en/`. Both use the same articles.
 
-- 博客主题
+## Covers, typography and social profiles
 
-- 站点地图
+An explicit `cover` takes priority. Otherwise, only an image-only first body paragraph supplies a fallback. Articles beginning with text or containing no image use text cards; later illustrations are not covers. The interface uses `"PingFang SC", HarmonyOS_Regular, "Helvetica Neue", "Microsoft YaHei", sans-serif`, with system monospace for code and no external font requests.
 
-- 监控埋点
+Edit `src/config/site.ts` to configure the author and GitHub, Bilibili, and email profiles. The same links appear on the homepage, About page, footer, and mobile menu. Interface translations live in `src/i18n.ts`.
 
-  ......
+The About page uses `src/个人简介.md`, migrated from the [GitHub profile README](https://github.com/MoMeak9/MoMeak9/blob/91250d88177a33aa6da667942a7e4f7c448c0580/README.md). Its English content is preserved, with the source and revision recorded in frontmatter. Local SVG assets in `public/content-assets/github-profile/` follow the site's light/dark theme. Update the Markdown, SVG files, and contact details in `src/config/site.ts` together when refreshing the profile.
 
-### 建设和部署
+Pages use native browser scrolling. GSAP observes scroll position to animate reversible entrances, staggered cards, expanding rules, and counters. A Canvas renders the rotating wireframe icosahedron and particles, with a static SVG fallback. Drawing is capped at 30 FPS and pauses offscreen or in hidden tabs. The system's reduced motion preference keeps content and values static.
 
-- VuePress 2 + Vite  + TS （VitePress）
-- [vuepress-theme-hope 主题](https://vuepress-theme-hope.github.io/v2/zh/)
+## Deploying to GitHub Pages
 
-**部署：**
+1. Open **Settings → Pages → Build and deployment → Source** and select **GitHub Actions**.
+2. Push changes to `main` or `master`. The workflow installs locked dependencies, runs checks and tests, builds the website, and deploys it with the official GitHub Pages Actions.
+3. You can also choose **Actions → Build and deploy Astro to GitHub Pages → Run workflow**. Only `main` and `master` deploy; Pull Requests run checks and builds.
 
-- Github Action 自动构建并部署 Github Page （见deploy分支），国内源已挂载CDN，请放心访问。
+The workflow reads the origin and base path from `actions/configure-pages`, supporting project sites, user sites, and configured custom domains. A normal `MyBlogDoc` project repository uses `/MyBlogDoc/`. Pull Request builds derive the path from `GITHUB_REPOSITORY`. Full Git history is checked out so article date fallbacks remain consistent. No PAT or manually maintained `gh-pages` branch is required.
 
-### Git 提交
+To override deployment settings, add repository variables under **Settings → Secrets and variables → Actions → Variables**:
 
-commitizen+git-cz 实现的有趣而规范的commits信息
+| Variable | Example | Meaning |
+| --- | --- | --- |
+| `SITE_URL` | `https://momeak9.github.io` | Website origin without the project subpath |
+| `BASE_PATH` | `/MyBlogDoc/` | Project subpath; use `/` for root-domain deployment |
 
-### ❓ 问题与交流 | Issue
+Local development defaults to `/`. To verify the same project path used in CI:
 
-- 如果您想参与贡献，非常抱歉目前这是我的个人笔记库，可能暂时没法儿接受其他人的笔记合入。
-- 如果您有相关问题，或希望我加速填坑，请直接在文章下方留言或提 issues。我看到会尽快回复。
+```sh
+SITE_URL=https://momeak9.github.io BASE_PATH=/MyBlogDoc/ pnpm build
+BASE_PATH=/MyBlogDoc/ pnpm preview
+```
 
-**欢迎提 issues 或者 联系 [shi_yihui@qq.com](mailto:shi_yihui@qq.com)**
+`.idea/`, `node_modules/`, `.astro/`, `dist/`, `.DS_Store`, and local environment files are ignored. Previously tracked `.idea` files have been removed from Git tracking while remaining available locally.
+
+## Content migration and discovery
+
+`scripts/migrate-blog.mjs` consumes a reviewed manifest. It defaults to dry-run; `--apply` writes the approved articles while keeping the source directory read-only. The review report is in `reports/content-migration.json`, and date provenance is in `src/data/migration-metadata.json`. The requested Douyin and legal directories, private correspondence, and credential-bearing work notes are excluded. Confirmed updates and document aliases are preserved; unresolved references remain readable plain text.
+
+Archives statically render 12 articles per page, with search indexes loaded on demand. Phone layouts include horizontal category filters, a collapsible contents panel, 44px controls, and safe-area spacing. Mermaid diagrams load near the reader, keeping their original source available as a fallback.
+
+## Local full-text and offline search
+
+[Pagefind](https://pagefind.app/) builds a static, segmented Chinese index for public articles after the Astro build. Queries, relevance ranking, and highlighted excerpts run locally. Both interface languages share the original corpus and preserve their own article links. Keyword searches load only the required index chunks and visible excerpts; category-only filtering uses metadata. No search server, API key, or external search service is required.
+
+Offline search prepares its full index and local assets automatically after the page loads and becomes idle. There is no download button. Background requests run at low priority and defer to search input, hidden tabs, Data Saver and slow connections. Completed data supports new offline queries, filtering, pagination and previously visited articles. Failed background updates preserve the prior complete cache and stay within the blog path. See the [implementation and validation notes](docs/offline-search.md).
+
+## SEO and GEO
+
+The site provides Blog, Person, BlogPosting, and visible breadcrumb JSON-LD, OG/Twitter sharing images, trustworthy publication/modification dates, explicit attribution, and sitemap lastmod. Unknown publication dates are never replaced with build timestamps. Article language follows the original content even when the interface is English.
+
+`content-index.json` exposes public metadata, while `llms.txt` is an optional canonical navigation index. It is a community proposal rather than a Google ranking signal or an AI citation guarantee. [Google's AI optimization guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) recommends accessible text, structured data, and trustworthy content.
+
+A project Pages file at `/MyBlogDoc/robots.txt` does not control the entire host: crawlers look for `/robots.txt` at the domain root. Root-domain hosting can use the existing output directly. Search and training crawler permissions have not been changed. After publication, Search Console and Bing Webmaster Tools can verify indexing, crawling, and citations.
+
+## Contact
+
+This repository primarily contains personal notes. Report article or website problems in an [Issue](https://github.com/MoMeak9/MyBlogDoc/issues), or contact [minntaki@foxmail.com](mailto:minntaki@foxmail.com).

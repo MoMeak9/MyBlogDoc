@@ -1,0 +1,372 @@
+---
+import "../styles/global.css";
+import Icon from "../components/Icon.astro";
+import SocialLinks from "../components/SocialLinks.astro";
+import { site } from "../config/site";
+import { ui, type Locale } from "../i18n";
+import { localePath, normalizeBase } from "../lib/paths.mjs";
+import {
+  articleImageUrl,
+  buildPageGraph,
+  serializeStructuredData,
+  type SEOArticle,
+} from "../lib/seo";
+interface Props {
+  locale?: Locale;
+  title?: string;
+  description?: string;
+  path?: string;
+  article?: boolean;
+  post?: SEOArticle;
+}
+const {
+  locale = "zh",
+  title = "Yihui’s Blog",
+  description,
+  path = "",
+  article = false,
+  post,
+} = Astro.props;
+const t = ui(locale);
+const base = normalizeBase(import.meta.env.BASE_URL);
+const href = (path = "") => localePath(path, locale, base);
+const localizedUrl = (lang: Locale) =>
+  path === "404" && lang === "zh"
+    ? `${base}404.html`
+    : localePath(path, lang, base);
+const canonical = new URL(localizedUrl(locale), Astro.site);
+const alternate = localizedUrl(locale === "zh" ? "en" : "zh");
+const pageDescription =
+  description ||
+  (path === "about"
+    ? t.aboutDescription
+    : path === "contact"
+      ? t.contactDescription
+      : /^blog(?:\/|$)/.test(path)
+        ? t.journalDescription
+        : path === "404"
+          ? t.notFoundDescription
+          : t.heroDescription);
+const coverImage = articleImageUrl(post?.cover, Astro.site!.href, base);
+const socialImage =
+  coverImage || new URL(`${base}social-card.jpg`, Astro.site).href;
+const noindex = path === "404" || (post && !post.indexable);
+const structuredData = buildPageGraph({
+  origin: Astro.site!.href,
+  base,
+  path,
+  locale,
+  title,
+  description: pageDescription,
+  identity: site,
+  article: post,
+});
+const nav = [
+  { key: "home", path: "" },
+  { key: "blog", path: "blog" },
+  { key: "about", path: "about" },
+  { key: "contact", path: "contact" },
+] as const;
+---
+
+<!doctype html>
+<html lang={locale === "zh" ? "zh-CN" : "en"}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="description" content={pageDescription} />
+    <meta name="author" content={post?.author.name || site.author.name} />
+    <meta name="color-scheme" content="light dark" />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <title>{title === "Yihui’s Blog" ? title : `${title} · Yihui’s Blog`}</title>
+    <link rel="canonical" href={canonical} />
+    <link
+      rel="alternate"
+      hreflang="zh-CN"
+      href={new URL(localizedUrl("zh"), Astro.site)}
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href={new URL(localizedUrl("en"), Astro.site)}
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={new URL(localizedUrl("zh"), Astro.site)}
+    />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="sitemap" href={`${base}sitemap-index.xml`} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Yihui’s Blog"
+      href={`${base}rss.xml`}
+    />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:type" content={article ? "article" : "website"} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Yihui’s Blog" />
+    <meta property="og:image" content={socialImage} />
+    <meta
+      property="og:image:alt"
+      content={
+        post?.title ||
+        (locale === "en"
+          ? "Yihui’s Blog · Frontend notes and engineering practice"
+          : "Yihui’s Blog · 前端技术笔记与工程实践")
+      }
+    />
+    {!coverImage && (
+      <>
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+      </>
+    )}
+    <meta property="og:locale" content={locale === "zh" ? "zh_CN" : "en_US"} />
+    <meta
+      property="og:locale:alternate"
+      content={locale === "zh" ? "en_US" : "zh_CN"}
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content={post?.title || "Yihui’s Blog"} />
+    {post?.publishedDate && (
+      <meta
+        property="article:published_time"
+        content={post.publishedDate.toISOString()}
+      />
+    )}
+    {post?.modifiedDate && (
+      <meta
+        property="article:modified_time"
+        content={post.modifiedDate.toISOString()}
+      />
+    )}
+    {post && (post.author.url || post.author.name === site.author.name) && (
+      <meta
+        property="article:author"
+        content={
+          post.author.url ||
+          new URL(localePath("about", "zh", base), Astro.site).href
+        }
+      />
+    )}
+    {path !== "404" && (
+      <script
+        type="application/ld+json"
+        is:inline
+        set:html={serializeStructuredData(structuredData)}
+      />
+    )}
+    <script is:inline>
+      try {
+        document.documentElement.classList.toggle(
+          "dark",
+          localStorage.getItem("yihui-theme") === "dark",
+        );
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">
+      {t.skip}
+    </a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href={href()} aria-label={`Yihui’s Blog · ${t.home}`}>
+          <span class="brand-mark">Y</span>
+          <span>Yihui’s Blog</span>
+        </a>
+        <nav class="desktop-nav" aria-label={t.navigation}>
+          {nav.map((item) => (
+            <a
+              href={href(item.path)}
+              aria-current={
+                path === item.path ||
+                (item.path === "blog" &&
+                  (path.startsWith("posts/") || path.startsWith("blog/")))
+                  ? "page"
+                  : undefined
+              }
+            >
+              {t[item.key]}
+            </a>
+          ))}
+        </nav>
+        <div class="header-actions">
+          <a
+            class="language-toggle"
+            href={alternate}
+            hreflang={locale === "zh" ? "en" : "zh-CN"}
+            aria-label={t.language}
+          >
+            {locale === "zh" ? "EN" : "中文"}
+          </a>
+          <button
+            class="theme-toggle icon-button"
+            type="button"
+            aria-label={t.theme}
+            aria-pressed="false"
+          >
+            <span class="light-icon">
+              <Icon name="moon" size={17} />
+            </span>
+            <span class="dark-icon">
+              <Icon name="sun" size={17} />
+            </span>
+          </button>
+          <button
+            class="menu-toggle icon-button"
+            type="button"
+            aria-label={t.menu}
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+          >
+            <Icon name="menu" />
+          </button>
+        </div>
+      </div>
+    </header>
+    <dialog id="mobile-menu" class="mobile-menu" aria-label={t.navigation}>
+      <div class="mobile-menu-head">
+        <span class="brand">Yihui’s Blog</span>
+        <button
+          type="button"
+          class="menu-close icon-button"
+          aria-label={t.closeMenu}
+        >
+          <Icon name="close" />
+        </button>
+      </div>
+      <nav>
+        {nav.map((item) => (
+          <a href={href(item.path)}>{t[item.key]}</a>
+        ))}
+      </nav>
+      <div class="mobile-menu-bottom">
+        <span class="section-label">{t.contact}</span>
+        <SocialLinks locale={locale} variant="text" />
+      </div>
+    </dialog>
+    <main id="main-content">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <a class="brand" href={href()}>
+              <span class="brand-mark">Y</span>
+              <span>Yihui’s Blog</span>
+            </a>
+            <p class="footer-description">{t.footerDescription}</p>
+            <SocialLinks locale={locale} class="footer-socials" />
+          </div>
+          <div>
+            <h2 class="section-label">{t.navigation}</h2>
+            <nav>
+              {nav.map((item) => (
+                <a href={href(item.path)}>{t[item.key]}</a>
+              ))}
+            </nav>
+          </div>
+          <div>
+            <h2 class="section-label">{t.elsewhere}</h2>
+            <nav>
+              <a
+                href={site.repositoryUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t.source}
+              </a>
+              <a href={site.socials.email.href}>{t.email}</a>
+              <a href={`${base}rss.xml`}>RSS</a>
+              <a
+                href="https://creativecommons.org/licenses/by/4.0/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t.license}
+              </a>
+            </nav>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© {new Date().getUTCFullYear()} Yihui.</p>
+          <p>
+            {t.builtWith} <span aria-hidden="true">·</span>{" "}
+            <a
+              href="https://chronicle-83v.pages.dev/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.designCredit}
+            </a>
+          </p>
+        </div>
+      </div>
+    </footer>
+    <script>
+      const themeButtons =
+        document.querySelectorAll<HTMLButtonElement>(".theme-toggle");
+      const syncTheme = () =>
+        themeButtons.forEach((button) =>
+          button.setAttribute(
+            "aria-pressed",
+            String(document.documentElement.classList.contains("dark")),
+          ),
+        );
+      syncTheme();
+      themeButtons.forEach((button) =>
+        button.addEventListener("click", () => {
+          const dark = document.documentElement.classList.toggle("dark");
+          try {
+            localStorage.setItem("yihui-theme", dark ? "dark" : "light");
+          } catch {}
+          syncTheme();
+        }),
+      );
+      const menu = document.querySelector<HTMLDialogElement>("#mobile-menu");
+      const toggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
+      toggle?.addEventListener("click", () => {
+        menu?.showModal();
+        toggle.setAttribute("aria-expanded", "true");
+        document.body.classList.add("menu-open");
+      });
+      const closeMenu = () => {
+        menu?.close();
+        toggle?.setAttribute("aria-expanded", "false");
+        document.body.classList.remove("menu-open");
+      };
+      document
+        .querySelector(".menu-close")
+        ?.addEventListener("click", closeMenu);
+      menu?.addEventListener("close", closeMenu);
+      menu?.addEventListener("cancel", () => {
+        toggle?.setAttribute("aria-expanded", "false");
+        document.body.classList.remove("menu-open");
+      });
+      menu
+        ?.querySelectorAll("a")
+        .forEach((a) => a.addEventListener("click", closeMenu));
+      document
+        .querySelectorAll<HTMLAnchorElement>(".language-toggle")
+        .forEach((link) => {
+          link.href += location.search + location.hash;
+        });
+    </script>
+    <script>
+      import { initMotion } from "../scripts/motion";
+      initMotion();
+    </script>
+  </body>
+</html>

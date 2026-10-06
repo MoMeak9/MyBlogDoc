@@ -1,0 +1,114 @@
+name: Build and deploy Astro to GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.event_name == 'pull_request' && github.event.pull_request.number || 'deployment' }}
+  cancel-in-progress: false
+
+env:
+  ASTRO_TELEMETRY_DISABLED: '1'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - name: Checkout repository and article history
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22.22.3'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Read GitHub Pages configuration
+        id: pages
+        if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        uses: actions/configure-pages@v6
+
+      - name: Resolve site origin and base path
+        env:
+          CONFIGURED_SITE_URL: ${{ vars.SITE_URL }}
+          CONFIGURED_BASE_PATH: ${{ vars.BASE_PATH }}
+          PAGES_ORIGIN: ${{ steps.pages.outputs.origin }}
+          PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          PAGES_CONFIGURED: ${{ steps.pages.outcome == 'success' }}
+        run: |
+          node --input-type=module <<'NODE'
+          import { appendFileSync } from 'node:fs';
+          const [owner, repository] = process.env.GITHUB_REPOSITORY.split('/');
+          const site = new URL(
+            process.env.CONFIGURED_SITE_URL ||
+            process.env.PAGES_ORIGIN ||
+            `https://${owner.toLowerCase()}.github.io`
+          ).origin;
+          const repositoryBase = repository.toLowerCase() === `${owner.toLowerCase()}.github.io`
+            ? '/'
+            : `/${repository}/`;
+          const configuredBase = process.env.CONFIGURED_BASE_PATH || (
+            process.env.PAGES_CONFIGURED === 'true'
+              ? process.env.PAGES_BASE_PATH || '/'
+              : repositoryBase
+          );
+          if (!configuredBase.startsWith('/') || /[\r\n?#]/.test(configuredBase)) {
+            throw new Error('BASE_PATH must be an absolute path, such as /MyBlogDoc/ or /.');
+          }
+          const path = configuredBase.replace(/^\/+|\/+$/g, '');
+          const base = path ? `/${path}/` : '/';
+          appendFileSync(process.env.GITHUB_ENV, `SITE_URL=${site}\nBASE_PATH=${base}\n`);
+          console.log(`Building ${site}${base}`);
+          NODE
+
+      - name: Check Astro and TypeScript
+        run: pnpm check
+
+      - name: Test Markdown compatibility and routing
+        run: pnpm test
+
+      - name: Build static site
+        run: pnpm build
+
+      - name: Verify published pages, assets, SEO and RSS
+        run: pnpm test:build
+
+      - name: Upload GitHub Pages artifact
+        if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

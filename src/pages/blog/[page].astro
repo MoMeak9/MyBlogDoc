@@ -1,0 +1,17 @@
+---
+import JournalPage from "../../components/JournalPage.astro";
+import { getIndexablePosts } from "../../lib/content";
+
+export async function getStaticPaths() {
+  const count = (await getIndexablePosts()).length;
+  const pages = Math.max(1, Math.ceil(count / 12));
+  return Array.from({ length: pages - 1 }, (_, index) => ({
+    params: { page: String(index + 2) },
+    props: { pageNumber: index + 2 },
+  }));
+}
+
+const { pageNumber } = Astro.props;
+---
+
+<JournalPage locale="zh" pageNumber={pageNumber} />

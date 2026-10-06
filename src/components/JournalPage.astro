@@ -1,0 +1,164 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "./PostCard.astro";
+import Icon from "./Icon.astro";
+import { ui, type Locale } from "../i18n";
+import { getIndexablePosts } from "../lib/content";
+import { localePath, normalizeBase } from "../lib/paths.mjs";
+interface Props {
+  locale?: Locale;
+  pageNumber?: number;
+}
+const { locale = "zh", pageNumber = 1 } = Astro.props;
+const t = ui(locale);
+const posts = await getIndexablePosts();
+const pageSize = 12;
+const pageCount = Math.max(1, Math.ceil(posts.length / pageSize));
+const pagePosts = posts.slice(
+  (pageNumber - 1) * pageSize,
+  pageNumber * pageSize,
+);
+const base = normalizeBase(import.meta.env.BASE_URL);
+const archivePath = (page: number) =>
+  localePath(page === 1 ? "blog" : `blog/${page}`, locale, base);
+const categories = [...new Set(posts.flatMap((post) => post.categories))].sort(
+  (a, b) => a.localeCompare(b, "zh-Hans"),
+);
+---
+
+<BaseLayout
+  locale={locale}
+  title={
+    pageNumber === 1 ? t.journal : `${t.journal} · ${t.page} ${pageNumber}`
+  }
+  path={pageNumber === 1 ? "blog" : `blog/${pageNumber}`}
+>
+  <section class="page-heading">
+    <div class="container">
+      <p class="section-label">{t.archiveLabel}</p>
+      <h1>{t.journal}</h1>
+      <p>{t.journalDescription}</p>
+    </div>
+  </section>
+  <section
+    class="journal-body"
+    data-journal
+    data-locale={locale}
+    data-base={base}
+    data-static-page={pageNumber}
+    data-static-pages={pageCount}
+    data-total={posts.length}
+  >
+    <div class="container">
+      <div class="filter-bar">
+        <label class="search-box">
+          <Icon name="search" size={18} />
+          <span class="sr-only">{t.search}</span>
+          <input
+            type="search"
+            id="article-search"
+            placeholder={t.searchPlaceholder}
+            aria-label={t.search}
+          />
+        </label>
+        <p class="results-count" aria-live="polite">
+          <span id="result-count">{posts.length}</span> {t.results}
+        </p>
+      </div>
+      <div class="offline-search-bar" hidden>
+        <p id="offline-search-status" role="status">
+          {t.offlineSearchHint}
+        </p>
+      </div>
+      <div class="chips" aria-label={t.collections}>
+        <button
+          type="button"
+          class="chip active"
+          data-category=""
+          aria-pressed="true"
+        >
+          {t.all}
+        </button>
+        {categories.map((category) => (
+          <button
+            type="button"
+            class="chip"
+            data-category={category}
+            aria-pressed="false"
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+      <div class="filter-feedback" hidden>
+        <p id="filter-message" role="status"></p>
+        <button
+          class="text-link filter-retry"
+          type="button"
+          id="retry-filters"
+          hidden
+        >
+          {t.retryFilters}
+        </button>
+      </div>
+      <div class="journal-grid">
+        {pagePosts.map((post, index) => (
+          <PostCard
+            post={post}
+            locale={locale}
+            index={(pageNumber - 1) * pageSize + index}
+          />
+        ))}
+      </div>
+      <div class="empty-results" hidden={posts.length > 0}>
+        <h2>{t.noResults}</h2>
+        <p>{t.trySearch}</p>
+        <button type="button" class="button button-outline" id="reset-filters">
+          {t.reset}
+        </button>
+      </div>
+      <nav class="pagination" aria-label={t.page} hidden={pageCount <= 1}>
+        <a
+          class="button button-outline"
+          id="prev-page"
+          href={archivePath(Math.max(1, pageNumber - 1))}
+          rel={pageNumber > 1 ? "prev" : undefined}
+          aria-disabled={pageNumber === 1 ? "true" : undefined}
+          tabindex={pageNumber === 1 ? -1 : undefined}
+        >
+          {t.previous}
+        </a>
+        <span id="page-status" aria-live="polite">
+          {pageNumber} / {pageCount}
+        </span>
+        <a
+          class="button button-outline"
+          id="next-page"
+          href={archivePath(Math.min(pageCount, pageNumber + 1))}
+          rel={pageNumber < pageCount ? "next" : undefined}
+          aria-disabled={pageNumber === pageCount ? "true" : undefined}
+          tabindex={pageNumber === pageCount ? -1 : undefined}
+        >
+          {t.next}
+        </a>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>
+<script>
+  import { initJournal } from "../scripts/journal";
+  initJournal();
+  document.addEventListener("astro:page-load", initJournal);
+</script>
+
+<style>
+  .offline-search-bar {
+    margin: 12px 0 24px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .journal-grid :global(mark) {
+    color: var(--text);
+    background: color-mix(in srgb, var(--accent) 16%, var(--bg));
+  }
+</style>

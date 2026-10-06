@@ -1,0 +1,85 @@
+---
+import Icon from "./Icon.astro";
+import { ui, dateLabel, type Locale } from "../i18n";
+import { postPath, normalizeBase } from "../lib/paths.mjs";
+import type { Post } from "../lib/content";
+import { plainText } from "../lib/markdown.mjs";
+import { coverUrl } from "../lib/cover.mjs";
+interface Props {
+  post: Post;
+  locale?: Locale;
+  large?: boolean;
+  index?: number;
+  searchable?: boolean;
+  stagger?: boolean;
+}
+const {
+  post,
+  locale = "zh",
+  large = false,
+  searchable = false,
+  stagger = false,
+} = Astro.props;
+const t = ui(locale);
+const base = normalizeBase(import.meta.env.BASE_URL);
+const cover = coverUrl(post.cover, base);
+---
+
+<article
+  class:list={["post-card", { large, "without-cover": !cover }]}
+  data-stagger-item={stagger || undefined}
+  data-post={searchable || undefined}
+  data-title={searchable ? post.title.toLocaleLowerCase() : undefined}
+  data-categories={searchable ? JSON.stringify(post.categories) : undefined}
+  data-search={
+    searchable
+      ? `${post.title} ${post.tags.join(" ")} ${plainText(post.body)}`.toLocaleLowerCase()
+      : undefined
+  }
+>
+  <a href={postPath(post.id, locale, base)}>
+    {cover && (
+      <figure>
+        <img
+          class="post-art"
+          src={cover}
+          alt=""
+          width={large ? 800 : 600}
+          height="450"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+    )}
+    <div class="post-meta">
+      <span class="category">{post.categories[0]}</span>
+      <span aria-hidden="true">·</span>
+      {post.publishedDate || post.modifiedDate ? (
+        <time
+          datetime={(post.publishedDate || post.modifiedDate)!.toISOString()}
+        >
+          {post.publishedDate
+            ? locale === "en"
+              ? "Published "
+              : "发布 "
+            : locale === "en"
+              ? "Updated "
+              : "更新 "}
+          {dateLabel((post.publishedDate || post.modifiedDate)!, locale)}
+        </time>
+      ) : (
+        <span>{t.missingDate}</span>
+      )}
+      <span aria-hidden="true">·</span>
+      <span>
+        {post.readMinutes} {t.minuteRead}
+      </span>
+    </div>
+    <h3>{post.title}</h3>
+    <p class="post-description">{post.description || t.empty}</p>
+    <span class="text-link">
+      {t.readArticle}
+      <Icon size={14} />
+    </span>
+  </a>
+</article>

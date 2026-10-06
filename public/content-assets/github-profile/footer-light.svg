@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="110" viewBox="0 0 960 110" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Aurora footer</title>
+  <desc id="desc">Flowing light trails. Decorative motion pauses when reduced motion is preferred.</desc>
+  <defs>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#087e96"/><stop offset=".45" stop-color="#245bdd"/><stop offset="1" stop-color="#7954cb"/></linearGradient>
+    <linearGradient id="fade"><stop stop-color="#087e96" stop-opacity="0"/><stop offset=".5" stop-color="#245bdd"/><stop offset="1" stop-color="#7954cb" stop-opacity="0"/></linearGradient>
+    <radialGradient id="sphere" cx=".3" cy=".2" r=".9"><stop stop-color="#245bdd" stop-opacity=".32"/><stop offset="1" stop-color="#7954cb" stop-opacity=".03"/></radialGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="28"/></filter>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3"/></filter>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" fill="none" stroke="#b2c2dc" stroke-opacity=".17"/></pattern>
+    <clipPath id="clip"><rect width="960" height="110" rx="16"/></clipPath>
+  </defs>
+  <style>
+    .orbit { animation: orbit 36s linear infinite; transform-origin: 0px 0px; }
+    .reverse { animation: orbit 48s linear infinite reverse; transform-origin: 0px 0px; }
+    .signal { animation: signal 8s linear infinite; }
+    .breathe { animation: breathe 7s ease-in-out infinite alternate; }
+    @keyframes orbit { to { transform: rotate(360deg); } }
+    @keyframes signal { to { stroke-dashoffset: -360; } }
+    @keyframes breathe { from { opacity: .3; } to { opacity: .65; } }
+    @media (prefers-reduced-motion: reduce) { .orbit, .reverse, .signal, .breathe { animation: none !important; } }
+  </style>
+  <g clip-path="url(#clip)">
+    <rect width="960" height="110" fill="#f4f7fd"/>
+    <path d="M-30 93 Q220 -12 490 67 T990 24" stroke="#7954cb" stroke-opacity=".28" stroke-width="38" filter="url(#blur)"/>
+    <path d="M-30 82 Q235 9 490 74 T990 20" fill="none" stroke="url(#edge)" stroke-opacity=".5"/>
+    <path d="M-30 104 Q280 26 540 84 T990 35" fill="none" stroke="url(#edge)" stroke-opacity=".25"/>
+    <path class="signal" d="M-30 82 Q235 9 490 74 T990 20" fill="none" stroke="#087e96" stroke-width="2" stroke-dasharray="9 351"/>
+    <text x="480" y="42" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" fill="#506581" font-size="14">Curiosity fuels the next iteration.</text>
+  </g>
+  <rect x=".5" y=".5" width="959" height="109" rx="16" stroke="#b2c2dc" stroke-opacity=".55"/>
+</svg>

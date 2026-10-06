@@ -1,0 +1,80 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "./Icon.astro";
+import { site } from "../config/site";
+import { ui, type Locale } from "../i18n";
+interface Props {
+  locale?: Locale;
+}
+const { locale = "zh" } = Astro.props;
+const t = ui(locale);
+---
+
+<BaseLayout locale={locale} title={t.contact} path="contact">
+  <section class="page-heading">
+    <div class="container">
+      <p class="section-label">{t.contactLabel}</p>
+      <h1>{t.contactTitle}</h1>
+      <p>{t.contactDescription}</p>
+    </div>
+  </section>
+  <div class="container contact-grid">
+    <div class="contact-card">
+      <span class="section-label">01 / {t.email}</span>
+      <h2>{t.emailTitle}</h2>
+      <p>{t.emailDesc}</p>
+      <a
+        class="text-link"
+        href={site.socials.email.href}
+        aria-label={t.socialEmailLabel}
+      >
+        {site.socials.email.account}
+        <Icon name="email" size={16} />
+      </a>
+    </div>
+    <div class="contact-card">
+      <span class="section-label">02 / {t.socialGithub}</span>
+      <h2>{t.openSource}</h2>
+      <p>{t.githubDesc}</p>
+      <a
+        class="text-link"
+        href={site.socials.github.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={t.socialGithubLabel}
+      >
+        {site.socials.github.account}
+        <Icon name="github" size={16} />
+      </a>
+    </div>
+    <div class="contact-card">
+      <span class="section-label">03 / {t.issues}</span>
+      <h2>{t.feedback}</h2>
+      <p>{t.issuesDesc}</p>
+      <a
+        class="text-link"
+        href={`${site.repositoryUrl}/issues`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {t.issues}
+        <Icon size={16} />
+      </a>
+    </div>
+    <div class="contact-card">
+      <span class="section-label">04 / {t.socialBilibili}</span>
+      <h2>{t.socialBilibili}</h2>
+      <p>{t.bilibiliDesc}</p>
+      <a
+        class="text-link"
+        href={site.socials.bilibili.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={t.socialBilibiliLabel}
+      >
+        {t.visitBilibili}
+        <Icon name="bilibili" size={16} />
+      </a>
+    </div>
+  </div>
+</BaseLayout>

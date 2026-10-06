@@ -1,0 +1,238 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "./PostCard.astro";
+import Icon from "./Icon.astro";
+import HeroArtwork from "./HeroArtwork.astro";
+import SocialLinks from "./SocialLinks.astro";
+import { ui, type Locale } from "../i18n";
+import { getPosts } from "../lib/content";
+import { localePath, normalizeBase } from "../lib/paths.mjs";
+interface Props {
+  locale?: Locale;
+}
+const { locale = "zh" } = Astro.props;
+const t = ui(locale);
+const base = normalizeBase(import.meta.env.BASE_URL);
+const href = (path = "") => localePath(path, locale, base);
+const posts = (await getPosts()).filter((post) => !post.empty);
+const subjects = [...new Set(posts.map((post) => post.id.split("/")[0]))];
+const featured = [
+  ...posts.filter((post) => post.featured),
+  ...posts.filter((post) => !post.featured),
+].slice(0, 3);
+const categories = new Map<string, number>();
+for (const post of posts)
+  for (const category of post.categories)
+    categories.set(category, (categories.get(category) || 0) + 1);
+const topCategories = [...categories].sort((a, b) => b[1] - a[1]).slice(0, 6);
+const disciplines = [
+  "JavaScript",
+  "TypeScript",
+  "React",
+  "Vue",
+  "Node",
+  "Webpack",
+];
+const principles = [
+  { title: t.principle1, description: t.principle1Desc },
+  { title: t.principle2, description: t.principle2Desc },
+  { title: t.principle3, description: t.principle3Desc },
+  { title: t.principle4, description: t.principle4Desc },
+];
+---
+
+<BaseLayout locale={locale}>
+  <section class="hero">
+    <HeroArtwork />
+    <div class="container hero-content">
+      <div class="hero-grid">
+        <div class="hero-copy" data-animate="fade-up">
+          <p class="section-label">{t.tagline}</p>
+          <h1>
+            {t.heroTitle.split("\n").map((line) => (
+              <span>{line}</span>
+            ))}
+          </h1>
+          <p class="hero-description">{t.heroDescription}</p>
+          <div class="button-row">
+            <a class="button" href={href("blog")}>
+              {t.readJournal}
+            </a>
+            <a class="button button-outline" href={href("about")}>
+              {t.aboutAuthor}
+            </a>
+          </div>
+          <SocialLinks locale={locale} class="hero-socials" />
+        </div>
+        <aside class="stats-card" data-animate="fade-up">
+          <p class="section-label">{t.statistics}</p>
+          <div class="stats-grid">
+            <div>
+              <p
+                class="stat-number"
+                data-counter={posts.length}
+                aria-label={`${posts.length} ${t.published}`}
+              >
+                {posts.length}
+              </p>
+              <p class="stat-caption">{t.published}</p>
+            </div>
+            <div>
+              <p
+                class="stat-number"
+                data-counter={subjects.length}
+                aria-label={`${subjects.length} ${t.topics}`}
+              >
+                {subjects.length}
+              </p>
+              <p class="stat-caption">{t.topics}</p>
+            </div>
+          </div>
+          <div class="stats-rule" data-animate="line" aria-hidden="true"></div>
+          <p class="stats-note">{t.statsDescription}</p>
+        </aside>
+      </div>
+    </div>
+    <a class="scroll-hint" data-anime-float href="#featured">
+      <span>{t.scroll}</span>
+      <svg
+        width="16"
+        height="24"
+        viewBox="0 0 16 24"
+        fill="none"
+        aria-hidden="true"
+      >
+        <rect
+          x="1"
+          y="1"
+          width="14"
+          height="22"
+          rx="7"
+          stroke="currentColor"
+          stroke-width="1.5"
+        />
+        <circle cx="8" cy="8" r="2" fill="currentColor" />
+      </svg>
+    </a>
+  </section>
+  <section class="topics-strip">
+    <div class="container">
+      <p class="section-label" data-animate="fade-up">
+        {t.topicLabel}
+      </p>
+      <div class="topics-list" data-animate="fade-up">
+        {disciplines.map((subject) => (
+          <a href={`${href("blog")}?q=${encodeURIComponent(subject)}`}>
+            {subject === "Node" ? "Node.js" : subject}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="section" id="featured">
+    <div class="container">
+      <div class="section-heading" data-animate="fade-up">
+        <div>
+          <p class="section-label">{t.featured}</p>
+          <h2>{t.latest}</h2>
+        </div>
+        <a href={href("blog")} class="text-link accent">
+          {t.allPosts}
+          <Icon size={16} />
+        </a>
+      </div>
+      <div class="featured-grid" data-animate="stagger">
+        {featured.map((post, index) => (
+          <PostCard
+            post={post}
+            locale={locale}
+            large={index === 0}
+            index={index}
+            stagger
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="section-heading" data-animate="fade-up">
+        <div>
+          <p class="section-label">{t.notes}</p>
+          <h2>{t.principlesTitle}</h2>
+        </div>
+        <p>{t.principlesDescription}</p>
+      </div>
+      <div class="principles-grid" data-animate="stagger">
+        {principles.map((principle, index) => (
+          <div class="principle" data-stagger-item>
+            <span class="principle-number">0{index + 1}</span>
+            <h3>{principle.title}</h3>
+            <p>{principle.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="section collections-section">
+    <div class="container">
+      <div class="section-heading" data-animate="fade-up">
+        <div>
+          <p class="section-label">{t.collections}</p>
+          <h2>{t.collectionsTitle}</h2>
+        </div>
+        <p>{t.collectionsDescription}</p>
+      </div>
+      <div class="collection-grid" data-animate="stagger">
+        {topCategories.map(([category, count], index) => (
+          <a
+            class="collection-card"
+            href={`${href("blog")}?category=${encodeURIComponent(category)}`}
+            data-stagger-item
+          >
+            <div>
+              <span class="collection-count">
+                0{index + 1} / {count} {t.results}
+              </span>
+              <h3>{category}</h3>
+            </div>
+            <Icon />
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="section rss-section">
+    <div class="container" data-animate="fade-up">
+      <p class="section-label">{t.rssLabel}</p>
+      <h2>{t.rssTitle}</h2>
+      <p>{t.rssDescription}</p>
+      <div class="button-row">
+        <a class="button" href={`${base}rss.xml`}>
+          <Icon name="rss" size={16} />
+          {t.subscribe}
+        </a>
+        <a
+          class="button button-outline"
+          href="https://github.com/MoMeak9"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t.github}
+        </a>
+      </div>
+    </div>
+  </section>
+  <section class="cta-section">
+    <div class="container cta-inner" data-animate="fade-up">
+      <div>
+        <h2>{t.ctaTitle}</h2>
+        <p>{t.ctaDescription}</p>
+      </div>
+      <a class="button" href={href("blog")}>
+        {t.readJournal}
+        <Icon size={16} />
+      </a>
+    </div>
+  </section>
+</BaseLayout>

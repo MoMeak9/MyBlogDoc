@@ -1,6 +1,6 @@
 
 
-使用Node.js和Sharp库将图片转换为WebP格式
+# 使用Node.js和Sharp库将图片转换为WebP格式
 
 WebP是一种现代图像格式，它能够提供更好的图像压缩比和更快的加载速度。在本文中，我们将介绍如何使用Node.js和Sharp库将图片转换为WebP格式，以及如何使用TypeScript编写脚本程序。
 

@@ -1,7 +1,9 @@
 ---
 date: 2022-04-12
 category:
-- Vue
+  - Vue
+tags:
+  - Pinia
 ---
 # Pinia 学习笔记
 

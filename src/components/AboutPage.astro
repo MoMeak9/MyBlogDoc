@@ -1,0 +1,99 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SocialLinks from "./SocialLinks.astro";
+import { ui, type Locale } from "../i18n";
+import { getAbout, renderDocument } from "../lib/content";
+import { contentLanguage } from "../lib/seo";
+import { plainText } from "../lib/markdown.mjs";
+interface Props {
+  locale?: Locale;
+}
+const { locale = "zh" } = Astro.props;
+const t = ui(locale);
+const about = await getAbout();
+const content = about ? await renderDocument(about, locale) : { html: "" };
+const language = about
+  ? contentLanguage(about.data, plainText(about.body))
+  : "en";
+const profileSource = about?.data.source;
+---
+
+<BaseLayout locale={locale} title={t.about} path="about">
+  <section class="page-heading">
+    <div class="container narrow">
+      <p class="section-label">{t.aboutLabel}</p>
+      <h1>{t.aboutTitle}</h1>
+      <p>{t.aboutDescription}</p>
+      <SocialLinks locale={locale} variant="text" class="about-socials" />
+    </div>
+  </section>
+  <div class="container narrow about-body">
+    <article
+      class="prose author-profile"
+      lang={language}
+      set:html={content.html}
+    />
+    {typeof profileSource === "string" && (
+      <p class="profile-source">
+        <a href={profileSource} target="_blank" rel="noopener noreferrer">
+          {t.aboutSource}
+        </a>
+      </p>
+    )}
+    <p class="content-notice">{t.contentNotice}</p>
+  </div>
+</BaseLayout>
+
+<script>
+  const sources = document.querySelectorAll<HTMLSourceElement>(
+    ".author-profile source[data-profile-theme]",
+  );
+  const syncProfileTheme = () => {
+    const theme = document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light";
+    sources.forEach((source) => {
+      source.media = source.dataset.profileTheme === theme ? "all" : "not all";
+    });
+  };
+  if (sources.length) {
+    syncProfileTheme();
+    const observer = new MutationObserver(syncProfileTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    window.addEventListener("pageshow", syncProfileTheme);
+    window.addEventListener("pagehide", (event) => {
+      if (!event.persisted) observer.disconnect();
+    });
+  }
+</script>
+
+<style>
+  .author-profile :global(picture) {
+    display: block;
+  }
+  .author-profile :global(picture img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0;
+  }
+  .author-profile :global(.profile-greeting) {
+    margin-top: 32px;
+  }
+  .author-profile :global(p[align="center"] img) {
+    max-width: 100%;
+    height: auto;
+  }
+  .profile-source {
+    margin-top: 32px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .profile-source a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>

@@ -1,3 +1,9 @@
+---
+category:
+  - 前端
+  - Vite
+---
+
 # Vite SSR 指南
 
 ## 示例项目
