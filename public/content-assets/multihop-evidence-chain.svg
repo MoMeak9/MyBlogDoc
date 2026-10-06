@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 370" role="img" aria-labelledby="title desc">
+  <title id="title">多跳问答证据链示意图</title>
+  <desc id="desc">从项目负责人记录找到张敏，再通过员工 ID 对齐人员部门记录，合并两条来源生成带引用的答案。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M1 1 L8 4.5 L1 8" fill="none" stroke="#425b75" stroke-width="1.8"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="370" rx="20" fill="#f7fafc"/>
+  <text x="500" y="39" text-anchor="middle" font-size="20" font-weight="700" fill="#18324b" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif">问题：项目 A 的负责人属于哪个部门？</text>
+
+  <rect x="40" y="91" width="245" height="145" rx="14" fill="#ffffff" stroke="#9eb8d2" stroke-width="2"/>
+  <text x="61" y="126" font-size="17" font-weight="700" fill="#18324b" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif">证据 1 · 项目记录</text>
+  <text x="61" y="162" font-size="16" fill="#314b65" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif">项目 A → 负责人：张敏</text>
+  <text x="61" y="211" font-size="14" fill="#59708a" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif">来源：DOC-01</text>
+
+  <rect x="377" y="111" width="246" height="105" rx="14" fill="#e8f1fa" stroke="#6d98bf" stroke-width="2"/>
+  <text x="500" y="151" text-anchor="middle" font-size="17" font-weight="700" fill="#18324b" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif">实体对齐</text>
+  <text x="500" y="184" text-anchor="middle" font-size="15" fill="#314b65" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif">张敏 → 员工 ID 028</text>
+
+  <rect x="715" y="91" width="245" height="145" rx="14" fill="#ffffff" stroke="#9eb8d2" stroke-width="2"/>
+  <text x="736" y="126" font-size="17" font-weight="700" fill="#18324b" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif">证据 2 · 人员记录</text>
+  <text x="736" y="162" font-size="16" fill="#314b65" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif">ID 028 → 搜索平台组</text>
+  <text x="736" y="211" font-size="14" fill="#59708a" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif">来源：DOC-02</text>
+
+  <path d="M287 163 H367" fill="none" stroke="#425b75" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M625 163 H705" fill="none" stroke="#425b75" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <path d="M162 238 V286 H385" fill="none" stroke="#849bb3" stroke-width="2"/>
+  <path d="M838 238 V286 H615" fill="none" stroke="#849bb3" stroke-width="2"/>
+  <rect x="288" y="285" width="424" height="58" rx="13" fill="#183f64"/>
+  <text x="500" y="320" text-anchor="middle" font-size="16" font-weight="600" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif">答案：搜索平台组 · 引用 DOC-01 + DOC-02</text>
+</svg>

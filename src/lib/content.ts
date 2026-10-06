@@ -1,19 +1,27 @@
 import { execFileSync } from "node:child_process";
-import { statSync } from "node:fs";
+import { readFileSync, statSync } from "node:fs";
 import { resolve } from "node:path";
 import { getCollection, getEntry, type CollectionEntry } from "astro:content";
-import { extractPostMetadata } from "./markdown.mjs";
+import { extractPostMetadata, plainText } from "./markdown.mjs";
 import { localizeDocumentHtml } from "./paths.mjs";
+import {
+  contentLanguage,
+  extractAttribution,
+  isPublicArticle,
+  resolveArticleDates,
+  type SEOArticle,
+} from "./seo";
+import { site } from "../config/site";
 
 export type DocumentEntry = CollectionEntry<"docs">;
 export type DocumentHeading = { depth: number; slug: string; text: string };
-export type Post = {
+export type Post = SEOArticle & {
   entry: DocumentEntry;
   id: string;
   title: string;
   description: string;
   date: Date;
-  dateSource: "frontmatter" | "git" | "filesystem" | "unknown";
+  dateSource: "frontmatter" | "migration" | "git" | "filesystem" | "unknown";
   categories: string[];
   tags: string[];
   readMinutes: number;
@@ -25,6 +33,8 @@ export type Post = {
 };
 
 let gitDates: Map<string, Date> | undefined;
+let migrationMetadata:
+  Record<string, { sourceModifiedAt?: string }> | undefined;
 const postCache = new Map<
   string,
   { digest: string | number | undefined; post: Post }
@@ -65,6 +75,22 @@ function getGitDates() {
   return gitDates;
 }
 
+function migratedDate(id: string) {
+  if (!migrationMetadata) {
+    try {
+      migrationMetadata = JSON.parse(
+        readFileSync(
+          resolve(process.cwd(), "src/data/migration-metadata.json"),
+          "utf8",
+        ),
+      );
+    } catch {
+      migrationMetadata = {};
+    }
+  }
+  return migrationMetadata?.[id]?.sourceModifiedAt;
+}
+
 function fallbackDate(sourcePath: string): {
   date: Date;
   source: Post["dateSource"];
@@ -94,9 +120,28 @@ export function toPost(entry: DocumentEntry): Post {
     fallbackDate: fallback.date,
     fallbackDateSource: fallback.source,
   });
+  const dates = resolveArticleDates(
+    entry.data,
+    migratedDate(entry.id),
+    getGitDates().get(sourcePath),
+  );
+  const attribution = extractAttribution(entry.data, body, site.author.name);
+  const knownDate = dates.publishedDate ?? dates.modifiedDate;
   const post: Post = {
     ...metadata,
-    dateSource: metadata.dateSource as Post["dateSource"],
+    description: metadata.description || metadata.title,
+    ...dates,
+    ...attribution,
+    date: knownDate ?? metadata.date,
+    dateSource: dates.publishedDate
+      ? "frontmatter"
+      : (dates.modifiedDateSource ??
+        (metadata.dateSource as Post["dateSource"])),
+    language: contentLanguage(entry.data, plainText(body)),
+    indexable:
+      !metadata.empty &&
+      isPublicArticle(entry.data) &&
+      entry.data.unlisted !== true,
     entry,
     id: entry.id,
     body,
@@ -109,7 +154,8 @@ export function toPost(entry: DocumentEntry): Post {
 export async function getPosts(): Promise<Post[]> {
   const entries = await getCollection(
     "docs",
-    ({ id }) => id !== "README" && id !== "个人简介",
+    ({ id, data }) =>
+      id !== "README" && id !== "个人简介" && isPublicArticle(data),
   );
   return entries
     .map(toPost)
@@ -122,6 +168,10 @@ export async function getPosts(): Promise<Post[]> {
 
 export async function getAbout() {
   return getEntry("docs", "个人简介");
+}
+
+export async function getIndexablePosts(): Promise<Post[]> {
+  return (await getPosts()).filter((post) => post.indexable);
 }
 
 export async function getHome() {

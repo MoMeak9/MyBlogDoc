@@ -5,12 +5,19 @@ import SocialLinks from "../components/SocialLinks.astro";
 import { site } from "../config/site";
 import { ui, type Locale } from "../i18n";
 import { localePath, normalizeBase } from "../lib/paths.mjs";
+import {
+  articleImageUrl,
+  buildPageGraph,
+  serializeStructuredData,
+  type SEOArticle,
+} from "../lib/seo";
 interface Props {
   locale?: Locale;
   title?: string;
   description?: string;
   path?: string;
   article?: boolean;
+  post?: SEOArticle;
 }
 const {
   locale = "zh",
@@ -18,6 +25,7 @@ const {
   description,
   path = "",
   article = false,
+  post,
 } = Astro.props;
 const t = ui(locale);
 const base = normalizeBase(import.meta.env.BASE_URL);
@@ -28,6 +36,31 @@ const localizedUrl = (lang: Locale) =>
     : localePath(path, lang, base);
 const canonical = new URL(localizedUrl(locale), Astro.site);
 const alternate = localizedUrl(locale === "zh" ? "en" : "zh");
+const pageDescription =
+  description ||
+  (path === "about"
+    ? t.aboutDescription
+    : path === "contact"
+      ? t.contactDescription
+      : /^blog(?:\/|$)/.test(path)
+        ? t.journalDescription
+        : path === "404"
+          ? t.notFoundDescription
+          : t.heroDescription);
+const coverImage = articleImageUrl(post?.cover, Astro.site!.href, base);
+const socialImage =
+  coverImage || new URL(`${base}social-card.jpg`, Astro.site).href;
+const noindex = path === "404" || (post && !post.indexable);
+const structuredData = buildPageGraph({
+  origin: Astro.site!.href,
+  base,
+  path,
+  locale,
+  title,
+  description: pageDescription,
+  identity: site,
+  article: post,
+});
 const nav = [
   { key: "home", path: "" },
   { key: "blog", path: "blog" },
@@ -40,11 +73,14 @@ const nav = [
 <html lang={locale === "zh" ? "zh-CN" : "en"}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description || t.heroDescription} />
-    <meta name="author" content={site.author.name} />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="description" content={pageDescription} />
+    <meta name="author" content={post?.author.name || site.author.name} />
     <meta name="color-scheme" content="light dark" />
-    {path === "404" && <meta name="robots" content="noindex, follow" />}
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <title>{title === "Yihui’s Blog" ? title : `${title} · Yihui’s Blog`}</title>
     <link rel="canonical" href={canonical} />
     <link
@@ -71,14 +107,65 @@ const nav = [
       href={`${base}rss.xml`}
     />
     <meta property="og:title" content={title} />
-    <meta
-      property="og:description"
-      content={description || t.heroDescription}
-    />
+    <meta property="og:description" content={pageDescription} />
     <meta property="og:type" content={article ? "article" : "website"} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Yihui’s Blog" />
+    <meta property="og:image" content={socialImage} />
+    <meta
+      property="og:image:alt"
+      content={
+        post?.title ||
+        (locale === "en"
+          ? "Yihui’s Blog · Frontend notes and engineering practice"
+          : "Yihui’s Blog · 前端技术笔记与工程实践")
+      }
+    />
+    {!coverImage && (
+      <>
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+      </>
+    )}
     <meta property="og:locale" content={locale === "zh" ? "zh_CN" : "en_US"} />
-    <meta name="twitter:card" content="summary" />
+    <meta
+      property="og:locale:alternate"
+      content={locale === "zh" ? "en_US" : "zh_CN"}
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content={post?.title || "Yihui’s Blog"} />
+    {post?.publishedDate && (
+      <meta
+        property="article:published_time"
+        content={post.publishedDate.toISOString()}
+      />
+    )}
+    {post?.modifiedDate && (
+      <meta
+        property="article:modified_time"
+        content={post.modifiedDate.toISOString()}
+      />
+    )}
+    {post && (post.author.url || post.author.name === site.author.name) && (
+      <meta
+        property="article:author"
+        content={
+          post.author.url ||
+          new URL(localePath("about", "zh", base), Astro.site).href
+        }
+      />
+    )}
+    {path !== "404" && (
+      <script
+        type="application/ld+json"
+        is:inline
+        set:html={serializeStructuredData(structuredData)}
+      />
+    )}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -110,7 +197,8 @@ const nav = [
               href={href(item.path)}
               aria-current={
                 path === item.path ||
-                (item.path === "blog" && path.startsWith("posts/"))
+                (item.path === "blog" &&
+                  (path.startsWith("posts/") || path.startsWith("blog/")))
                   ? "page"
                   : undefined
               }

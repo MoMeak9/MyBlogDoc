@@ -63,7 +63,7 @@ import ReactComponent from "./ReactComponent"
 
 你也可以控制必要部位的补水时间。这是通过指示Astro何时进行注水作用来完成的。例如，您可能希望一个岛在装载时或仅当它可见时才加水。有几个指令可以帮助您实现这一点，您可以[在这里](https://docs.astro.build/en/core-concepts/component-hydration/)了解更多。
 
-```
+```astro
 // index.astro file
 import ReactComponent from "./ReactComponent"
 
@@ -80,7 +80,7 @@ Marko相对于Astro的另一个关键优势是，Marko可以决定岛上有什�
 
 另一方面，Qwik将其带到组件级别，分解了注水的方式，以便仅在需要时进行注水。这是通过积极地将网站的JavaScript分解为多个块，设置全局事件侦听器并将兴趣点直接序列化为HTML来实现的。对于每个不同的用户交互，Qwik 拥有仅加载执行操作所需的代码所需的一切，仅此而已。
 
-![Image](https://pbs.twimg.com/media/FQpm6TcVsAIHN8h?format=jpg&name=medium)
+![FQpm6TcVsAIHN8h](https://fs.yihuiblog.top/i/2025/09/02/4e2e43eb-6c33-00fa-339d-3e976cb7f9c9-0.jpeg)
 
 作为回报，这将导致代码块更小，从而能够更快地加载、解析和加载用户需要的内容。这就是所谓的渐进式注水，这超出了本文的讨论范围，希望我能很快就此进行讨论。
 

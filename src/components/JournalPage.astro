@@ -3,19 +3,36 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "./PostCard.astro";
 import Icon from "./Icon.astro";
 import { ui, type Locale } from "../i18n";
-import { getPosts } from "../lib/content";
+import { getIndexablePosts } from "../lib/content";
+import { localePath, normalizeBase } from "../lib/paths.mjs";
 interface Props {
   locale?: Locale;
+  pageNumber?: number;
 }
-const { locale = "zh" } = Astro.props;
+const { locale = "zh", pageNumber = 1 } = Astro.props;
 const t = ui(locale);
-const posts = (await getPosts()).filter((post) => !post.empty);
+const posts = await getIndexablePosts();
+const pageSize = 12;
+const pageCount = Math.max(1, Math.ceil(posts.length / pageSize));
+const pagePosts = posts.slice(
+  (pageNumber - 1) * pageSize,
+  pageNumber * pageSize,
+);
+const base = normalizeBase(import.meta.env.BASE_URL);
+const archivePath = (page: number) =>
+  localePath(page === 1 ? "blog" : `blog/${page}`, locale, base);
 const categories = [...new Set(posts.flatMap((post) => post.categories))].sort(
   (a, b) => a.localeCompare(b, "zh-Hans"),
 );
 ---
 
-<BaseLayout locale={locale} title={t.journal} path="blog">
+<BaseLayout
+  locale={locale}
+  title={
+    pageNumber === 1 ? t.journal : `${t.journal} · ${t.page} ${pageNumber}`
+  }
+  path={pageNumber === 1 ? "blog" : `blog/${pageNumber}`}
+>
   <section class="page-heading">
     <div class="container">
       <p class="section-label">{t.archiveLabel}</p>
@@ -23,7 +40,15 @@ const categories = [...new Set(posts.flatMap((post) => post.categories))].sort(
       <p>{t.journalDescription}</p>
     </div>
   </section>
-  <section class="journal-body">
+  <section
+    class="journal-body"
+    data-journal
+    data-locale={locale}
+    data-base={base}
+    data-static-page={pageNumber}
+    data-static-pages={pageCount}
+    data-total={posts.length}
+  >
     <div class="container">
       <div class="filter-bar">
         <label class="search-box">
@@ -40,7 +65,7 @@ const categories = [...new Set(posts.flatMap((post) => post.categories))].sort(
           <span id="result-count">{posts.length}</span> {t.results}
         </p>
       </div>
-      <div class="chips" aria-label={t.collections}>
+      <div class="chips" aria-label={t.collections} data-lenis-prevent>
         <button
           type="button"
           class="chip active"
@@ -60,111 +85,63 @@ const categories = [...new Set(posts.flatMap((post) => post.categories))].sort(
           </button>
         ))}
       </div>
+      <div class="filter-feedback" hidden>
+        <p id="filter-message" role="status"></p>
+        <button
+          class="text-link filter-retry"
+          type="button"
+          id="retry-filters"
+          hidden
+        >
+          {t.retryFilters}
+        </button>
+      </div>
       <div class="journal-grid">
-        {posts.map((post, index) => (
-          <PostCard post={post} locale={locale} index={index} searchable />
+        {pagePosts.map((post, index) => (
+          <PostCard
+            post={post}
+            locale={locale}
+            index={(pageNumber - 1) * pageSize + index}
+          />
         ))}
       </div>
-      <div class="empty-results" hidden>
+      <div class="empty-results" hidden={posts.length > 0}>
         <h2>{t.noResults}</h2>
         <p>{t.trySearch}</p>
         <button type="button" class="button button-outline" id="reset-filters">
           {t.reset}
         </button>
       </div>
-      <nav class="pagination" aria-label={t.page} hidden>
-        <button type="button" class="button button-outline" id="prev-page">
+      <nav class="pagination" aria-label={t.page} hidden={pageCount <= 1}>
+        <a
+          class="button button-outline"
+          id="prev-page"
+          href={archivePath(Math.max(1, pageNumber - 1))}
+          rel={pageNumber > 1 ? "prev" : undefined}
+          aria-disabled={pageNumber === 1 ? "true" : undefined}
+          tabindex={pageNumber === 1 ? -1 : undefined}
+        >
           {t.previous}
-        </button>
-        <span id="page-status" aria-live="polite"></span>
-        <button type="button" class="button button-outline" id="next-page">
+        </a>
+        <span id="page-status" aria-live="polite">
+          {pageNumber} / {pageCount}
+        </span>
+        <a
+          class="button button-outline"
+          id="next-page"
+          href={archivePath(Math.min(pageCount, pageNumber + 1))}
+          rel={pageNumber < pageCount ? "next" : undefined}
+          aria-disabled={pageNumber === pageCount ? "true" : undefined}
+          tabindex={pageNumber === pageCount ? -1 : undefined}
+        >
           {t.next}
-        </button>
+        </a>
       </nav>
     </div>
   </section>
 </BaseLayout>
 <script>
-  const cards = [...document.querySelectorAll<HTMLElement>("[data-post]")];
-  const input = document.querySelector<HTMLInputElement>("#article-search");
-  const chips = [
-    ...document.querySelectorAll<HTMLButtonElement>("[data-category]"),
-  ];
-  const count = document.querySelector("#result-count");
-  const pagination = document.querySelector<HTMLElement>(".pagination");
-  const status = document.querySelector("#page-status");
-  const previous = document.querySelector<HTMLButtonElement>("#prev-page");
-  const next = document.querySelector<HTMLButtonElement>("#next-page");
-  const empty = document.querySelector<HTMLElement>(".empty-results");
-  const params = new URLSearchParams(location.search);
-  let category = params.get("category") || "";
-  let page = 1;
-  const pageSize = 12;
-  if (input) input.value = params.get("q") || "";
-  if (!chips.some((chip) => chip.dataset.category === category)) category = "";
-  const update = () => {
-    const query = input?.value.trim().toLocaleLowerCase() || "";
-    const words = query.split(/\s+/).filter(Boolean);
-    const filtered = cards.filter(
-      (card) =>
-        (!category ||
-          JSON.parse(card.dataset.categories || "[]").includes(category)) &&
-        words.every((word) => card.dataset.search?.includes(word)),
-    );
-    const pages = Math.max(1, Math.ceil(filtered.length / pageSize));
-    page = Math.min(page, pages);
-    const visible = new Set(
-      filtered.slice((page - 1) * pageSize, page * pageSize),
-    );
-    cards.forEach((card) => {
-      card.hidden = !visible.has(card);
-    });
-    chips.forEach((chip) => {
-      const active = chip.dataset.category === category;
-      chip.classList.toggle("active", active);
-      chip.setAttribute("aria-pressed", String(active));
-    });
-    if (count) count.textContent = String(filtered.length);
-    if (empty) empty.hidden = filtered.length !== 0;
-    if (pagination) pagination.hidden = pages <= 1;
-    if (status) status.textContent = `${page} / ${pages}`;
-    if (previous) previous.disabled = page === 1;
-    if (next) next.disabled = page === pages;
-    const search = new URLSearchParams();
-    if (query) search.set("q", input?.value.trim() || "");
-    if (category) search.set("category", category);
-    history.replaceState(
-      null,
-      "",
-      `${location.pathname}${search.size ? `?${search}` : ""}`,
-    );
-  };
-  input?.addEventListener("input", () => {
-    page = 1;
-    update();
-  });
-  chips.forEach((chip) =>
-    chip.addEventListener("click", () => {
-      category = chip.dataset.category || "";
-      page = 1;
-      update();
-    }),
-  );
-  document.querySelector("#reset-filters")?.addEventListener("click", () => {
-    category = "";
-    page = 1;
-    if (input) input.value = "";
-    update();
-  });
-  previous?.addEventListener("click", () => {
-    page--;
-    update();
-    document.querySelector(".filter-bar")?.scrollIntoView({ block: "start" });
-  });
-  next?.addEventListener("click", () => {
-    page++;
-    update();
-    document.querySelector(".filter-bar")?.scrollIntoView({ block: "start" });
-  });
-  update();
+  import { initJournal } from "../scripts/journal";
+  initJournal();
+  document.addEventListener("astro:page-load", initJournal);
 </script>

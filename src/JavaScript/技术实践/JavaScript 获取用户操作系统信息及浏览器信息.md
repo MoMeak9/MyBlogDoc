@@ -16,7 +16,8 @@ category:
 const navigatorObject = window.navigator
 ```
 
-![image-20230115215017732](https://cdn.yihuiblog.top/images/202301152204381.png)
+![image.png](https://fs.lwmc.net/uploads/2024/03/1710356363790-202403140259302.webp)
+
 
 其中常用的属性有：
 

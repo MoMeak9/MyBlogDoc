@@ -6,7 +6,7 @@
 
 ## 本地开发
 
-使用 Node.js 22.12 以上版本，CI 固定为 22.22.3；包管理器使用 `package.json` 固定的 pnpm 10.34.6。
+使用 Node.js 22.18 以上版本，CI 固定为 22.22.3；包管理器使用 `package.json` 固定的 pnpm 10.34.6。
 
 ```sh
 corepack enable
@@ -81,6 +81,20 @@ BASE_PATH=/MyBlogDoc/ pnpm preview
 ```
 
 `.idea/`、`node_modules/`、`.astro/`、`dist/`、`.DS_Store` 和本地环境文件均已忽略。原来跟踪的 `.idea` 文件已移出 Git 跟踪，本地 IDE 文件可继续使用。
+
+## 内容迁移与发现
+
+`scripts/migrate-blog.mjs` 以审查清单为输入，默认 dry-run，`--apply` 才写入博客；源目录始终只读。迁移结果保存在 `reports/content-migration.json`，文章日期来源保存在 `src/data/migration-metadata.json`。已按请求排除抖音、法律目录，并排除私人通信与含认证信息的工作笔记。保留明确更新稿、统一旧文件别名和已确认的文档链接，无法确定目标的旧链接按普通文本保留。
+
+归档每页静态生成 12 篇文章，搜索索引在使用筛选或搜索时加载；手机提供横滑分类、折叠目录、44px 触控目标和安全区留白。Mermaid 图示按需绘制，原始源码可展开阅读，无法绘制时保留代码内容。
+
+## SEO 与 GEO
+
+站点输出 Blog、Person、BlogPosting 和可见面包屑对应的 JSON-LD，补齐 OG/Twitter 分享图、可信发布时间与更新时间、原文作者与来源信息，以及 sitemap 的 lastmod。未知的发布时间不会用构建时间补造。英文界面共享原文，因此文章语言标注遵循正文语言。
+
+`content-index.json` 提供公开文章元数据，`llms.txt` 提供可选的 canonical 内容导航；它是社区索引协议，不是 Google 排名因素，也不保证 AI 引用。[Google 的 AI 优化指南](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)强调可访问正文、结构化数据与可信内容。
+
+GitHub 项目 Pages 的 `/MyBlogDoc/robots.txt` 不能控制整个主机，爬虫读取的是域名根路径 `/robots.txt`；自定义根域部署才能直接使用当前输出。未擅自改变训练爬虫与搜索爬虫的权限。上线后可在 Search Console 与 Bing Webmaster Tools 检查索引、抓取及引用情况。
 
 ## 交流
 

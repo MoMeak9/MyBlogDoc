@@ -6,7 +6,7 @@ A personal frontend knowledge base and blog, statically generated with Astro fro
 
 ## Local development
 
-Use Node.js 22.12 or newer. CI runs Node.js 22.22.3; `package.json` pins pnpm 10.34.6.
+Use Node.js 22.18 or newer. CI runs Node.js 22.22.3; `package.json` pins pnpm 10.34.6.
 
 ```sh
 corepack enable
@@ -81,6 +81,20 @@ BASE_PATH=/MyBlogDoc/ pnpm preview
 ```
 
 `.idea/`, `node_modules/`, `.astro/`, `dist/`, `.DS_Store`, and local environment files are ignored. Previously tracked `.idea` files have been removed from Git tracking while remaining available locally.
+
+## Content migration and discovery
+
+`scripts/migrate-blog.mjs` consumes a reviewed manifest. It defaults to dry-run; `--apply` writes the approved articles while keeping the source directory read-only. The review report is in `reports/content-migration.json`, and date provenance is in `src/data/migration-metadata.json`. The requested Douyin and legal directories, private correspondence, and credential-bearing work notes are excluded. Confirmed updates and document aliases are preserved; unresolved references remain readable plain text.
+
+Archives statically render 12 articles per page, with search indexes loaded on demand. Phone layouts include horizontal category filters, a collapsible contents panel, 44px controls, and safe-area spacing. Mermaid diagrams load near the reader, keeping their original source available as a fallback.
+
+## SEO and GEO
+
+The site provides Blog, Person, BlogPosting, and visible breadcrumb JSON-LD, OG/Twitter sharing images, trustworthy publication/modification dates, explicit attribution, and sitemap lastmod. Unknown publication dates are never replaced with build timestamps. Article language follows the original content even when the interface is English.
+
+`content-index.json` exposes public metadata, while `llms.txt` is an optional canonical navigation index. It is a community proposal rather than a Google ranking signal or an AI citation guarantee. [Google's AI optimization guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) recommends accessible text, structured data, and trustworthy content.
+
+A project Pages file at `/MyBlogDoc/robots.txt` does not control the entire host: crawlers look for `/robots.txt` at the domain root. Root-domain hosting can use the existing output directly. Search and training crawler permissions have not been changed. After publication, Search Console and Bing Webmaster Tools can verify indexing, crawling, and citations.
 
 ## Contact
 

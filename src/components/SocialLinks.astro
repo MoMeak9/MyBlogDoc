@@ -83,6 +83,18 @@ const t = ui(locale);
   .hero-socials {
     margin-top: 24px;
   }
+  @media (pointer: coarse), (max-width: 767px) {
+    .social-links--icons .social-link {
+      width: 44px;
+      height: 44px;
+    }
+    .social-links--text .social-link {
+      min-height: 44px;
+    }
+    .hero-socials {
+      margin-top: 20px;
+    }
+  }
   @media (prefers-reduced-motion: reduce) {
     .social-link {
       transition: none;

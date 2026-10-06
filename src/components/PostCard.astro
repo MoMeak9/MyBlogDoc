@@ -56,9 +56,22 @@ const images = [
     <div class="post-meta">
       <span class="category">{post.categories[0]}</span>
       <span aria-hidden="true">·</span>
-      <time datetime={post.date.toISOString()}>
-        {dateLabel(post.date, locale)}
-      </time>
+      {post.publishedDate || post.modifiedDate ? (
+        <time
+          datetime={(post.publishedDate || post.modifiedDate)!.toISOString()}
+        >
+          {post.publishedDate
+            ? locale === "en"
+              ? "Published "
+              : "发布 "
+            : locale === "en"
+              ? "Updated "
+              : "更新 "}
+          {dateLabel((post.publishedDate || post.modifiedDate)!, locale)}
+        </time>
+      ) : (
+        <span>{t.missingDate}</span>
+      )}
       <span aria-hidden="true">·</span>
       <span>
         {post.readMinutes} {t.minuteRead}

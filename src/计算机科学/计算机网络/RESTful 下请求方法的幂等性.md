@@ -4,7 +4,7 @@ category:
 - Network
 ---
 
-# RESTfull 下请求方法的幂等性
+# RESTful 下请求方法的幂等性
 
 ## 概念阐述
 

@@ -1,4 +1,4 @@
-# Web Woker 常见使用问题和解决方案
+# Web Worker 常见使用问题和解决方案
 
 ## 问题汇总
 
@@ -254,3 +254,6 @@ worker2.onmessage = (event) => {
 `Atomics` API 则提供了一组原子操作，用于在共享的内存中进行同步和协调访问。它包括了一些常见的原子操作，例如原子加法、原子减法、原子比较和交换等，可以保证多个 Workers 在访问共享内存时的原子性操作，避免了数据竞争和不一致性的问题。
 
 通过使用 `SharedArrayBuffer` 和 `Atomics` API，多个 Workers 可以在共享的内存中进行高效的数据操作，从而实现更快速和高效的数据共享和通信，尤其对于大规模数据处理或复杂计算的场景下，可以显著提升性能。然而，需要注意的是，由于共享内存可能涉及到并发访问和竞态条件，使用 `SharedArrayBuffer` 和 `Atomics` API 需要谨慎处理，并遵循相关的安全性和最佳实践，以确保数据的正确性和一致性。
+
+
+[Web Worker 与主线程通信场景下对postMessage的简洁封装](/posts/JavaScript/Web%20Woker%20%E4%B8%8E%E4%B8%BB%E7%BA%BF%E7%A8%8B%E9%80%9A%E4%BF%A1%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%AF%B9postMessage%E7%9A%84%E7%AE%80%E6%B4%81%E5%B0%81%E8%A3%85/)

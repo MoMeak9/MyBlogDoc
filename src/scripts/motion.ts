@@ -281,6 +281,11 @@ export function initMotion(): () => void {
         );
       }
       target.focus({ preventScroll: true });
+      document.dispatchEvent(
+        new CustomEvent("blog:anchor-complete", {
+          detail: { target, focus: true },
+        }),
+      );
     };
     const top = anchorPosition(target);
     if (lenis) lenis.scrollTo(top, { immediate, onComplete: complete });
@@ -422,6 +427,9 @@ export function initMotion(): () => void {
     { signal: events.signal },
   );
   window.addEventListener("hashchange", alignHash, { signal: events.signal });
+  document.addEventListener("blog:anchor-layout-change", alignHash, {
+    signal: events.signal,
+  });
   const refreshLayout = () => {
     ScrollTrigger.refresh();
     if (!preservePosition) alignHash();
