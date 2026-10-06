@@ -40,7 +40,6 @@ export function initDiagrams() {
     figure.className = "article-diagram";
     const visual = document.createElement("div");
     visual.className = "diagram-visual";
-    visual.setAttribute("data-lenis-prevent", "");
     const status = document.createElement("p");
     status.className = "diagram-status";
     status.textContent = labels.loading;

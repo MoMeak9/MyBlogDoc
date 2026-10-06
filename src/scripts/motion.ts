@@ -1,17 +1,10 @@
-import Lenis from "lenis";
-import "lenis/dist/lenis.css";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 type MotionSession = { dispose: () => void };
 let currentSession: MotionSession | undefined;
 
-const easeScroll = (progress: number) =>
-  Math.min(1, 1.001 - 2 ** (-10 * progress));
-const nativeScrollRegions =
-  'pre, code, table, .toc, dialog, textarea, select, [contenteditable="true"], [data-lenis-prevent]';
-
-/** Reconnect on Astro navigation or BFCache restoration without retaining a page's effects. */
+/** Reconnect on navigation and resume effects preserved in the browser's page cache. */
 export function initMotion(): () => void {
   currentSession?.dispose();
   if (typeof window === "undefined") return () => {};
@@ -24,9 +17,7 @@ export function initMotion(): () => void {
   const countTargets = new WeakMap<HTMLElement, number>();
   const countTweens = new Map<HTMLElement, gsap.core.Tween>();
   let context: gsap.Context | undefined;
-  let lenis: Lenis | undefined;
   let counterObserver: IntersectionObserver | undefined;
-  let overlayObserver: MutationObserver | undefined;
   let pageBody: HTMLElement | undefined;
   let active = false;
   let preservePosition = false;
@@ -55,60 +46,7 @@ export function initMotion(): () => void {
       const target = counterTarget(element);
       if (target !== undefined) element.textContent = String(target);
     });
-  const cancelInertia = () => {
-    if (lenis?.isScrolling !== "smooth") return;
-    // Reset through public lifecycle methods without writing scrollTo(), so native
-    // focus, scrollIntoView and the browser's smooth scrolling can keep their target.
-    lenis.stop();
-    lenis.start();
-  };
-  const tick = (seconds: number) => {
-    if (!lenis) return;
-    // Lenis owns its last animated position. A larger difference than browser
-    // subpixel rounding means an external native scroll has taken over.
-    if (Math.abs(lenis.actualScroll - lenis.animatedScroll) > 1)
-      cancelInertia();
-    lenis.raf(seconds * 1000);
-  };
-  const stopScrolling = () => {
-    gsap.ticker.remove(tick);
-    if (lenis) {
-      lenis.stop();
-      // stop() consumes native wheel events and applies overflow:clip. Destroy while
-      // paused so dialogs, reduced motion and keyboard navigation keep native scroll.
-      lenis.destroy();
-      lenis = undefined;
-    }
-  };
-  const overlayOpen = () =>
-    document.body.classList.contains("menu-open") ||
-    Boolean(document.querySelector("dialog[open]"));
-  const startScrolling = () => {
-    if (!active || reducedMotion.matches || overlayOpen() || lenis) return;
-    lenis = new Lenis({
-      duration: 1.2,
-      easing: easeScroll,
-      smoothWheel: true,
-      syncTouch: false,
-      autoRaf: false,
-      anchors: false,
-      prevent: (node) => node.matches(nativeScrollRegions),
-      virtualScroll: ({ event }) => {
-        if (!event.ctrlKey) return true;
-        cancelInertia();
-        return false;
-      },
-    });
-    lenis.on("scroll", ScrollTrigger.update);
-    lenis.start();
-    gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(0);
-  };
-  const syncOverlay = () =>
-    overlayOpen() ? stopScrolling() : startScrolling();
-
   const stopEffects = () => {
-    stopScrolling();
     counterObserver?.disconnect();
     counterObserver = undefined;
     countTweens.forEach((tween) => tween.kill());
@@ -120,7 +58,6 @@ export function initMotion(): () => void {
   const startEffects = () => {
     stopEffects();
     if (!active || reducedMotion.matches) return;
-    startScrolling();
     context = gsap.context(() => {
       document
         .querySelectorAll<HTMLElement>('[data-animate="fade-up"]')
@@ -264,23 +201,24 @@ export function initMotion(): () => void {
       Math.min(top, document.documentElement.scrollHeight - window.innerHeight),
     );
   };
-  const goToAnchor = (
-    target: HTMLElement,
-    immediate: boolean,
-    focus = false,
-  ) => {
+  const goToAnchor = (target: HTMLElement, focus = false) => {
     const complete = () => {
       if (!focus || disposed || !target.isConnected) return;
-      const hadTabIndex = target.hasAttribute("tabindex");
+      const focusTarget =
+        target.classList.contains("legacy-anchor") &&
+        target.nextElementSibling instanceof HTMLElement
+          ? target.nextElementSibling
+          : target;
+      const hadTabIndex = focusTarget.hasAttribute("tabindex");
       if (!hadTabIndex) {
-        target.setAttribute("tabindex", "-1");
-        target.addEventListener(
+        focusTarget.setAttribute("tabindex", "-1");
+        focusTarget.addEventListener(
           "blur",
-          () => target.removeAttribute("tabindex"),
+          () => focusTarget.removeAttribute("tabindex"),
           { once: true, signal: events.signal },
         );
       }
-      target.focus({ preventScroll: true });
+      focusTarget.focus({ preventScroll: true });
       document.dispatchEvent(
         new CustomEvent("blog:anchor-complete", {
           detail: { target, focus: true },
@@ -288,15 +226,12 @@ export function initMotion(): () => void {
       );
     };
     const top = anchorPosition(target);
-    if (lenis) lenis.scrollTo(top, { immediate, onComplete: complete });
-    else {
-      window.scrollTo({ top, behavior: "instant" });
-      complete();
-    }
+    window.scrollTo({ top, behavior: "instant" });
+    complete();
   };
   const alignHash = () => {
     const target = hashTarget(location.hash);
-    if (target) goToAnchor(target, true);
+    if (target) goToAnchor(target);
   };
   const onAnchorClick = (event: MouseEvent) => {
     if (
@@ -327,31 +262,29 @@ export function initMotion(): () => void {
       return;
     const target = hashTarget(url.hash);
     if (!target) return;
-    event.preventDefault();
-    if (url.hash !== location.hash) history.pushState(null, "", url);
-    goToAnchor(target, reducedMotion.matches, true);
+    // The browser owns hash navigation and history. Correct only the sticky
+    // header offset and notify a mobile contents panel after its default action.
+    schedule(() => goToAnchor(target, true));
   };
   const suspend = () => {
     active = false;
     frames.forEach((frame) => cancelAnimationFrame(frame));
     frames.clear();
-    overlayObserver?.disconnect();
-    overlayObserver = undefined;
     stopEffects();
   };
   const mount = (restored = false) => {
     if (disposed || (active && pageBody === document.body)) return;
+    if (restored && pageBody === document.body) {
+      preservePosition = true;
+      active = true;
+      ScrollTrigger.update();
+      return;
+    }
     suspend();
     pageBody = document.body;
     preservePosition = restored;
     active = true;
     startEffects();
-    overlayObserver = new MutationObserver(syncOverlay);
-    overlayObserver.observe(document.documentElement, {
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["class", "open"],
-    });
     if (!preservePosition) schedule(alignHash);
   };
   const dispose = () => {
@@ -375,7 +308,6 @@ export function initMotion(): () => void {
     "pointerdown",
     () => {
       preserveReaderPosition();
-      cancelInertia();
     },
     { passive: true, capture: true, signal: events.signal },
   );
@@ -383,42 +315,32 @@ export function initMotion(): () => void {
     "touchstart",
     () => {
       preserveReaderPosition();
-      cancelInertia();
     },
     { passive: true, capture: true, signal: events.signal },
   );
-  document.addEventListener("focusin", cancelInertia, {
+  document.addEventListener("click", onAnchorClick, { signal: events.signal });
+  document.addEventListener("keydown", preserveReaderPosition, {
     signal: events.signal,
   });
-  document.addEventListener("click", onAnchorClick, { signal: events.signal });
-  document.addEventListener(
-    "keydown",
-    (event) => {
-      preserveReaderPosition();
-      // Keep keyboard scrolling native and cancel any wheel inertia before its default action.
-      if (
-        [
-          "ArrowUp",
-          "ArrowDown",
-          "PageUp",
-          "PageDown",
-          "Home",
-          "End",
-          " ",
-        ].includes(event.key)
-      ) {
-        cancelInertia();
-      }
-    },
-    { signal: events.signal },
-  );
   document.addEventListener("astro:before-swap", suspend, {
     signal: events.signal,
   });
   document.addEventListener("astro:page-load", () => mount(), {
     signal: events.signal,
   });
-  window.addEventListener("pagehide", suspend, { signal: events.signal });
+  window.addEventListener(
+    "pagehide",
+    (event) => {
+      if (!event.persisted) {
+        suspend();
+        return;
+      }
+      active = false;
+      frames.forEach((frame) => cancelAnimationFrame(frame));
+      frames.clear();
+    },
+    { signal: events.signal },
+  );
   window.addEventListener(
     "pageshow",
     (event) => {
@@ -426,7 +348,6 @@ export function initMotion(): () => void {
     },
     { signal: events.signal },
   );
-  window.addEventListener("hashchange", alignHash, { signal: events.signal });
   document.addEventListener("blog:anchor-layout-change", alignHash, {
     signal: events.signal,
   });

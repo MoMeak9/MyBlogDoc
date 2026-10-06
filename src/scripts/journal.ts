@@ -205,7 +205,6 @@ export function initJournal() {
   if (!grid || !input || !previous || !next) return;
   const staticCards = [...grid.childNodes];
   const events = new AbortController();
-  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
   const params = new URLSearchParams(location.search);
   let category = params.get("category") || "";
   if (!chips.some((chip) => chip.dataset.category === category)) category = "";
@@ -289,7 +288,7 @@ export function initJournal() {
       chipRegion.scrollTo({
         left: chipRegion.scrollLeft + delta,
         top: chipRegion.scrollTop,
-        behavior: reducedMotion.matches ? "auto" : "smooth",
+        behavior: "auto",
       });
   };
   const setFeedback = (kind?: "loading" | "error") => {
@@ -359,12 +358,10 @@ export function initJournal() {
       updateQuery();
       setFeedback();
       if (scroll)
-        root
-          .querySelector(".filter-bar")
-          ?.scrollIntoView({
-            block: "start",
-            behavior: reducedMotion.matches ? "auto" : "smooth",
-          });
+        root.querySelector(".filter-bar")?.scrollIntoView({
+          block: "start",
+          behavior: "auto",
+        });
     } catch {
       if (!disposed && version === requestVersion) setFeedback("error");
     }

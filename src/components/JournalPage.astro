@@ -65,7 +65,7 @@ const categories = [...new Set(posts.flatMap((post) => post.categories))].sort(
           <span id="result-count">{posts.length}</span> {t.results}
         </p>
       </div>
-      <div class="chips" aria-label={t.collections} data-lenis-prevent>
+      <div class="chips" aria-label={t.collections}>
         <button
           type="button"
           class="chip active"

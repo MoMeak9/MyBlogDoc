@@ -323,8 +323,7 @@ function legacyAnchor(id) {
       id,
       className: ["legacy-anchor"],
       ariaHidden: "true",
-      style:
-        "display:block;scroll-margin-top:calc(var(--header-height,80px) + env(safe-area-inset-top,0px) + 24px)",
+      style: "display:block;scroll-margin-top:0",
     },
     children: [],
   };

@@ -225,7 +225,9 @@ const editUrl = `https://github.com/MoMeak9/MyBlogDoc/edit/main/src/${post.id.sp
     };
     syncTocLayout();
     desktop.addEventListener("change", syncTocLayout);
-    window.addEventListener("pageshow", syncTocLayout);
+    window.addEventListener("pageshow", (event) => {
+      if (!event.persisted) syncTocLayout();
+    });
     tocNav?.addEventListener("click", (event) => {
       pendingTarget = null;
       if (

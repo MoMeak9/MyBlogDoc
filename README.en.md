@@ -56,7 +56,7 @@ The default Chinese interface is at `/`; the English interface is at `/en/`. Bot
 
 Edit `src/config/site.ts` to configure the author and GitHub, Bilibili, and email profiles. The same links appear on the homepage, About page, footer, and mobile menu. Interface translations live in `src/i18n.ts`.
 
-Lenis and GSAP reproduce the reference's scroll inertia, reversible entrances, staggered cards, expanding rules, and counters. A Canvas renders the rotating wireframe icosahedron and particles, with a static SVG fallback. Drawing is capped at 30 FPS and pauses offscreen or in hidden tabs. The system's reduced motion preference restores native scrolling and static values.
+Pages use native browser scrolling. GSAP observes scroll position to animate reversible entrances, staggered cards, expanding rules, and counters. A Canvas renders the rotating wireframe icosahedron and particles, with a static SVG fallback. Drawing is capped at 30 FPS and pauses offscreen or in hidden tabs. The system's reduced motion preference keeps content and values static.
 
 ## Deploying to GitHub Pages
 
