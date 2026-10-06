@@ -4,6 +4,7 @@ import { ui, dateLabel, type Locale } from "../i18n";
 import { postPath, normalizeBase } from "../lib/paths.mjs";
 import type { Post } from "../lib/content";
 import { plainText } from "../lib/markdown.mjs";
+import { coverUrl } from "../lib/cover.mjs";
 interface Props {
   post: Post;
   locale?: Locale;
@@ -16,21 +17,16 @@ const {
   post,
   locale = "zh",
   large = false,
-  index = 0,
   searchable = false,
   stagger = false,
 } = Astro.props;
 const t = ui(locale);
 const base = normalizeBase(import.meta.env.BASE_URL);
-const images = [
-  "editorial-writing.jpg",
-  "editorial-design.jpg",
-  "editorial-engineering.jpg",
-];
+const cover = coverUrl(post.cover, base);
 ---
 
 <article
-  class:list={["post-card", { large }]}
+  class:list={["post-card", { large, "without-cover": !cover }]}
   data-stagger-item={stagger || undefined}
   data-post={searchable || undefined}
   data-title={searchable ? post.title.toLocaleLowerCase() : undefined}
@@ -42,17 +38,19 @@ const images = [
   }
 >
   <a href={postPath(post.id, locale, base)}>
-    <figure>
-      <img
-        class="post-art"
-        src={`${base}images/${images[index % images.length]}`}
-        alt=""
-        width={large ? 800 : 600}
-        height="450"
-        loading="lazy"
-        decoding="async"
-      />
-    </figure>
+    {cover && (
+      <figure>
+        <img
+          class="post-art"
+          src={cover}
+          alt=""
+          width={large ? 800 : 600}
+          height="450"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+    )}
     <div class="post-meta">
       <span class="category">{post.categories[0]}</span>
       <span aria-hidden="true">·</span>

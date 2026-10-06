@@ -69,28 +69,6 @@ const categories = [...new Set(posts.flatMap((post) => post.categories))].sort(
         <p id="offline-search-status" role="status">
           {t.offlineSearchHint}
         </p>
-        <div class="offline-search-actions">
-          <button
-            type="button"
-            class="button button-outline"
-            id="download-search"
-          >
-            {t.downloadSearch}
-          </button>
-          <button
-            type="button"
-            class="button button-outline"
-            id="remove-search"
-            hidden
-          >
-            {t.removeSearchDownload}
-          </button>
-        </div>
-        <progress
-          id="offline-search-progress"
-          aria-label={t.downloadingSearch}
-          hidden
-        />
       </div>
       <div class="chips" aria-label={t.collections}>
         <button
@@ -175,29 +153,9 @@ const categories = [...new Set(posts.flatMap((post) => post.categories))].sort(
 
 <style>
   .offline-search-bar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px 24px;
     margin: 12px 0 24px;
     font-size: 12px;
     color: var(--muted);
-  }
-  .offline-search-actions {
-    display: flex;
-    gap: 16px;
-  }
-  .offline-search-actions button {
-    min-height: 44px;
-    padding: 10px 12px;
-    font-size: 12px;
-    color: var(--accent);
-  }
-  .offline-search-bar progress {
-    width: 100%;
-    height: 3px;
-    accent-color: var(--accent);
   }
   .journal-grid :global(mark) {
     color: var(--text);

@@ -85,7 +85,7 @@ const zh = {
   loadingArticles: "正在查找文章…",
   filterError: "暂时无法查找文章，请重试。",
   retryFilters: "重试",
-  offlineSearchHint: "全文在本地检索，下载后断网也可搜索。",
+  offlineSearchHint: "全文在本地检索，离线数据将在空闲时自动准备。",
   downloadSearch: "下载离线搜索",
   updateSearchDownload: "更新离线搜索",
   offlineDataSize: "约 {size} MB。",
@@ -93,7 +93,7 @@ const zh = {
   retryDownload: "重试下载",
   downloadingSearch: "正在下载搜索数据…",
   offlineReady: "离线搜索已就绪；离线阅读仅限已访问的文章。",
-  offlineDownloadError: "下载未完成，请联网重试。",
+  offlineDownloadError: "离线数据暂未准备好，仍可联网搜索。",
   offlineUnsupported: "当前浏览器无法保存离线数据，仍可联网搜索。",
   articlePublished: "发布",
   articleUpdated: "更新",
@@ -220,7 +220,8 @@ const en: typeof zh = {
   loadingArticles: "Finding articles…",
   filterError: "Articles could not be loaded. Please try again.",
   retryFilters: "Try again",
-  offlineSearchHint: "Search runs locally. Download it to search offline.",
+  offlineSearchHint:
+    "Search runs locally. Offline data is prepared automatically while idle.",
   downloadSearch: "Download offline search",
   updateSearchDownload: "Update offline search",
   offlineDataSize: "About {size} MB.",
@@ -229,7 +230,8 @@ const en: typeof zh = {
   downloadingSearch: "Downloading search data…",
   offlineReady:
     "Offline search is ready. Offline reading requires a previously visited article.",
-  offlineDownloadError: "The download did not finish. Reconnect and try again.",
+  offlineDownloadError:
+    "Offline data is not ready yet. Online search is still available.",
   offlineUnsupported:
     "This browser cannot save offline data. Online search is still available.",
   articlePublished: "Published",

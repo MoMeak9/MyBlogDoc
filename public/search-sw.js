@@ -1,4 +1,4 @@
-/* Explicitly enabled, versioned offline search. No install-time corpus download. */
+/* Versioned offline search. Automatic preparation yields to visible-page activity. */
 const SCOPE = new URL(self.registration.scope);
 const BASE = SCOPE.pathname;
 const PREFIX = `myblogdoc-search-v1:${encodeURIComponent(BASE)}:`;
@@ -11,6 +11,8 @@ let snapshotsPromise;
 let warmJob;
 let epoch = 0;
 let visitedQueue = Promise.resolve();
+const automaticClients = new Map();
+let automaticQuotaBlocked = false;
 
 const scoped = (url) =>
   url.origin === SCOPE.origin && url.pathname.startsWith(BASE);
@@ -163,15 +165,89 @@ async function offlineCacheStatus() {
   return warmJob ? warmJob.state : stateFor((await snapshots())[0]);
 }
 
+async function automaticPermission(job) {
+  if (!job.automatic) return;
+  while (true) {
+    job.controller.signal.throwIfAborted();
+    let permitted = false;
+    let foregroundBusy = false;
+    for (const [id, policy] of automaticClients) {
+      const client = await self.clients.get(id);
+      if (!client || !scoped(new URL(client.url))) {
+        automaticClients.delete(id);
+        continue;
+      }
+      if (client.visibilityState === "visible") {
+        if (policy.busy) foregroundBusy = true;
+        if (policy.allowed) permitted = true;
+      }
+    }
+    permitted = permitted && !foregroundBusy;
+    if (job.state.paused === permitted) {
+      job.state.paused = !permitted;
+      progress(job);
+    }
+    if (permitted) return;
+    progress(job); // A paused sender still gets a heartbeat without fetching any assets.
+    await new Promise((resolve, reject) => {
+      const finish = () => {
+        clearTimeout(timer);
+        job.wake.delete(finish);
+        job.controller.signal.removeEventListener("abort", abort);
+        resolve();
+      };
+      const abort = () => {
+        finish();
+        reject(job.controller.signal.reason);
+      };
+      const timer = setTimeout(finish, 15000);
+      job.wake.add(finish);
+      job.controller.signal.addEventListener("abort", abort, { once: true });
+      if (job.controller.signal.aborted) abort();
+    });
+  }
+}
+
+async function resumableCache(manifest, complete) {
+  const preserved = complete[0]?.name;
+  let resumed;
+  for (const name of await caches.keys()) {
+    if (!name.startsWith(`${PREFIX}pack:`) || name === preserved) continue;
+    const cache = await caches.open(name);
+    if (
+      !resumed &&
+      name.startsWith(`${PREFIX}pack:${manifest.version}:`) &&
+      !(await cache.match(MARKER))
+    ) {
+      try {
+        const saved = manifestData(
+          await (
+            await cache.match(new URL("search-manifest.json", SCOPE).href)
+          ).json(),
+        );
+        if (JSON.stringify(saved.files) === JSON.stringify(manifest.files))
+          resumed = { name, cache };
+      } catch {
+        /* A partial pack is reusable only with the exact same reviewed manifest. */
+      }
+    }
+    if (resumed?.name !== name) await caches.delete(name);
+  }
+  return resumed;
+}
+
 async function downloadPack(job, expectedVersion) {
   const controller = job.controller;
   const manifestUrl = new URL("search-manifest.json", SCOPE).href;
   let cacheName;
   let committed = false;
+  let quotaFailure = false;
   try {
+    await automaticPermission(job);
     const response = await networkFetch(manifestUrl, {
       cache: "no-store",
       signal: controller.signal,
+      ...(job.automatic ? { priority: "low" } : {}),
     });
     if (!response.ok)
       throw new Error("Offline search manifest could not be loaded.");
@@ -182,14 +258,14 @@ async function downloadPack(job, expectedVersion) {
     const complete = await snapshots();
     const existing = complete.find((item) => item.version === manifest.version);
     if (existing) return stateFor(existing);
-    // Keep the current complete snapshot while freeing abandoned/older own packs.
-    const preserved = complete[0]?.name;
-    for (const name of await caches.keys())
-      if (name.startsWith(`${PREFIX}pack:`) && name !== preserved)
-        await caches.delete(name);
+    // Same-version partial downloads can resume after a tab closes or a worker stops.
+    const resumed = await resumableCache(manifest, complete);
     snapshotsPromise = undefined;
-    cacheName = `${PREFIX}pack:${manifest.version}:${Date.now()}-${Math.random().toString(36).slice(2)}`;
-    const cache = await caches.open(cacheName);
+    cacheName =
+      resumed?.name ||
+      `${PREFIX}pack:${manifest.version}:${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    const cache = resumed?.cache || (await caches.open(cacheName));
+    await cache.put(manifestUrl, jsonResponse(rawManifest));
     job.state = {
       phase: "downloading",
       hasDownload: complete.length > 0,
@@ -197,20 +273,30 @@ async function downloadPack(job, expectedVersion) {
       completed: 0,
       total: manifest.files.length,
       totalBytes: manifest.totalBytes,
+      ...(job.automatic ? { paused: false } : {}),
     };
     progress(job);
     let position = 0;
     const workers = Array.from(
-      { length: Math.min(4, manifest.files.length) },
+      { length: Math.min(job.automatic ? 1 : 4, manifest.files.length) },
       async () => {
         try {
           while (position < manifest.files.length) {
+            await automaticPermission(job);
             controller.signal.throwIfAborted();
+            if (position >= manifest.files.length) break;
             const file = manifest.files[position++];
-            const asset = await networkFetch(file.url, {
-              cache: "no-store",
-              signal: controller.signal,
-            });
+            const prior = await cache.match(file.url);
+            const reusable =
+              prior?.ok &&
+              (await prior.clone().arrayBuffer()).byteLength === file.bytes;
+            const asset = reusable
+              ? prior
+              : await networkFetch(file.url, {
+                  cache: "no-store",
+                  signal: controller.signal,
+                  ...(job.automatic ? { priority: "low" } : {}),
+                });
             if (
               !asset.ok ||
               !scoped(new URL(asset.url || file.url)) ||
@@ -218,7 +304,7 @@ async function downloadPack(job, expectedVersion) {
             )
               throw new Error("A search asset changed or could not be saved.");
             controller.signal.throwIfAborted();
-            await cache.put(file.url, asset);
+            if (!reusable) await cache.put(file.url, asset);
             job.state.completed++;
             progress(job);
           }
@@ -231,10 +317,15 @@ async function downloadPack(job, expectedVersion) {
     const results = await Promise.allSettled(workers);
     const failure = results.find((result) => result.status === "rejected");
     if (failure) throw failure.reason;
+    await automaticPermission(job);
     controller.signal.throwIfAborted();
     const versionResponse = await networkFetch(
       new URL("search-version.json", SCOPE),
-      { cache: "no-store", signal: controller.signal },
+      {
+        cache: "no-store",
+        signal: controller.signal,
+        ...(job.automatic ? { priority: "low" } : {}),
+      },
     );
     if (
       !versionResponse.ok ||
@@ -252,8 +343,14 @@ async function downloadPack(job, expectedVersion) {
     committed = true;
     snapshotsPromise = undefined;
     return stateFor({ ...manifest });
+  } catch (error) {
+    quotaFailure =
+      error?.name === "QuotaExceededError" ||
+      /quota/i.test(error?.message || "");
+    throw error;
   } finally {
-    if (cacheName && !committed) await caches.delete(cacheName);
+    if (cacheName && !committed && (!job.automatic || quotaFailure))
+      await caches.delete(cacheName);
     snapshotsPromise = undefined;
   }
 }
@@ -266,28 +363,45 @@ self.addEventListener("activate", (event) =>
 );
 self.addEventListener("message", (event) => {
   const port = event.ports?.[0];
-  if (!port || !event.source?.url || !scoped(new URL(event.source.url))) return;
+  if (!event.source?.url || !scoped(new URL(event.source.url))) return;
+  if (!port && event.data?.type !== "OFFLINE_SEARCH_ACTIVITY") return;
   event.waitUntil(
     (async () => {
       try {
         let state;
-        if (event.data?.type === "OFFLINE_SEARCH_STATUS")
+        if (event.data?.type === "OFFLINE_SEARCH_ACTIVITY") {
+          if (event.source.id)
+            automaticClients.set(event.source.id, {
+              allowed: event.data.allowed === true,
+              busy: event.data.busy === true,
+            });
+          if (warmJob?.automatic) for (const wake of [...warmJob.wake]) wake();
+          state = await offlineCacheStatus();
+        } else if (event.data?.type === "OFFLINE_SEARCH_STATUS")
           state = await offlineCacheStatus();
         else if (event.data?.type === "OFFLINE_SEARCH_CLAIM") {
           await self.clients.claim();
           state = await offlineCacheStatus();
         } else if (event.data?.type === "OFFLINE_SEARCH_DOWNLOAD") {
+          if (event.data.automatic === true && automaticQuotaBlocked)
+            throw Object.assign(
+              new Error("Offline storage quota is unavailable."),
+              { name: "QuotaExceededError" },
+            );
           if (!warmJob) {
             const complete = await snapshots();
             if (!warmJob) {
               const job = {
                 controller: new AbortController(),
                 ports: new Set(),
+                wake: new Set(),
+                automatic: event.data.automatic === true,
                 state: {
                   phase: "downloading",
                   hasDownload: complete.length > 0,
                   completed: 0,
                   version: event.data.expectedVersion,
+                  ...(event.data.automatic === true ? { paused: false } : {}),
                 },
               };
               warmJob = job;
@@ -297,11 +411,16 @@ self.addEventListener("message", (event) => {
                   return result;
                 })
                 .catch(async (error) => {
+                  const quota =
+                    error?.name === "QuotaExceededError" ||
+                    /quota/i.test(error?.message || "");
+                  if (quota && job.automatic) automaticQuotaBlocked = true;
                   const complete = await snapshots().catch(() => []);
                   await broadcast({
                     ...job.state,
                     phase: "error",
                     hasDownload: complete.length > 0,
+                    errorKind: quota ? "quota" : "network",
                   });
                   throw error;
                 })
@@ -323,6 +442,7 @@ self.addEventListener("message", (event) => {
           }
         } else if (event.data?.type === "OFFLINE_SEARCH_REMOVE") {
           epoch++;
+          automaticQuotaBlocked = false;
           if (warmJob) {
             warmJob.controller.abort();
             await warmJob.promise.catch(() => {});
@@ -334,12 +454,13 @@ self.addEventListener("message", (event) => {
           state = { phase: "available", hasDownload: false };
           await broadcast(state);
         } else return;
-        port.postMessage({ type: "OFFLINE_SEARCH_REPLY", ok: true, state });
+        port?.postMessage({ type: "OFFLINE_SEARCH_REPLY", ok: true, state });
       } catch (error) {
-        port.postMessage({
+        port?.postMessage({
           type: "OFFLINE_SEARCH_REPLY",
           ok: false,
           error: error?.message || "Offline search operation failed.",
+          code: error?.name,
         });
       }
     })(),
@@ -348,7 +469,7 @@ self.addEventListener("message", (event) => {
 
 function safeQueryPath(url) {
   const path = url.pathname.slice(BASE.length);
-  return /^(?:pagefind\/|_astro\/|images\/editorial-(?:writing|design|engineering)\.jpg$|(?:content-index|search-version|search-manifest)\.json$|(?:en\/)?blog\/$)/.test(
+  return /^(?:pagefind\/|_astro\/|(?:images|content-assets)\/.+\.(?:svg|png|jpe?g|avif|webp)$|(?:content-index|search-version|search-manifest)\.json$|(?:en\/)?blog\/$)/i.test(
     path,
   );
 }

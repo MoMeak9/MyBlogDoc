@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
+import ts from "typescript";
 
 const workerSource = readFileSync(
   new URL("../public/search-sw.js", import.meta.url),
@@ -31,7 +32,10 @@ function harness() {
   const storage = new Map();
   const routes = new Map();
   const calls = [];
+  const priorities = [];
   let online = true;
+  let visible = true;
+  let fetchHook;
   const caches = {
     async keys() {
       return [...storage.keys()];
@@ -48,7 +52,15 @@ function harness() {
     self: {
       registration: { scope },
       addEventListener: (type, callback) => handlers.set(type, callback),
-      clients: { claim: async () => {}, matchAll: async () => [] },
+      clients: {
+        claim: async () => {},
+        matchAll: async () => [],
+        get: async (id) => ({
+          id,
+          url: `${scope}blog/`,
+          visibilityState: visible ? "visible" : "hidden",
+        }),
+      },
       skipWaiting: async () => {},
     },
     caches,
@@ -66,6 +78,8 @@ function harness() {
             ? resource.href
             : resource.url;
       calls.push(url);
+      priorities.push({ url, priority: options?.priority });
+      if (fetchHook) await fetchHook(url, options);
       if (!online || options?.signal?.aborted) throw new Error("Offline");
       const route = routes.get(url);
       if (!route) return new Response("missing", { status: 404 });
@@ -84,7 +98,7 @@ function harness() {
     let complete;
     handlers.get("message")({
       data: { type, ...detail },
-      source: { url: `${scope}blog/` },
+      source: { id: "archive-client", url: `${scope}blog/` },
       ports: [{ postMessage: (value) => messages.push(value) }],
       waitUntil: (promise) => {
         complete = promise;
@@ -115,6 +129,13 @@ function harness() {
     storage,
     routes,
     calls,
+    priorities,
+    hook: (callback) => {
+      fetchHook = callback;
+    },
+    visibility: (value) => {
+      visible = value;
+    },
     message,
     request,
     offline: () => {
@@ -142,6 +163,7 @@ function installRoutes(env, version = "version-1") {
     "pagefind/fragment/never-queried.pf_fragment": `never queried data ${version}`,
     "pagefind/wasm.zh.pagefind": "wasm payload",
     "_astro/journal.123.js": "archive application",
+    "content-assets/cover.svg": "<svg>cover</svg>",
   };
   const files = Object.entries(assets).map(([path, text]) => {
     const url = new URL(path, scope).href;
@@ -388,4 +410,306 @@ test("offline filtered numbered archives redirect to the matching language shell
   }
   assert.equal((await env.request("blog/2/", true)).status, 503);
   assert.equal((await env.request("en/blog/2/?page=3", true)).status, 503);
+});
+
+const delay = (ms = 0) => new Promise((resolve) => setTimeout(resolve, ms));
+async function until(predicate) {
+  for (let attempt = 0; attempt < 100; attempt++) {
+    if (await predicate()) return;
+    await delay(2);
+  }
+  assert.fail("The expected asynchronous state did not arrive.");
+}
+
+test("automatic warming uses one low-priority request, pauses when hidden/busy, and leaves a foreground query free", async () => {
+  const env = harness();
+  const manifest = installRoutes(env);
+  const held = new Set(manifest.files.slice(0, 1).map((file) => file.url));
+  let release;
+  const hold = new Promise((resolve) => {
+    release = resolve;
+  });
+  let active = 0;
+  let maximum = 0;
+  env.hook(async (url, options) => {
+    if (options?.priority !== "low" || !held.has(url)) return;
+    active++;
+    maximum = Math.max(maximum, active);
+    await hold;
+    active--;
+  });
+  await env.message("OFFLINE_SEARCH_ACTIVITY", { allowed: true, busy: false });
+  const downloaded = env.message("OFFLINE_SEARCH_DOWNLOAD", {
+    automatic: true,
+  });
+  await until(() => active === 1);
+  await env.message("OFFLINE_SEARCH_ACTIVITY", { allowed: false, busy: true });
+  release();
+  await until(
+    async () =>
+      (await env.message("OFFLINE_SEARCH_STATUS")).state.paused === true,
+  );
+  const stoppedAt = env.calls.length;
+  await delay(10);
+  assert.equal(env.calls.length, stoppedAt);
+  assert.equal(maximum, 1);
+  assert.equal((await env.request("content-index.json")).ok, true);
+  assert.equal(env.priorities.at(-1).priority, undefined);
+  env.visibility(false);
+  await env.message("OFFLINE_SEARCH_ACTIVITY", { allowed: true, busy: false });
+  const hiddenAt = env.calls.length;
+  await delay(10);
+  assert.equal(env.calls.length, hiddenAt);
+  env.visibility(true);
+  await env.message("OFFLINE_SEARCH_ACTIVITY", { allowed: true, busy: false });
+  const reply = await downloaded;
+  assert.equal(reply.state.phase, "ready");
+  assert.equal(
+    env.priorities.filter((item) => item.priority === "low").length,
+    manifest.files.length + 2,
+  );
+  env.offline();
+  assert.equal(
+    await (await env.request("content-assets/cover.svg?v=1")).text(),
+    "<svg>cover</svg>",
+  );
+  assert.equal((await env.request("content-assets/unknown.svg?v=1")).status, 0);
+});
+
+test("an interrupted automatic pack resumes saved same-version files without publishing a partial snapshot", async () => {
+  const env = harness();
+  installRoutes(env);
+  env.routes.delete(new URL("pagefind/wasm.zh.pagefind", scope).href);
+  await env.message("OFFLINE_SEARCH_ACTIVITY", { allowed: true });
+  assert.equal(
+    (await env.message("OFFLINE_SEARCH_DOWNLOAD", { automatic: true })).ok,
+    false,
+  );
+  assert.equal(
+    (await env.message("OFFLINE_SEARCH_STATUS")).state.phase,
+    "available",
+  );
+  const partial = [...env.storage.entries()].find(([name]) =>
+    name.includes("pack:"),
+  )[1];
+  const saved = new Set(
+    (await partial.keys())
+      .map((request) => request.url)
+      .filter(
+        (url) =>
+          !url.endsWith("search-manifest.json") &&
+          !url.endsWith("search-version.json"),
+      ),
+  );
+  assert.ok(saved.size > 0);
+  installRoutes(env);
+  const start = env.calls.length;
+  assert.equal(
+    (await env.message("OFFLINE_SEARCH_DOWNLOAD", { automatic: true })).state
+      .phase,
+    "ready",
+  );
+  assert.ok(env.calls.slice(start).every((url) => !saved.has(url)));
+});
+
+function schedulerHarness(
+  connectionSettings = {},
+  readyState = "complete",
+  visibilityState = "visible",
+) {
+  let now = 0;
+  let id = 0;
+  const timers = new Map();
+  const window = new EventTarget();
+  const document = new EventTarget();
+  document.readyState = readyState;
+  document.visibilityState = visibilityState;
+  const connection = Object.assign(
+    new EventTarget(),
+    { effectiveType: "4g", saveData: false },
+    connectionSettings,
+  );
+  const messages = [];
+  const states = [];
+  const clockTimeout = (callback, ms = 0) => {
+    const timer = ++id;
+    timers.set(timer, { at: now + ms, callback });
+    return timer;
+  };
+  const clockClear = (timer) => timers.delete(timer);
+  const worker = {
+    scriptURL: new URL("search-sw.js", scope).href,
+    state: "activated",
+    postMessage: (message, ports = []) => {
+      messages.push(message);
+      if (!ports[0]) return;
+      const state =
+        message.type === "OFFLINE_SEARCH_DOWNLOAD"
+          ? {
+              phase: "ready",
+              hasDownload: true,
+              version: "version-1",
+              total: 11,
+              completed: 11,
+            }
+          : { phase: "available", hasDownload: false };
+      ports[0].postMessage({ type: "OFFLINE_SEARCH_REPLY", ok: true, state });
+    },
+  };
+  const registration = { scope, active: worker };
+  const serviceWorker = Object.assign(new EventTarget(), {
+    controller: worker,
+    getRegistration: async () => registration,
+    register: async () => registration,
+  });
+  window.isSecureContext = true;
+  window.caches = {};
+  window.requestIdleCallback = (callback) => clockTimeout(callback, 1);
+  window.cancelIdleCallback = clockClear;
+  const storage = new Map();
+  const context = vm.createContext({
+    window,
+    document,
+    navigator: { serviceWorker, connection, onLine: true },
+    location: { origin: new URL(scope).origin, pathname: "/MyBlogDoc/blog/" },
+    sessionStorage: {
+      getItem: (key) => storage.get(key),
+      setItem: (key, value) => storage.set(key, value),
+    },
+    URL,
+    Response,
+    AbortController,
+    Date: class extends Date {
+      static now() {
+        return now;
+      }
+    },
+    setTimeout: clockTimeout,
+    clearTimeout: clockClear,
+    MessageChannel: class {
+      constructor() {
+        let closed = false;
+        this.port1 = {
+          close: () => {
+            closed = true;
+          },
+          onmessage: null,
+        };
+        this.port2 = {
+          postMessage: (data) =>
+            queueMicrotask(() => {
+              if (!closed) this.port1.onmessage?.({ data });
+            }),
+        };
+      }
+    },
+    fetch: async () =>
+      new Response(
+        JSON.stringify({
+          version: "version-1",
+          totalBytes: 1234,
+          filesCount: 11,
+        }),
+      ),
+  });
+  const source = ts.transpileModule(
+    readFileSync(
+      new URL("../src/scripts/offline-search.ts", import.meta.url),
+      "utf8",
+    ),
+    {
+      compilerOptions: {
+        target: ts.ScriptTarget.ES2022,
+        module: ts.ModuleKind.ESNext,
+      },
+    },
+  ).outputText;
+  vm.runInContext(
+    `${source.replace(/^export /gm, "")}\nglobalThis.create = createOfflineSearch;`,
+    context,
+  );
+  const api = context.create("/MyBlogDoc/", (state) => states.push(state), {
+    automatic: true,
+  });
+  const flush = async () => {
+    for (let step = 0; step < 8; step++) await Promise.resolve();
+  };
+  const advance = async (ms) => {
+    const target = now + ms;
+    await flush();
+    while (true) {
+      const next = [...timers]
+        .filter(([, timer]) => timer.at <= target)
+        .sort((a, b) => a[1].at - b[1].at)[0];
+      if (!next) break;
+      now = next[1].at;
+      timers.delete(next[0]);
+      next[1].callback();
+      await flush();
+    }
+    now = target;
+    await flush();
+  };
+  return {
+    api,
+    messages,
+    states,
+    document,
+    window,
+    connection,
+    advance,
+    flush,
+  };
+}
+
+test("automatic scheduling waits for load plus five seconds and yields until an active query becomes idle", async () => {
+  const env = schedulerHarness({}, "interactive");
+  await env.advance(10000);
+  const downloads = () =>
+    env.messages.filter(
+      (message) => message.type === "OFFLINE_SEARCH_DOWNLOAD",
+    );
+  assert.equal(downloads().length, 0);
+  env.window.dispatchEvent(new Event("load"));
+  await env.advance(4999);
+  assert.equal(downloads().length, 0);
+  env.api.setBusy(true);
+  await env.advance(4000);
+  assert.equal(downloads().length, 0);
+  env.api.setBusy(false);
+  await env.advance(1000);
+  assert.equal(downloads().length, 0);
+  await env.advance(1);
+  await env.flush();
+  assert.equal(downloads().length, 1);
+  assert.equal(downloads()[0].automatic, true);
+  assert.equal(env.states.at(-1).phase, "ready");
+  env.api.dispose();
+});
+
+test("automatic scheduling stays disabled on save-data, slow 2g, or a hidden page", async () => {
+  for (const settings of [
+    { saveData: true },
+    { effectiveType: "slow-2g" },
+    { effectiveType: "2g" },
+  ]) {
+    const env = schedulerHarness(settings);
+    await env.advance(15000);
+    assert.equal(
+      env.messages.some(
+        (message) => message.type === "OFFLINE_SEARCH_DOWNLOAD",
+      ),
+      false,
+    );
+    env.api.dispose();
+  }
+  const hidden = schedulerHarness({}, "complete", "hidden");
+  await hidden.advance(15000);
+  assert.equal(
+    hidden.messages.some(
+      (message) => message.type === "OFFLINE_SEARCH_DOWNLOAD",
+    ),
+    false,
+  );
+  hidden.api.dispose();
 });

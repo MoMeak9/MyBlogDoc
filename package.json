@@ -14,7 +14,7 @@
     "build": "astro build && node scripts/build-search.mjs",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "node --test tests/content.test.mjs tests/paths.test.mjs tests/seo.test.mjs tests/search-query.test.mjs tests/offline-search.test.mjs tests/search-dictionary.test.mjs",
+    "test": "node --test tests/content.test.mjs tests/paths.test.mjs tests/seo.test.mjs tests/search-query.test.mjs tests/offline-search.test.mjs tests/search-dictionary.test.mjs tests/cover.test.mjs",
     "test:build": "node --test tests/build.test.mjs tests/search-build.test.mjs",
     "commit": "git-cz"
   },

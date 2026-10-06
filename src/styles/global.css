@@ -1,4 +1,4 @@
-/* Chronicle's editorial proportions, IBM Plex typography and two color palettes. */
+/* Chronicle's editorial proportions and two color palettes. */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -33,11 +33,10 @@
   --btn-bg: #0f0f0f;
   --btn-text: #fff;
   --sans:
-    "IBM Plex Sans", system-ui, -apple-system, "PingFang SC", "Microsoft YaHei",
+    "PingFang SC", HarmonyOS_Regular, "Helvetica Neue", "Microsoft YaHei",
     sans-serif;
-  --serif:
-    "IBM Plex Serif", "Noto Serif SC", "Songti SC", SimSun, Georgia, serif;
-  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --serif: var(--sans);
+  --mono: var(--sans);
 }
 :root.dark {
   color-scheme: dark;
@@ -599,6 +598,18 @@ button {
   height: 100%;
   color: var(--text);
 }
+.post-card.without-cover {
+  height: auto;
+  align-self: start;
+  padding: 24px;
+  border: 1px solid var(--border);
+}
+.post-card.without-cover > a {
+  height: auto;
+}
+.post-card.without-cover .post-description {
+  flex: none;
+}
 .post-card figure {
   overflow: hidden;
   margin: 0 0 20px;
@@ -1026,7 +1037,8 @@ button {
   margin: 4px;
 }
 .prose code {
-  font-family: var(--mono);
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   font-size: 0.82em;
   background: var(--border);
   padding: 3px 5px;

@@ -7,6 +7,7 @@ import {
   type SearchVocabulary,
 } from "../lib/search-query";
 import { createOfflineSearch, type OfflineSearchState } from "./offline-search";
+import { coverUrl } from "../lib/cover.mjs";
 
 type Article = {
   id: string;
@@ -17,6 +18,7 @@ type Article = {
   readMinutes: number;
   publishedDate?: string;
   modifiedDate?: string;
+  cover?: string;
 };
 type JournalSession = { root: HTMLElement; dispose: () => void };
 
@@ -38,11 +40,6 @@ let searchRequest: Promise<SearchAPI> | undefined;
 let searchAttempt = 0;
 let loadedSearchVersion: string | undefined;
 const pageSize = 12;
-const images = [
-  "editorial-writing.jpg",
-  "editorial-design.jpg",
-  "editorial-engineering.jpg",
-];
 
 async function fetchJson(path: string): Promise<unknown> {
   const response = await fetch(path, {
@@ -182,24 +179,27 @@ function element<K extends keyof HTMLElementTagNameMap>(
 
 function renderCard(
   article: Article,
-  index: number,
   locale: Locale,
   base: string,
   excerpt?: string,
 ) {
   const t = ui(locale);
-  const card = element("article", "post-card");
+  const cover = coverUrl(article.cover, base);
+  const card = element("article", `post-card${cover ? "" : " without-cover"}`);
   const link = element("a");
   link.href = postPath(article.id, locale, base);
-  const figure = element("figure");
-  const image = element("img", "post-art");
-  image.src = `${base}images/${images[index % images.length]}`;
-  image.alt = "";
-  image.width = 600;
-  image.height = 450;
-  image.loading = "lazy";
-  image.decoding = "async";
-  figure.append(image);
+  if (cover) {
+    const figure = element("figure");
+    const image = element("img", "post-art");
+    image.src = cover;
+    image.alt = "";
+    image.width = 600;
+    image.height = 450;
+    image.loading = "lazy";
+    image.decoding = "async";
+    figure.append(image);
+    link.append(figure);
+  }
   const meta = element("div", "post-meta");
   const separator = () => {
     const node = element("span", undefined, "·");
@@ -247,13 +247,7 @@ function renderCard(
   const description = element("p", "post-description");
   if (excerpt) appendExcerpt(description, excerpt);
   else description.textContent = article.description || t.empty;
-  link.append(
-    figure,
-    meta,
-    element("h3", undefined, article.title),
-    description,
-    read,
-  );
+  link.append(meta, element("h3", undefined, article.title), description, read);
   card.append(link);
   return card;
 }
@@ -300,76 +294,37 @@ export function initJournal() {
   let composing = false;
   const offlineBar = root.querySelector<HTMLElement>(".offline-search-bar");
   if (offlineBar) offlineBar.hidden = false;
-  const offlineButton =
-    root.querySelector<HTMLButtonElement>("#download-search");
-  const removeOffline = root.querySelector<HTMLButtonElement>("#remove-search");
   const offlineStatus = root.querySelector<HTMLElement>(
     "#offline-search-status",
   );
-  const offlineProgress = root.querySelector<HTMLProgressElement>(
-    "#offline-search-progress",
-  );
-  const offline = createOfflineSearch(base, (state: OfflineSearchState) => {
-    if (disposed) return;
-    const downloading = state.phase === "downloading";
-    const ready = state.phase === "ready";
-    const hasDownload = ready || Boolean(state.hasDownload);
-    if (ready && loadedSearchVersion && state.version !== loadedSearchVersion) {
-      resetSearch();
-      articleRequest = undefined;
-      if (active()) void update();
-    }
-    if (offlineButton) {
-      offlineButton.hidden = ready || state.phase === "unsupported";
-      offlineButton.disabled = downloading || state.phase === "checking";
-      const label =
-        state.phase === "error"
-          ? t.retryDownload
-          : hasDownload
-            ? t.updateSearchDownload
-            : t.downloadSearch;
-      if (offlineButton.textContent !== label)
-        offlineButton.textContent = label;
-    }
-    if (removeOffline) {
-      removeOffline.hidden = !hasDownload;
-      removeOffline.disabled = downloading;
-    }
-    if (offlineProgress) {
-      offlineProgress.hidden = !downloading;
-      offlineProgress.max = state.total || 1;
-      offlineProgress.value = state.completed || 0;
-    }
-    if (offlineStatus) {
-      offlineStatus.dataset.phase = state.phase;
-      const percent = Math.round(
-        ((state.completed || 0) / (state.total || 1)) * 100,
-      );
-      const text = ready
-        ? t.offlineReady
-        : downloading
-          ? `${t.downloadingSearch} ${percent}%`
-          : state.phase === "error"
-            ? t.offlineDownloadError
-            : state.phase === "unsupported"
-              ? t.offlineUnsupported
-              : `${t.offlineSearchHint}${state.totalBytes ? ` ${t.offlineDataSize.replace("{size}", (state.totalBytes / 1024 / 1024).toFixed(1))}` : ""}`;
-      if (offlineStatus.textContent !== text) offlineStatus.textContent = text;
-    }
-  });
-  offlineButton?.addEventListener(
-    "click",
-    () => {
-      void offline.download().catch(() => {});
+  const offline = createOfflineSearch(
+    base,
+    (state: OfflineSearchState) => {
+      if (disposed) return;
+      const ready = state.phase === "ready";
+      if (
+        ready &&
+        loadedSearchVersion &&
+        state.version !== loadedSearchVersion
+      ) {
+        resetSearch();
+        articleRequest = undefined;
+        if (active()) void update();
+      }
+      if (offlineStatus) {
+        offlineStatus.dataset.phase = state.phase;
+        const text = ready
+          ? t.offlineReady
+          : state.phase === "unsupported"
+            ? t.offlineUnsupported
+            : state.phase === "error"
+              ? t.offlineDownloadError
+              : t.offlineSearchHint;
+        if (offlineStatus.textContent !== text)
+          offlineStatus.textContent = text;
+      }
     },
-    { signal: events.signal },
-  );
-  removeOffline?.addEventListener(
-    "click",
-    () => {
-      void offline.remove().catch(() => {});
-    },
-    { signal: events.signal },
+    { automatic: true },
   );
   const active = () => Boolean(category || input.value.trim());
   const archivePath = (number: number) =>
@@ -449,6 +404,7 @@ export function initJournal() {
       });
   };
   const setFeedback = (kind?: "loading" | "error") => {
+    offline.setBusy(kind === "loading" || composing);
     if (feedback) feedback.hidden = !kind;
     if (message)
       message.textContent =
@@ -529,10 +485,9 @@ export function initJournal() {
       }
       const pages = Math.max(1, Math.ceil(total / pageSize));
       page = Math.min(page, pages);
-      const start = (page - 1) * pageSize;
       grid.replaceChildren(
-        ...cards.map(({ article, excerpt }, index) =>
-          renderCard(article, start + index, locale, base, excerpt),
+        ...cards.map(({ article, excerpt }) =>
+          renderCard(article, locale, base, excerpt),
         ),
       );
       if (count) count.textContent = String(total);
@@ -570,6 +525,7 @@ export function initJournal() {
     "compositionstart",
     () => {
       composing = true;
+      offline.setBusy(true);
       requestVersion++;
       cancelInput();
     },

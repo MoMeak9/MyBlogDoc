@@ -335,12 +335,16 @@ export async function buildSearch({
       }
     }
   }
-  for (const image of [
-    "editorial-writing.jpg",
-    "editorial-design.jpg",
-    "editorial-engineering.jpg",
-  ])
-    await addLocal(`${base}images/${image}`);
+  for (const route of ["blog/", "en/blog/"]) {
+    const url = `${base}${route}`;
+    for (const match of assets
+      .get(url)
+      .content.toString()
+      .matchAll(/<img\b[^>]*>/gi)) {
+      const resource = localUrl(attributes(match[0]).src, url);
+      if (resource) await addLocal(resource);
+    }
+  }
   for (let position = 0; position < pending.length; position++) {
     const from = pending[position];
     const extension = from.endsWith(".js") ? ".js" : ".css";

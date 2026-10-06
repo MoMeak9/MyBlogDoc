@@ -14,7 +14,7 @@ import {
   stripFrontmatter,
 } from "../src/lib/markdown.mjs";
 
-test("sharing covers come from visible images rather than Markdown code examples", () => {
+test("covers never skip a first code block or text paragraph to use a later illustration", () => {
   const body =
     "# 标题\n\n```md\n![demo](https://example.com/example.png)\n```\n\n正文。";
   assert.equal(extractPostMetadata({ id: "笔记", body }).cover, undefined);
@@ -23,8 +23,159 @@ test("sharing covers come from visible images rather than Markdown code examples
       id: "笔记",
       body: body + "\n![real](https://example.com/real.png)",
     }).cover,
-    "https://example.com/real.png",
+    undefined,
   );
+  assert.equal(
+    extractPostMetadata({
+      id: "笔记",
+      body: "# 标题\n\n第一段是文字。\n\n![later](https://example.com/later.png)",
+    }).cover,
+    undefined,
+  );
+  assert.equal(
+    extractPostMetadata({
+      id: "笔记",
+      body: "# 标题\n\n## 小节\n\n![later](https://example.com/later.png)",
+    }).cover,
+    undefined,
+  );
+  assert.equal(
+    extractPostMetadata({
+      id: "笔记",
+      body: "# 标题\n\n# 第二个标题\n\n![later](https://example.com/later.png)",
+    }).cover,
+    undefined,
+  );
+});
+
+test("explicit cover metadata wins while leading standalone body images preserve logical URLs", () => {
+  const body =
+    "---\ntitle: 标题\n---\n\n# 标题\n\n![hero](./images/首图.svg)\n\n正文";
+  const explicit = extractPostMetadata({
+    id: "React/笔记",
+    body,
+    data: { cover: " /content-assets/explicit.avif " },
+  });
+  assert.equal(explicit.cover, "/content-assets/explicit.avif");
+  assert.equal(explicit.coverFromBody, false);
+  const leading = extractPostMetadata({ id: "React/笔记", body });
+  assert.equal(leading.cover, "./images/首图.svg");
+  assert.equal(leading.coverFromBody, true);
+  for (const url of [
+    "../images/cover.webp",
+    "/images/cover.jpeg",
+    "http://example.com/image.png",
+    "https://example.com/image?width=720&fit=cover",
+  ]) {
+    const metadata = extractPostMetadata({
+      id: "React/笔记",
+      body: `![hero](${url})\n\n正文`,
+    });
+    assert.equal(metadata.cover, url);
+    assert.equal(metadata.coverFromBody, true);
+  }
+});
+
+test("reference and image-only linked covers resolve definitions later in the source", () => {
+  const metadata = extractPostMetadata({
+    id: "React/笔记",
+    body: '# 标题\n\n[![hero][Cover Asset]](https://example.com/article)\n\n正文\n\n[cover asset]: <../images/首图 (1).svg> "封面"',
+  });
+  assert.equal(metadata.cover, "../images/首图 (1).svg");
+  assert.equal(metadata.coverFromBody, true);
+  assert.equal(
+    extractPostMetadata({
+      id: "笔记",
+      body: "![hero][asset]\n\n[asset]: /images/first.svg\n[asset]: /images/ignored.svg",
+    }).cover,
+    "/images/first.svg",
+  );
+  assert.equal(
+    extractPostMetadata({
+      id: "笔记",
+      body: "![hero][missing]\n\n![later](/images/later.svg)",
+    }).cover,
+    undefined,
+  );
+});
+
+test("HTML img and picture paragraphs select the actual fallback image and decode attributes", () => {
+  const picture = extractPostMetadata({
+    id: "笔记",
+    body: '# 标题\n\n<p align="center"><picture><source srcset="/images/dark.svg" media="(prefers-color-scheme:dark)"><img src="../images/cover.svg?width=720&amp;fit=cover" alt="封面"></picture></p>\n\n正文',
+  });
+  assert.equal(picture.cover, "../images/cover.svg?width=720&fit=cover");
+  assert.equal(picture.coverFromBody, true);
+  assert.equal(
+    extractPostMetadata({
+      id: "笔记",
+      body: '<img src="https://example.com/image-without-extension">\n\n正文',
+    }).cover,
+    "https://example.com/image-without-extension",
+  );
+  assert.equal(
+    extractPostMetadata({
+      id: "笔记",
+      body: '<a href="https://example.com"><img src="/images/cover.svg"></a>\n\n正文',
+    }).cover,
+    "/images/cover.svg",
+  );
+  assert.equal(
+    extractPostMetadata({
+      id: "笔记",
+      body: '<p><img src="/images/first.svg"></p><p>第二段正文</p>',
+    }).cover,
+    "/images/first.svg",
+  );
+  assert.equal(
+    extractPostMetadata({
+      id: "笔记",
+      body: '<picture><source srcset="/images/alternative.webp"><img src="/images/fallback.png"></picture><p>第二段正文</p>',
+    }).cover,
+    "/images/fallback.png",
+  );
+  assert.equal(
+    extractPostMetadata({
+      id: "笔记",
+      body: '<p>第一段正文</p><p><img src="/images/later.svg"></p>',
+    }).cover,
+    undefined,
+  );
+});
+
+test("cover fallback rejects captions and text mixed into the first paragraph", () => {
+  for (const body of [
+    "介绍文字 ![hero](/images/cover.svg)",
+    "![hero](/images/cover.svg) 图注文字",
+    "[![hero](/images/cover.svg) 点击阅读](https://example.com)",
+    '<p><img src="/images/cover.svg">图注文字</p>',
+    '<figure><img src="/images/cover.svg"><figcaption>图注文字</figcaption></figure>',
+  ]) {
+    const metadata = extractPostMetadata({ id: "笔记", body });
+    assert.equal(metadata.cover, undefined);
+    assert.equal(metadata.coverFromBody, false);
+  }
+});
+
+test("cover URLs reject scripts, credentials and filesystem schemes without changing body sources", () => {
+  for (const url of [
+    "javascript:alert(1)",
+    "data:image/svg+xml;base64,PHN2Zz4=",
+    "file:///etc/passwd",
+    "https://user:password@example.com/image",
+  ]) {
+    assert.equal(
+      extractPostMetadata({ id: "笔记", body: `<img src="${url}">` }).cover,
+      undefined,
+    );
+    const explicit = extractPostMetadata({
+      id: "笔记",
+      body: "![valid](/images/first.svg)",
+      data: { cover: url },
+    });
+    assert.equal(explicit.cover, undefined);
+    assert.equal(explicit.coverFromBody, false);
+  }
 });
 
 test("legacy frontmatter remains optional and the first real H1 supplies a title", () => {

@@ -52,7 +52,9 @@ Standard Markdown, tables, syntax highlighting, native HTML, images, and videos 
 
 The default Chinese interface is at `/`; the English interface is at `/en/`. Both use the same articles.
 
-## Social profiles and motion
+## Covers, typography and social profiles
+
+An explicit `cover` takes priority. Otherwise, only an image-only first body paragraph supplies a fallback. Articles beginning with text or containing no image use text cards; later illustrations are not covers. The interface uses `"PingFang SC", HarmonyOS_Regular, "Helvetica Neue", "Microsoft YaHei", sans-serif`, with system monospace for code and no external font requests.
 
 Edit `src/config/site.ts` to configure the author and GitHub, Bilibili, and email profiles. The same links appear on the homepage, About page, footer, and mobile menu. Interface translations live in `src/i18n.ts`.
 
@@ -94,7 +96,7 @@ Archives statically render 12 articles per page, with search indexes loaded on d
 
 [Pagefind](https://pagefind.app/) builds a static, segmented Chinese index for public articles after the Astro build. Queries, relevance ranking, and highlighted excerpts run locally. Both interface languages share the original corpus and preserve their own article links. Keyword searches load only the required index chunks and visible excerpts; category-only filtering uses metadata. No search server, API key, or external search service is required.
 
-Use **Download offline search** in the journal to save the complete index, search pages, and required local assets. Once finished, new queries, category filters, and result pagination work without a connection. Previously visited articles can be read offline. Incomplete downloads never report ready; complete downloads remain available while a new version downloads. Downloads can be cleared, and caches stay within this blog's path. See the [implementation and validation notes](docs/offline-search.md).
+Offline search prepares its full index and local assets automatically after the page loads and becomes idle. There is no download button. Background requests run at low priority and defer to search input, hidden tabs, Data Saver and slow connections. Completed data supports new offline queries, filtering, pagination and previously visited articles. Failed background updates preserve the prior complete cache and stay within the blog path. See the [implementation and validation notes](docs/offline-search.md).
 
 ## SEO and GEO
 

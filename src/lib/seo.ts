@@ -1,4 +1,5 @@
 import { localePath, normalizeBase, postPath } from "./paths.mjs";
+import { coverUrl } from "./cover.mjs";
 
 type Metadata = Record<string, unknown>;
 export type SourceLink = { url: string; title?: string };
@@ -119,16 +120,8 @@ export function safeHttpUrl(
 }
 
 export function articleImageUrl(value: unknown, origin: string, base = "/") {
-  if (typeof value !== "string" || !value.trim()) return undefined;
-  if (/^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(value))
-    return safeHttpUrl(value, origin);
-  const mount = normalizeBase(base);
-  const path =
-    value.startsWith(mount) && mount !== "/"
-      ? value
-      : `${mount}${value.replace(/^\.?\//, "")}`;
-  const url = safeHttpUrl(path, origin);
-  return url && new URL(url).pathname.startsWith(mount) ? url : undefined;
+  const image = coverUrl(value, base);
+  return image ? safeHttpUrl(image, origin) : undefined;
 }
 
 function text(value: unknown): string {
@@ -404,6 +397,9 @@ export function articleIndexEntry(
     inLanguage: article.language,
     categories: article.categories,
     tags: article.tags,
+    ...(coverUrl(article.cover, base)
+      ? { cover: coverUrl(article.cover, base) }
+      : {}),
     ...(article.publishedDate
       ? { publishedDate: article.publishedDate.toISOString() }
       : {}),

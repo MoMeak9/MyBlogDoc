@@ -1,5 +1,19 @@
 import { rewriteLegacyHref } from "./paths.mjs";
 import { rehypeHeadingIds } from "@astrojs/markdown-remark";
+import { createRequire } from "node:module";
+
+// Reuse Astro's installed Markdown/HTML parsers without adding another parser stack.
+const moduleRequire = createRequire(import.meta.url);
+const markdownRequire = createRequire(
+  moduleRequire.resolve("@astrojs/markdown-remark"),
+);
+const { unified: unifiedParser } = markdownRequire("unified");
+const remarkParse = markdownRequire("remark-parse").default;
+const { definitions: markdownDefinitions } = markdownRequire(
+  "mdast-util-definitions",
+);
+const { fromHtml } = markdownRequire("hast-util-from-html");
+const coverParser = unifiedParser().use(remarkParse);
 
 /** VuePress 2's original @mdit-vue/shared slug convention. */
 export function legacySlugify(text) {
@@ -153,6 +167,146 @@ function truncateSummary(value) {
   return `${description}…`;
 }
 
+function safeCoverUrl(value) {
+  if (typeof value !== "string") return undefined;
+  const url = value.trim();
+  if (!url || /[\u0000-\u001f\u007f\\]/.test(url) || /^[?#]/.test(url))
+    return undefined;
+  if (/^[a-z][a-z\d+.-]*:/i.test(url) || url.startsWith("//")) {
+    try {
+      const parsed = new URL(url.startsWith("//") ? `https:${url}` : url);
+      if (
+        !["https:", "http:"].includes(parsed.protocol) ||
+        parsed.username ||
+        parsed.password
+      )
+        return undefined;
+    } catch {
+      return undefined;
+    }
+  }
+  return url;
+}
+
+function coverAttribute(value) {
+  return String(value).replace(
+    /[&<>"']/g,
+    (character) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        character
+      ],
+  );
+}
+
+function firstParagraphCover(content) {
+  const tree = coverParser.parse(content);
+  const definition = markdownDefinitions(tree);
+  const blocks = tree.children.filter(
+    (node) =>
+      node.type !== "definition" &&
+      !(
+        node.type === "html" && /^\s*(?:<!--[\s\S]*?-->\s*)+$/.test(node.value)
+      ),
+  );
+  if (blocks[0]?.type === "heading" && blocks[0].depth === 1) blocks.shift();
+  const paragraph = blocks[0];
+  if (!paragraph || !["paragraph", "html"].includes(paragraph.type))
+    return undefined;
+
+  function inlineHtml(node) {
+    if (node.type === "text") return coverAttribute(node.value);
+    if (node.type === "html") return node.value;
+    if (node.type === "break") return "<br>";
+    if (node.type === "image" || node.type === "imageReference") {
+      const url =
+        node.type === "image" ? node.url : definition(node.identifier)?.url;
+      return url ? `<img src="${coverAttribute(url)}">` : undefined;
+    }
+    if (["link", "linkReference", "emphasis", "strong"].includes(node.type)) {
+      const children = node.children.map(inlineHtml);
+      return children.some((child) => child === undefined)
+        ? undefined
+        : `<a>${children.join("")}</a>`;
+    }
+    return undefined;
+  }
+
+  const parts =
+    paragraph.type === "html"
+      ? [paragraph.value]
+      : paragraph.children.map(inlineHtml);
+  if (parts.some((part) => part === undefined)) return undefined;
+  const fragment = fromHtml(parts.join(""), { fragment: true });
+  let imageParagraph = fragment;
+  if (
+    paragraph.type === "html" ||
+    (paragraph.type === "paragraph" &&
+      paragraph.children.some((node) => node.type === "html"))
+  ) {
+    const children = fragment.children.filter(
+      (node) =>
+        node.type !== "comment" &&
+        !(node.type === "text" && !node.value.trim()),
+    );
+    const first = children[0];
+    if (
+      first?.type === "element" &&
+      ["p", "div", "figure"].includes(first.tagName)
+    ) {
+      imageParagraph = first;
+    } else {
+      const boundary = children.findIndex(
+        (node, index) =>
+          index > 0 &&
+          node.type === "element" &&
+          [
+            "p",
+            "div",
+            "figure",
+            "blockquote",
+            "pre",
+            "table",
+            "ul",
+            "ol",
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+          ].includes(node.tagName),
+      );
+      imageParagraph = {
+        type: "root",
+        children: boundary < 0 ? children : children.slice(0, boundary),
+      };
+    }
+  }
+  const images = [];
+  function imageOnly(node) {
+    if (node.type === "comment") return true;
+    if (node.type === "text") return !node.value.trim();
+    if (node.type === "root") return node.children.every(imageOnly);
+    if (node.type !== "element") return false;
+    if (node.tagName === "img") {
+      const url = safeCoverUrl(node.properties?.src);
+      if (!url) return false;
+      images.push(url);
+      return true;
+    }
+    if (node.tagName === "source") return true;
+    if (node.tagName === "br") return true;
+    if (
+      ["p", "picture", "a", "div", "figure", "strong", "em"].includes(
+        node.tagName,
+      )
+    )
+      return node.children.every(imageOnly);
+    return false;
+  }
+  return imageOnly(imageParagraph) ? images[0] : undefined;
+}
+
 /** Normalize metadata without requiring edits to the existing Markdown files. */
 export function extractPostMetadata({
   id,
@@ -178,30 +332,10 @@ export function extractPostMetadata({
   const explicitDate = parseDate(data.date);
   const categories = normalizeList(data.categories ?? data.category);
   const tags = normalizeList(data.tags ?? data.tag);
-  const explicitCover =
-    typeof data.cover === "string" && data.cover.trim()
-      ? data.cover.trim()
-      : undefined;
-  const visibleContent = [];
-  let coverFence;
-  for (const line of content.split(/\r?\n/)) {
-    const marker = line.match(/^\s*(`{3,}|~{3,})/);
-    if (marker) {
-      if (!coverFence) coverFence = marker[1];
-      else if (
-        marker[1][0] === coverFence[0] &&
-        marker[1].length >= coverFence.length
-      )
-        coverFence = undefined;
-      continue;
-    }
-    if (!coverFence) visibleContent.push(line);
-  }
-  const bodyCover = visibleContent
-    .join("\n")
-    .match(
-      /!\[[^\]]*\]\(\s*<?(https?:\/\/[^\s)>]+\.(?:png|jpe?g|webp|avif)(?:\?[^\s)>]*)?)/i,
-    )?.[1];
+  const hasExplicitCover =
+    typeof data.cover === "string" && Boolean(data.cover.trim());
+  const explicitCover = hasExplicitCover ? safeCoverUrl(data.cover) : undefined;
+  const bodyCover = hasExplicitCover ? undefined : firstParagraphCover(content);
   return {
     title,
     description: truncateSummary(summary),
@@ -215,6 +349,7 @@ export function extractPostMetadata({
     featured: data.star === true || data.featured === true,
     empty: !content.trim(),
     cover: explicitCover ?? bodyCover,
+    coverFromBody: !hasExplicitCover && Boolean(bodyCover),
   };
 }
 

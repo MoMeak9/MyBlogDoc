@@ -12,6 +12,7 @@ import {
   type SEOArticle,
 } from "./seo";
 import { site } from "../config/site";
+import { coverUrl } from "./cover.mjs";
 
 export type DocumentEntry = CollectionEntry<"docs">;
 export type DocumentHeading = { depth: number; slug: string; text: string };
@@ -126,9 +127,19 @@ export function toPost(entry: DocumentEntry): Post {
     getGitDates().get(sourcePath),
   );
   const attribution = extractAttribution(entry.data, body, site.author.name);
+  const renderedCover = metadata.coverFromBody
+    ? entry.rendered?.html
+        .match(/<img\b[^>]*\bsrc\s*=\s*(["'])([^"']+)\1/i)?.[2]
+        ?.replaceAll("&amp;", "&")
+    : undefined;
   const knownDate = dates.publishedDate ?? dates.modifiedDate;
   const post: Post = {
     ...metadata,
+    cover: coverUrl(
+      renderedCover || metadata.cover,
+      import.meta.env.BASE_URL,
+      entry.id,
+    ),
     description: metadata.description || metadata.title,
     ...dates,
     ...attribution,

@@ -161,9 +161,6 @@ test("built search pack indexes each public article once and declares every cach
     "en/blog/",
     "pagefind/pagefind.js",
     "pagefind/pagefind-entry.json",
-    "images/editorial-writing.jpg",
-    "images/editorial-design.jpg",
-    "images/editorial-engineering.jpg",
   ])
     assert.ok(
       urls.has(`${base}${suffix}`),
