@@ -1,8 +1,3 @@
-> category:
->   - 前端
->   - JavaScript
->   - 外文翻译
-
 # Islands Architecture 孤岛（岛屿）架构
 
 > 原文：https://www.patterns.dev/vanilla/islands-architecture

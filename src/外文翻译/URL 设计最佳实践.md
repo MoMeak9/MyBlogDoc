@@ -1,8 +1,3 @@
-> category:
->   - 前端
->   - JavaScript
->   - 外文翻译
-
 > 原文：https://blog.jim-nielsen.com/2023/examples-of-great-urls/
 >
 > 标题：Examples of Great URL Design
