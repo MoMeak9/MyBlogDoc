@@ -68,7 +68,7 @@ star: true
 2. 将修改提交到 `main` 或 `master`。工作流依次安装锁定依赖、执行检查与测试、构建静态站点，再使用 GitHub 官方 Pages Actions 部署。
 3. 也可以在 **Actions → Build and deploy Astro to GitHub Pages → Run workflow** 手动运行。只有 `main`、`master` 会部署；Pull Request 会检查和构建。
 
-工作流读取 `actions/configure-pages` 输出的站点域名与路径，支持项目站点、用户站点和已配置的自定义域名。对于普通 `MyBlogDoc` 项目仓库，路径为 `/MyBlogDoc/`。Pull Request 构建根据 `GITHUB_REPOSITORY` 推导对应路径。Git 历史完整检出，以保持无日期文章的时间一致。部署不需要 PAT 或手工维护 `gh-pages` 分支。
+工作流优先读取 Repository Variables；未设置时读取 `actions/configure-pages` 输出的站点域名与路径，支持项目站点、用户站点和已配置的自定义域名。对于普通 `MyBlogDoc` 项目仓库，路径为 `/MyBlogDoc/`。Pull Request 构建在未设置 `BASE_PATH` 时根据 `GITHUB_REPOSITORY` 推导对应路径。Git 历史完整检出，以保持无日期文章的时间一致。部署不需要 PAT 或手工维护 `gh-pages` 分支。
 
 需要覆盖地址时，在 **Settings → Secrets and variables → Actions → Variables** 中设置：
 
@@ -76,6 +76,15 @@ star: true
 | --- | --- | --- |
 | `SITE_URL` | `https://momeak9.github.io` | 站点域名，不含项目子路径 |
 | `BASE_PATH` | `/MyBlogDoc/` | 项目部署路径；根域名部署设置为 `/` |
+
+当前自定义域名 `yihuiblog.top` 部署在根路径 `/`，请明确设置以下 Repository Variables：
+
+```ini
+SITE_URL=https://yihuiblog.top
+BASE_PATH=/
+```
+
+这两个变量优先于 Pages 自动推导，也会应用于 Pull Request 构建。自定义域名下的路径为 `/`，不要沿用普通项目站点的 `/MyBlogDoc/` 前缀；参见 [Astro 自定义域名部署说明](https://docs.astro.build/en/guides/deploy/github/#change-your-github-url-to-a-custom-domain)。修改变量后，需要下一次工作流构建才能生效；可按上方步骤手动运行 `main` 分支。
 
 本地开发默认路径为 `/`。可用与 CI 相同的变量验证项目路径：
 
