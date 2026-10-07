@@ -1,8 +1,8 @@
 # MyBlogDoc
 
-[中文](README.md) · [Personal blog](https://yihuiblog.top/) · [Chronicle design reference](https://chronicle-83v.pages.dev/)
+[中文](README.md) · [Personal blog](https://yihuiblog.top/)
 
-A personal frontend knowledge base and blog, statically generated with Astro from the original Markdown articles. The interface follows Chronicle's editorial layout, with article lists, category filters, search, and reading pages. Chinese and English interface translations share the same article content; switching languages does not translate the articles.
+A personal frontend knowledge base and blog, statically generated with Astro from the original Markdown articles. The interface uses an editorial layout, with article lists, category filters, search, and reading pages. Chinese and English interface translations share the same article content; switching languages does not translate the articles.
 
 ## Local development
 

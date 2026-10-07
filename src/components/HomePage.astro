@@ -16,9 +16,15 @@ const base = normalizeBase(import.meta.env.BASE_URL);
 const href = (path = "") => localePath(path, locale, base);
 const posts = (await getPosts()).filter((post) => !post.empty);
 const subjects = [...new Set(posts.map((post) => post.id.split("/")[0]))];
+const picks = [
+  "TipTap/Tiptap 深度教程（四）：终极定制 - 从零创建你的专属扩展",
+  "翻译/「译」React 服务器组件 (RSCs) 的深入分析",
+  "学习路径/JavaScript完整指南",
+];
+const highlights = picks.flatMap((id) => posts.filter((post) => post.id === id));
 const featured = [
-  ...posts.filter((post) => post.featured),
-  ...posts.filter((post) => !post.featured),
+  ...highlights,
+  ...posts.filter((post) => !highlights.includes(post)),
 ].slice(0, 3);
 const categories = new Map<string, number>();
 for (const post of posts)

@@ -210,6 +210,13 @@ const nav = [
           >
             {locale === "zh" ? "EN" : "中文"}
           </a>
+          <a
+            class="header-search icon-button"
+            href={`${href("blog")}#article-search`}
+            aria-label={t.search}
+          >
+            <Icon name="search" size={17} />
+          </a>
           <button
             class="theme-toggle icon-button"
             type="button"
@@ -302,16 +309,7 @@ const nav = [
         </div>
         <div class="footer-bottom">
           <p>© {new Date().getUTCFullYear()} Yihui.</p>
-          <p>
-            {t.builtWith} <span aria-hidden="true">·</span>{" "}
-            <a
-              href="https://chronicle-83v.pages.dev/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t.designCredit}
-            </a>
-          </p>
+          <p>{t.builtWith}</p>
         </div>
       </div>
     </footer>

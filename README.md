@@ -1,8 +1,8 @@
 # MyBlogDoc
 
-[English](README.en.md) · [个人博客](https://yihuiblog.top/) · [设计参考 Chronicle](https://chronicle-83v.pages.dev/)
+[English](README.en.md) · [个人博客](https://yihuiblog.top/)
 
-个人前端知识库与博客，使用 Astro 静态生成，继续以原来的 Markdown 文章为内容源。界面参照 Chronicle 的编辑部式排版，包含文章列表、分类筛选、搜索和文章阅读页；提供中文、英文界面，切换语言不会翻译文章正文。
+个人前端知识库与博客，使用 Astro 静态生成，继续以原来的 Markdown 文章为内容源。界面采用编辑部式排版，包含文章列表、分类筛选、搜索和文章阅读页；提供中文、英文界面，切换语言不会翻译文章正文。
 
 ## 本地开发
 
