@@ -68,7 +68,7 @@ Pages use native browser scrolling. GSAP observes scroll position to animate rev
 2. Push changes to `main` or `master`. The workflow installs locked dependencies, runs checks and tests, builds the website, and deploys it with the official GitHub Pages Actions.
 3. You can also choose **Actions → Build and deploy Astro to GitHub Pages → Run workflow**. Only `main` and `master` deploy; Pull Requests run checks and builds.
 
-The workflow reads the origin and base path from `actions/configure-pages`, supporting project sites, user sites, and configured custom domains. A normal `MyBlogDoc` project repository uses `/MyBlogDoc/`. Pull Request builds derive the path from `GITHUB_REPOSITORY`. Full Git history is checked out so article date fallbacks remain consistent. No PAT or manually maintained `gh-pages` branch is required.
+The workflow reads the origin and base path from `actions/configure-pages`, supporting project sites, user sites, and configured custom domains. A normal `MyBlogDoc` project repository uses `/MyBlogDoc/`. Pull Request builds derive the path from `GITHUB_REPOSITORY` only when `BASE_PATH` is not set. Full Git history is checked out so article date fallbacks remain consistent. No PAT or manually maintained `gh-pages` branch is required.
 
 To override deployment settings, add repository variables under **Settings → Secrets and variables → Actions → Variables**:
 
@@ -76,6 +76,15 @@ To override deployment settings, add repository variables under **Settings → S
 | --- | --- | --- |
 | `SITE_URL` | `https://momeak9.github.io` | Website origin without the project subpath |
 | `BASE_PATH` | `/MyBlogDoc/` | Project subpath; use `/` for root-domain deployment |
+
+For the current custom domain `yihuiblog.top`, set these **Repository Variables**:
+
+```ini
+SITE_URL=https://yihuiblog.top
+BASE_PATH=/
+```
+
+The custom domain serves the website at the root path `/`. These variables take priority over automatic GitHub Pages configuration and are also used for Pull Request builds. Keep the root path instead of the project-site `/MyBlogDoc/` prefix; see the [Astro custom domain deployment guide](https://docs.astro.build/en/guides/deploy/github/#change-your-github-url-to-a-custom-domain). After changing them, run the workflow again for the settings to take effect; you can manually run it on `main` from **Actions → Build and deploy Astro to GitHub Pages → Run workflow**.
 
 Local development defaults to `/`. To verify the same project path used in CI:
 
