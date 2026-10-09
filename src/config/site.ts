@@ -5,6 +5,9 @@ export const site = {
     displayName: { zh: "泯泷 Yihui", en: "Yihui" },
   },
   repositoryUrl: "https://github.com/MoMeak9/MyBlogDoc",
+  wechat: {
+    name: "泯泷ML",
+  },
   socials: {
     github: {
       icon: "github",
