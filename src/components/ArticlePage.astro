@@ -3,6 +3,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "./PostCard.astro";
 import Icon from "./Icon.astro";
 import Diagrams from "./Diagrams.astro";
+import WeChatFollow from "./WeChatFollow.astro";
+import Comments from "./Comments.astro";
 import { ui, dateLabel, type Locale } from "../i18n";
 import { getPosts, renderPost, type Post } from "../lib/content";
 import { localePath, normalizeBase, postPath } from "../lib/paths.mjs";
@@ -163,6 +165,8 @@ const editUrl = `https://github.com/MoMeak9/MyBlogDoc/edit/main/src/${post.id.sp
           </ul>
         </aside>
       )}
+      {locale === "zh" && <WeChatFollow compact />}
+      {post.indexable && !post.empty && <Comments postId={post.id} locale={locale} />}
     </div>
     {toc.length > 0 && (
       <aside class="toc">

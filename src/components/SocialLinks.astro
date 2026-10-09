@@ -2,6 +2,7 @@
 import Icon from "./Icon.astro";
 import { site } from "../config/site";
 import { ui, type Locale } from "../i18n";
+import { localePath, normalizeBase } from "../lib/paths.mjs";
 
 interface Props {
   locale?: Locale;
@@ -10,6 +11,7 @@ interface Props {
 }
 const { locale = "zh", variant = "icons", class: className } = Astro.props;
 const t = ui(locale);
+const wechatHref = `${localePath("contact", "zh", normalizeBase(import.meta.env.BASE_URL))}#wechat`;
 ---
 
 <div
@@ -17,6 +19,17 @@ const t = ui(locale);
   role="group"
   aria-label={t.socialLinks}
 >
+  {locale === "zh" && (
+    <a
+      class="social-link social-link--wechat"
+      href={wechatHref}
+      aria-label={`关注微信公众号：${site.wechat.name}`}
+      title={`关注微信公众号：${site.wechat.name}`}
+    >
+      <Icon name="wechat" size={18} />
+      <span>公众号</span>
+    </a>
+  )}
   {Object.values(site.socials).map((social) => (
     <a
       class="social-link"
@@ -65,6 +78,14 @@ const t = ui(locale);
     width: 40px;
     height: 40px;
   }
+  .social-links--icons .social-link--wechat {
+    width: auto;
+    min-width: 96px;
+    gap: 8px;
+    padding-inline: 12px;
+    font-size: 13px;
+    color: var(--text);
+  }
   .social-links--text {
     gap: 10px;
   }
@@ -87,6 +108,9 @@ const t = ui(locale);
     .social-links--icons .social-link {
       width: 44px;
       height: 44px;
+    }
+    .social-links--icons .social-link--wechat {
+      width: auto;
     }
     .social-links--text .social-link {
       min-height: 44px;

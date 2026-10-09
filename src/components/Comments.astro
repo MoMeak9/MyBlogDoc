@@ -1,0 +1,171 @@
+---
+import { site } from "../config/site";
+import { type Locale } from "../i18n";
+import Icon from "./Icon.astro";
+
+interface Props {
+  postId: string;
+  locale?: Locale;
+}
+const { postId, locale = "zh" } = Astro.props;
+const english = locale === "en";
+const enabled = Boolean(site.comments.repoId && site.comments.categoryId);
+const t = english
+  ? {
+      heading: "Join the conversation",
+      description: "Sign in with GitHub to comment. Both language versions share this conversation.",
+      github: "Discuss on GitHub",
+      load: "Load comments",
+      loading: "Loading comments…",
+      failed: "Comments could not be loaded. Retry or continue on GitHub.",
+      retry: "Retry loading comments",
+      unavailable: "Comments are not available yet.",
+    }
+  : {
+      heading: "一起聊聊",
+      description: "使用 GitHub 登录后即可留言，中英文界面共享同一篇文章的讨论。",
+      github: "前往 GitHub 交流",
+      load: "加载评论",
+      loading: "正在加载评论…",
+      failed: "评论暂时无法加载，可重试或前往 GitHub 交流。",
+      retry: "重试加载评论",
+      unavailable: "评论区暂未开放。",
+    };
+const discussionUrl = enabled
+  ? `${site.repositoryUrl}/discussions?discussions_q=${encodeURIComponent(`"${postId}"`)}`
+  : site.repositoryUrl;
+---
+
+<section
+  id="comments"
+  class="article-comments"
+  aria-labelledby="comments-heading"
+  data-pagefind-ignore
+  data-comments-enabled={String(enabled)}
+  data-repo={site.comments.repo}
+  data-repo-id={site.comments.repoId}
+  data-category={site.comments.category}
+  data-category-id={site.comments.categoryId}
+  data-term={postId}
+  data-lang={english ? "en" : "zh-CN"}
+  data-loading={t.loading}
+  data-failed={t.failed}
+  data-retry={t.retry}
+>
+  <div class="comments-heading">
+    <h2 id="comments-heading">{t.heading}</h2>
+    <a href={discussionUrl} target="_blank" rel="noopener noreferrer">
+      {t.github}<Icon name="github" size={16} />
+    </a>
+  </div>
+  <p class="comments-description">{t.description}</p>
+  <p class="comments-status" role="status" aria-live="polite">
+    {enabled ? "" : t.unavailable}
+  </p>
+  {enabled && <button class="button button-outline" type="button" data-load-comments>{t.load}</button>}
+  <div class="giscus"></div>
+</section>
+
+<script>
+  const section = document.querySelector<HTMLElement>('[data-comments-enabled="true"]');
+  if (section) {
+    const container = section.querySelector<HTMLElement>(".giscus")!;
+    const status = section.querySelector<HTMLElement>(".comments-status")!;
+    const button = section.querySelector<HTMLButtonElement>("[data-load-comments]")!;
+    const origin = "https://giscus.app";
+    let state: "idle" | "loading" | "ready" | "failed" = "idle";
+    let timeout: ReturnType<typeof setTimeout>;
+    let script: HTMLScriptElement | undefined;
+    const frame = () => container.querySelector<HTMLIFrameElement>("iframe.giscus-frame");
+    const theme = () => document.documentElement.classList.contains("dark") ? "dark" : "light";
+    const syncTheme = () => frame()?.contentWindow?.postMessage({ giscus: { setConfig: { theme: theme() } } }, origin);
+
+    const fail = () => {
+      clearTimeout(timeout);
+      state = "failed";
+      script?.remove();
+      container.replaceChildren();
+      status.textContent = section.dataset.failed!;
+      button.textContent = section.dataset.retry!;
+      button.hidden = false;
+    };
+    const load = () => {
+      if (state === "loading" || state === "ready") return;
+      state = "loading";
+      status.textContent = section.dataset.loading!;
+      button.hidden = true;
+      script = document.createElement("script");
+      script.src = `${origin}/client.js`;
+      script.async = true;
+      script.crossOrigin = "anonymous";
+      Object.assign(script.dataset, {
+        repo: section.dataset.repo,
+        repoId: section.dataset.repoId,
+        category: section.dataset.category,
+        categoryId: section.dataset.categoryId,
+        mapping: "specific",
+        term: section.dataset.term,
+        strict: "1",
+        reactionsEnabled: "1",
+        emitMetadata: "1",
+        inputPosition: "top",
+        theme: theme(),
+        lang: section.dataset.lang,
+        loading: "lazy",
+      });
+      script.addEventListener("error", fail, { once: true });
+      timeout = setTimeout(fail, 15000);
+      container.appendChild(script);
+    };
+    button.addEventListener("click", load);
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        load();
+      }, { rootMargin: "200px 0px" });
+      observer.observe(section);
+    } else {
+      load();
+    }
+    new MutationObserver(syncTheme).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    new MutationObserver(() => frame()?.addEventListener("load", syncTheme, { once: true })).observe(container, { childList: true });
+    window.addEventListener("message", (event) => {
+      if (event.origin !== origin || !frame() || event.source !== frame()!.contentWindow) return;
+      const payload = event.data?.giscus;
+      if (!payload || typeof payload !== "object") return;
+      if (typeof payload.error === "string" && !payload.error.includes("Discussion not found")) {
+        fail();
+        return;
+      }
+      if (typeof payload.resizeHeight === "number" && payload.resizeHeight > 0) {
+        clearTimeout(timeout);
+        state = "ready";
+        status.textContent = "";
+        button.hidden = true;
+      }
+      if (payload.discussion?.url) {
+        try {
+          const url = new URL(payload.discussion.url);
+          if (url.origin === "https://github.com" && url.pathname.startsWith(`/${section.dataset.repo}/discussions/`)) {
+            section.querySelector<HTMLAnchorElement>(".comments-heading a")!.href = url.href;
+          }
+        } catch {}
+      }
+    });
+  }
+</script>
+
+<style>
+  .article-comments { margin-top: 48px; border-top: 1px solid var(--border); padding-top: 32px; min-width: 0; }
+  .comments-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  .comments-heading h2 { font-size: 28px; }
+  .comments-heading a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--muted); font-size: 13px; }
+  .comments-heading a:focus-visible, .article-comments button:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  .comments-description, .comments-status { color: var(--muted); font-size: 13px; margin-top: 12px; }
+  .comments-status:empty { display: none; }
+  .article-comments button { margin-top: 16px; }
+  .article-comments button[hidden] { display: none; }
+  .giscus { margin-top: 24px; }
+  @media (max-width: 767px) { .comments-heading { gap: 8px; } .comments-heading h2 { font-size: 24px; } }
+</style>

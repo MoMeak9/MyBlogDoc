@@ -4,6 +4,7 @@ import PostCard from "./PostCard.astro";
 import Icon from "./Icon.astro";
 import HeroArtwork from "./HeroArtwork.astro";
 import SocialLinks from "./SocialLinks.astro";
+import WeChatFollow from "./WeChatFollow.astro";
 import { ui, type Locale } from "../i18n";
 import { getPosts } from "../lib/content";
 import { localePath, normalizeBase } from "../lib/paths.mjs";
@@ -223,6 +224,13 @@ const principles = [
       </div>
     </div>
   </section>
+  {locale === "zh" && (
+    <section class="section wechat-section">
+      <div class="container">
+        <WeChatFollow />
+      </div>
+    </section>
+  )}
   <section class="cta-section">
     <div class="container cta-inner" data-animate="fade-up">
       <div>
