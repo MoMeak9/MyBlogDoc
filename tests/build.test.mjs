@@ -165,6 +165,60 @@ function locations(xml) {
   );
 }
 
+test("WeChat follow cards serve the original QR under the deployment base and only in Chinese", () => {
+  const qrPath = "images/wechat-ml-qr.jpg";
+  assert.deepEqual(
+    readFileSync(join(dist, qrPath)),
+    readFileSync(join(root, "public", qrPath)),
+    "The QR image must be published without modification.",
+  );
+  for (const page of regularPages) {
+    const html = artifact(page.file);
+    const qrTags = [...html.matchAll(/<img\b[^>]*>/g)]
+      .map(([tag]) => attributes(tag))
+      .filter((attrs) => attrs.class?.includes("wechat-qr"));
+    if (page.locale === "en") {
+      assert.equal(qrTags.length, 0, page.file);
+      assert.ok(!html.includes('class="social-link social-link--wechat"'), page.file);
+    } else if (["", "contact"].includes(page.route) || page.id) {
+      assert.equal(qrTags.length, 1, page.file);
+      assert.equal(qrTags[0].src, `${base}${qrPath}`, page.file);
+      assert.equal(qrTags[0].width, "430");
+      assert.equal(qrTags[0].height, "430");
+      assert.ok(html.includes('download="泯泷ML-公众号二维码.jpg"'), page.file);
+    }
+  }
+});
+
+test("public article comments share a discussion identity across locales and remain outside indexed prose", () => {
+  for (const article of contentIndex().articles) {
+    for (const locale of ["zh", "en"]) {
+      const file = join(locale === "en" ? "en" : "", "posts", article.id, "index.html");
+      const html = artifact(file);
+      const sections = [...html.matchAll(/<section\b[^>]*>/g)]
+        .map(([tag]) => ({ tag, attrs: attributes(tag) }))
+        .filter(({ attrs }) => attrs.id === "comments");
+      assert.equal(sections.length, 1, file);
+      const { tag, attrs } = sections[0];
+      assert.equal(attrs["data-term"], article.id, file);
+      assert.equal(attrs["data-lang"], locale === "en" ? "en" : "zh-CN", file);
+      assert.equal(attrs["data-repo"], "MoMeak9/MyBlogDoc", file);
+      assert.match(tag, /\bdata-pagefind-ignore\b/, file);
+      if (attrs["data-comments-enabled"] === "true") {
+        assert.ok(attrs["data-repo-id"] && attrs["data-category-id"], file);
+      } else {
+        assert.ok(!html.includes("data-load-comments"), file);
+      }
+      const prose = html.match(/<article\b[^>]*class="prose"[\s\S]*?<\/article>/)?.[0];
+      assert.ok(prose, file);
+      assert.ok(!prose.includes('id="comments"'), file);
+    }
+  }
+  for (const path of ["index.html", "contact/index.html", "en/index.html", "en/contact/index.html"]) {
+    assert.ok(!artifact(path).includes('id="comments"'), path);
+  }
+});
+
 test("every Markdown article has both locale pages and a real legacy HTML entry", (t) => {
   assert.ok(
     notes.includes("README.md") && notes.includes("个人简介.md"),

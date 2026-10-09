@@ -1,12 +1,14 @@
 ---
 import { site } from "../config/site";
 import Icon from "./Icon.astro";
+import { normalizeBase } from "../lib/paths.mjs";
 
 interface Props {
   id?: string;
   compact?: boolean;
 }
 const { id, compact = false } = Astro.props;
+const qrImage = `${normalizeBase(import.meta.env.BASE_URL)}${site.wechat.qrImage}`;
 ---
 
 <section
@@ -19,15 +21,25 @@ const { id, compact = false } = Astro.props;
     <p class="wechat-label"><Icon name="wechat" size={20} /> 微信公众号</p>
     <h2>在微信里，继续阅读。</h2>
     <p class="wechat-description">关注「{site.wechat.name}」，一起交流技术与思考。</p>
-    <p class="wechat-instructions">打开微信 → 搜一搜 → 选择「公众号」，搜索下方名称。</p>
+    <p class="wechat-instructions">用微信扫一扫；手机上可长按识别，或保存二维码后从微信相册扫码。</p>
   </div>
   <div class="wechat-actions">
+    <img
+      class="wechat-qr"
+      src={qrImage}
+      alt="微信公众号「泯泷ML」关注二维码"
+      width="430"
+      height="430"
+      loading="lazy"
+      decoding="async"
+    />
+    <a class="wechat-save" href={qrImage} download="泯泷ML-公众号二维码.jpg">保存二维码</a>
     <p class="wechat-account">{site.wechat.name}</p>
     <button class="button" type="button" data-copy-wechat={site.wechat.name}>
       复制公众号名称
     </button>
     <p class="wechat-status" role="status" aria-live="polite" aria-atomic="true">
-      也可以长按名称，手动复制。
+      也可在微信「搜一搜 → 公众号」中搜索名称。
     </p>
   </div>
 </section>
@@ -77,7 +89,10 @@ const { id, compact = false } = Astro.props;
   h2 { font-size: clamp(24px, 3vw, 36px); margin: 18px 0 16px; }
   .wechat-description { color: var(--text); font-size: 16px; }
   .wechat-instructions { margin-top: 12px; color: var(--muted); font-size: 13px; }
-  .wechat-actions { max-width: 280px; }
+  .wechat-actions { max-width: 240px; text-align: center; }
+  .wechat-qr { width: 215px; max-width: 100%; height: auto; margin: 0 auto; background: #fff; color-scheme: light; }
+  .wechat-save { display: inline-flex; align-items: center; min-height: 44px; font-size: 12px; color: var(--muted); }
+  .wechat-save:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
   .wechat-account { font-size: 28px; margin-bottom: 16px; font-weight: 500; user-select: all; }
   .wechat-actions .button { width: 100%; letter-spacing: 0; }
   .wechat-actions .button:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
