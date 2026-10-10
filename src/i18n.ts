@@ -130,7 +130,6 @@ const zh = {
   emailTitle: "邮件",
   openSource: "开源项目",
   feedback: "意见反馈",
-  designCredit: "设计参考 Chronicle",
   pageNotFound: "页面未找到",
 };
 const en: typeof zh = {
@@ -272,7 +271,6 @@ const en: typeof zh = {
   emailTitle: "Email",
   openSource: "Open source",
   feedback: "Feedback",
-  designCredit: "Design inspired by Chronicle",
   pageNotFound: "Page not found",
 };
 export const ui = (locale: Locale = "zh") => (locale === "en" ? en : zh);

@@ -350,6 +350,27 @@ test("absolute local navigation and media URLs resolve to published files", (t) 
   );
 });
 
+test("home pages feature the curated highlight articles in both locales", () => {
+  const picks = [
+    "TipTap/Tiptap 深度教程（四）：终极定制 - 从零创建你的专属扩展",
+    "翻译/「译」React 服务器组件 (RSCs) 的深入分析",
+    "学习路径/JavaScript完整指南",
+  ];
+  for (const locale of ["zh", "en"]) {
+    const html = artifact(join(locale === "en" ? "en" : "", "index.html"));
+    const links = [...html.matchAll(/<a\b[^>]*>/gi)].map((match) =>
+      attributes(match[0]),
+    );
+    for (const id of picks) {
+      const href = localizedRoute(`posts/${encodeId(id)}`, locale);
+      assert.ok(
+        links.some((link) => link.href === href),
+        `${locale} home page must feature ${id}.`,
+      );
+    }
+  }
+});
+
 test("sitemaps include every public locale page and omit errors and legacy redirects", () => {
   const index = artifact("sitemap-index.xml");
   assert.match(index, /<sitemapindex\b/);
